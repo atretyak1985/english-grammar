@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uk">
+<!-- =============================================================
+     ШАБЛОН НОВОЇ ТЕМИ
+     -------------------------------------------------------------
+     Як додати нову тему:
+       1. Скопіюйте цей файл у topics/  і дайте йому назву латиницею,
+          наприклад  topics/articles.html
+       2. Замініть <title>, <meta description> і назви розділів
+       3. Додайте свої розділи <section> — готові «цеглинки» нижче
+       4. Відкрийте assets/js/topics.js і додайте туди картку теми
+       5. Усе. CSS і JS підключаються автоматично.
+     ============================================================= -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>НАЗВА ТЕМИ | Граматика англійської</title>
+<meta name="description" content="Короткий опис теми для пошуковиків.">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="bar"></div>
+
+<div class="sitebar"><div class="wrap">
+  <a class="logo" href="../index.html">📘 <b>Граматика англійської</b></a>
+  <nav class="sitelinks"><a href="../index.html">Усі теми</a></nav>
+</div></div>
+
+<div class="wrap"><div class="crumbs"><a href="../index.html">Головна</a> <span>›</span> НАЗВА ТЕМИ</div></div>
+
+<!-- меню розділів теми (липке) -->
+<nav><div class="wrap">
+  <span class="brand">НАЗВА ТЕМИ</span>
+  <a href="#s1">1 Розділ</a>
+  <a href="#s2">2 Розділ</a>
+  <a href="#quiz">Тест</a>
+</div></nav>
+
+<!-- шапка теми -->
+<header><div class="wrap">
+  <div class="kicker">Граматика · рівень B1</div>
+  <h1>Назва теми</h1>
+  <p>Одне-два речення про те, що людина зрозуміє після цієї сторінки.</p>
+  <div class="hero-chips">
+    <span class="hero-chip">📖 N розділів</span>
+    <span class="hero-chip">✍️ приклади з перекладом</span>
+    <span class="hero-chip">🧩 вправи з відповідями</span>
+  </div>
+</div></header>
+
+<!-- ============ РОЗДІЛ ============ -->
+<section id="s1"><div class="wrap">
+  <h2>1. Заголовок розділу</h2>
+  <p class="lede">Вступне речення розділу.</p>
+
+  <!-- ЦЕГЛИНКА: формула -->
+  <div class="formula">
+<b>+</b>  Підмет <b>+ дієслово</b>            <span class="cm">// коментар</span>
+<span class="neg">−</span>  Підмет <span class="neg">+ заперечення</span>
+<span class="q">?</span>  <span class="q">Питальна</span> форма ... ?
+  </div>
+
+  <!-- ЦЕГЛИНКА: список прикладів -->
+  <div class="exlist">
+    <div class="row">
+      <span class="en">English example sentence.</span>
+      <span class="ua">Переклад українською.</span>
+      <span class="why">Чому саме такий варіант.</span>
+    </div>
+    <div class="row">
+      <span class="en">Another example.</span>
+      <span class="ua">Ще один переклад.</span>
+    </div>
+  </div>
+
+  <!-- ЦЕГЛИНКА: правильно / неправильно -->
+  <div class="gb">
+    <div class="bad">Неправильний варіант.</div>
+    <div class="good">Правильний варіант.</div>
+  </div>
+
+  <!-- ЦЕГЛИНКА: виноска. Класи: note / note warn / note trap / note tip -->
+  <div class="note tip">
+    <div class="t">Заголовок виноски</div>
+    Текст виноски.
+  </div>
+
+  <!-- ЦЕГЛИНКА: таблиця. Додайте class="tight" для щільнішої -->
+  <table>
+    <thead><tr><th style="width:30%">Колонка</th><th>Колонка</th></tr></thead>
+    <tbody>
+      <tr><td>значення</td><td>значення</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ЦЕГЛИНКА: теги-маркери. Класи: chip ps / chip pc / chip pp -->
+  <div class="chips">
+    <span class="chip ps">слово — переклад</span>
+    <span class="chip">нейтральний тег</span>
+  </div>
+</div></section>
+
+<!-- ============ РОЗДІЛ З ВПРАВАМИ ============ -->
+<section id="s2"><div class="wrap">
+  <h2>2. Вправи</h2>
+  <button class="revealall" data-target="ex-a">Показати / сховати всі</button>
+  <div id="ex-a">
+    <div class="drill">
+      <div class="q"><span class="num">1.</span> Текст завдання.</div>
+      <button class="reveal">Відповідь</button>
+      <div class="answer"><b>Правильна відповідь</b><span class="hint">Пояснення.</span></div>
+    </div>
+  </div>
+
+  <!-- ЦЕГЛИНКА: мінімальні пари -->
+  <div class="mp">
+    <div class="mp-h">Назва ситуації</div>
+    <div class="mp-r"><div>Речення варіант 1</div><div>Що це означає.</div></div>
+    <div class="mp-r"><div>Речення варіант 2</div><div>Що означає це.</div></div>
+  </div>
+</div></section>
+
+<!-- ============ ТЕСТ ============ -->
+<section id="quiz"><div class="wrap">
+  <h2>Тест</h2>
+  <p class="lede">Натисніть варіант — побачите, чи правильно, і чому. <span id="score"></span></p>
+  <div id="quizbox"></div>
+</div></section>
+
+<div class="sitefoot"><div class="wrap">
+  <div>Граматика англійської — особистий навчальний проєкт</div>
+  <div><a href="../index.html">← Усі теми</a></div>
+</div></div>
+
+<script>
+/* Питання тесту. a — індекс правильної відповіді, рахуємо з нуля. */
+window.QUIZ_QUESTIONS = [
+  {
+    q: "Текст питання з пропуском ___.",
+    h: "Переклад-підказка українською.",
+    o: ["варіант 1", "варіант 2", "варіант 3"],
+    a: 1,
+    w: "Пояснення, чому правильний саме цей варіант."
+  }
+];
+</script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

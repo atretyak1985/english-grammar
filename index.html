@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Граматика англійської — пояснення українською</title>
+<meta name="description" content="Граматика англійської мови з поясненнями українською: правила, приклади з перекладом, типові помилки українців, вправи і тести.">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div id="bar"></div>
+
+<div class="sitebar"><div class="wrap">
+  <a class="logo" href="index.html">📘 <b>Граматика англійської</b></a>
+  <nav class="sitelinks">
+    <a href="#topics">Теми</a>
+    <a href="#how">Як користуватись</a>
+  </nav>
+</div></div>
+
+<div class="home-hero"><div class="wrap">
+  <div class="kicker">Пояснення українською · приклади англійською</div>
+  <h1>Граматика англійської<br>без зубріння</h1>
+  <p>Правила пояснені так, щоб було зрозуміло одразу: візуальні схеми, приклади з перекладом, розбір «чому саме так», типові помилки українців і вправи з відповідями.</p>
+  <div class="stats">
+    <div class="stat"><div class="n" id="stat-ready">1</div><div class="l">тема готова</div></div>
+    <div class="stat"><div class="n" id="stat-soon">7</div><div class="l">у планах</div></div>
+    <div class="stat"><div class="n">200+</div><div class="l">прикладів</div></div>
+  </div>
+</div></div>
+
+<section id="topics"><div class="wrap">
+  <h2>Теми</h2>
+  <p class="lede">Кожна тема — окрема самодостатня сторінка: теорія, приклади, порівняння, вправи і тест.</p>
+  <div class="topics" id="topics-grid"></div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2>Як користуватись</h2>
+  <div class="howto">
+    <p style="margin:0"><b>Читання правил дає розуміння, але не автоматизм.</b> Автоматизм дає лише продукування власних речень. Тому порядок роботи з кожною темою такий:</p>
+    <ol>
+      <li>Прочитайте теорію — але не намагайтесь запамʼятати все за раз.</li>
+      <li>Пройдіть розділ з <b>мінімальними парами</b>: там видно, що саме змінює граматика в сенсі.</li>
+      <li>Зробіть <b>переклад з української</b>, не підглядаючи у відповіді. Це найкорисніша вправа.</li>
+      <li>Складіть <b>5 власних речень про свою реальну роботу чи життя</b>. Один свій приклад вартує двадцяти чужих.</li>
+      <li>Через тиждень пройдіть <b>тест</b> ще раз. Що нижче 85% — туди й повертайтесь.</li>
+    </ol>
+  </div>
+  <div class="note tip">
+    <div class="t">Порада</div>
+    Не проходьте кілька тем паралельно. Одна тема на 1–2 тижні, з щоденною практикою по 15 хвилин, дає більше, ніж місяць безсистемного читання.
+  </div>
+</div></section>
+
+<div class="sitefoot"><div class="wrap">
+  <div>Граматика англійської — особистий навчальний проєкт</div>
+  <div>Пояснення українською, приклади англійською</div>
+</div></div>
+
+<script src="assets/js/topics.js"></script>
+<script>
+/* малюємо картки тем зі списку в assets/js/topics.js */
+(function () {
+  var grid = document.getElementById('topics-grid');
+  if (!grid || !window.TOPICS) return;
+  var ready = 0, soon = 0;
+
+  window.TOPICS.forEach(function (t) {
+    t.ready ? ready++ : soon++;
+    var el = document.createElement(t.ready ? 'a' : 'div');
+    el.className = 'topic lv-' + (t.level || 'b1') + (t.ready ? '' : ' soon');
+    if (t.ready && t.href) el.href = t.href;
+    el.innerHTML =
+      '<h3>' + t.title + '</h3>' +
+      '<p>' + t.desc + '</p>' +
+      '<div class="meta">' +
+        (t.tags || []).map(function (x) { return '<span class="tag">' + x + '</span>'; }).join('') +
+      '</div>';
+    grid.appendChild(el);
+  });
+
+  document.getElementById('stat-ready').textContent = ready;
+  document.getElementById('stat-soon').textContent = soon;
+})();
+</script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
