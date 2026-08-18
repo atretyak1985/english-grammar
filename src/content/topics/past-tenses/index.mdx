@@ -1,0 +1,868 @@
+import {
+  DecisionFlow,
+  TimelineAll,
+  TimelinePastContinuous,
+  TimelinePastPerfect,
+  TimelinePastSimple,
+} from './diagrams';
+import { EXERCISE_A, EXERCISE_B, EXERCISE_C, TRANSLATE_A, TRANSLATE_B, TRANSLATE_C, TRANSLATE_D } from './drills';
+import { QUIZ } from './quiz';
+
+<Section id="big" n={1} title="Головна ідея — три фігури на лінії часу">
+
+<Lede>Перш ніж вчити правила, вловіть інтуїцію. Кожен минулий час відповідає на одне питання: <b>де ця дія стоїть на лінії часу і яку роль вона там грає?</b></Lede>
+
+<Grid3>
+  <Card tense="ps">
+    <Badge t="ps">Past Simple</Badge>
+    <CardTitle>Крапка ●</CardTitle>
+    <Muted>Завершена подія. Сталася — і все. <b>Це основна сюжетна лінія.</b></Muted>
+    <En>We <M t="ps">shipped</M> the release on Friday.</En>
+    <Ua>Ми випустили реліз у п'ятницю.</Ua>
+  </Card>
+  <Card tense="pc">
+    <Badge t="pc">Past Continuous</Badge>
+    <CardTitle>Лінія ▬</CardTitle>
+    <Muted>Дія <b>у процесі</b> в певний момент. Це фон, а не сама подія.</Muted>
+    <En>I <M t="pc">was reviewing</M> the PR at 9 p.m.</En>
+    <Ua>О 21:00 я переглядав пул-реквест.</Ua>
+  </Card>
+  <Card tense="pp">
+    <Badge t="pp">Past Perfect</Badge>
+    <CardTitle>Крок назад ⏮</CardTitle>
+    <Muted><b>Минуле в минулому.</b> Сталося ДО моменту, про який ви розповідаєте.</Muted>
+    <En>The build failed because someone <M t="pp">had merged</M> a bad commit.</En>
+    <Ua>Збірка впала, бо хтось до того влив поганий коміт.</Ua>
+  </Card>
+</Grid3>
+
+<SvgBox caption={<>Фіолетова крапка сталася першою, помаранчева лінія тривала, синя крапка її перервала. Усе завершилось до «ЗАРАЗ».</>}>
+  <TimelineAll />
+</SvgBox>
+
+<Note variant="tip" title="Найважливіша порада в усьому документі">
+  99% помилок з минулими часами походять з однієї причини: <b>ви перекладаєте український вид дієслова (робив / зробив), замість того щоб спитати себе «яку роль ця дія грає в моїй розповіді?»</b>
+
+  Українська позначає <i>завершеність</i>. Англійська позначає <i>співвідношення подій у часі</i>. Це різні системи. Не накладайте одну на одну — думайте картинкою: крапка, лінія чи крок назад.
+</Note>
+
+### Перевірка інтуїції: одна ситуація — три картинки
+
+<MP title="Ситуація: я і мій ноутбук, о 22:00">
+  <MPRow note={<>● Одна завершена дія в конкретний момент. О 22:00 — клац, закрив.</>}><b>I <M t="ps">closed</M> my laptop at 10 p.m.</b></MPRow>
+  <MPRow note={<>▬ Процес закривання тривав саме тоді — зазвичай як фон: <i>…when she called</i>.</>}><b>I <M t="pc">was closing</M> my laptop at 10 p.m.</b></MPRow>
+  <MPRow note={<>⏮ До 22:00 ноутбук уже був закритий. Дія завершилась раніше цієї точки.</>}><b>I <M t="pp">had closed</M> my laptop by 10 p.m.</b></MPRow>
+</MP>
+
+</Section>
+
+<Section id="simple" n={2} title="Past Simple — простий минулий" tense="ps">
+
+<Lede>Основний робочий час. Якщо ви просто розповідаєте, що сталося — це ваш час за замовчуванням. Близько 80% усіх розповідей про минуле в живій мові.</Lede>
+
+### 2.1 Форма — повна таблиця
+
+<Formula
+  lines={[
+    { sign: '+', body: <>I / you / he / she / it / we / they <K>+ V2</K></>, comment: 'worked, went, built — 2-га форма' },
+    { sign: '−', body: <>Підмет <Neg>+ did not (didn&apos;t) + V1</Neg></>, comment: "didn't work, didn't go — 1-ша форма!" },
+    { sign: '?', body: <><Q>Did</Q> + підмет <Q>+ V1</Q> … ?</>, comment: 'Did you deploy? — НЕ «Did you deployed?»' },
+    { sign: '?', body: <>Wh- + <Q>did</Q> + підмет <Q>+ V1</Q> … ?</>, comment: 'Where did you go? What did he say?' },
+  ]}
+  note="Короткі відповіді: Yes, I did. / No, I didn't."
+/>
+
+#### Дієслово to be — окремий випадок, без did
+
+|  | Стверджувальне | Заперечне | Питальне |
+|---|---|---|---|
+| **I / he / she / it** | I **was** tired. | I **wasn't** tired. | **Was** I tired? |
+| **you / we / they** | They **were** late. | They **weren't** late. | **Were** they late? |
+
+<Muted><b>Чому так?</b> <i>Was / were</i> — самі по собі допоміжні дієслова. Їм не потрібен «помічник» <i>did</i>, вони самі вміють утворювати заперечення й питання.</Muted>
+
+<GoodBad>
+  <Bad>I <b>didn't was</b> at the meeting.<br /><b>Did</b> you <b>were</b> there?</Bad>
+  <Good>I <b>wasn't</b> at the meeting.<br /><b>Were</b> you there?</Good>
+</GoodBad>
+
+<Note variant="warn" title="Правило, яке порушують усі — «минулий час позначається один раз»">
+  Щойно ви сказали <code>did</code> — основне дієслово повертається до початкової форми. Уявіть, що <i>did</i> «забирає» минулий час собі, і дієслову вже нічого не залишається.
+
+  <GoodBad>
+    <Bad>Did you <b>saw</b> the incident report?<br />He didn't <b>came</b> to the standup.<br />Why did she <b>left</b> so early?</Bad>
+    <Good>Did you <b>see</b> the incident report?<br />He didn't <b>come</b> to the standup.<br />Why did she <b>leave</b> so early?</Good>
+  </GoodBad>
+</Note>
+
+<SvgBox>
+  <TimelinePastSimple />
+</SvgBox>
+
+### 2.2 Шість випадків уживання — з розбором
+
+#### ① Завершена дія з конкретним часом у минулому
+
+<ExList>
+  <Ex ua="Ми перейшли на ECS минулої весни." why={<>Є маркер <i>last spring</i> — час названий і закінчився.</>}>We <M t="ps">migrated</M> to ECS last spring.</Ex>
+  <Ex ua="Я купив запчастини для дрона три тижні тому." why={<><i>ago</i> завжди тягне за собою Past Simple.</>}>I <M t="ps">bought</M> the drone parts three weeks ago.</Ex>
+  <Ex ua="Вона надіслала договір у понеділок вранці.">She <M t="ps">sent</M> the contract on Monday morning.</Ex>
+  <Ex ua="Клієнт учора не відповів." why={<>Заперечення: didn&apos;t + <b>reply</b>, а не <i>replied</i>.</>}>The client <M t="ps">didn't reply</M> yesterday.</Ex>
+  <Ex ua="Коли ти почав вчити англійську?" why="Питання про конкретний момент → тільки Past Simple, ніколи Present Perfect.">When <M t="ps">did</M> you <M t="ps">start</M> learning English?</Ex>
+</ExList>
+
+#### ② Послідовність подій — розповідь
+
+<ExList>
+  <Ex ua="Я відкрив дашборд, побачив сплеск і викликав чергового інженера." why="Три крапки поспіль. Порядок слів = порядок подій, ніяких додаткових часів не треба.">I <M t="ps">opened</M> the dashboard, <M t="ps">saw</M> the spike, and <M t="ps">paged</M> the on-call engineer.</Ex>
+  <Ex ua="Він зайшов, сів і попросив цифри.">He <M t="ps">walked</M> in, <M t="ps">sat</M> down and <M t="ps">asked</M> for the numbers.</Ex>
+  <Ex ua="Ми відкотили деплой, перезапустили сервіс і написали пост-мортем.">We <M t="ps">rolled back</M> the deploy, <M t="ps">restarted</M> the service and <M t="ps">wrote</M> a post-mortem.</Ex>
+</ExList>
+
+#### ③ Повторювана дія в минулому — звичка
+
+<ExList>
+  <Ex ua="Джуніором я працював майже щовихідних.">As a junior I <M t="ps">worked</M> most weekends.</Ex>
+  <Ex ua="Раніше я грав на гітарі щовечора. (а зараз ні)" why={<><b>used to + V1</b> — спеціальна конструкція для звички, якої більше немає. Дуже природна в мовленні.</>}>I <b>used to play</b> guitar every evening.</Ex>
+  <Ex ua="Кожного літа ми їздили в гори." why={<><b>would + V1</b> — теж повторювана дія, але звучить літературніше, з ноткою ностальгії. З дієсловами стану не вживається.</>}>Every summer we <b>would drive</b> to the mountains.</Ex>
+  <Ex ua="Він телефонував мені щодня того тижня.">He <M t="ps">called</M> me every day that week.</Ex>
+</ExList>
+
+<Note title="used to чи would — коротко">
+  <b>used to</b> — і для дій, і для станів: <i>I used to work there. I used to have long hair.</i> ✓<br />
+  <b>would</b> — тільки для повторюваних <b>дій</b>: <i>We would meet every Friday.</i> ✓ · <i>I would have long hair.</i> ✗<br />
+  Заперечення й питання зручніше через Past Simple: <i>I didn't use to smoke</i> (зверніть увагу: <b>use</b>, без -d, бо є <i>did</i>).
+</Note>
+
+#### ④ Стан або факт у минулому
+
+<ExList>
+  <Ex ua="API був страшенно повільний.">The API <M t="ps">was</M> painfully slow.</Ex>
+  <Ex ua="У нього було двоє підлеглих і жодного бюджету.">He <M t="ps">had</M> two direct reports and no budget.</Ex>
+  <Ex ua="Я знав відповідь, але промовчав." why={<><i>know</i> — дієслово стану, форми <i>was knowing</i> не існує.</>}>I <M t="ps">knew</M> the answer but <M t="ps">stayed</M> quiet.</Ex>
+  <Ex ua="Машина належала моєму батькові.">The car <M t="ps">belonged</M> to my father.</Ex>
+</ExList>
+
+#### ⑤ Завершений період часу
+
+<ExList>
+  <Ex ua="Я прожив у Львові шість років. (уже не живу)" why={<>Порівняйте: <i>I <b>have lived</b> in Lviv for six years</i> = і досі там живу.</>}>I <M t="ps">lived</M> in Lviv for six years.</Ex>
+  <Ex ua="Ми працювали разом з 2018 по 2021.">We <M t="ps">worked</M> together from 2018 to 2021.</Ex>
+  <Ex ua="Збій тривав сорок хвилин.">The outage <M t="ps">lasted</M> forty minutes.</Ex>
+</ExList>
+
+#### ⑥ Коротка дія, що перериває іншу
+
+<ExList>
+  <Ex ua="Поки я презентував, зник Wi-Fi." why="Довга дія — Continuous, коротка (та, що «врізалась») — Simple.">While I was presenting, the Wi-Fi <M t="ps">dropped</M>.</Ex>
+  <Ex ua="Я їхав додому, коли загорілася лампочка помилки.">I was driving home when the warning light <M t="ps">came</M> on.</Ex>
+</ExList>
+
+### 2.3 Слова-маркери
+
+<Chips>
+  <Chip t="ps">yesterday — учора</Chip>
+  <Chip t="ps">last week / month / year</Chip>
+  <Chip t="ps">two hours ago — дві години тому</Chip>
+  <Chip t="ps">in 2019</Chip>
+  <Chip t="ps">then — потім</Chip>
+  <Chip t="ps">after that — після цього</Chip>
+  <Chip t="ps">first … then … finally</Chip>
+  <Chip t="ps">when I was a student</Chip>
+  <Chip t="ps">the other day — днями</Chip>
+  <Chip t="ps">in the morning (минулого дня)</Chip>
+  <Chip t="ps">once — колись</Chip>
+  <Chip t="ps">at 6 p.m.</Chip>
+</Chips>
+
+### 2.4 Правопис закінчення -ed
+
+| Правило | Приклади |
+|---|---|
+| За замовчуванням — додаємо **-ed** | work → work**ed** · deploy → deploy**ed** · check → check**ed** |
+| Закінчується на **-e** → додаємо лише **-d** | scale → scale**d** · migrate → migrate**d** · close → close**d** |
+| Приголосна + **-y** → **-ied** | try → tr**ied** · deny → den**ied** · apply → appl**ied** |
+| Голосна + **-y** → просто **-ed** | play → play**ed** · enjoy → enjoy**ed** · delay → delay**ed** |
+| Один склад «приголосна-голосна-приголосна» → **подвоюємо** останню | stop → sto**pp**ed · plan → pla**nn**ed · ship → shi**pp**ed · drop → dro**pp**ed |
+| Два склади з наголосом на останньому → подвоюємо | refer → refe**rr**ed · permit → permi**tt**ed · prefer → prefe**rr**ed |
+| Наголос на першому складі → НЕ подвоюємо | open → open**ed** · visit → visit**ed** · happen → happen**ed** |
+
+<Note title="🔊 Вимова -ed — три звуки, а не один">
+  Українці майже завжди вимовляють <i>/ɪd/</i> скрізь. У 70% випадків це помилка, і саме вона одразу видає неносія.
+
+  | Звук | Після чого | Приклади |
+  |---|---|---|
+  | **/t/** | глухих приголосних: p, k, f, s, ʃ, tʃ | stop**ped** /stɒpt/ · work**ed** /wɜːkt/ · watch**ed** /wɒtʃt/ · help**ed** /helpt/ · miss**ed** /mɪst/ |
+  | **/d/** | дзвінких приголосних і голосних | call**ed** /kɔːld/ · clos**ed** /kləʊzd/ · play**ed** /pleɪd/ · open**ed** /ˈəʊpənd/ |
+  | **/ɪd/** | **тільки** після **t** або **d** | want**ed** /ˈwɒntɪd/ · need**ed** /ˈniːdɪd/ · updat**ed** /ˈʌpdeɪtɪd/ · start**ed** /ˈstɑːtɪd/ |
+
+  Промовте вголос кілька разів: <i>«We shipped it, tested it and deployed it»</i> → /ʃɪpt/ · /ˈtestɪd/ · /dɪˈplɔɪd/
+</Note>
+
+### 2.5 Неправильні дієслова — за групами, так легше запамʼятати
+
+<Muted>V2 — для Past Simple. V3 — знадобиться для Past Perfect. Цей самий список використовує аналізатор тексту, тому підсвітка й теорія говорять про одні й ті самі слова.</Muted>
+
+<IrregularVerbs group="a" />
+<IrregularVerbs group="b" />
+<IrregularVerbs group="c" />
+
+</Section>
+
+<Section id="cont" n={3} title="Past Continuous — минулий тривалий" tense="pc">
+
+<Lede>Відповідає не на «що сталося?», а на «що відбувалося навколо?». Це декорація сцени — сам по собі він майже ніколи не є суттю речення.</Lede>
+
+### 3.1 Форма
+
+<Formula
+  lines={[
+    { sign: '+', body: <>I / he / she / it <K>was</K> + V-ing · you / we / they <K>were</K> + V-ing</> },
+    { sign: '−', body: <>Підмет <Neg>+ wasn&apos;t / weren&apos;t + V-ing</Neg></> },
+    { sign: '?', body: <><Q>Was / Were</Q> + підмет + V-ing … ?</>, comment: 'тут НЕМАЄ did — was/were уже допоміжні' },
+    { sign: '?', body: <>What <Q>were</Q> you <Q>doing</Q> at 9 p.m.?</>, comment: 'класичне питання про момент' },
+  ]}
+  note="Короткі відповіді: Yes, I was. / No, I wasn't."
+/>
+
+#### Правопис -ing
+
+| Правило | Приклади |
+|---|---|
+| Зазвичай просто **+ ing** | work → work**ing** · check → check**ing** |
+| Німа **-e** зникає | make → mak**ing** · write → writ**ing** · close → clos**ing** |
+| Один склад CVC → подвоєння | run → ru**nn**ing · sit → si**tt**ing · get → ge**tt**ing · plan → pla**nn**ing |
+| **-ie** → **-ying** | lie → l**ying** · die → d**ying** · tie → t**ying** |
+| **-ee** залишається | see → see**ing** · agree → agree**ing** |
+
+<SvgBox>
+  <TimelinePastContinuous />
+</SvgBox>
+
+### 3.2 Сім випадків уживання — з розбором
+
+#### ① Дія тривала в конкретний момент минулого
+
+<ExList>
+  <Ex ua="О 9-й ранку я був на дзвінку з клієнтом." why="Питання «що ти робив о 9-й?» — не «що сталося», а «що тривало».">At 9 a.m. I <M t="pc">was sitting</M> in a client call.</Ex>
+  <Ex ua="Рік тому в цей час я жив у Варшаві.">This time last year I <M t="pc">was living</M> in Warsaw.</Ex>
+  <Ex ua="Що ти робив, коли я подзвонив?">What <M t="pc">were</M> you <M t="pc">doing</M> when I called?</Ex>
+  <Ex ua="Опівночі команда все ще тестувала.">The team <M t="pc">was still testing</M> at midnight.</Ex>
+</ExList>
+
+#### ② Довгу дію перервала коротка
+
+<ExList>
+  <Ex ua="Я писав пост-мортем, коли ліг Slack." why="Довга дія — Continuous. Коротка, що «врізалась» — Simple.">I <M t="pc">was writing</M> the post-mortem when Slack <M t="ps">went</M> down.</Ex>
+  <Ex ua="Вона пояснювала архітектуру, коли її перебив CEO.">She <M t="pc">was explaining</M> the architecture when the CEO <M t="ps">interrupted</M> her.</Ex>
+  <Ex ua="Ми їхали в аеропорт, коли лопнула шина.">We <M t="pc">were driving</M> to the airport when the tyre <M t="ps">blew</M>.</Ex>
+  <Ex ua="Я заряджав авто, коли зникло світло.">I <M t="pc">was charging</M> the car when the power <M t="ps">went</M> out.</Ex>
+</ExList>
+
+#### ③ Дві дії одночасно
+
+<ExList>
+  <Ex ua="Поки він презентував, я спостерігав за обличчями інвесторів." why="Обидві дії довгі й одночасні → обидві в Continuous.">While he <M t="pc">was pitching</M>, I <M t="pc">was watching</M> the investors' faces.</Ex>
+  <Ex ua="Вона готувала, поки я лагодив роутер.">She <M t="pc">was cooking</M> while I <M t="pc">was fixing</M> the router.</Ex>
+</ExList>
+
+#### ④ Атмосфера, опис сцени
+
+<ExList>
+  <Ex ua="Йшов дощ, офіс гудів, і ніхто не брав слухавку." why="Класичний початок історії: спочатку фон, потім головна подія в Past Simple.">It <M t="pc">was raining</M>, the office <M t="pc">was buzzing</M>, and nobody <M t="pc">was answering</M> the phone.</Ex>
+  <Ex ua="Сонце сідало, а дрони все ще літали.">The sun <M t="pc">was setting</M> and the drones <M t="pc">were still flying</M>.</Ex>
+</ExList>
+
+#### ⑤ Тимчасова ситуація
+
+<ExList>
+  <Ex ua="Того місяця я працював із Варшави. (тимчасово)" why={<>Порівняйте: <i>I worked in Warsaw for a year</i> — просто факт про період.</>}>That month I <M t="pc">was working</M> out of Warsaw.</Ex>
+  <Ex ua="Того тижня він заміняв тімліда.">He <M t="pc">was covering</M> for the team lead that week.</Ex>
+</ExList>
+
+#### ⑥ Роздратування — always / constantly / forever
+
+<ExList>
+  <Ex ua="Він вічно пушив прямо в main. (з негативом)" why={<>Порівняйте нейтральне: <i>He always pushed to main</i> — просто факт, без емоції.</>}>He <M t="pc">was always pushing</M> straight to main.</Ex>
+  <Ex ua="Вони постійно змінювали вимоги. (і це дратувало)">They <M t="pc">were constantly changing</M> the requirements.</Ex>
+</ExList>
+
+#### ⑦ Мʼякший, ввічливіший тон
+
+<ExList>
+  <Ex ua="Я хотів запитати, чи можемо перенести дзвінок." why={<>Найкорисніша фраза в цьому розділі. <i>I was wondering if…</i> звучить значно ввічливіше, ніж <i>I want</i> або <i>Can you</i>.</>}>I <M t="pc">was wondering</M> if we could move the call.</Ex>
+  <Ex ua="Я сподівався, ти зможеш глянути цей PR.">I <M t="pc">was hoping</M> you could take a look at this PR.</Ex>
+</ExList>
+
+<Note variant="trap" title="⚠ Дієслова стану НЕ вживаються з -ing">
+  Дієслова думки, почуттів, володіння і сприйняття описують <b>стан</b>, а не дію. Вони залишаються в Past Simple.
+
+  <StateVerbs />
+
+  <GoodBad>
+    <Bad>I <b>was knowing</b> the answer.<br />We <b>were needing</b> more time.<br />She <b>was having</b> a laptop.</Bad>
+    <Good>I <b>knew</b> the answer.<br />We <b>needed</b> more time.<br />She <b>had</b> a laptop.</Good>
+  </GoodBad>
+
+  <b>Але:</b> деякі з них МОЖУТЬ мати -ing, коли змінюють значення на активну дію:
+
+  | Стан (Simple) | Дія (Continuous) |
+  |---|---|
+  | I **thought** it was fine. — вважав | I **was thinking** about the architecture. — обмірковував |
+  | She **had** a car. — мала | She **was having** lunch / a meeting. — обідала / була на зустрічі |
+  | The soup **tasted** odd. — мав смак | He **was tasting** the soup. — куштував |
+  | He **looked** tired. — виглядав | He **was looking** for the file. — шукав |
+  | I **saw** the problem. — бачив | I **was seeing** a specialist. — ходив до фахівця |
+</Note>
+
+### 3.3 while чи when — правило, якому можна довіряти
+
+<Grid2>
+  <Card>
+    <H4>WHILE + довга дія</H4>
+    <b>While</b> I <M t="pc">was reviewing</M> the code, she <M t="ps">called</M>.
+    <Ua>Після <i>while</i> — майже завжди Past Continuous.</Ua>
+  </Card>
+  <Card>
+    <H4>WHEN + коротка дія</H4>
+    I <M t="pc">was reviewing</M> the code <b>when</b> she <M t="ps">called</M>.
+    <Ua>Після <i>when</i> — майже завжди Past Simple.</Ua>
+  </Card>
+</Grid2>
+
+<Note variant="warn" title="Одне слово змінює весь зміст — вивчіть ці три речення напам'ять">
+  <En>When I arrived, they <b>started</b> the meeting.</En>
+  <Ua>Я прийшов, і потім вони почали. → я був вчасно.</Ua>
+  <En>When I arrived, they <b>were starting</b> the meeting.</En>
+  <Ua>Зустріч якраз починалася. → я трохи запізнився.</Ua>
+  <En>When I arrived, they <b>had started</b> the meeting.</En>
+  <Ua>Зустріч уже почалася раніше. → я запізнився.</Ua>
+</Note>
+
+</Section>
+
+<Section id="perf" n={4} title="Past Perfect — передминулий" tense="pp">
+
+<Lede>Час «перемотки назад». Ви вже розповідаєте про минуле — і треба зробити крок <b>ще далі</b> назад. Це його єдина робота.</Lede>
+
+### 4.1 Форма — найпростіша з усіх: однакова для всіх осіб
+
+<Formula
+  lines={[
+    { sign: '+', body: <>Підмет <K>+ had + V3</K></>, comment: 'I had finished, she had gone, they had built' },
+    { sign: '−', body: <>Підмет <Neg>+ hadn&apos;t + V3</Neg></>, comment: "I hadn't seen it before" },
+    { sign: '?', body: <><Q>Had</Q> + підмет <Q>+ V3</Q> … ?</>, comment: 'Had you tested it?' },
+  ]}
+  note="Скорочення: I'd / you'd / he'd = I had (або I would — зрозуміло з контексту). Короткі відповіді: Yes, I had. / No, I hadn't."
+/>
+
+<SvgBox caption={<><b>When I arrived, the team had already left.</b> — Коли я приїхав, команда вже пішла. Past Perfect завжди вимірюється відносно точки в Past Simple.</>}>
+  <TimelinePastPerfect />
+</SvgBox>
+
+### 4.2 Шість випадків уживання — з розбором
+
+#### ① Дія перед іншою дією в минулому
+
+<ExList>
+  <Ex ua="На момент, коли клієнт підключився, ми вже виправили баг." why={<><i>By the time</i> — майже гарантований сигнал Past Perfect.</>}>By the time the client joined, we <M t="pp">had fixed</M> the bug.</Ex>
+  <Ex ua="Коли я відкрив ноутбук, батарея вже сіла.">When I opened the laptop, the battery <M t="pp">had already died</M>.</Ex>
+  <Ex ua="Зустріч закінчилася до того, як я дійшов.">The meeting <M t="pp">had finished</M> before I got there.</Ex>
+  <Ex ua="На момент запуску він уже пішов з компанії.">He <M t="pp">had left</M> the company by the time we launched.</Ex>
+</ExList>
+
+#### ② Причина ситуації в минулому — «чому так вийшло»
+
+<ExList>
+  <Ex ua="Деплой упав, бо ми не запустили міграції." why="Причина завжди раніша за наслідок → Past Perfect.">The deploy failed because we <M t="pp">hadn't run</M> the migrations.</Ex>
+  <Ex ua="Вона була в люті — їй ніхто не сказав про зміну.">She was furious — nobody <M t="pp">had told</M> her about the change.</Ex>
+  <Ex ua="Я не міг зайти, бо забув перепустку.">I couldn't get in because I <M t="pp">had forgotten</M> my badge.</Ex>
+  <Ex ua="Машина не заводилась — акумулятор сів.">The car wouldn't start — the battery <M t="pp">had gone</M> flat.</Ex>
+</ExList>
+
+#### ③ Досвід до певного моменту в минулому
+
+<ExList>
+  <Ex ua="Це був мій перший пітч — раніше я ніколи не говорив з інвесторами.">It was my first pitch — I <M t="pp">had never spoken</M> to investors before.</Ex>
+  <Ex ua="Це було найкраще демо, яке я коли-небудь бачив." why={<>Після найвищого ступеня (<i>the best, the first, the worst</i>) у минулому — Past Perfect.</>}>It was the best demo I <M t="pp">had ever seen</M>.</Ex>
+  <Ex ua="Я вперше керував таким великим дроном.">It was the first time I <M t="pp">had flown</M> a drone that big.</Ex>
+</ExList>
+
+#### ④ Непряма мова — зсув часу назад
+
+| Пряма мова | Непряма мова |
+|---|---|
+| «I **finish** at six.» <Ua>Present Simple</Ua> | He said he **finished** at six. <Ua>→ Past Simple</Ua> |
+| «I **am working**.» <Ua>Present Continuous</Ua> | He said he **was working**. <Ua>→ Past Continuous</Ua> |
+| «I **finished** it.» <Ua>Past Simple</Ua> | He said he **had finished** it. <Ua>→ Past Perfect</Ua> |
+| «I **have finished** it.» <Ua>Present Perfect</Ua> | He said he **had finished** it. <Ua>→ Past Perfect</Ua> |
+| «I **was testing** it.» <Ua>Past Continuous</Ua> | He said he **had been testing** it. |
+
+<Muted><b>Логіка проста:</b> кожен час «відступає» на один крок назад. Past Perfect — остання зупинка, далі відступати нема куди, тому Past Perfect залишається Past Perfect.</Muted>
+
+#### ⑤ Третій умовний — жаль про минуле
+
+<ExList>
+  <Ex ua="Якби ми додали моніторинг, ми б помітили це раніше." why={<>Формула: <b>If + had + V3, … would have + V3</b>. Розповідає про те, чого не сталося.</>}>If we <M t="pp">had added</M> monitoring, we <b>would have caught</b> it earlier.</Ex>
+  <Ex ua="Якби я знав про дедлайн, я б не поїхав.">If I <M t="pp">had known</M> about the deadline, I <b>wouldn't have taken</b> the trip.</Ex>
+  <Ex ua="Вона б приєдналася, якби ти її запросив.">She <b>would have joined</b> us if you <M t="pp">had invited</M> her.</Ex>
+</ExList>
+
+#### ⑥ Нездійснені плани й надії
+
+<ExList>
+  <Ex ua="Я сподівався закрити раунд до червня. (але не закрив)">I <M t="pp">had hoped</M> to close the round by June.</Ex>
+  <Ex ua="Ми планували запуститись у першому кварталі. (не вийшло)">We <M t="pp">had planned</M> to launch in Q1.</Ex>
+  <Ex ua="Я збирався тобі подзвонити, але зустріч затягнулась." why={<>Конструкція <b>was/were going to</b> — «збирався, але не зробив». Дуже вживана.</>}>I <b>was going to</b> call you, but the meeting ran over.</Ex>
+</ExList>
+
+### 4.3 Слова-маркери
+
+<Chips>
+  <Chip t="pp">by the time — на той момент, коли</Chip>
+  <Chip t="pp">by 2020 — до 2020</Chip>
+  <Chip t="pp">before — до того як</Chip>
+  <Chip t="pp">after — після того як</Chip>
+  <Chip t="pp">already — уже</Chip>
+  <Chip t="pp">just — щойно</Chip>
+  <Chip t="pp">never … before — ніколи раніше</Chip>
+  <Chip t="pp">until then — до того часу</Chip>
+  <Chip t="pp">it was the first time — це був перший раз</Chip>
+  <Chip t="pp">as soon as — щойно, як тільки</Chip>
+</Chips>
+
+<Note variant="trap" title="⚠ Найбільша помилка — вживати Past Perfect занадто часто">
+  Past Perfect — це <b>не</b> «час для всього давнього». Він потрібен лише тоді, коли без нього <b>порядок подій був би незрозумілий</b>. Якщо ви розповідаєте події по порядку, або слова <i>before / after / then</i> уже показують послідовність — <b>Past Simple достатньо і звучить природніше</b>.
+
+  <GoodBad>
+    <Bad>I <b>had woken up</b>, I <b>had made</b> coffee and then I <b>had opened</b> my laptop.</Bad>
+    <Good>I <b>woke up</b>, <b>made</b> coffee and <b>opened</b> my laptop.<br /><Ua>Події йдуть по порядку → перемотка не потрібна.</Ua></Good>
+  </GoodBad>
+
+  <GoodBad>
+    <Meh>After I <b>had reviewed</b> the PR, I merged it.</Meh>
+    <Good>After I <b>reviewed</b> the PR, I merged it.<br /><Ua>Слово «after» уже показує порядок — носії тут не вживають perfect.</Ua></Good>
+  </GoodBad>
+
+  <b>Просте правило-фільтр:</b> приберіть <i>had</i> подумки. Якщо зміст не змінився і порядок подій усе одно зрозумілий — <i>had</i> не потрібне.
+</Note>
+
+### 4.4 Past Perfect Continuous — had been + V-ing
+
+Та сама перемотка назад, але з наголосом на <b>тривалості процесу</b> до тієї точки в минулому.
+
+<ExList>
+  <Ex ua="Коли ми знайшли витік, сервіс деградував уже три години.">By the time we found the leak, the service <b>had been degrading</b> for three hours.</Ex>
+  <Ex ua="Вона була виснажена — вона дебажила з 6-ї ранку.">She was exhausted — she <b>had been debugging</b> since 6 a.m.</Ex>
+  <Ex ua="Земля була мокра, бо йшов дощ." why="Класика: видимий результат зараз-у-минулому + процес, що його спричинив.">The ground was wet because it <b>had been raining</b>.</Ex>
+</ExList>
+
+| Past Perfect Simple — результат | Past Perfect Continuous — процес |
+|---|---|
+| I **had written** three reports. <Ua>Три готові звіти — важливий результат.</Ua> | I **had been writing** reports all day. <Ua>Важливо, що я писав цілий день.</Ua> |
+| He **had painted** the room. <Ua>Кімната пофарбована.</Ua> | He **had been painting** — that's why his hands were dirty. <Ua>Звідси брудні руки.</Ua> |
+
+</Section>
+
+<Section id="markers" n={5} title="Слова-маркери: ago, for, since, by, while — розбір плутанини">
+
+<Lede>Половина помилок — не в самому часі, а в маленькому слові поруч. Ось ті, що плутають найчастіше.</Lede>
+
+### ago чи before?
+
+|  | Значення | Приклад |
+|---|---|---|
+| **ago** | відлік **від сьогодні** назад → Past Simple | I joined **three years ago**. <Ua>Я прийшов три роки тому (від сьогодні).</Ua> |
+| **before** | відлік **від точки в минулому** назад → часто Past Perfect | He had already left **an hour before**. <Ua>Він пішов за годину до того моменту.</Ua> |
+
+<GoodBad>
+  <Bad>I have finished it <b>two hours ago</b>.</Bad>
+  <Good>I finished it <b>two hours ago</b>.<br /><Ua><i>ago</i> — це названий момент у минулому, отже тільки Past Simple.</Ua></Good>
+</GoodBad>
+
+### for, since чи during?
+
+|  | Що позначає | Приклад |
+|---|---|---|
+| **for** | **скільки часу** тривало (проміжок) | I worked there **for five years**. <Ua>п'ять років</Ua> |
+| **since** | **від якого моменту** (точка старту) | She had been coding **since 6 a.m.** <Ua>з 6-ї ранку</Ua> |
+| **during** | **всередині якого періоду** (+ іменник!) | It happened **during the demo**. <Ua>під час демо</Ua> |
+| **while** | те саме, але **+ ціле речення** | It happened **while we were presenting**. <Ua>поки ми презентували</Ua> |
+
+<GoodBad>
+  <Bad>It happened <b>during</b> we were testing.<br />I lived there <b>since</b> six years.</Bad>
+  <Good>It happened <b>while</b> we were testing.<br />I lived there <b>for</b> six years.</Good>
+</GoodBad>
+
+### when, while, as, as soon as
+
+|  | Логіка | Приклад |
+|---|---|---|
+| **when** | момент; далі зазвичай коротка дія (Simple) | I was reading **when** he called. |
+| **while** | проміжок; далі довга дія (Continuous) | **While** I was reading, he called. |
+| **as** | «у той момент, як» — дії розвиваються разом | **As** the plane was landing, my phone buzzed. |
+| **as soon as** | «щойно» — друга дія одразу після першої | **As soon as** I got the alert, I opened the logs. |
+| **by the time** | «на момент, коли» — сигнал Past Perfect | **By the time** I got there, they had gone. |
+| **until / till** | «до того моменту, поки» | We waited **until** the build passed. |
+
+### already, just, yet, still — куди їх ставити
+
+|  | Позиція | Приклад |
+|---|---|---|
+| **already** | між *had* і V3 | They had **already** left. <Ua>Вони вже пішли.</Ua> |
+| **just** | між *had* і V3 | I had **just** sent the email when she called. <Ua>Я щойно надіслав листа, коли вона подзвонила.</Ua> |
+| **never** | між *had* і V3 | He had **never** seen that error before. |
+| **still** | перед *hadn't* | At 8 p.m. they **still** hadn't replied. <Ua>О 20:00 вони все ще не відповіли.</Ua> |
+| **yet** | у кінці речення, у запереченні | The tests hadn't finished **yet**. |
+
+</Section>
+
+<Section id="compare" n={6} title="Порівняння і мінімальні пари">
+
+<Lede>Мінімальна пара — це два речення, які відрізняються лише часом. Саме так найшвидше «клацає» розуміння: ви бачите, що змінює час у сенсі.</Lede>
+
+### 6.1 Повна таблиця порівняння
+
+|  | Past Simple | Past Continuous | Past Perfect |
+|---|---|---|---|
+| **Фігура** | ● крапка — завершено | ▬ лінія — у процесі | ⏮ крапка раніше |
+| **Побудова** | V2 / V-ed, didn't + V1 | was/were + V-ing | had + V3 |
+| **Головне питання** | Що сталося? | Що відбувалося? | Що сталося до того? |
+| **Роль у розповіді** | Самі події, сюжет | Фон, декорація | Передісторія |
+| **Типові маркери** | yesterday, ago, in 2020, then | while, at 5 p.m., all day | by the time, already, before |
+| **Дієслова стану?** | ✓ так | ✗ ні | ✓ так |
+| **Частота в мовленні** | ≈ 80% | ≈ 15% | ≈ 5% |
+| **Якщо сумніваєтесь** | **Беріть цей** | Тільки якщо потрібен процес | Тільки якщо потрібна перемотка |
+
+### 6.2 Мінімальні пари — робота
+
+<MP title="Зустріч і CEO">
+  <MPRow note={<>Він зайшов <b>першим</b>, потім ми закінчили. Послідовність.</>}>When the CEO walked in, we <M t="ps">finished</M> the demo.</MPRow>
+  <MPRow note={<>Демо <b>тривало</b> — він побачив останню частину.</>}>When the CEO walked in, we <M t="pc">were finishing</M> the demo.</MPRow>
+  <MPRow note={<>Демо <b>вже закінчилось</b>. Він його пропустив.</>}>When the CEO walked in, we <M t="pp">had finished</M> the demo.</MPRow>
+</MP>
+
+<MP title="Робота над платформою">
+  <MPRow note="Завершений відрізок. Факт для резюме.">I <M t="ps">worked</M> on the platform for two years.</MPRow>
+  <MPRow note="Робота тривала — це тло для іншої події.">I <M t="pc">was working</M> on the platform when they acquired us.</MPRow>
+  <MPRow note="Це було ще раніше, до переходу в цю команду.">I <M t="pp">had worked</M> on the platform before I joined this team.</MPRow>
+</MP>
+
+<MP title="Дзвінок колезі">
+  <MPRow note="Спочатку мій дзвінок → потім він пішов. Можливо, через дзвінок.">When I <M t="ps">called</M> him, he <M t="ps">left</M> the office.</MPRow>
+  <MPRow note="Він якраз виходив — я застав його в дверях.">When I <M t="ps">called</M> him, he <M t="pc">was leaving</M> the office.</MPRow>
+  <MPRow note="Він пішов раніше → я його вже не застав.">When I <M t="ps">called</M> him, he <M t="pp">had left</M> the office.</MPRow>
+</MP>
+
+<MP title="Обід">
+  <MPRow note="Пообідав о першій. Факт.">I <M t="ps">had</M> lunch at one.</MPRow>
+  <MPRow note="О першій я саме обідав — хтось міг мене застати.">I <M t="pc">was having</M> lunch at one.</MPRow>
+  <MPRow note={<>До першої я вже пообідав. <Ua>Так, <i>had had</i> — це нормально: перше had — допоміжне, друге — V3 від have.</Ua></>}>I <M t="pp">had had</M> lunch by one.</MPRow>
+</MP>
+
+### 6.3 Мінімальні пари — побут
+
+<MP title="Дощ">
+  <MPRow note="Учора був дощ. Факт про день.">It <M t="ps">rained</M> yesterday.</MPRow>
+  <MPRow note="Коли я виходив, ішов дощ. Фон.">It <M t="pc">was raining</M> when I left.</MPRow>
+  <MPRow note={<>Дощ пройшов <b>раніше</b> — залишився мокрий асфальт.</>}>It <M t="pp">had rained</M>, so the road was wet.</MPRow>
+</MP>
+
+<MP title="Вечеря">
+  <MPRow note="Приготувала. Готово.">She <M t="ps">cooked</M> dinner.</MPRow>
+  <MPRow note="Була в процесі — ще не готово.">She <M t="pc">was cooking</M> dinner.</MPRow>
+  <MPRow note="Устигла до приходу гостей.">She <M t="pp">had cooked</M> dinner before the guests arrived.</MPRow>
+</MP>
+
+<MP title="Знання мови">
+  <MPRow note="Вчив у школі. Період закінчився.">I <M t="ps">studied</M> English at school.</MPRow>
+  <MPRow note="Саме тоді вчив — і надійшла пропозиція.">I <M t="pc">was studying</M> English when I got the job offer.</MPRow>
+  <MPRow note="Вивчив ще до переїзду.">I <M t="pp">had studied</M> English before I moved abroad.</MPRow>
+</MP>
+
+<Note variant="warn" title="Бонус: Past Simple проти Present Perfect — головна пастка українців">
+  Це не один із наших трьох часів, але саме тут помиляються найчастіше — бо обидва перекладаються як «я зробив».
+
+  | Past Simple — «коли?» відомо | Present Perfect — важливий результат ЗАРАЗ |
+  |---|---|
+  | I **fixed** it yesterday. <Ua>Час названий → Simple.</Ua> | I**'ve fixed** it. <Ua>Зараз працює — час не важливий.</Ua> |
+  | **Did** you **see** the email this morning? <Ua>Ранок скінчився.</Ua> | **Have** you **seen** the email? <Ua>Взагалі, будь-коли.</Ua> |
+  | He **worked** here for ten years. <Ua>Уже не працює.</Ua> | He**'s worked** here for ten years. <Ua>І досі працює.</Ua> |
+
+  <b>Правило-фільтр: якщо можете назвати момент у минулому — беріть Past Simple.</b> Ніколи не кажіть <i>«I have fixed it yesterday.»</i>
+</Note>
+
+</Section>
+
+<Section id="stories" n={7} title="Три історії з повним розбором">
+
+<Lede>Найкращий спосіб засвоїти часи — бачити їх у зв'язному тексті. Спочатку прочитайте англійською, потім звірте переклад, потім подивіться розбір кожного дієслова.</Lede>
+
+### Історія 1 — інцидент на продакшні
+
+<Story translation="Учора об 23:00 спрацював пейджер. Я дивився фільм, тож поставив на паузу й відкрив ноутбук. Продакшн лежав. Виявилось, що джуніор двома годинами раніше запушив міграцію прямо в main, і ніхто її не переглянув. Поки я відкочував міграцію, зателефонував CTO. На момент, коли ми відновили сервіс, ми вже втратили близько сорока хвилин трафіку.">
+  Yesterday at 11 p.m. the pager <M t="ps">went</M> off. I <M t="pc">was watching</M> a film, so I <M t="ps">paused</M> it and <M t="ps">opened</M> my laptop. Production <M t="ps">was</M> down. It <M t="ps">turned</M> out that a junior dev <M t="pp">had pushed</M> a migration straight to main two hours earlier and nobody <M t="pp">had reviewed</M> it. While I <M t="pc">was rolling</M> back the migration, my CTO <M t="ps">called</M>. By the time we <M t="ps">restored</M> the service, we <M t="pp">had lost</M> about forty minutes of traffic.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="ps">went off</M></b> — Past Simple</>}>Головна подія, з якої починається історія. Крапка.</BRow>
+  <BRow form={<><b><M t="pc">was watching</M></b> — Past Continuous</>}>Що я робив у той момент. Фон, який перервала подія.</BRow>
+  <BRow form={<><b><M t="ps">paused, opened</M></b> — Past Simple</>}>Послідовність моїх дій. Крапка за крапкою.</BRow>
+  <BRow form={<><b><M t="ps">was</M></b> down — Past Simple</>}>Стан у минулому. <i>be</i> — дієслово стану, Continuous тут неможливий.</BRow>
+  <BRow form={<><b><M t="pp">had pushed, had reviewed</M></b> — Past Perfect</>}>Крок назад: це сталося <b>до</b> того, як спрацював пейджер. Причина всієї історії.</BRow>
+  <BRow form={<><b><M t="pc">was rolling back</M></b> — Past Continuous</>}>Довга дія після <i>while</i>, яку перервав дзвінок.</BRow>
+  <BRow form={<><b><M t="ps">called, restored</M></b> — Past Simple</>}>Знову сюжетні крапки.</BRow>
+  <BRow form={<><b><M t="pp">had lost</M></b> — Past Perfect</>}><i>By the time</i> + результат, що вже накопичився до тієї точки.</BRow>
+</Breakdown>
+
+### Історія 2 — розмова з інвесторами
+
+<Story translation="Минулого березня я полетів до Берліна на нашу першу зустріч з інвесторами. Я ніколи раніше не пітчив справжньому фонду, тож тремтів цілий ранок. Поки я налаштовував слайди, один із партнерів запитав мене про наш churn. На щастя, наш аналітик надіслав мені цифри напередодні ввечері, тож я відповів не вагаючись. Зрештою вони не інвестували, але познайомили нас із двома іншими фондами.">
+  Last March I <M t="ps">flew</M> to Berlin for our first investor meeting. I <M t="pp">had never pitched</M> to a real fund before, so I <M t="pc">was shaking</M> the whole morning. While I <M t="pc">was setting</M> up the slides, one of the partners <M t="ps">asked</M> me a question about our churn rate. Luckily, our analyst <M t="pp">had sent</M> me the numbers the night before, so I <M t="ps">answered</M> without hesitating. They <M t="ps">didn't invest</M> in the end, but they <M t="ps">introduced</M> us to two other funds.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="ps">flew</M></b> — Past Simple</>}><i>Last March</i> — названий час → крапка.</BRow>
+  <BRow form={<><b><M t="pp">had never pitched</M></b> — Past Perfect</>}>Досвід (точніше, його відсутність) до того моменту. Маркер: <i>never … before</i>.</BRow>
+  <BRow form={<><b><M t="pc">was shaking</M></b> — Past Continuous</>}>Тривалий стан протягом ранку. Малює картинку.</BRow>
+  <BRow form={<><b><M t="pc">was setting up</M></b> — Past Continuous</>}>Після <i>while</i> — довга дія.</BRow>
+  <BRow form={<><b><M t="ps">asked</M></b> — Past Simple</>}>Коротка дія, що врізалась у довгу.</BRow>
+  <BRow form={<><b><M t="pp">had sent</M></b> — Past Perfect</>}>Сталося <i>the night before</i> — раніше за момент розповіді.</BRow>
+  <BRow form={<><b><M t="ps">answered, didn't invest, introduced</M></b></>}>Сюжетні крапки. Зверніть увагу: <i>didn't <b>invest</b></i>, не <i>didn't invested</i>.</BRow>
+</Breakdown>
+
+### Історія 3 — побутова, без роботи
+
+<Story translation="У суботу я вирішив політати новим дроном біля озера. Світило сонце, і майже ніхто там не гуляв. Я зарядив батареї напередодні ввечері, тож був готовий. Десять хвилин усе йшло добре. Потім, поки дрон висів над водою, зник сигнал. Виявилось, я забув оновити прошивку. Я його повернув, але руки все ще тремтіли, коли я їхав додому.">
+  On Saturday I <M t="ps">decided</M> to fly the new drone by the lake. The sun <M t="pc">was shining</M> and almost nobody <M t="pc">was walking</M> there. I <M t="pp">had charged</M> the batteries the night before, so I <M t="ps">was</M> ready. Everything <M t="ps">went</M> well for ten minutes. Then, while the drone <M t="pc">was hovering</M> over the water, the signal <M t="ps">dropped</M>. It <M t="ps">turned out</M> I <M t="pp">had forgotten</M> to update the firmware. I <M t="ps">got</M> it back, but my hands <M t="pc">were still shaking</M> when I <M t="ps">drove</M> home.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="pc">was shining, was walking</M></b></>}>Опис сцени — класичний початок історії. Фон перед подіями.</BRow>
+  <BRow form={<><b><M t="pp">had charged, had forgotten</M></b></>}>Обидва — підготовка (або її брак) до головних подій. Крок назад.</BRow>
+  <BRow form={<><b><M t="pc">was hovering</M></b> + <b><M t="ps">dropped</M></b></>}>Хрестоматійна пара «довга дія + коротке переривання».</BRow>
+  <BRow form={<><b><M t="pc">were still shaking</M></b> + <b><M t="ps">drove</M></b></>}>Стан тривав <i>у той час, як</i> відбувалась інша дія.</BRow>
+</Breakdown>
+
+</Section>
+
+<Section id="translate" n={8} title="Переклад з української — 25 речень">
+
+<Lede>Найкорисніша вправа в усьому документі. Прочитайте українське речення, вирішіть, який час потрібен, складіть переклад у голові — і лише потім відкрийте відповідь.</Lede>
+
+<Drills block={TRANSLATE_A} />
+<Drills block={TRANSLATE_B} />
+<Drills block={TRANSLATE_C} />
+<Drills block={TRANSLATE_D} />
+
+</Section>
+
+<Section id="traps" n={9} title="Десять помилок українців">
+
+<Lede>Це помилки, які я найчастіше чую від українців із хорошою англійською. Виправите ці десять — і перейдете з «одразу чути іноземця» до «звучить вільно».</Lede>
+
+<Card>
+  <H4>① Подвійний минулий час після did</H4>
+  <Muted>В українській минулий час завжди в самому дієслові. В англійській він позначається один раз — і <i>did</i> уже його забрав.</Muted>
+  <GoodBad>
+    <Bad>Did you <b>sent</b> the invoice?<br />He didn't <b>knew</b> about it.</Bad>
+    <Good>Did you <b>send</b> the invoice?<br />He didn't <b>know</b> about it.</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>② Present Perfect там, де потрібен Past Simple</H4>
+  <Muted>Обидва перекладаються «я зробив», тож різниця для нас невидима. Для носія — величезна.</Muted>
+  <GoodBad>
+    <Bad>I <b>have deployed</b> it yesterday.<br />When <b>have you joined</b> the company?</Bad>
+    <Good>I <b>deployed</b> it yesterday.<br />When <b>did you join</b> the company?</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>③ Continuous замість недоконаного виду</H4>
+  <Muted>«робив» ≠ автоматично <i>was doing</i>. Якщо це завершений блок часу — потрібен Past Simple.</Muted>
+  <GoodBad>
+    <Bad>I <b>was working</b> there for five years.<br />Yesterday I <b>was writing</b> three reports.</Bad>
+    <Good>I <b>worked</b> there for five years.<br />Yesterday I <b>wrote</b> three reports.</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>④ Надмірне вживання Past Perfect</H4>
+  <Muted>Класична «перестраховка» після підручника. Носії вживають його рідко — приблизно в одному реченні з двадцяти.</Muted>
+  <GoodBad>
+    <Bad>Yesterday I <b>had gone</b> to the office and <b>had had</b> three calls.</Bad>
+    <Good>Yesterday I <b>went</b> to the office and <b>had</b> three calls.</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>⑤ Пропущені артиклі</H4>
+  <Muted>В українській артиклів немає, тож рука сама їх пропускає. Правило-мінімум: перша згадка — <i>a</i>, повторна або відома обом — <i>the</i>.</Muted>
+  <GoodBad>
+    <Bad>I opened <b>ticket</b> and assigned it to <b>developer</b>.</Bad>
+    <Good>I opened <b>a</b> ticket and assigned it to <b>the</b> developer.</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>⑥ Дієслова стану з -ing</H4>
+  <GoodBad>
+    <Bad>I <b>was understanding</b> the problem.<br />We <b>were wanting</b> to release earlier.</Bad>
+    <Good>I <b>understood</b> the problem.<br />We <b>wanted</b> to release earlier.</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>⑦ Порядок слів у питанні — калька з української</H4>
+  <Muted>Українською питання можна поставити самою інтонацією. Англійською потрібна інверсія.</Muted>
+  <GoodBad>
+    <Bad>You <b>saw</b> my message?<br />Why <b>you didn't</b> tell me?</Bad>
+    <Good><b>Did</b> you see my message?<br />Why <b>didn't you</b> tell me?</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>⑧ during замість while</H4>
+  <Muted>Обидва — «під час», але <i>during</i> вимагає іменника, а <i>while</i> — цілого речення.</Muted>
+  <GoodBad>
+    <Bad>It happened <b>during</b> I was testing.</Bad>
+    <Good>It happened <b>while</b> I was testing.<br />It happened <b>during</b> the test.</Good>
+  </GoodBad>
+</Card>
+
+<Card>
+  <H4>⑨ Латинські дієслова замість фразових</H4>
+  <Muted>Граматично правильно, але звучить як перекладений документ. Слов'янські мовці інстинктивно обирають «розумне» слово — носії обирають фразове дієслово.</Muted>
+
+  | Ви, найімовірніше, скажете | Як скаже носій |
+  |---|---|
+  | I investigated the issue. | I **looked into** the issue. |
+  | We postponed the release. | We **put off** the release. / We **pushed it back**. |
+  | The server terminated unexpectedly. | The server **went down** out of nowhere. |
+  | I discovered the root cause. | I **tracked down** the root cause. |
+  | We cancelled the contract. | We **pulled out of** the contract. |
+  | He resolved the conflict. | He **sorted out** the conflict. |
+  | The meeting continued longer than planned. | The meeting **ran over**. |
+  | I reviewed the numbers again. | I **went over** the numbers again. |
+  | We terminated the project. | We **shut down** the project. |
+  | She replaced me at the meeting. | She **stood in for** me at the meeting. |
+</Card>
+
+<Card>
+  <H4>⑩ Надмірна формальність</H4>
+  <Muted>Українська ділова традиція значно офіційніша за англомовну. Те, що вам здається ввічливим, звучить холодно й архаїчно.</Muted>
+
+  | Занадто формально | Як пишуть насправді |
+  |---|---|
+  | I would like to inform you that the deploy failed. | **Heads-up** — the deploy failed. |
+  | Please be advised that I have completed the task. | **FYI**, the task is done. |
+  | I am writing to inquire about the timeline. | Quick question about the timeline. |
+</Card>
+
+<Note variant="trap" title="🔊 Вимова минулих форм — особистий список для контролю">
+  <b>said</b> /sed/ — а не /seɪd/<br />
+  <b>read</b> (минулий) /red/ — пишеться так само, читається інакше<br />
+  <b>bought / thought / caught / brought</b> — звук /ɔː/, один склад, ніякого /g/ всередині<br />
+  <b>heard</b> /hɜːd/ — не /hɪəd/<br />
+  <b>was</b> /wəz/ у швидкій мові — зберігайте /w/, не перетворюйте на /v/<br />
+  <b>worked</b> /wɜːkt/ — <b>один</b> склад. Українці додають зайвий голосний: ✗ /ˈwɜːkɪd/<br />
+  <b>asked</b> /ɑːskt/ — теж один склад, найважче поєднання
+</Note>
+
+</Section>
+
+<Section id="decide" n={10} title="Схема вибору часу — 15 секунд">
+
+<Lede>Прокручуйте це в голові, доки не стане автоматичним. Через кілька тижнів схема вам уже не знадобиться.</Lede>
+
+<SvgBox>
+  <DecisionFlow />
+</SvgBox>
+
+</Section>
+
+<Section id="exercises" n={11} title="Вправи з відповідями">
+
+<Lede>Спочатку зробіть подумки або на папері, потім відкривайте відповідь. Пояснення є до кожного пункту.</Lede>
+
+<Drills block={EXERCISE_A} />
+<Drills block={EXERCISE_B} />
+<Drills block={EXERCISE_C} />
+
+</Section>
+
+<Section id="quiz" n={12} title="Тест — 20 питань">
+
+<Quiz questions={QUIZ} topicSlug="past-tenses" />
+
+</Section>
+
+<Section id="cheat" n={13} title="Шпаргалка">
+
+<Lede>Зробіть скріншот. Усе вище — стисло.</Lede>
+
+<Cheat title="МИНУЛІ ЧАСИ — ШВИДКА ДОВІДКА">
+  <CheatRow label="PAST SIMPLE" t="ps">
+    <CheatCode>V2 / V-ed</CheatCode> · <CheatCode>didn't + V1</CheatCode> · <CheatCode>Did you + V1?</CheatCode><br />
+    Завершена подія з конкретним часом · послідовність подій · звичка · стан у минулому.<br />
+    <i>We shipped it on Friday. I didn't see the alert. Did you test it?</i>
+  </CheatRow>
+  <CheatRow label="PAST CONTINUOUS" t="pc">
+    <CheatCode>was / were + V-ing</CheatCode><br />
+    Процес у момент минулого · фон · перервана дія · дві паралельні дії · тимчасова ситуація · роздратування з <i>always</i> · ввічливість (<i>I was wondering…</i>).<br />
+    <i>I was reviewing the PR when the VPN dropped.</i><br />
+    ✗ Ніколи з дієсловами стану: know, want, need, like, own, seem, be.
+  </CheatRow>
+  <CheatRow label="PAST PERFECT" t="pp">
+    <CheatCode>had + V3</CheatCode> — однаково для всіх осіб<br />
+    Раніше за точку в минулому · причина · досвід · непряма мова · третій умовний.<br />
+    <i>The deploy failed because we hadn't run the migrations.</i><br />
+    ⚠ Не вживайте, якщо порядок і так очевидний.
+  </CheatRow>
+  <CheatRow label="while чи when">
+    <b>while</b> + довга дія (Continuous) · <b>when</b> + коротка дія (Simple)
+  </CheatRow>
+  <CheatRow label="during чи while">
+    <b>during</b> + іменник · <b>while</b> + ціле речення
+  </CheatRow>
+  <CheatRow label="for чи since">
+    <b>for</b> + скільки тривало · <b>since</b> + від якого моменту
+  </CheatRow>
+  <CheatRow label="Вимова -ed">
+    /t/ після глухих · /d/ після дзвінких і голосних · /ɪd/ тільки після t / d
+  </CheatRow>
+  <CheatRow label="Тест на Past Perfect">
+    Приберіть <i>had</i>. Зміст не змінився? Значить, <i>had</i> не потрібне.
+  </CheatRow>
+  <CheatRow label="Золоте правило">
+    Можете назвати момент у минулому → <b>Past Simple</b>. Інші два беріть лише коли потрібен <i>процес</i> або <i>перемотка назад</i>.
+  </CheatRow>
+</Cheat>
+
+</Section>
+
+<Section id="plan" n={14} title="План практики на 14 днів">
+
+<Lede>Читання правил дає розуміння, але не автоматизм. Автоматизм дає лише продукування власних речень. По 15 хвилин на день.</Lede>
+
+| День | Що робимо | Як саме |
+|---|---|---|
+| **1–2** | Past Simple: форма і неправильні дієслова | Випишіть 20 неправильних дієслів, які реально вживаєте в роботі. Складіть по одному реченню з кожним про свій тиждень. |
+| **3** | Вимова -ed | Візьміть 15 правильних дієслів, розсортуйте на /t/ /d/ /ɪd/ і промовте вголос 3 рази. |
+| **4–5** | Past Continuous | Опишіть свій учорашній день по годинах: *At 9 I was… At 11 I was…* — мінімум 8 речень. |
+| **6** | while / when | Складіть 10 речень за схемою «довга дія + коротке переривання» з реальних робочих ситуацій. |
+| **7** | Повторення + розділ 6 | Прочитайте мінімальні пари ще раз. Придумайте 3 власні пари. |
+| **8–9** | Past Perfect | Напишіть 10 речень за схемою «наслідок, бо причина раніше»: *X failed because we hadn't…* |
+| **10** | Коли Past Perfect НЕ потрібен | Візьміть свої 10 речень з дня 8–9 і перевірте: де можна прибрати *had* без втрати сенсу? |
+| **11** | Розділ 8 — переклад | Пройдіть усі 25 речень заново, не підглядаючи. Позначте ті, де помилились. |
+| **12** | Власна історія | Напишіть свою версію «Історії 1»: реальний інцидент з роботи, 8–10 речень, усі три часи. |
+| **13** | Вголос | Розкажіть ту саму історію вголос без тексту. Запишіть на диктофон і послухайте. |
+| **14** | Тест і аудит | Пройдіть тест з розділу 12. Усе, що нижче 17/20 — поверніться до відповідного розділу. |
+
+<Note variant="tip" title="Правило, яке вирішує все">
+  Один власноруч складений приклад про <b>вашу реальну роботу</b> дає більше, ніж двадцять прочитаних чужих речень. Мозок запам'ятовує те, що ви самі виробили, а не те, що ви впізнали.
+</Note>
+
+</Section>

@@ -1,0 +1,189 @@
+@import 'tailwindcss';
+
+/* Темна тема перемикається класом на <html>, а не тільки медіазапитом —
+   бо в сайдбарі є ручний перемикач (CONCEPT 6). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   Колірна система. Один набір семантичних змінних, дві теми.
+   Синій = Past Simple, помаранчевий = Continuous, фіолетовий = Perfect
+   ============================================================ */
+:root {
+  --bg: #f7f8fb;
+  --surface: #ffffff;
+  --surface-2: #f1f3f8;
+  --surface-3: #f6f8fc;
+  --ink: #141821;
+  --ink-2: #4a5262;
+  --ink-3: #7c8494;
+  --line: #e4e7ee;
+  --line-strong: #c9d0de;
+
+  --ps: #2563eb;
+  --ps-bg: #eaf1ff;
+  --ps-dk: #1d4ed8;
+  --ps-line: #c7dbff;
+
+  --pc: #d97706;
+  --pc-bg: #fff5e6;
+  --pc-dk: #b45309;
+  --pc-line: #fcdca8;
+
+  --pp: #7c3aed;
+  --pp-bg: #f3ecff;
+  --pp-dk: #6d28d9;
+  --pp-line: #ddc9ff;
+
+  --ok: #059669;
+  --ok-bg: #e7f7f1;
+  --ok-line: #b9e6d5;
+
+  --no: #dc2626;
+  --no-bg: #fdecec;
+  --no-line: #f7c9c9;
+
+  /* темні поверхні (формула, шпаргалка, сайдбар) — однакові в обох темах */
+  --deep: #0f1420;
+  --deep-2: #1b2233;
+  --deep-line: #232a3d;
+  --deep-ink: #e9edf7;
+  --deep-ink-2: #a9b4cc;
+}
+
+.dark {
+  --bg: #0c0f16;
+  --surface: #141a25;
+  --surface-2: #1b2230;
+  --surface-3: #1a212e;
+  --ink: #e7ebf4;
+  --ink-2: #a9b3c6;
+  --ink-3: #7e8899;
+  --line: #262e3e;
+  --line-strong: #3a4457;
+
+  --ps: #60a5fa;
+  --ps-bg: #14243f;
+  --ps-dk: #93c5fd;
+  --ps-line: #23406b;
+
+  --pc: #f59e0b;
+  --pc-bg: #33260d;
+  --pc-dk: #fcd34d;
+  --pc-line: #5c4415;
+
+  --pp: #a78bfa;
+  --pp-bg: #241a3d;
+  --pp-dk: #c4b5fd;
+  --pp-line: #3d2c66;
+
+  --ok: #34d399;
+  --ok-bg: #0d2a21;
+  --ok-line: #1c4d3d;
+
+  --no: #f87171;
+  --no-bg: #2c1517;
+  --no-line: #5a2528;
+
+  --deep: #0a0d14;
+  --deep-2: #161d2b;
+  --deep-line: #222939;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-ps: var(--ps);
+  --color-ps-bg: var(--ps-bg);
+  --color-ps-dk: var(--ps-dk);
+  --color-ps-line: var(--ps-line);
+
+  --color-pc: var(--pc);
+  --color-pc-bg: var(--pc-bg);
+  --color-pc-dk: var(--pc-dk);
+  --color-pc-line: var(--pc-line);
+
+  --color-pp: var(--pp);
+  --color-pp-bg: var(--pp-bg);
+  --color-pp-dk: var(--pp-dk);
+  --color-pp-line: var(--pp-line);
+
+  --color-ok: var(--ok);
+  --color-ok-bg: var(--ok-bg);
+  --color-ok-line: var(--ok-line);
+
+  --color-no: var(--no);
+  --color-no-bg: var(--no-bg);
+  --color-no-line: var(--no-line);
+
+  --color-deep: var(--deep);
+  --color-deep-2: var(--deep-2);
+  --color-deep-line: var(--deep-line);
+  --color-deep-ink: var(--deep-ink);
+  --color-deep-ink-2: var(--deep-ink-2);
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --radius-card: 14px;
+  --shadow-card:
+    0 1px 2px rgb(16 24 40 / 0.05), 0 8px 24px -12px rgb(16 24 40 / 0.14);
+  --shadow-lift:
+    0 4px 8px rgb(16 24 40 / 0.06), 0 18px 40px -16px rgb(16 24 40 / 0.28);
+
+  --spacing-sidebar: 300px;
+  --spacing-header: 108px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16.5px;
+    line-height: 1.68;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Скрол до розділу з відступом під липку шапку (CONCEPT 3.1) */
+  [id] {
+    scroll-margin-top: 104px;
+  }
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+  ::selection {
+    background: var(--ps-bg);
+    color: var(--ps-dk);
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Статуси слів в аналізованому тексті (CONCEPT 5.2) */
+@utility word-unknown {
+  text-decoration: underline dotted var(--ink-3);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+@utility word-learning {
+  background: var(--pc-bg);
+  border-bottom: 2px solid var(--pc);
+  cursor: pointer;
+}
