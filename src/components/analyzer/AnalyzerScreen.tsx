@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 
 import { DEMO_TEXT } from '@/components/analyzer/DEMO_TEXT';
+import { FileSource } from '@/components/analyzer/FileSource';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { TENSE_LABELS, analyzeText } from '@/lib/analyzer/tenses';
@@ -68,14 +69,12 @@ export function AnalyzerScreen() {
   const toggle = (key: TenseKey | 'words') =>
     setLayers((current) => ({ ...current, [key]: !current[key] }));
 
-  const handleFile = async (file: File | undefined) => {
-    if (!file) return;
-    setFileName(file.name);
-    // Текстові файли читаємо одразу; PDF і фото потребують розпізнавання —
-    // це перший пункт у плані розвитку (CONCEPT 9).
-    if (file.type.startsWith('text/')) {
-      setText(await file.text());
-    }
+  // Текст із файлу приходить уже розпізнаним — далі він нічим не відрізняється
+  // від вставленого руками.
+  const acceptExtracted = (extracted: string, title: string) => {
+    setFileName(title);
+    setText(extracted);
+    setSaved(false);
   };
 
   return (
@@ -119,23 +118,7 @@ export function AnalyzerScreen() {
           placeholder="Вставте англійський текст…"
         />
       ) : (
-        <div className="bg-surface border-line rounded-card border border-dashed p-6">
-          <input
-            type="file"
-            accept=".txt,.md,.pdf,image/*"
-            onChange={(event) => void handleFile(event.target.files?.[0])}
-            className="text-[14px]"
-          />
-          <p className="text-ink-2 mt-3 mb-0 text-[14.5px]">
-            {fileName ? (
-              <>
-                Файл: <b>{fileName}</b>.{' '}
-              </>
-            ) : null}
-            Текстові файли читаються одразу. Витягування тексту з PDF і розпізнавання фото
-            (OCR) робиться на сервері — це наступний крок у плані розвитку.
-          </p>
-        </div>
+        <FileSource onText={acceptExtracted} />
       )}
 
       {/* Чотири перемикачі шарів */}

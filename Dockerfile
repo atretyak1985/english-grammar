@@ -11,7 +11,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
+# public/ може не існувати в репозиторії, а COPY у фінальний шар його вимагає
+RUN mkdir -p public && npm run build
 
 FROM node:24-alpine AS runner
 WORKDIR /app
@@ -22,6 +23,11 @@ ENV PORT=8080
 ENV HOSTNAME=0.0.0.0
 
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+
+# Мовні дані OCR (~3 МБ) кладемо в образ, інакше кожен новий інстанс качає їх
+# із CDN на першому ж розпізнаванні фото.
+ADD https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng/4.0.0_best_int/eng.traineddata.gz /app/tessdata/eng.traineddata.gz
+ENV TESSERACT_LANG_PATH=/app/tessdata
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
