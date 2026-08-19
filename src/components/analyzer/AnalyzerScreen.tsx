@@ -6,9 +6,10 @@ import { DEMO_TEXT } from '@/components/analyzer/DEMO_TEXT';
 import { FileSource } from '@/components/analyzer/FileSource';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { isMeaningfulWord } from '@/data/stopwords';
-import { fitPageChars, paginate } from '@/lib/analyzer/pages';
+import { paginate } from '@/lib/analyzer/pages';
 import { TENSE_LABELS, analyzeText } from '@/lib/analyzer/tenses';
-import { useBoxSize, useFillScale, useFitHeight } from '@/lib/analyzer/useViewport';
+import { useFittedPage } from '@/lib/analyzer/useFittedPage';
+import { useBoxSize, useFitHeight } from '@/lib/analyzer/useViewport';
 import { useTexts } from '@/lib/state/texts';
 import type { TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
@@ -65,7 +66,7 @@ export function AnalyzerScreen() {
   });
 
   // Поле джерела згортається саме, коли текст уже великий: читати книжку
-  // з семирядковим полем над нею — цепів екрана даремно.
+  // з семирядковим полем над нею — це пів екрана даремно.
   const [sourceOpen, setSourceOpen] = useState<boolean | null>(null);
 
   const { wordStatus, cycleWordStatus } = useAppState();
@@ -83,11 +84,7 @@ export function AnalyzerScreen() {
   const cardRef = useRef<HTMLDivElement>(null);
   const readerRef = useRef<HTMLDivElement>(null);
   const proseRef = useRef<HTMLDivElement>(null);
-  // Висота — з області читання, ширина — з самої текстової колонки: у повному
-  // екрані колонка обмежена max-w, і оцінка по ширині області завищувала б
-  // кількість символів у рядку вдвічі.
   const reader = useBoxSize(readerRef);
-  const prose = useBoxSize(proseRef);
   // Картка з підсвіткою займає всю вільну висоту до низу вікна.
   const cardHeight = useFitHeight(cardRef);
   // Кількість колонок вирішує доступна область, а не сама колонка тексту:
@@ -95,52 +92,69 @@ export function AnalyzerScreen() {
   const columns = fullscreen && reader.width >= 1100 ? 2 : 1;
 
   // Сторінки як у книзі: довгий документ інакше дає одне полотно на десятки
-  // тисяч елементів. Розмір сторінки — стільки, скільки влазить у зміряну
-  // область; статистика лишається по всьому тексту.
-  const estimate = useMemo(
-    () =>
-      fitPageChars({
-        width: prose.width || reader.width,
-        height: reader.height,
-        font: fullscreen ? 17.5 : 16.5,
-        lineHeight: 2.05,
-        columns,
-      }),
-    [prose.width, reader.width, reader.height, fullscreen, columns],
-  );
-
-  // Оцінку підправляє замір: скільки насправді заповнилось на цій області.
-  const scale = useFillScale(
-    readerRef,
-    proseRef,
-    `${estimate}:${reader.height}:${columns}:${text.length}`,
-  );
-  const pageChars = Math.round(estimate * scale);
-
-  const pages = useMemo(() => paginate(analysis.tokens, pageChars), [analysis.tokens, pageChars]);
+  // тисяч елементів, і читати його неможливо. Статистика при цьому рахується
+  // по всьому тексту (CONCEPT 4.2).
+  //
+  // Розбиття за символами — лише приблизне: воно дає початкове припущення і
+  // оцінку кількості сторінок. Справжню межу знаходить замір нижче.
+  const pages = useMemo(() => paginate(analysis.tokens), [analysis.tokens]);
 
   // Позицію тримає номер токена, а не номер сторінки: при зміні розміру вікна
   // сторінки перераховуються, і читач має залишитися там, де читав.
   const [anchor, setAnchor] = useState(0);
-  const current = useMemo(() => {
-    const found = pages.findIndex((range) => anchor >= range.start && anchor < range.end);
-    return found === -1 ? 0 : found;
-  }, [pages, anchor]);
 
-  const visible = useMemo(() => {
-    const range = pages[current];
-    return range ? analysis.tokens.slice(range.start, range.end) : analysis.tokens;
-  }, [analysis.tokens, pages, current]);
+  // Кінець сторінки — за фактом заміру, а не за підрахунком символів: інакше
+  // або лишається порожнє місце, або текст обрізається непомітно.
+  const guess = useMemo(() => {
+    const found = pages.find((range) => anchor >= range.start && anchor < range.end);
+    return found ? found.end : Math.min(analysis.tokens.length, anchor + 1);
+  }, [pages, anchor, analysis.tokens.length]);
 
-  const goToPage = useCallback(
-    (next: number) => {
-      const range = pages[Math.max(0, Math.min(next, pages.length - 1))];
-      if (range) setAnchor(range.start);
-      // На весь екран крутиться внутрішня область, а не сторінка.
-      if (readerRef.current) readerRef.current.scrollTop = 0;
-    },
-    [pages],
+  const pageEnd = useFittedPage({
+    readerRef,
+    proseRef,
+    start: anchor,
+    guess,
+    total: analysis.tokens.length,
+    resetKey: `${fullscreen ? 'full' : 'card'}:${columns}:${reader.height}:${text.length}`,
+  });
+
+  const visible = useMemo(
+    () => analysis.tokens.slice(anchor, pageEnd),
+    [analysis.tokens, anchor, pageEnd],
   );
+
+
+
+  // Куди повертатись: межі сторінок рухомі (їх визначає замір), тому «назад»
+  // іде за історією відвіданих початків, а не за перерахунком.
+  const [history, setHistory] = useState<number[]>([]);
+
+  const goForward = useCallback(() => {
+    if (pageEnd >= analysis.tokens.length) return;
+    setHistory((current) => [...current, anchor]);
+    setAnchor(pageEnd);
+    if (readerRef.current) readerRef.current.scrollTop = 0;
+  }, [anchor, pageEnd, analysis.tokens.length]);
+
+  /**
+   * Номер сторінки — скільки вже перегорнули; оцінка кількості — з фактичного
+   * розміру сторінки. Межі рухомі, тому в підписі стоїть «~».
+   */
+  const pageNumber = history.length + 1;
+  const pageSize = Math.max(1, pageEnd - anchor);
+  const pageEstimate = Math.max(pageNumber, Math.ceil(analysis.tokens.length / pageSize));
+
+  const goBack = useCallback(() => {
+    if (anchor === 0) return;
+    setHistory((current) => {
+      const previous = current[current.length - 1];
+      // Без історії (наприклад, після зміни розміру) беремо приблизну межу.
+      setAnchor(previous ?? (pages.filter((range) => range.end <= anchor).pop()?.start ?? 0));
+      return current.slice(0, -1);
+    });
+    if (readerRef.current) readerRef.current.scrollTop = 0;
+  }, [anchor, pages]);
 
   // Стрілки гортають сторінки, Esc виходить з повного екрана — але не тоді,
   // коли курсор у полі введення.
@@ -150,13 +164,13 @@ export function AnalyzerScreen() {
       if (target && /^(INPUT|TEXTAREA)$/.test(target.tagName)) return;
       if (event.key === 'Escape' && fullscreen) setFullscreen(false);
       if (pages.length < 2) return;
-      if (event.key === 'ArrowRight') goToPage(current + 1);
-      if (event.key === 'ArrowLeft') goToPage(current - 1);
+      if (event.key === 'ArrowRight') goForward();
+      if (event.key === 'ArrowLeft') goBack();
     };
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [current, fullscreen, goToPage, pages.length]);
+  }, [fullscreen, goBack, goForward, pages.length]);
 
   // Під накладкою сторінка не має крутитися за нею.
   useEffect(() => {
@@ -193,6 +207,7 @@ export function AnalyzerScreen() {
     setText(extracted);
     setSaved(false);
     setAnchor(0);
+    setHistory([]);
   };
 
   return (
@@ -250,6 +265,7 @@ export function AnalyzerScreen() {
                   setText(event.target.value);
                   setSaved(false);
                   setAnchor(0);
+                  setHistory([]);
                 }}
                 rows={7}
                 className="bg-surface text-ink w-full resize-y border-0 p-4 text-[15px] leading-[1.7] outline-none"
@@ -305,13 +321,14 @@ export function AnalyzerScreen() {
 
             {/* Підсвічений текст */}
             <div
+              data-reader
               ref={readerRef}
               className={
                 // Жолоб прокрутки зарезервований завжди: інакше поява смуги
                 // звужує колонку, підгонка скидається і починає коливатись.
                 fullscreen
-                  ? 'flex-1 overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-8'
-                  : 'min-h-0 flex-1 overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap'
+                  ? 'flex-1 overflow-hidden px-[22px] py-8'
+                  : 'min-h-0 flex-1 overflow-hidden px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap'
               }
             >
               <div
@@ -353,24 +370,24 @@ export function AnalyzerScreen() {
               </div>
             </div>
 
-            {pages.length > 1 ? (
+            {analysis.tokens.length > pageSize ? (
               <div className="border-line bg-surface-2 flex items-center justify-between gap-3 border-t px-[22px] py-3">
                 <button
                   type="button"
-                  onClick={() => goToPage(current - 1)}
-                  disabled={current === 0}
+                  onClick={goBack}
+                  disabled={anchor === 0}
                   className={`${PILL} ${PILL_OFF} disabled:cursor-default disabled:opacity-40`}
                 >
                   ← Назад
                 </button>
                 <div className="text-ink-3 text-[12.5px] font-bold">
-                  Сторінка {current + 1} з {pages.length}
+                  Сторінка {pageNumber} з ~{pageEstimate}
                   <span className="hidden sm:inline"> · гортайте стрілками ← →</span>
                 </div>
                 <button
                   type="button"
-                  onClick={() => goToPage(current + 1)}
-                  disabled={current === pages.length - 1}
+                  onClick={goForward}
+                  disabled={pageEnd >= analysis.tokens.length}
                   className={`${PILL} ${PILL_OFF} disabled:cursor-default disabled:opacity-40`}
                 >
                   Далі →
