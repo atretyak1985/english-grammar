@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { IBM_Plex_Mono, Manrope } from 'next/font/google';
 
 import '@/app/globals.css';
 
@@ -29,11 +30,33 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+/**
+ * Шрифти макета. Manrope несе весь інтерфейс, IBM Plex Mono — формули й код.
+ * Кириличний набір обовʼязковий: інтерфейс українською.
+ */
+const manrope = Manrope({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-manrope',
+  display: 'swap',
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-plex-mono',
+  display: 'swap',
+});
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { signedIn, serverState } = await loadShellState();
 
   return (
-    <html lang="uk" suppressHydrationWarning>
+    <html
+      lang="uk"
+      className={`${manrope.variable} ${plexMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Клас теми ставиться до першого рендера, інакше блимає світлий фон */}
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />

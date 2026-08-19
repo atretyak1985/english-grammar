@@ -1,43 +1,62 @@
 'use client';
 
 import Link from 'next/link';
+import { useMemo } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { READY_TOPICS } from '@/data/topics';
+import { wordFrequency } from '@/lib/analyzer/vocabulary';
+import { useTexts } from '@/lib/state/texts';
 
 /** Три картки входу: «Продовжити», «Аналіз тексту», «Слова» (CONCEPT 2). */
 export function EntryCards() {
   const { state, readCount } = useAppState();
+  const { texts } = useTexts();
 
   const continueTopic =
     READY_TOPICS.find((topic) => topic.slug === state.lastTopic) ?? READY_TOPICS[0];
   const read = continueTopic ? readCount(continueTopic.slug) : 0;
-  const total = continueTopic?.sections.length ?? 0;
+  const sections = continueTopic?.sections ?? [];
+
+  const next = sections[Math.min(read, sections.length - 1)];
+  const continueLabel =
+    read > 0
+      ? `Прочитано ${read} з ${sections.length} розділів — далі: ${next?.title ?? ''}`
+      : 'Ще не починали — почніть з розділу 1';
+
+  const corpusSize = useMemo(
+    () => wordFrequency(texts.map((text) => text.body).join('\n')).length,
+    [texts],
+  );
+  const known = Object.values(state.words).filter((status) => status === 'known').length;
 
   return (
-    <div className="grid grid-cols-1 gap-[18px] md:grid-cols-3">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
       {continueTopic ? (
         <EntryCard
           href={`/topics/${continueTopic.slug}`}
-          icon="▶"
-          title={read > 0 ? 'Продовжити' : 'Почати'}
-          desc={`${continueTopic.title} — ${read} з ${total} розділів`}
-          accent="border-t-ps"
+          kicker="Продовжити"
+          kickerClass="text-ps"
+          accent="border-l-ps"
+          title={continueTopic.title}
+          desc={continueLabel}
         />
       ) : null}
       <EntryCard
         href="/analyze"
-        icon="🔍"
+        kicker="Новий інструмент"
+        kickerClass="text-pc"
+        accent="border-l-pc"
         title="Аналіз тексту"
-        desc="Вставте англійський текст — побачите, де які часи і що вам незнайоме"
-        accent="border-t-pc"
+        desc="Вставте статтю, PDF або скан — часи підсвітяться в тексті."
       />
       <EntryCard
         href="/words"
-        icon="🗂"
-        title="Слова"
-        desc="Частотний список з ваших текстів зі статусами «не знаю / вчу / знаю»"
-        accent="border-t-pp"
+        kicker="Новий інструмент"
+        kickerClass="text-pp"
+        accent="border-l-pp"
+        title="Слова за частотою"
+        desc={`${corpusSize} слів з ваших текстів · ${known} позначено «знаю»`}
       />
     </div>
   );
@@ -45,27 +64,29 @@ export function EntryCards() {
 
 function EntryCard({
   href,
-  icon,
+  kicker,
+  kickerClass,
+  accent,
   title,
   desc,
-  accent,
 }: {
   href: string;
-  icon: string;
+  kicker: string;
+  kickerClass: string;
+  accent: string;
   title: string;
   desc: string;
-  accent: string;
 }) {
   return (
     <Link
       href={href}
-      className={`bg-surface border-line rounded-card shadow-card hover:shadow-lift block border border-t-4 px-6 py-5 transition hover:-translate-y-[3px] ${accent}`}
+      className={`bg-surface border-line rounded-card shadow-card block border border-l-[3px] px-[22px] py-5 text-left leading-[normal] text-inherit transition hover:-translate-y-[2px] ${accent}`}
     >
-      <div className="text-[20px]" aria-hidden>
-        {icon}
+      <div className={`text-[11px] font-extrabold tracking-[1.1px] uppercase ${kickerClass}`}>
+        {kicker}
       </div>
-      <div className="mt-1.5 text-[19px] font-bold tracking-[-0.3px]">{title}</div>
-      <div className="text-ink-2 mt-1 text-[15px]">{desc}</div>
+      <div className="mt-[7px] mb-1 text-[18px] font-extrabold tracking-[-0.3px]">{title}</div>
+      <div className="text-ink-2 text-[14px]">{desc}</div>
     </Link>
   );
 }

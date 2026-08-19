@@ -1,51 +1,31 @@
-/** Кільце прогресу читання — те саме число, що й у смужці шапки. */
+/**
+ * Кільце прогресу читання — те саме число, що й у смужці шапки.
+ * Кільце — конічний градієнт із заглушкою в центрі: так відсоток видно
+ * без жодного svg, і воно однаково працює в обох темах.
+ */
 export function ProgressRing({
   read,
   total,
-  size = 44,
+  size = 38,
 }: {
   read: number;
   total: number;
   size?: number;
 }) {
-  const stroke = 4;
-  const radius = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const share = total === 0 ? 0 : read / total;
+  const percent = total === 0 ? 0 : Math.round((read / total) * 100);
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="flex-none">
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke="var(--deep-line)"
-        strokeWidth={stroke}
-      />
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke="var(--ps)"
-        strokeWidth={stroke}
-        strokeLinecap="round"
-        strokeDasharray={circumference}
-        strokeDashoffset={circumference * (1 - share)}
-        transform={`rotate(-90 ${size / 2} ${size / 2})`}
-      />
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        dominantBaseline="central"
-        fontSize={size / 3.6}
-        fontWeight="800"
-        fill="var(--deep-ink)"
-      >
-        {read}
-      </text>
-    </svg>
+    <div
+      className="relative flex-none rounded-full"
+      style={{
+        width: size,
+        height: size,
+        background: `conic-gradient(var(--ps) ${percent}%, var(--surface-2) 0)`,
+      }}
+    >
+      <div className="bg-panel text-ink-2 absolute inset-[4px] flex items-center justify-center rounded-full text-[10.5px] font-extrabold">
+        {percent}%
+      </div>
+    </div>
   );
 }

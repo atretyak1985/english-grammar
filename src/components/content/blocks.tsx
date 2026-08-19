@@ -42,7 +42,7 @@ const TENSE_CHIP: Record<TenseKey, string> = {
 
 export function H2({ children }: { children?: ReactNode }) {
   return (
-    <h2 className="mt-0 mb-1.5 text-[clamp(22px,3.4vw,30px)] leading-[1.22] font-bold tracking-[-0.5px]">
+    <h2 className="mt-0 mb-1.5 text-[27px] font-extrabold tracking-[-0.5px]">
       {children}
     </h2>
   );
@@ -50,7 +50,7 @@ export function H2({ children }: { children?: ReactNode }) {
 
 export function H3({ children, id }: { children?: ReactNode; id?: string }) {
   return (
-    <h3 id={id} className="mt-9 mb-2.5 text-[19.5px] font-bold tracking-[-0.2px]">
+    <h3 id={id} className="mt-[30px] mb-2.5 text-[19.5px] font-extrabold">
       {children}
     </h3>
   );
@@ -60,7 +60,7 @@ export function H4({ children, id }: { children?: ReactNode; id?: string }) {
   return (
     <h4
       id={id}
-      className="text-ink-3 mt-6 mb-2 text-[12.5px] font-extrabold tracking-[0.9px] uppercase"
+      className="text-ink-3 mt-[22px] mb-2 text-[12px] font-extrabold tracking-[0.9px] uppercase"
     >
       {children}
     </h4>
@@ -72,7 +72,7 @@ export function P({ children }: { children?: ReactNode }) {
 }
 
 export function Lede({ children }: { children?: ReactNode }) {
-  return <p className="text-ink-2 mt-0 mb-6 max-w-[800px] text-[17px]">{children}</p>;
+  return <p className="text-ink-2 mt-0 mb-5 max-w-[800px] text-[16.5px]">{children}</p>;
 }
 
 /** Дрібний коментар під абзацом — там, де в HTML був <p style="color:var(--ink-2)">. */
@@ -87,7 +87,7 @@ export function En({ children }: { children?: ReactNode }) {
 
 /** Український переклад — приглушений рядок під англійським. */
 export function Ua({ children }: { children?: ReactNode }) {
-  return <span className="text-ink-3 mt-px block text-[14.5px] font-normal">{children}</span>;
+  return <span className="text-ink-3 block text-[14px] font-normal">{children}</span>;
 }
 
 /** Підсвітка дієслова кольором часу: <M t="ps">shipped</M>. */
@@ -98,7 +98,7 @@ export function M({ t, children }: { t: TenseKey; children?: ReactNode }) {
 export function Badge({ t, children }: { t: TenseKey; children?: ReactNode }) {
   return (
     <span
-      className={`inline-block rounded-md px-2.5 py-[5px] text-[11.5px] font-extrabold tracking-[1.2px] uppercase ${TENSE_BADGE[t]}`}
+      className={`inline-block rounded-md px-2.5 py-[5px] text-[11px] font-extrabold tracking-[1.2px] uppercase ${TENSE_BADGE[t]}`}
     >
       {children}
     </span>
@@ -107,7 +107,7 @@ export function Badge({ t, children }: { t: TenseKey; children?: ReactNode }) {
 
 export function InlineCode({ children }: { children?: ReactNode }) {
   return (
-    <code className="bg-surface-2 rounded-[5px] px-[6px] py-[2px] font-mono text-[13.5px]">
+    <code className="bg-surface-2 rounded-[5px] px-[6px] py-[2px] font-mono text-[13px]">
       {children}
     </code>
   );
@@ -127,7 +127,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`bg-surface border-line rounded-card shadow-card my-[18px] border px-[26px] py-[22px] ${
+      className={`bg-surface border-line rounded-card shadow-card my-[18px] border px-[22px] py-5 ${
         tense ? `border-t-4 ${TENSE_BORDER[tense]}` : ''
       } ${className}`}
     >
@@ -138,7 +138,7 @@ export function Card({
 
 /** Заголовок усередині картки — менші відступи, ніж у H3 розділу. */
 export function CardTitle({ children }: { children?: ReactNode }) {
-  return <h3 className="mt-3 mb-1.5 text-[19px] font-bold tracking-[-0.3px]">{children}</h3>;
+  return <h3 className="mt-3 mb-1.5 text-[19px] font-extrabold">{children}</h3>;
 }
 
 export function Grid2({ children }: { children?: ReactNode }) {
@@ -152,7 +152,7 @@ export function Grid3({ children }: { children?: ReactNode }) {
 /** Заголовок розділу про конкретний час: кольорова точка + назва. */
 export function TenseHead({ t, children }: { t: TenseKey; children?: ReactNode }) {
   return (
-    <div className="mb-1 flex items-center gap-3.5">
+    <div className="mb-1 flex items-center gap-[13px]">
       <span className={`h-3.5 w-3.5 flex-none rounded-full ${TENSE_DOT[t]}`} />
       <H2>{children}</H2>
     </div>
@@ -181,7 +181,7 @@ const SIGN_COLOR: Record<'+' | '−' | '?', string> = {
  */
 export function Formula({ lines, note }: { lines: readonly FormulaLine[]; note?: string }) {
   return (
-    <div className="bg-deep text-deep-ink my-4 overflow-x-auto rounded-xl px-5 py-[18px] font-mono text-[14.5px]">
+    <div className="bg-deep text-deep-ink my-3 overflow-x-auto rounded-xl px-5 py-[18px] font-mono text-[13.5px] leading-[2]">
       <div className="grid gap-y-2">
         {lines.map((line, index) => (
           <div key={index} className="grid grid-cols-[18px_1fr] items-baseline gap-x-2">
@@ -252,7 +252,7 @@ export function Ex({
       <En>{children}</En>
       {ua ? <Ua>{ua}</Ua> : null}
       {why ? (
-        <span className="text-ink-2 border-line mt-[5px] block border-l-2 pl-3 text-[13.5px]">
+        <span className="text-ink-2 border-line mt-[5px] block border-l-2 pl-3 text-[13px]">
           {why}
         </span>
       ) : null}
@@ -268,8 +268,8 @@ export function GoodBad({ children }: { children?: ReactNode }) {
 
 export function Bad({ children }: { children?: ReactNode }) {
   return (
-    <div className="bg-no-bg border-no-line rounded-xl border px-4 py-3.5 text-[15.5px]">
-      <span className="text-no mb-1.5 block text-[11.5px] font-extrabold tracking-[1px]">
+    <div className="bg-no-bg border-no rounded-xl border px-4 py-3.5 text-[15px]">
+      <span className="text-no mb-1.5 block text-[11px] font-extrabold tracking-[1px]">
         ✗ НЕПРАВИЛЬНО
       </span>
       {children}
@@ -279,8 +279,8 @@ export function Bad({ children }: { children?: ReactNode }) {
 
 export function Good({ children }: { children?: ReactNode }) {
   return (
-    <div className="bg-ok-bg border-ok-line rounded-xl border px-4 py-3.5 text-[15.5px]">
-      <span className="text-ok mb-1.5 block text-[11.5px] font-extrabold tracking-[1px]">
+    <div className="bg-ok-bg border-ok rounded-xl border px-4 py-3.5 text-[15px]">
+      <span className="text-ok mb-1.5 block text-[11px] font-extrabold tracking-[1px]">
         ✓ ПРАВИЛЬНО
       </span>
       {children}
@@ -291,8 +291,8 @@ export function Good({ children }: { children?: ReactNode }) {
 /** Проміжний випадок: граматично вірно, але носій так не скаже. */
 export function Meh({ children }: { children?: ReactNode }) {
   return (
-    <div className="bg-pc-bg border-pc-line rounded-xl border px-4 py-3.5 text-[15.5px]">
-      <span className="text-pc-dk mb-1.5 block text-[11.5px] font-extrabold tracking-[1px]">
+    <div className="bg-pc-bg border-pc rounded-xl border px-4 py-3.5 text-[15px]">
+      <span className="text-pc-dk mb-1.5 block text-[11px] font-extrabold tracking-[1px]">
         △ ГРАМАТИЧНО ВІРНО, АЛЕ ВАЖКО
       </span>
       {children}
@@ -325,7 +325,7 @@ export function Note({
       className={`bg-surface shadow-card my-[18px] rounded-r-[10px] border-l-4 px-[18px] py-3.5 ${NOTE_BORDER[variant]}`}
     >
       {title ? (
-        <div className="text-ink-3 mb-[5px] text-[12.5px] font-extrabold tracking-[1px] uppercase">
+        <div className="text-ink-3 mb-[5px] text-[12px] font-extrabold tracking-[1px] uppercase">
           {title}
         </div>
       ) : null}
@@ -339,7 +339,7 @@ export function Note({
 export function MP({ title, children }: { title: ReactNode; children?: ReactNode }) {
   return (
     <div className="border-line bg-surface shadow-card my-3.5 overflow-hidden rounded-xl border">
-      <div className="bg-surface-2 border-line border-b px-4 py-2.5 text-[15px] font-bold">
+      <div className="bg-surface-2 border-line border-b px-4 py-2.5 text-[14.5px] font-bold">
         {title}
       </div>
       {children}
@@ -350,7 +350,7 @@ export function MP({ title, children }: { title: ReactNode; children?: ReactNode
 /** Рядок мінімальної пари: речення (children) і що воно означає (note). */
 export function MPRow({ note, children }: { note: ReactNode; children?: ReactNode }) {
   return (
-    <div className="border-line hover:bg-surface-3 grid grid-cols-1 gap-3.5 border-b px-4 py-[11px] text-[15px] last:border-b-0 sm:grid-cols-[minmax(240px,44%)_1fr]">
+    <div className="border-line hover:bg-surface-3 grid grid-cols-1 gap-3.5 border-b px-4 py-[11px] text-[14.5px] last:border-b-0 sm:grid-cols-[minmax(220px,44%)_1fr]">
       <div>{children}</div>
       <div>{note}</div>
     </div>
@@ -366,7 +366,7 @@ export function Chips({ children }: { children?: ReactNode }) {
 export function Chip({ t, children }: { t?: TenseKey; children?: ReactNode }) {
   return (
     <span
-      className={`rounded-full border px-3 py-1.5 text-[13.5px] font-semibold ${
+      className={`rounded-full border px-3 py-1.5 text-[13px] font-semibold ${
         t ? TENSE_CHIP[t] : 'border-line bg-surface text-ink-2'
       }`}
     >
@@ -412,8 +412,8 @@ export function BRow({ form, children }: { form: ReactNode; children?: ReactNode
 
 export function Cheat({ title, children }: { title: ReactNode; children?: ReactNode }) {
   return (
-    <div className="bg-deep text-deep-ink rounded-card my-5 p-[26px]">
-      <h3 className="mt-0 mb-3 text-[19.5px] font-bold text-white">{title}</h3>
+    <div className="bg-deep text-deep-ink rounded-card my-5 px-[26px] py-6">
+      <h3 className="mt-0 mb-2 text-[17px] font-extrabold tracking-[0.6px] text-white">{title}</h3>
       {children}
     </div>
   );
@@ -435,11 +435,11 @@ export function CheatRow({
   children?: ReactNode;
 }) {
   return (
-    <div className="border-deep-line grid grid-cols-1 items-start gap-3.5 border-b py-3 last:border-b-0 sm:grid-cols-[190px_1fr]">
-      <div className={`text-[13.5px] font-extrabold ${t ? CHEAT_LABEL[t] : 'text-[#94a3b8]'}`}>
+    <div className="border-deep-line grid grid-cols-1 items-start gap-3.5 border-b py-3 last:border-b-0 sm:grid-cols-[180px_1fr]">
+      <div className={`text-[13px] font-extrabold ${t ? CHEAT_LABEL[t] : 'text-[#94a3b8]'}`}>
         {label}
       </div>
-      <div className="text-deep-ink text-[15px]">{children}</div>
+      <div className="text-deep-ink text-[14.5px]">{children}</div>
     </div>
   );
 }
@@ -447,7 +447,7 @@ export function CheatRow({
 /** Код у шпаргалці — на темному тлі потрібен свій відтінок. */
 export function CheatCode({ children }: { children?: ReactNode }) {
   return (
-    <code className="bg-deep-2 rounded-[5px] px-[7px] py-[2px] font-mono text-[13.5px]">
+    <code className="bg-deep-2 rounded-[5px] px-[7px] py-[2px] font-mono text-[13px]">
       {children}
     </code>
   );
@@ -457,10 +457,10 @@ export function CheatCode({ children }: { children?: ReactNode }) {
 
 export function SvgBox({ children, caption }: { children?: ReactNode; caption?: ReactNode }) {
   return (
-    <div className="bg-surface border-line rounded-card shadow-card my-4 overflow-x-auto border p-[18px]">
+    <div className="bg-surface border-line rounded-card shadow-card my-[18px] overflow-x-auto border p-[18px]">
       {children}
       {caption ? (
-        <div className="text-ink-3 mt-2 text-center text-[13.5px]">{caption}</div>
+        <div className="text-ink-3 mt-2 text-center text-[13px]">{caption}</div>
       ) : null}
     </div>
   );
@@ -470,8 +470,8 @@ export function SvgBox({ children, caption }: { children?: ReactNode; caption?: 
 
 export function Table({ children }: { children?: ReactNode }) {
   return (
-    <div className="my-4 overflow-x-auto">
-      <table className="bg-surface shadow-card w-full border-collapse overflow-hidden rounded-xl text-[15px]">
+    <div className="my-3.5 overflow-x-auto">
+      <table className="bg-surface shadow-card w-full border-collapse overflow-hidden rounded-xl text-[14.5px]">
         {children}
       </table>
     </div>
@@ -480,7 +480,7 @@ export function Table({ children }: { children?: ReactNode }) {
 
 export function Th({ children }: { children?: ReactNode }) {
   return (
-    <th className="bg-surface-2 text-ink-2 border-line border-b px-3.5 py-[11px] text-left text-[12px] font-extrabold tracking-[0.7px] uppercase">
+    <th className="bg-surface-2 text-ink-2 border-line border-b px-3 py-[9px] text-left text-[11.5px] font-extrabold tracking-[0.7px] uppercase">
       {children}
     </th>
   );
@@ -488,7 +488,7 @@ export function Th({ children }: { children?: ReactNode }) {
 
 export function Td({ children }: { children?: ReactNode }) {
   return (
-    <td className="border-line border-b px-3.5 py-[11px] align-top last:border-b-0">{children}</td>
+    <td className="border-line border-b px-3 py-[9px] align-top last:border-b-0">{children}</td>
   );
 }
 

@@ -9,7 +9,7 @@ import { useSectionNav } from '@/components/shell/useSectionNav';
 import { READY_TOPICS, TOPICS } from '@/data/topics';
 
 const SCREEN_TITLES: Record<string, string> = {
-  '/': 'Головна',
+  '/': 'Огляд',
   '/analyze': 'Аналіз тексту',
   '/words': 'Слова',
   '/account': 'Кабінет',
@@ -47,43 +47,38 @@ export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) 
   const hasSection = (id: string) => targetTopic?.sections.some((section) => section.id === id);
 
   return (
-    <header className="bg-bg/90 border-line sticky top-0 z-30 border-b backdrop-blur-md">
+    <header className="bg-panel border-line sticky top-0 z-20 border-b">
       {/* Смужка прогресу читання активної теми */}
-      <div className="bg-line/60 h-[3px] w-full">
+      <div className="bg-surface-2 h-[3px] w-full">
         <div
-          className="from-ps via-pc to-pp h-full bg-gradient-to-r transition-[width] duration-200"
-          style={{ width: `${percent}%` }}
+          className="h-full transition-[width] duration-200"
+          style={{
+            width: `${percent}%`,
+            backgroundImage: 'linear-gradient(90deg, var(--ps), var(--pc), var(--pp))',
+          }}
         />
       </div>
 
-      <div className="mx-auto flex h-[56px] max-w-[1080px] items-center gap-3 px-5">
-        <button
-          type="button"
-          onClick={onOpenSidebar}
-          className="border-line text-ink-2 hover:border-line-strong cursor-pointer rounded-lg border px-2.5 py-1.5 text-[13px] font-bold lg:hidden"
-          aria-label="Відкрити навігацію"
-        >
-          ☰
-        </button>
-
-        <nav className="text-ink-3 flex min-w-0 items-center gap-2 text-[13.5px]">
-          <Link href="/" className="text-ps-dk font-semibold hover:underline">
+      <div className="flex items-center justify-between gap-4 px-[30px] py-[11px]">
+        <div className="text-ink-3 flex min-w-0 items-center gap-2 text-[13px] font-semibold">
+          <button
+            type="button"
+            onClick={onOpenSidebar}
+            className="border-line text-ink-2 hover:border-ink-3 mr-1 cursor-pointer rounded-lg border px-2.5 py-1 text-[13px] leading-[normal] font-bold lg:hidden"
+            aria-label="Відкрити навігацію"
+          >
+            ☰
+          </button>
+          <Link href="/" className="text-inherit hover:underline">
             Головна
           </Link>
-          {crumb && pathname !== '/' ? (
-            <>
-              <span aria-hidden>›</span>
-              <span className="truncate">{crumb}</span>
-            </>
-          ) : null}
-          {topic?.ready ? (
-            <span className="text-ink-3 ml-1 hidden text-[12.5px] font-bold sm:inline">
-              · {read}/{total}
-            </span>
-          ) : null}
-        </nav>
+          <span className="text-line" aria-hidden>
+            ›
+          </span>
+          <span className="text-ink truncate">{crumb}</span>
+        </div>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="flex flex-none gap-2">
           {targetTopic && hasSection('quiz') ? (
             <QuickAction onClick={() => goToSection(targetTopic.slug, 'quiz', { markRead: false })}>
               Тест
@@ -96,7 +91,7 @@ export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) 
           ) : null}
           <Link
             href="/analyze"
-            className="border-line bg-surface text-ink-2 hover:border-line-strong hidden rounded-lg border px-2.5 py-1.5 text-[13px] font-bold sm:block"
+            className="bg-ps rounded-btn border border-transparent px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold text-white hover:brightness-[1.08]"
           >
             Аналіз тексту
           </Link>
@@ -111,7 +106,7 @@ function QuickAction({ onClick, children }: { onClick: () => void; children: Rea
     <button
       type="button"
       onClick={onClick}
-      className="border-line bg-surface text-ink-2 hover:border-line-strong hidden cursor-pointer rounded-lg border px-2.5 py-1.5 text-[13px] font-bold sm:block"
+      className="border-line bg-surface-2 text-ink-2 rounded-btn hover:text-ink hover:border-ink-3 cursor-pointer border px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold"
     >
       {children}
     </button>

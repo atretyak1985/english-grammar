@@ -56,7 +56,7 @@ export function Quiz({
 
   return (
     <div>
-      <p className="text-ink-2 mt-0 mb-6 max-w-[800px] text-[17px]">
+      <p className="text-ink-2 mt-[6px] mb-4 max-w-[800px] text-[16.5px]">
         Натисніть варіант — побачите, чи правильно, і головне <b>чому</b>.{' '}
         <span className="text-ink-2 font-extrabold">
           {correct} / {total}
@@ -71,7 +71,7 @@ export function Quiz({
         return (
           <div
             key={questionIndex}
-            className="bg-surface border-line shadow-card my-3 rounded-xl border px-5 py-[18px]"
+            className="bg-surface border-line shadow-card my-3 rounded-panel border px-5 py-[18px]"
           >
             <p className="mt-0 mb-1 font-semibold">
               {questionIndex + 1}. {question.q}
@@ -97,7 +97,7 @@ export function Quiz({
                     type="button"
                     disabled={isDone}
                     onClick={() => pick(questionIndex, optionIndex)}
-                    className={`cursor-pointer rounded-[9px] border-[1.5px] px-3.5 py-2 text-[15px] font-semibold transition disabled:cursor-default ${tone}`}
+                    className={`rounded-btn cursor-pointer border-[1.5px] px-3.5 py-2 text-[14.5px] leading-[normal] font-semibold transition disabled:cursor-default ${tone}`}
                   >
                     {option}
                   </button>
@@ -106,7 +106,7 @@ export function Quiz({
             </div>
 
             {isDone ? (
-              <div className="bg-surface-3 border-ink-3 text-ink-2 mt-3 rounded-[9px] border-l-[3px] px-3.5 py-[11px] text-[14.5px]">
+              <div className="bg-surface-2 border-ink-3 text-ink-2 mt-3 rounded-[9px] border-l-[3px] px-3.5 py-[11px] text-[14px]">
                 {question.why}
               </div>
             ) : null}

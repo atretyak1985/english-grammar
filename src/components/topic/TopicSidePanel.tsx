@@ -1,18 +1,24 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { useActiveSection } from '@/components/shell/ActiveSectionProvider';
-import { WordStatusButtons } from '@/components/words/WordStatusButtons';
+import { WordStatusCycle } from '@/components/words/WordStatusButtons';
 import type { TopicMeta } from '@/types/content';
+
+const CARD = 'bg-surface border-line rounded-panel shadow-card border p-4';
+const CARD_LABEL = 'text-ink-3 mb-2.5 text-[10.5px] font-extrabold tracking-[1.1px] uppercase';
+const CARD_BUTTON =
+  'border-line text-ink-2 rounded-btn hover:bg-hover hover:text-ink mt-3 block w-full cursor-pointer border bg-transparent py-[7px] text-center text-[12.5px] leading-[normal] font-bold';
 
 /**
  * Права колонка сторінки теми: прогрес теми і слова з цієї теми (CONCEPT 2).
  * Одне число живить кільце в сайдбарі, смужку в шапці і «N / 14» тут.
  */
 export function TopicSidePanel({ topic }: { topic: TopicMeta }) {
-  const { readCount, isSectionRead, toggleSectionRead, resetProgress, setLastTopic } = useAppState();
+  const { readCount, isSectionRead, toggleSectionRead, setLastTopic, wordStatus } = useAppState();
   const { activeId } = useActiveSection();
 
   // Картка «Продовжити» на головній має знати, де ви зупинились.
@@ -25,58 +31,56 @@ export function TopicSidePanel({ topic }: { topic: TopicMeta }) {
   const activeRead = activeSection ? isSectionRead(topic.slug, activeSection.id) : false;
 
   return (
-    <aside className="space-y-4">
-      <div className="bg-surface border-line rounded-card shadow-card border px-5 py-4">
-        <div className="text-ink-3 text-[11.5px] font-extrabold tracking-[1px] uppercase">
-          Прогрес теми
+    <div className="sticky top-[78px] flex flex-col gap-3.5">
+      <div className={CARD}>
+        <div className={CARD_LABEL}>Прогрес теми</div>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-[24px] font-extrabold tracking-[-0.5px]">{read}</span>
+          <span className="text-ink-3 text-[13px]">/ {total} розділів</span>
         </div>
-        <div className="mt-1.5 flex items-baseline gap-2">
-          <span className="text-[26px] font-extrabold tracking-[-0.5px]">{read}</span>
-          <span className="text-ink-3 text-[15px]">/ {total} розділів</span>
-        </div>
-        <div className="bg-surface-2 mt-2.5 h-1.5 overflow-hidden rounded-full">
-          <div
-            className="from-ps via-pc to-pp h-full bg-gradient-to-r transition-[width]"
-            style={{ width: `${percent}%` }}
-          />
+        <div className="bg-surface-2 mt-[9px] h-1.5 overflow-hidden rounded-md">
+          <div className="bg-ps h-full transition-[width]" style={{ width: `${percent}%` }} />
         </div>
 
         {activeSection ? (
           <button
             type="button"
             onClick={() => toggleSectionRead(topic.slug, activeSection.id)}
-            className="border-line bg-surface-3 text-ink-2 hover:border-line-strong mt-3.5 w-full cursor-pointer rounded-lg border px-3 py-2 text-[13px] font-bold"
+            className={CARD_BUTTON}
           >
-            {activeRead
-              ? `↩︎ Зняти позначку з розділу ${activeSection.n}`
-              : `✓ Позначити розділ ${activeSection.n} прочитаним`}
+            {activeRead ? 'Зняти позначку з розділу' : 'Позначити розділ прочитаним'}
           </button>
         ) : null}
-
-        <button
-          type="button"
-          onClick={() => resetProgress(topic.slug)}
-          className="text-ink-3 hover:text-no mt-2 w-full cursor-pointer text-[12.5px] font-semibold"
-        >
-          Скинути прогрес
-        </button>
       </div>
 
       {topic.words && topic.words.length > 0 ? (
-        <div className="bg-surface border-line rounded-card shadow-card border px-5 py-4">
-          <div className="text-ink-3 text-[11.5px] font-extrabold tracking-[1px] uppercase">
-            Слова з цієї теми
-          </div>
-          <ul className="mt-2 space-y-2.5">
+        <div className={CARD}>
+          <div className={CARD_LABEL}>Слова з цієї теми</div>
+          <div className="flex flex-col gap-[7px]">
             {topic.words.map((word) => (
-              <li key={word}>
-                <div className="text-[14.5px] font-semibold">{word}</div>
-                <WordStatusButtons word={word} size="sm" />
-              </li>
+              <div key={word} className="flex items-center justify-between gap-2 text-[13.5px]">
+                <span
+                  className={`font-semibold ${
+                    wordStatus(word) === 'learning'
+                      ? 'bg-pc-bg text-pc-dk rounded px-1'
+                      : wordStatus(word) === 'known'
+                        ? 'text-ink-3'
+                        : 'decoration-ink-3 underline decoration-dotted decoration-2 underline-offset-4'
+                  }`}
+                >
+                  {word}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <WordStatusCycle word={word} />
+                </span>
+              </div>
             ))}
-          </ul>
+          </div>
+          <Link href="/words" className={CARD_BUTTON}>
+            Усі слова
+          </Link>
         </div>
       ) : null}
-    </aside>
+    </div>
   );
 }

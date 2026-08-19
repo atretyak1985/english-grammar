@@ -9,7 +9,7 @@ import { Sidebar } from '@/components/shell/Sidebar';
 /**
  * Оболонка застосунку: сайдбар завжди на екрані, контент перемикається без
  * перезавантаження — тому стан і смужка прогресу не блимають (CONCEPT 2).
- * На вузьких екранах сайдбар стає шухлядою.
+ * На широких екранах це grid 296px + решта, на вузьких сайдбар стає шухлядою.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -24,9 +24,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-dvh lg:pl-[300px]">
+    <div className="bg-bg grid min-h-screen lg:grid-cols-[var(--spacing-sidebar)_minmax(0,1fr)]">
       {/* Постійний сайдбар на широких екранах */}
-      <aside className="border-deep-line fixed inset-y-0 left-0 z-40 hidden w-[300px] border-r lg:block">
+      <aside className="sticky top-0 hidden h-screen self-start lg:block">
         <Sidebar />
       </aside>
 
@@ -38,19 +38,20 @@ export function AppShell({ children }: { children: ReactNode }) {
             onClick={() => setOpen(false)}
             aria-hidden
           />
-          <aside className="fixed inset-y-0 left-0 z-50 w-[300px] max-w-[85vw] lg:hidden">
+          <aside className="fixed inset-y-0 left-0 z-50 w-[var(--spacing-sidebar)] max-w-[85vw] lg:hidden">
             <Sidebar onNavigate={() => setOpen(false)} />
           </aside>
         </>
       ) : null}
 
-      <div className="flex min-h-dvh flex-col">
+      <main className="min-w-0">
         <ContentHeader onOpenSidebar={() => setOpen(true)} />
-        <main className="flex-1">{children}</main>
-        <footer className="border-line text-ink-3 mt-14 border-t py-8 text-center text-[13.5px]">
-          Граматика англійської — особистий навчальний проєкт
+        {children}
+        <footer className="border-line text-ink-3 flex flex-wrap justify-between gap-4 border-t px-[30px] pt-[26px] pb-[34px] text-[13.5px]">
+          <div>Граматика англійської — особистий навчальний проєкт</div>
+          <div>Пояснення українською, приклади англійською</div>
         </footer>
-      </div>
+      </main>
     </div>
   );
 }

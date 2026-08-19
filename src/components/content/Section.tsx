@@ -38,7 +38,7 @@ export function Section({
         }
       },
       // Активним вважаємо розділ, чия верхівка щойно пройшла під липкою шапкою.
-      { rootMargin: '-110px 0px -65% 0px', threshold: 0 },
+      { rootMargin: '-80px 0px -65% 0px', threshold: 0 },
     );
 
     observer.observe(element);
@@ -48,7 +48,7 @@ export function Section({
   const heading = `${n}. ${title}`;
 
   return (
-    <section ref={ref} id={id} className="scroll-mt-28 pt-12 pb-2">
+    <section ref={ref} id={id} className="scroll-mt-[78px] pt-[26px] pb-3.5">
       {tense ? <TenseHead t={tense}>{heading}</TenseHead> : <H2>{heading}</H2>}
       {children}
     </section>

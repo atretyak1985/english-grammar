@@ -72,16 +72,22 @@ export function FileSource({ onText }: { onText: (text: string, title: string) =
   };
 
   return (
-    <div className="bg-surface border-line rounded-card border border-dashed p-6">
-      <input
-        type="file"
-        accept=".txt,.md,.pdf,image/*"
-        disabled={status.phase === 'working'}
-        onChange={(event) => void handleFile(event.target.files?.[0])}
-        className="text-[14px] disabled:opacity-50"
-      />
+    <div className="p-[22px]">
+      <label className="border-line hover:border-ps flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[12px] border-2 border-dashed px-5 py-[38px] text-center">
+        <div className="text-[15px] font-bold">Перетягніть файл або натисніть</div>
+        <div className="text-ink-3 text-[13px]">
+          PDF, PNG, JPG, TXT — текст із зображень розпізнається
+        </div>
+        <input
+          type="file"
+          accept=".txt,.md,.pdf,image/*"
+          disabled={status.phase === 'working'}
+          onChange={(event) => void handleFile(event.target.files?.[0])}
+          className="hidden"
+        />
+      </label>
 
-      <div className="text-ink-2 mt-3 text-[14.5px]">
+      <div className="text-ink-3 mt-3 text-[13px]">
         {status.phase === 'idle' ? (
           <>
             PDF із текстовим шаром читається одразу. Фото сторінки проходить через розпізнавання
