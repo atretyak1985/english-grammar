@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DEMO_TEXT } from '@/components/analyzer/DEMO_TEXT';
 import { SourceDialog } from '@/components/analyzer/SourceDialog';
 import { useAppState } from '@/components/providers/AppStateProvider';
+import { IDLE_TONE, ROW_BUTTON } from '@/components/words/WordStatusButtons';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { paginate } from '@/lib/analyzer/pages';
 import { TENSE_LABELS, analyzeText } from '@/lib/analyzer/tenses';
@@ -48,6 +49,9 @@ const CARD_TITLE = 'text-ink-2 text-[12.5px] font-extrabold tracking-[0.4px]';
 const SIDE_CARD = 'bg-surface border-line rounded-panel shadow-card border p-4';
 const SIDE_LABEL = 'text-ink-3 mb-3 text-[10.5px] font-extrabold tracking-[1.1px] uppercase';
 
+/** Скільки незнайомих слів показуємо: наступне підтягується після кожної дії. */
+const UNKNOWN_LIMIT = 20;
+
 /**
  * Аналізатор тексту: правило видно не в підручнику, а у справжньому тексті
  * (CONCEPT 4). Чотири перемикачі керують шарами підсвітки.
@@ -66,7 +70,7 @@ export function AnalyzerScreen() {
   // потрібен на кілька секунд.
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { wordStatus, cycleWordStatus } = useAppState();
+  const { state, wordStatus, setWordStatus, cycleWordStatus } = useAppState();
   const { addText } = useTexts();
   const [saved, setSaved] = useState(false);
 
@@ -176,17 +180,38 @@ export function AnalyzerScreen() {
     };
   }, [fullscreen]);
 
-  const unknownHere = useMemo(() => {
-    const seen = new Map<string, { status: WordStatus; count: number }>();
+  // Частота — від тексту, і тільки від тексту: рахується по ВСЬОМУ документу,
+  // а не по поточній сторінці, і клік по слову її не перераховує.
+  const frequency = useMemo(() => {
+    const counts = new Map<string, number>();
     for (const token of analysis.tokens) {
       if (!token.word || !isMeaningfulWord(token.word)) continue;
-      const status = wordStatus(token.word);
-      if (status === 'known') continue;
-      const current = seen.get(token.word);
-      seen.set(token.word, { status, count: (current?.count ?? 0) + 1 });
+      counts.set(token.word, (counts.get(token.word) ?? 0) + 1);
     }
-    return [...seen.entries()].sort((a, b) => b[1].count - a[1].count || a[0].localeCompare(b[0]));
-  }, [analysis.tokens, wordStatus]);
+    return [...counts.entries()]
+      .map(([word, count]) => ({ word, count }))
+      .sort((a, b) => b.count - a.count || a.word.localeCompare(b.word));
+  }, [analysis.tokens]);
+
+  // Відбір — дешевий прохід уже згорнутим списком. Залежність саме від
+  // `state.words`, а не від `wordStatus`: остання — нова замикання на кожен
+  // рендер провайдера, через що весь документ перескановувався б на кожен клік.
+  const unknownHere = useMemo(
+    () => frequency.filter((entry) => (state.words[entry.word] ?? 'unknown') === 'unknown'),
+    [frequency, state.words],
+  );
+
+  /** Показуємо двадцять; наступне підтягується саме, бо список перерахувався. */
+  const shown = unknownHere.slice(0, UNKNOWN_LIMIT);
+
+  // Відкат останньої дії тримає і слово, і статус ДО неї: слово могло вже мати
+  // статус, і «повернути» мусить вертати попередній стан, а не обнуляти його.
+  const [lastAction, setLastAction] = useState<{ word: string; from: WordStatus } | null>(null);
+
+  const mark = (word: string, status: WordStatus) => {
+    setLastAction({ word, from: wordStatus(word) });
+    setWordStatus(word, status);
+  };
 
   const maxTenseCount = Math.max(...TENSE_ORDER.map((tense) => analysis.stats[tense].count), 1);
 
@@ -338,7 +363,12 @@ export function AnalyzerScreen() {
 
         {/* Статистика */}
         <div className="min-w-0">
-          <div className="sticky top-[78px] flex flex-col gap-3.5">
+          {/* Висота — та сама, що в картки читання: інакше колонка задає висоту
+              рядка сітки, і сторінка перестає вміщатись у вікно. */}
+          <div
+            className="sticky top-[78px] flex flex-col gap-3.5 overflow-y-auto"
+            style={fullscreen ? undefined : { maxHeight: cardHeight }}
+          >
             <div className={SIDE_CARD}>
               <div className={SIDE_LABEL}>Знайдено в тексті</div>
               <div className="flex flex-col gap-[9px]">
@@ -367,25 +397,58 @@ export function AnalyzerScreen() {
 
             <div className={SIDE_CARD}>
               <div className={`${SIDE_LABEL} mb-2.5`}>Незнайомі слова тут</div>
-              <div className="flex flex-wrap gap-[7px]">
-                {unknownHere.slice(0, 14).map(([word, entry]) => (
-                  <button
-                    key={word}
-                    type="button"
-                    onClick={() => cycleWordStatus(word)}
-                    className={`border-ink-3 text-ink-2 cursor-pointer rounded-lg border border-dashed bg-transparent px-[9px] py-1 text-[12.5px] leading-[normal] font-semibold ${
-                      entry.status === 'learning' ? 'bg-pc-bg text-pc-dk' : ''
-                    }`}
+              <div data-unknown-list className="flex flex-col">
+                {shown.map((entry) => (
+                  <div
+                    key={entry.word}
+                    data-unknown-row
+                    className="border-line flex items-center justify-between gap-2 border-b py-[5px] last:border-b-0"
                   >
-                    {word} <span className="opacity-60">×{entry.count}</span>
-                  </button>
+                    <span className="min-w-0 truncate text-[13.5px] font-semibold">
+                      {entry.word} <span className="text-ink-3 opacity-60">×{entry.count}</span>
+                    </span>
+                    <span className="flex flex-none gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => mark(entry.word, 'known')}
+                        className={`${ROW_BUTTON} ${IDLE_TONE} hover:border-ok hover:bg-ok-bg hover:text-ok`}
+                      >
+                        знаю
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => mark(entry.word, 'learning')}
+                        className={`${ROW_BUTTON} ${IDLE_TONE} hover:border-pc hover:bg-pc-bg hover:text-pc-dk`}
+                      >
+                        вчу
+                      </button>
+                    </span>
+                  </div>
                 ))}
-                {unknownHere.length === 0 ? (
-                  <span className="text-ink-3 text-[13px]">Усе позначено як «знаю».</span>
+                {shown.length === 0 ? (
+                  <span className="text-ink-3 text-[13px]">Усе розібрано: незнайомих слів немає.</span>
                 ) : null}
               </div>
+
+              {lastAction ? (
+                <div className="text-ink-3 mt-2.5 flex items-center gap-2 text-[12.5px]">
+                  <span className="min-w-0 truncate">Позначено «{lastAction.word}»</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWordStatus(lastAction.word, lastAction.from);
+                      setLastAction(null);
+                    }}
+                    className="text-ps-dk cursor-pointer font-bold"
+                  >
+                    повернути
+                  </button>
+                </div>
+              ) : null}
+
               <div className="text-ink-3 mt-3 text-[12.5px]">
-                Натисніть слово: не знаю → вчу → знаю.
+                «Знаю» прибирає слово зі списку, «вчу» бере його в словник. На місце
+                позначеного підтягується наступне за частотою.
               </div>
             </div>
           </div>
