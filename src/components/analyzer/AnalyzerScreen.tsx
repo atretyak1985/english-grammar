@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { DEMO_TEXT } from '@/components/analyzer/DEMO_TEXT';
 import { FileSource } from '@/components/analyzer/FileSource';
@@ -79,28 +79,46 @@ export function AnalyzerScreen() {
     return range ? analysis.tokens.slice(range.start, range.end) : analysis.tokens;
   }, [analysis.tokens, pages, current]);
 
+  // Читання на весь екран: із книжкою на десятки сторінок картка затісна.
+  const [fullscreen, setFullscreen] = useState(false);
+  const readerRef = useRef<HTMLDivElement>(null);
+
   const goToPage = useCallback(
     (next: number) => {
       setPage(Math.max(0, Math.min(next, pages.length - 1)));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // На весь екран крутиться внутрішня область, а не сторінка.
+      if (readerRef.current) readerRef.current.scrollTop = 0;
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     [pages.length],
   );
 
-  // Стрілки гортають сторінки — але не тоді, коли курсор у полі введення.
+  // Стрілки гортають сторінки, Esc виходить з повного екрана — але не тоді,
+  // коли курсор у полі введення.
   useEffect(() => {
-    if (pages.length < 2) return;
-
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target && /^(INPUT|TEXTAREA)$/.test(target.tagName)) return;
+      if (event.key === 'Escape' && fullscreen) setFullscreen(false);
+      if (pages.length < 2) return;
       if (event.key === 'ArrowRight') goToPage(current + 1);
       if (event.key === 'ArrowLeft') goToPage(current - 1);
     };
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [current, goToPage, pages.length]);
+  }, [current, fullscreen, goToPage, pages.length]);
+
+  // Під накладкою сторінка не має крутитися за нею.
+  useEffect(() => {
+    if (!fullscreen) return;
+    const root = document.documentElement;
+    const previous = root.style.overflow;
+    root.style.overflow = 'hidden';
+    return () => {
+      root.style.overflow = previous;
+    };
+  }, [fullscreen]);
 
   const unknownHere = useMemo(() => {
     const seen = new Map<string, { status: WordStatus; count: number }>();
@@ -184,7 +202,13 @@ export function AnalyzerScreen() {
           </div>
 
           {/* Чотири перемикачі шарів */}
-          <div className={CARD}>
+          <div
+            className={
+              fullscreen
+                ? 'bg-surface fixed inset-0 z-[100] flex flex-col overflow-hidden'
+                : CARD
+            }
+          >
             <div className={`${CARD_HEAD} flex-wrap`}>
               <div className={`${CARD_TITLE} mr-1`}>ПІДСВІТКА</div>
               {TENSE_ORDER.map((tense) => (
@@ -208,10 +232,32 @@ export function AnalyzerScreen() {
               >
                 Незнайомі слова <span className="opacity-70">{unknownHere.length}</span>
               </button>
+              <button
+                type="button"
+                onClick={() => setFullscreen((open) => !open)}
+                className={`${PILL} ${PILL_OFF} ml-auto`}
+                title={fullscreen ? 'Esc' : 'Читати на весь екран'}
+              >
+                {fullscreen ? '✕ Згорнути' : '⤢ На весь екран'}
+              </button>
             </div>
 
             {/* Підсвічений текст */}
-            <div className="px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap">
+            <div
+              ref={readerRef}
+              className={
+                fullscreen
+                  ? 'flex-1 overflow-y-auto px-[22px] py-8'
+                  : 'px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap'
+              }
+            >
+              <div
+                className={
+                  fullscreen
+                    ? 'mx-auto max-w-[46rem] text-[17.5px] leading-[2.05] whitespace-pre-wrap'
+                    : 'contents'
+                }
+              >
               {visible.map((token, index) => {
                 if (!token.word) return <span key={index}>{token.raw}</span>;
 
@@ -238,6 +284,7 @@ export function AnalyzerScreen() {
                   </span>
                 );
               })}
+              </div>
             </div>
 
             {pages.length > 1 ? (
