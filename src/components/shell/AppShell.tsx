@@ -47,9 +47,11 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main className="min-w-0">
         <ContentHeader onOpenSidebar={() => setOpen(true)} />
         {children}
-        <footer className="border-line text-ink-3 flex flex-wrap justify-between gap-4 border-t px-[30px] pt-[26px] pb-[34px] text-[13.5px]">
-          <div>Граматика англійської — особистий навчальний проєкт</div>
-          <div>Пояснення українською, приклади англійською</div>
+        <footer className="border-line text-ink-3 border-t text-[13.5px]">
+          <div className="mx-auto flex max-w-content flex-wrap justify-between gap-4 px-[30px] pt-[26px] pb-[34px]">
+            <div>Граматика англійської — особистий навчальний проєкт</div>
+            <div>Пояснення українською, приклади англійською</div>
+          </div>
         </footer>
       </main>
     </div>

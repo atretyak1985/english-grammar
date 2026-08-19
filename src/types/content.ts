@@ -65,6 +65,8 @@ export interface DrillItem {
   q: ReactNode;
   /** Правильна відповідь */
   a: ReactNode;
+  /** Інші переклади, які теж вважаємо збігом — правильний завжди не один */
+  accepted?: string[];
   /** Пояснення під відповіддю */
   hint?: ReactNode;
 }

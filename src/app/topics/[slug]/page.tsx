@@ -44,7 +44,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
     <>
       <TopicHero topic={topic} />
 
-      <div className="grid max-w-[1240px] grid-cols-1 gap-7 px-[30px] pt-[30px] pb-[70px] xl:grid-cols-[minmax(0,1fr)_264px]">
+      <div className="mx-auto grid max-w-content grid-cols-1 gap-7 px-[30px] pt-[30px] pb-[70px] xl:grid-cols-[minmax(0,1fr)_264px]">
         <div className="min-w-0">
           <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
             <h2 className="mt-0 mb-0 text-[27px] font-extrabold tracking-[-0.5px]">Зміст</h2>

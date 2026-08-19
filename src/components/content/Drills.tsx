@@ -3,13 +3,23 @@
 import { useState } from 'react';
 
 import { H3 } from '@/components/content/blocks';
+import { TranslationCheck } from '@/components/content/TranslationCheck';
 import type { DrillBlock } from '@/types/content';
 
 /**
  * Блок вправ. Кнопка «Відповідь» розкриває правильний варіант і пояснення
  * й перетворюється на «Сховати»; кнопка над блоком керує всіма відразу.
  */
-export function Drills({ block, heading = true }: { block: DrillBlock; heading?: boolean }) {
+export function Drills({
+  block,
+  heading = true,
+  /** Поле для власного перекладу з порівнянням — для блоків «Переклад з української» */
+  translate = false,
+}: {
+  block: DrillBlock;
+  heading?: boolean;
+  translate?: boolean;
+}) {
   const [open, setOpen] = useState<ReadonlySet<number>>(new Set());
 
   const allOpen = open.size === block.items.length;
@@ -49,6 +59,10 @@ export function Drills({ block, heading = true }: { block: DrillBlock; heading?:
               <span className="text-ink-3 mr-1.5 font-extrabold">{index + 1}.</span>
               {item.q}
             </div>
+
+            {translate && typeof item.a === 'string' ? (
+              <TranslationCheck expected={item.a} accepted={item.accepted} />
+            ) : null}
 
             <button
               type="button"

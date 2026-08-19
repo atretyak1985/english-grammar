@@ -56,7 +56,7 @@ export default async function SectionPage({
   const { default: Content } = await found.load();
 
   return (
-    <div className="grid max-w-[1240px] grid-cols-1 gap-7 px-[30px] pt-[30px] pb-[70px] xl:grid-cols-[minmax(0,1fr)_264px]">
+    <div className="mx-auto grid max-w-content grid-cols-1 gap-7 px-[30px] pt-[30px] pb-[70px] xl:grid-cols-[minmax(0,1fr)_264px]">
       <div className="min-w-0">
         <Content />
         <SectionNav topic={found.topic} current={found.section} />

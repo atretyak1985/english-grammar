@@ -129,7 +129,7 @@ export function AnalyzerScreen() {
   };
 
   return (
-    <div className="max-w-[1240px] px-[30px] pt-[30px] pb-[70px]">
+    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
       <h1 className="mt-0 mb-2 text-[32px] font-extrabold tracking-[-0.8px]">Аналіз тексту</h1>
       <p className="text-ink-2 mt-0 mb-[22px] max-w-[760px] text-[16.5px]">
         Вставте англійський текст, завантажте PDF або фото сторінки. Кожна знайдена форма

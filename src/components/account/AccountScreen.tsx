@@ -53,7 +53,7 @@ export function AccountScreen({ email }: { email: string | null }) {
   const attempts = [...state.attempts].reverse().slice(0, 8);
 
   return (
-    <div className="max-w-[1240px] px-[30px] pt-[30px] pb-[70px]">
+    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
       <div className="mb-6 flex flex-wrap items-center gap-4">
         <div
           className="flex h-14 w-14 flex-none items-center justify-center rounded-2xl text-[22px] font-extrabold text-white"

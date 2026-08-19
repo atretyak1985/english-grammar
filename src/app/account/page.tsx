@@ -17,7 +17,7 @@ export default async function AccountPage() {
       <AccountScreen email={email} />
 
       {session?.user ? (
-        <div className="mx-auto max-w-[1080px] px-5 pb-10">
+        <div className="mx-auto max-w-content px-[30px] pb-10">
           <form
             action={async () => {
               'use server';

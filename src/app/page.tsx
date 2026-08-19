@@ -7,11 +7,11 @@ export default function HomePage() {
     <>
       <HomeHero />
 
-      <div className="max-w-[1180px] px-[30px] pt-[34px] pb-2.5">
+      <div className="mx-auto max-w-content px-[30px] pt-[34px] pb-2.5">
         <EntryCards />
       </div>
 
-      <div id="topics" className="max-w-[1180px] px-[30px] pt-8 pb-2">
+      <div id="topics" className="mx-auto max-w-content px-[30px] pt-8 pb-2">
         <h2 className="mt-0 mb-1.5 text-[28px] font-extrabold tracking-[-0.6px]">Теми</h2>
         <p className="text-ink-2 mt-0 mb-5 max-w-[800px] text-[16.5px]">
           Кожна тема — окрема самодостатня сторінка: теорія, приклади, порівняння, вправи і тест.
@@ -19,7 +19,7 @@ export default function HomePage() {
         <TopicsGrid />
       </div>
 
-      <div id="how" className="max-w-[1180px] px-[30px] pt-[34px] pb-[60px]">
+      <div id="how" className="mx-auto max-w-content px-[30px] pt-[34px] pb-[60px]">
         <h2 className="mt-0 mb-4 text-[28px] font-extrabold tracking-[-0.6px]">Як користуватись</h2>
         <div className="bg-surface border-line rounded-card shadow-card border px-[26px] py-[22px]">
           <p className="m-0">

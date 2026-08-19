@@ -18,7 +18,8 @@ export function HomeHero() {
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(700px_320px_at_82%_12%,rgba(124,58,237,0.35),transparent_60%),radial-gradient(620px_300px_at_8%_92%,rgba(37,99,235,0.32),transparent_60%)]"
       />
-      <div className="relative max-w-[880px]">
+      <div className="relative mx-auto max-w-content">
+        <div className="max-w-[880px]">
         <div className="text-hero-kicker text-[12px] font-bold tracking-[2.5px] uppercase">
           Пояснення українською · приклади англійською
         </div>
@@ -37,6 +38,7 @@ export function HomeHero() {
           <Stat value={String(TOPICS.length - READY_TOPICS.length)} label="у планах" />
           <Stat value="200+" label="прикладів" />
           <Stat value={ready ? `${percent}%` : '0%'} label="ваш прогрес" />
+          </div>
         </div>
       </div>
     </div>

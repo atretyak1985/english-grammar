@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   extension: /\.mdx$/,
+  options: {
+    // GitHub-розмітка: без неї таблиці з вертикальних рисок лишаються текстом.
+    // З Turbopack плагіни задаються рядком — конфіг мусить бути серіалізовним.
+    remarkPlugins: ['remark-gfm'],
+  },
 });
 
 export default withMDX(nextConfig);

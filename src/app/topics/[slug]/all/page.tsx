@@ -39,7 +39,7 @@ export default async function TopicAllPage({ params }: { params: Promise<{ slug:
   const { default: Content } = await load();
 
   return (
-    <div className="max-w-[1240px] px-[30px] pt-[30px] pb-[70px]">
+    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
       <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
         <h1 className="mt-0 mb-0 text-[27px] font-extrabold tracking-[-0.5px]">
           {topic.title} — усе одним полотном

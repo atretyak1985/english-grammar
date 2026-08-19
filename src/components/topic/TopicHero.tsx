@@ -8,7 +8,8 @@ export function TopicHero({ topic }: { topic: TopicMeta }) {
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(700px_300px_at_85%_10%,rgba(124,58,237,0.35),transparent_60%),radial-gradient(600px_280px_at_10%_90%,rgba(37,99,235,0.3),transparent_60%)]"
       />
-      <div className="relative max-w-[900px]">
+      <div className="relative mx-auto max-w-content">
+        <div className="max-w-[900px]">
         {topic.kicker ? (
           <div className="text-hero-kicker text-[12px] font-bold tracking-[2.5px] uppercase">
             {topic.kicker}
@@ -31,7 +32,8 @@ export function TopicHero({ topic }: { topic: TopicMeta }) {
               </span>
             ))}
           </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
     </div>
   );
