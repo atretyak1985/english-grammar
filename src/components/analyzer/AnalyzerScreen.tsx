@@ -73,10 +73,14 @@ export function AnalyzerScreen() {
   const [saved, setSaved] = useState(false);
 
   const analysis = useMemo(() => analyzeText(text), [text]);
-  const sourceVisible = sourceOpen ?? text.length < 4000;
+  // Поле вставки лишається розкритим лише для короткого тексту (стартовий
+  // приклад). Довший текст читають, а не вставляють — і вся вільна висота
+  // потрібна підсвітці.
+  const sourceVisible = sourceOpen ?? text.length < 900;
 
   // Читання на весь екран: із книжкою на десятки сторінок картка затісна.
   const [fullscreen, setFullscreen] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   const readerRef = useRef<HTMLDivElement>(null);
   const proseRef = useRef<HTMLDivElement>(null);
   // Висота — з області читання, ширина — з самої текстової колонки: у повному
@@ -84,8 +88,8 @@ export function AnalyzerScreen() {
   // кількість символів у рядку вдвічі.
   const reader = useBoxSize(readerRef);
   const prose = useBoxSize(proseRef);
-  // У картці висота така, щоб сторінка вмістилась у вікно без зовнішнього скролу.
-  const cardHeight = useFitHeight(readerRef);
+  // Картка з підсвіткою займає всю вільну висоту до низу вікна.
+  const cardHeight = useFitHeight(cardRef);
   // Кількість колонок вирішує доступна область, а не сама колонка тексту:
   // інакше вийшла б циклічна залежність (ширина ← колонки ← ширина).
   const columns = fullscreen && reader.width >= 1100 ? 2 : 1;
@@ -202,7 +206,7 @@ export function AnalyzerScreen() {
         </p>
       ) : null}
 
-      <div className="grid grid-cols-[minmax(0,1fr)_320px] gap-[22px]">
+      <div data-reader-row className="grid grid-cols-[minmax(0,1fr)_320px] gap-[22px]">
         <div className="flex min-w-0 flex-col gap-4">
           {/* Джерело: текст або файл */}
           <div className={CARD}>
@@ -258,11 +262,13 @@ export function AnalyzerScreen() {
 
           {/* Чотири перемикачі шарів */}
           <div
+            ref={cardRef}
             className={
               fullscreen
                 ? 'bg-surface fixed inset-0 z-[100] flex flex-col overflow-hidden'
-                : CARD
+                : `${CARD} flex flex-col`
             }
+            style={fullscreen ? undefined : { height: cardHeight }}
           >
             <div className={`${CARD_HEAD} flex-wrap`}>
               <div className={`${CARD_TITLE} mr-1`}>ПІДСВІТКА</div>
@@ -305,9 +311,8 @@ export function AnalyzerScreen() {
                 // звужує колонку, підгонка скидається і починає коливатись.
                 fullscreen
                   ? 'flex-1 overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-8'
-                  : 'overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap'
+                  : 'min-h-0 flex-1 overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap'
               }
-              style={fullscreen ? undefined : { height: cardHeight }}
             >
               <div
                 ref={proseRef}

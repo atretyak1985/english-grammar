@@ -8,26 +8,44 @@ export interface BoxSize {
 }
 
 /**
- * Висота області читання, за якої сторінка вміщається у вікно без зовнішнього
- * скролу. Рахуємо не «100vh мінус вгаданий запас», а фактичний залишок:
- * висота документа без самої області читання — це і є решта сторінки.
+ * Висота картки з підсвіткою: усе вільне місце до низу вікна. Рахуємо два
+ * доданки — що вище картки і що нижче всього рядка (підвал і відступ сторінки).
+ * Сусідню колонку статистики не враховуємо: вона стоїть поруч, а не над і не
+ * під, і картка не має платити за її висоту.
  */
-export function useFitHeight(ref: RefObject<HTMLElement | null>, fallback = 480): number {
+export function useFitHeight(ref: RefObject<HTMLElement | null>, fallback = 520): number {
   const [height, setHeight] = useState(fallback);
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    const card = ref.current;
+    if (!card) return;
 
     const measure = () => {
-      const rest = document.documentElement.scrollHeight - element.clientHeight;
-      const available = window.innerHeight - rest - 8;
-      const next = Math.max(240, Math.min(1200, Math.round(available / 8) * 8));
+      const row = card.closest<HTMLElement>('[data-reader-row]');
+      if (!row) return;
+
+      const above = card.getBoundingClientRect().top + window.scrollY;
+
+      // Нижче рядка міряємо самі елементи — підвал і нижній відступ сторінки.
+      // Через «висота документа мінус низ рядка» в розрахунок потрапляла б
+      // порожнеча під короткою сторінкою, і картка не могла б вирости.
+      const container = row.parentElement;
+      const padding = container ? parseFloat(getComputedStyle(container).paddingBottom) || 0 : 0;
+      const footer = document.querySelector('footer');
+      const belowRow = padding + (footer?.getBoundingClientRect().height ?? 0);
+
+      const available = window.innerHeight - above - belowRow - 8;
+      const next = Math.max(320, Math.min(1400, Math.round(available / 8) * 8));
       setHeight((current) => (Math.abs(current - next) > 8 ? next : current));
     };
 
+    // Спостерігаємо за самим рядком і карткою: коли сторінка вміщається у
+    // вікно, висота body не змінюється, і зсув розкладки лишився б непоміченим.
     const observer = new ResizeObserver(measure);
     observer.observe(document.body);
+    const row = card.closest<HTMLElement>('[data-reader-row]');
+    if (row) observer.observe(row);
+    observer.observe(card);
     window.addEventListener('resize', measure);
     measure();
 
@@ -40,11 +58,19 @@ export function useFitHeight(ref: RefObject<HTMLElement | null>, fallback = 480)
   return height;
 }
 
-/** Цільове заповнення області читання: трохи менше за край, щоб не крутити сторінку. */
-const TARGET_FILL = 0.95;
-const TOLERANCE = 0.06;
+/**
+ * Смуга приймання заповнення. Не одне число, бо сторінка ріжеться по межах
+ * абзаців: розміри квантовані, і сусідні варіанти можуть давати 50% і 105%.
+ * Тому дозволяємо дві-три зайві рядки (до 1.08) — це краще, ніж лишити пів
+ * екрана порожнім, аби тільки не було внутрішнього скролу.
+ */
+const FILL_MIN = 0.9;
+const FILL_MAX = 1.08;
+/** Кроки дрібні, щоб не перескочити цілий абзац. */
+const STEP_DOWN = 0.94;
+const STEP_UP = 1.07;
 /** Скільки підгонок дозволяємо на один розмір області — захист від коливань. */
-const MAX_STEPS = 6;
+const MAX_STEPS = 12;
 
 /**
  * Множник розміру сторінки, підігнаний за фактом. Оцінка «скільки символів
@@ -74,11 +100,12 @@ export function useFillScale(
       setState((current) => {
         const fresh = current.key === resetKey ? current : { key: resetKey, scale: 1, steps: 0 };
         if (fresh.steps >= MAX_STEPS) return fresh;
-        if (Math.abs(ratio - TARGET_FILL) <= TOLERANCE) return fresh;
+        if (ratio >= FILL_MIN && ratio <= FILL_MAX) return fresh;
 
-        // Крок обмежений, щоб підгонка сходилася, а не стрибала.
-        const factor = Math.max(0.6, Math.min(1.4, TARGET_FILL / ratio));
-        const scale = Math.max(0.3, Math.min(3, fresh.scale * factor));
+        const scale = Math.max(
+          0.3,
+          Math.min(3, fresh.scale * (ratio > FILL_MAX ? STEP_DOWN : STEP_UP)),
+        );
         return { key: resetKey, scale, steps: fresh.steps + 1 };
       });
     };
