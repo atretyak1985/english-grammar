@@ -1,0 +1,65 @@
+==English==
+
+===Etymology===
+{{root|en|ine-pro|*ḱers-}}
+Borrowed from {{bor|en|frm|cursoire||rapid}}, from {{der|en|la|cursorius||hasty, of a race or running}}.
+
+===Pronunciation===
+* {{IPA|en|/ˈkɜː.sə.ɹi/|/ˈkɜːs.ɹi/|a=UK}}
+* {{audio|en|LL-Q1860 (eng)-Vealhurl-cursory.wav|a=Southern England}}
+* {{IPA|en|/ˈkɝː.sə.ɹi/|/ˈkɝːs.ɹi/|a=US}}
+* {{IPA|en|/ˈkɵː.sɘ.ɹi/|/ˈkɵːs.ɹi/|a=NZ}}
+* {{hyphenation|en|cur|so|ry}}, {{hyphenation|en|nocaption=1|curs|ory}}
+
+===Adjective===
+{{en-adj}}
+
+# [[hasty|Hasty]] or [[superficial]].
+#: {{syn|en|fleeting|swift|Thesaurus:speedy}}
+#: {{coi|en|'''cursory''' glance}}
+#: {{coi|en|A '''cursory''' view of the report revealed his egregious errors.}}
+#: {{ux|en|Most junk mail requires only a '''cursory''' glance.}}
+#* {{RQ:Mary Shelley Frankenstein|volume=I|page=53|passage=But the '''cursory''' glance my father had taken of my volume by no means assured me that he was acquainted with its contents, and I continued to read with the greatest avidity.}}
+#* {{RQ:Hardy Tess|passage=She accepted these terms, and slid off on the near side, though not till he had stolen a '''cursory''' kiss.}}
+#* {{RQ:Burroughs Gods of Mars|passage=I may say that that single '''cursory''' examination of this awful travesty on Nature would have proved quite sufficient to my desires had I been a free agent.}}
+# [[careless|Careless]] or [[desultory]].
+#: {{syn|en|unmethodical|negligent|Thesaurus:careless}}
+#: {{ux|en|The '''cursory''' inspection missed several irregularities.}}
+# {{lb|en|obsolete}} Running about; not [[stationary]].
+#: {{syn|en|dynamic|mobile|Thesaurus:in motion}}
+
+====Derived terms====
+* {{l|en|cursorily}}
+* {{l|en|cursoriness}}
+
+====Related terms====
+* {{l|en|cursor}}
+* {{l|en|course}}
+
+====Translations====
+{{trans-top-see|hasty, superficial|rapid|superficial|shallow}}
+* Bulgarian: {{t+|bg|бе́гъл}}, {{t+|bg|повъ́рхностен}}
+* Czech: {{t|cs|zběžný}}
+* Danish: {{t|da|kursorisk}}, {{t|da|overfladisk}}
+* Dutch: {{t+|nl|haastig}}, {{t+|nl|oppervlakkig}}, {{t+|nl|vluchtig}}
+* Finnish: {{t|fi|pintapuolinen}}, {{t+|fi|pikainen}}, {{t+|fi|kursorinen}}
+* French: {{t+|fr|rapide}}, {{t+|fr|superficiel}},
+* German: {{t+|de|oberflächlich}}, {{t+|de|flüchtig}}
+* Italian: {{t+|it|rapido|m}}, {{t+|it|distratto|m}}, {{t+|it|sbrigativo|m}}
+* Persian: {{t+|fa|سرسری|tr=sarsari}}
+* Polish: {{t+|pl|pobieżny}}
+* Russian: {{t+|ru|бе́глый|m}}, {{t+|ru|пове́рхностный|m}}
+* Swedish: {{t+|sv|hastig}}, {{t+|sv|flyktig}}, {{t+|sv|ytlig}}
+* Yiddish: {{t|yi|אויבנאויפֿיק}}
+{{trans-bottom}}
+
+{{trans-top|careless, desultory}}
+* Bulgarian: {{t+|bg|повъ́рхностен}}
+{{trans-bottom}}
+
+{{trans-top|running, not stationary}}
+* Bulgarian: {{t-needed|bg}}
+{{trans-bottom}}
+
+===See also===
+* {{l|en|perfunctory}}

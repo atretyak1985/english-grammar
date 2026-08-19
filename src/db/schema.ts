@@ -1,5 +1,6 @@
 import {
   integer,
+  jsonb,
   pgTable,
   primaryKey,
   text,
@@ -138,4 +139,33 @@ export const settings = pgTable('settings', {
   theme: varchar('theme', { length: 8 }),
   lastTopic: varchar('last_topic', { length: 64 }),
   remindersEnabled: integer('reminders_enabled').notNull().default(0),
+});
+
+/* ============================================================
+   Кеш словника. Спільний для всіх користувачів: стаття про «deploy»
+   однакова для кожного, тому колонки власника тут немає й бути не може
+   ============================================================ */
+
+/** Кеш словникових статей із Wiktionary — щоб не питати джерело двічі. */
+export const dictionary = pgTable('dictionary', {
+  /** запитане слово в нижньому регістрі — саме воно ключ пошуку */
+  word: varchar('word', { length: 64 }).primaryKey(),
+  /** лема, з якої взято IPA й означення; === word, якщо слово вже лема */
+  lemma: varchar('lemma', { length: 64 }).notNull(),
+  ipa: varchar('ipa', { length: 128 }),
+  definitions: jsonb('definitions').$type<string[]>().notNull().default([]),
+  /** короткі навчальні приклади */
+  examples: jsonb('examples').$type<string[]>().notNull().default([]),
+  /** літературні цитати — довгі, тому окремо */
+  quotes: jsonb('quotes').$type<string[]>().notNull().default([]),
+  audioUrl: text('audio_url'),
+  // source/license/sourceUrl — не декорація й не дубль константи: показ статті
+  // без назви джерела, ліцензії та посилання на конкретну сторінку виводить нас
+  // за межі CC BY-SA, тому атрибуція лежить у кеші поряд з даними.
+  source: varchar('source', { length: 16 }).notNull(),
+  license: varchar('license', { length: 32 }).notNull(),
+  sourceUrl: text('source_url').notNull(),
+  /** true — джерело статті не має; тримаємо, щоб не питати щоразу */
+  miss: integer('miss').notNull().default(0),
+  fetchedAt: timestamp('fetched_at', { withTimezone: true }).notNull().defaultNow(),
 });

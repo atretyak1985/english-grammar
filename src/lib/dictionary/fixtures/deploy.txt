@@ -1,0 +1,108 @@
+==English==
+
+===Etymology===
+{{root|en|ine-pro|*pleḱ-}}
+Borrowed from {{bor|en|fr|déployer||to unroll, unfold}}, from {{der|en|fro|desploiier}}, itself from {{m|fro|des-}} + {{m|fro|ploiier}}, or possibly from {{der|en|la-lat|displicāre||to unfold, display}}, from {{der|en|la|dis-||apart}} + {{m|la|plicare||to fold}}. Compare {{cog|enm|desployen,dysployen|t=to unfold, display}}. {{doublet|en|display}}.
+
+===Pronunciation===
+* {{IPA|en|/dɪˈplɔɪ/}}
+* {{audio|en|En-us-deploy.oga|a=US}}
+* {{rhymes|en|ɔɪ|s=2}}
+
+===Verb===
+{{en-verb}}
+
+# {{lb|en|transitive|ergative}} To prepare and arrange (originally military unit or units, i.e., to array troops) for use.
+#: {{syn|en|field}}
+#: {{ux|en|"'''Deploy''' two units of infantry along the enemy's flank," the general ordered.}}
+#: {{ux|en|'''deploy''' some lifeguards on the beach}}
+#: {{ux|en|Teachers can '''deploy''' a wide range of resources in their classrooms.}}
+#* {{RQ:Landon Francesca Carrara|page=293|volume=I|text=The carriage, which was at full gallop, stopped suddenly; the guards '''deployed''' round, and Mademoiselle alighted. She advanced with the step of an empress, till she came beside the Queen, when, dropping on her knee, she kissed the hem of her robe, and then the royal hand.}}
+#* {{quote-journal|en|year=2019|month=October|author=Tony Miles; Philip Sherratt|title=EMR kicks off new era|journal=Modern Railways|page=53|text=EMR will '''deploy''' 18 of the 21 '360s' in daily service, operating them in 12-car formations at peak times.}}
+#* {{quote-web|en|date=21 September 2025|url=https://www.bbc.com/sport/football/articles/cy4rr131pnro|title=Guardiola gamble almost pays off as Liverpool cash in|work=BBC Sport|author=Shamoon Hafez|passage=It is unlikely City will play that deep consistently going forward, but it was interesting to see such an attacking manager like Guardiola '''deploy''' a shape without a recognised striker, given his previous quotes about the formation.}}
+# {{lb|en|transitive|intransitive}} To unfold, open, or otherwise become ready for use.
+#: {{ux|en|He waited tensely for his parachute to '''deploy'''.}}
+#: {{ux|en|'''deploy''' the airbag}}
+#: {{ux|en|The airbag will '''deploy''' on collision.}}
+#* {{RQ:NYT|date=26 December 2012|author=[[w:John Branch (journalist)|John Branch]]|title=Snow Fall: The Avalanche at Tunnel Creek|archiveurl=https://web.archive.org/web/20131114133825/http://www.nytimes.com/projects/2012/snow-fall/?smid=fb-nytimes&WT.z_sma=SP_SNT_20130415#/?part=tunnel-creek|passage=At first she thought she would be embarrassed that she had '''deployed''' her air bag, that the other expert skiers she was with, more than a dozen of them, would have a good laugh at her panicked overreaction.}}
+# {{lb|en|computing}} To [[install]], [[test]] and [[implement]] a computer system or application.
+#: {{ux|en|The process for the deployment scenario includes: building a master installation of the operating system, creating its image and '''deploying''' the image onto a destination computer.}}
+
+====Derived terms====
+{{col|en|nondeployed|predeployed|undeployed|deployability|deployable|deployee|deployer|outdeploy|undeploy}}
+
+====Related terms====
+* {{l|en|deployment}}
+* {{l|en|redeploy}}
+
+====Descendants====
+* {{desc|de|deployen|bor=1}}
+
+====Translations====
+{{trans-top-see|to prepare and arrange (usually military unit or units) for use|maneuver|commission|dispatch}}
+* Arabic: {{t|ar|عَبَّأَ}}, {{t|ar|نَشَرَ}}
+* Bulgarian: {{t+|bg|разгръщам}}
+* Chinese:
+*: Mandarin: {{t+|cmn|部署|tr=bùshǔ}}
+* Czech: {{t+|cs|nasadit}}
+* Finnish: {{t+|fi|sijoittaa}} {{q|troops}}, {{t+|fi|lähettää}}, {{t+|fi|laittaa}}
+* Galician: {{t|gl|despregar}}
+* German: {{t+|de|aufstellen}}, {{t+|de|formieren}}, {{t|de|aufmarschieren lassen}}, {{t+|de|stationieren}}, {{t|de|in Stellung bringen}}
+* Hungarian: {{t+|hu|bevet}}, {{t|hu|hadrendbe állít}}, {{t+|hu|telepít}}, {{t|hu|üzembe helyez}}, {{t+|hu|alkalmaz}}, {{t+|hu|hasznosít}}, {{t+|hu|igénybe vesz}}
+* Italian: {{t+|it|dispiegare}}, {{t+|it|collocare}}
+* Japanese: {{t+|ja|配置|alt=配置する|tr=haichi suru}}
+* Korean: {{t+|ko|배치하다}}
+* Māori: {{t|mi|whakahora}}
+* Portuguese: {{t+|pt|posicionar}}
+* Romanian: {{t+|ro|desfășura}}
+* Russian: {{t+|ru|развёртывать|impf}}, {{t+|ru|разверну́ть|pf}}, {{t+|ru|размеща́ть|impf}}, {{t+|ru|размести́ть|pf}}
+* Serbo-Croatian: {{t+|sh|razviti}}, {{t|sh|zauzeti položaj}}
+* Sorbian:
+*: Lower Sorbian: {{t|dsb|forměrowaś|impf}}
+* Spanish: {{t+|es|desplegar}}
+* Swedish: {{t+|sv|gruppera}}
+* Turkish: {{t|tr|konuşlandırmak}}
+* Ukrainian: {{t|uk|розгорта́ти|impf}}, {{t|uk|розгорну́ти|pf}}
+{{trans-bottom}}
+
+{{trans-top-see|to unfold, open, or otherwise become ready for use|extend}}
+* Bulgarian: {{t|bg|разгръщам се}}
+* Finnish: {{t+|fi|avautua}}, {{t+|fi|valmistella}}
+* Galician: {{t|gl|despregar}}
+* German: {{t+|de|öffnen}}, {{t+|de|entfalten}}
+* Hungarian: {{t+|hu|kinyílik}}, {{t+|hu|kioldódik}}, {{t|hu|működésbe lép}}
+* Japanese: {{t+|ja|ひらく}}
+* Portuguese: {{t+|pt|disponibilizar}}, {{t+|pt|abrir}}
+* Romanian: {{t+|ro|desface}}, {{t+|ro|desfășura}}
+* Russian: {{t+|ru|раскрыва́ться|impf}}, {{t+|ru|раскры́ться|pf}} {{qualifier|intransitive}}
+* Spanish: {{t+|es|desplegar}}
+{{trans-bottom}}
+
+{{trans-top-see|to install, test and implement a computer system or application|implement|employ|utilize}}
+* Dutch: {{t+|nl|uitrollen}}
+* Finnish: {{t|fi|ottaa käyttöön}}, {{t+|fi|asentaa}}
+* German: {{t|de|deployen}}
+* Hungarian: {{t+|hu|telepít}}, {{t|hu|üzembe helyez}}
+* Italian: {{t+|it|installare}}, {{t+|it|fornire}}
+* Portuguese: {{t+|pt|lançar}}
+* Romanian: {{t+|ro|instala}}
+* Russian: {{t+|ru|устана́вливать|impf}}, {{t+|ru|установи́ть|pf}}
+{{trans-bottom}}
+
+===Noun===
+{{en-noun}}
+
+# {{lb|en|software engineering}} [[deployment|Deployment]].
+#* {{quote-book|en|year=2021|author=James Shore; Shane Warden|title=The Art of Agile Development|page=433
+|passage=Rolling back the bad '''deploy''' will usually solve the immediate production problem, but your team isn't done yet.}}
+# {{lb|en|military|dated}} [[deployment|Deployment]].
+
+===Further reading===
+* {{R:Webster 1913}}
+* {{R:Century}}
+* {{R:OneLook}}
+
+===Anagrams===
+* {{anagrams|en|a=delopy|ployed|podley|polyed}}
+
+{{cln|en|ergative verbs}}

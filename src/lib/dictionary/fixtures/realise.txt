@@ -1,0 +1,48 @@
+{{also|réalise|réalisé}}
+==English==
+
+===Etymology===
+From {{af|en|real|-ise}}, possibly from {{der|en|fr|réaliser}} and {{der|en|frm|réaliser|t=to make real; to convert (something) into assets or cash}}. See {{m|en|realize}}.
+
+===Pronunciation===
+* {{audio|en|LL-Q1860 (eng)-Vealhurl-realise.wav|a=Southern England}}
+
+===Verb===
+{{en-verb}}
+
+# {{standard spelling of|en|from=ise-form|realize}}.
+#* {{quote-book|en|author=w:Thomas Boston|chapter=The Danger of Unworthy Communicating|title=An Illustration of the Doctrines of the Christian Religion, with Reference to Faith and Practice.{{nb...|Upon the Plan of the Assembly’s Shorter Catechism, Comprehending a Complete Body of Divinity. [...] In Three Volumes.}}|edition=2nd|location=Edinburgh|publisher={{...|Printed by}} Schaw and Pillans, for the Reverend Joseph Johnston,{{nb...|Drummond Street.}}|year=a. '''1733''' (date written)<!--year after author's death-->|year_published=1796|volume=III|section=paragraph 2|page=348|pageurl=https://archive.org/details/bim_eighteenth-century_an-illustration-of-the-d_boston-thomas_1796_3/page/348/mode/1up|oclc=8948611|passage=[F]aith '''realiſeth''' the ſufferings of [[w:Jesus|Chriſt]]; it looks upon Chriſt as the common treaſury of all grace, as the principle of life, and root of holineſs.}}
+#* {{RQ:Johnson Rambler|issue=60|date=13 October 1750|pages=57–58|pageref=57|passage=All joy or ſorrovv for the happineſs or calamities of others, is produced by an act of the imagination, that '''realiſes''' the event hovvever fictitious, or approximates it hovvever remote, by placing us for a time in the condition of him vvhoſe fortune vve comtemplate; {{...}}}}
+#* {{quote-book|en|chapter=‘Woman, Why Weepest Thou?’|title=Memorials of Bertie’s Brother and Infant Sister.{{nb...|By their Mother. Author of “Memorials of Bertie,” “The Idol Child,” &c.}}|location=London|publisher=Ward and Co.,{{nb...|Paternoster Row.}}|year=['''1849''']|page=79|pageurl=https://books.google.com/books?id=NlgEAAAAQAAJ&pg=PA79|oclc=557265644|passage=Have faith in God! He shall dispose thy lot, / Nor weep for woe thou '''realisest''' not: / They shall precede thee to the better land, / And meet and greet thee on its joyful strand.}}
+#* {{RQ:Thackeray Pendennis|volume=I|chapter=A Pedigree and Other Family Matters|page=10|passage=A lucky purchase which he had made of shares in a copper-mine added very considerably to his wealth, and he '''realised''' with great prudence while this mine was still at its full vogue.}}
+#* {{quote-book|en|author=[[w:Henry Suso|[Henry] Suso]]|chapter=Light after Darkness|translator=[anonymous]|title=Spiritual Voices from the Middle Ages.{{nb...|Consisting of a Selection of Abstracts from the Writings of the Fathers. Adapted for the Hour of Meditation, and Concluding with a Biographical Notice of Their Lives.}}|location=London|publisher=Joseph Masters,{{nb...|Aldersgate Street, and New Bond Street.}}|year=1865|section=part V (Of the State of Grace), paragraph 97|pages=75–76|pageurl=https://books.google.com/books?id=XXJnAAAAcAAJ&pg=PA75|oclc=230720034|passage=Utterly helpleſs, thou wert ſinking for ever, and '''realiſedſt''' not the fearfulneſs of thy poſition, for thus wert thou born and nurtured.}}
+#* {{RQ:Vance Outsider|year=1915|page=35|passage=SHE wakened in sharp panic, bewildered by the grotesquerie of some half-remembered dream in contrast with the harshness of inclement fact, drowsily '''realising''' that since she had fallen asleep it had come on to rain smartly out of a shrouded sky.|footer=The 1st edition, published in ''[https://archive.org/details/sim_munseys-magazine_1914-11_53_2/page/378/mode/1up Munsey’s Magazine]'', (November 1914) uses ''realizing'' instead.}}
+#* {{RQ:Lawrence Lost Girl|chapter=The Journey Across|page=325|passage=And for the first time she '''realised''' what it was to escape from the smallish perfection of England, into the grander imperfection of a great continent.}}
+#* {{quote-journal|en|author=R. K. Kirkland|title=The Railways of Uxbridge|journal=w:The Railway Magazine|location=London|publisher=Tothill Press|month=March|year=1952|page=147|issn=0033-8923|oclc=1256058197|passage={{...}} Uxbridge thought it could safely ignore the railway{{nb...}}. Like many other towns which adopted similar tactics, Uxbridge soon '''realised''' its mistake.}}
+#* {{quote-book|en|year=2004|author=Pip Granger|title=The Widow Ginger|passage=Do you reckon Hissing Sid '''realises''' what a shagnasty that Mary is?}}
+#* {{quote-journal|en|author=Ed Pilkington|title=‘Killer robots’ should be banned in advance, UN told [online version: ‘Killer robots’ pose threat to peace and should be banned, UN warned]|journal=w:The Guardian Weekly|archiveurl=https://web.archive.org/web/20230411172515/https://www.theguardian.com/science/2013/may/29/killer-robots-ban-un-warning|location=London|publisher=[[w:Guardian Media Group|Guardian News & Media]]|date=7 June 2013|volume=188|issue=26|page=6|issn=0959-3608|oclc=1060180436|passage=In his submission to the UN, [[w:Christof Heyns|{{quote-gloss|Christof}} Heyns]] points to the experience of drones. Unmanned aerial vehicles were intended initially only for surveillance, and their use for offensive purposes was prohibited, yet once strategists '''realised''' their perceived advantages as a means of carrying out targeted killings, all objections were swept out of the way.}}
+#* {{quote-journal|en|author=Matthew Anderson|title=The foreign words that seem like English – but aren’t|magazine=w:BBC|url=https://www.bbc.com/culture/article/20161014-the-foreign-words-that-seem-like-english-but-arent|date=2016-10-13|passage=But does it matter if these so-called English words don’t exist in English at all? Baer doesn’t believe so. “I don’t think most people actually '''realise''' which are pseudo-anglicisms and which are real anglicisms,” he says.|archiveurl=https://web.archive.org/web/20201114171149/https://www.bbc.com/culture/article/20161014-the-foreign-words-that-seem-like-english-but-arent}}
+#* {{quote-journal|en|author=Paul Bigland|title=My Weirdest and Wackiest Rover yet|journal=[[w:Rail (magazine)|Rail]]|location=Peterborough, Cambridgeshire|publisher=[[w:Bauer Media Group|Bauer Media]]|date=2 December 2020|page=68|issn=0953-4563|oclc=999467860|passage=As the 1857 to Manchester Piccadilly rolls in, I scan the windows and '''realise''' there are plenty of spare seats, so I hop aboard. The train is a '221'+'220' combo to allow for social distancing&nbsp;– a luxury on an XC train as normally you're playing sardines, so I make the most of it.}}
+
+====Conjugation====
+{{en-conj|old=1|stem=realis}}
+
+====Derived terms====
+{{col|en|unrealised
+|realisability
+|derealise
+|disrealise
+|hyperrealise
+|outrealise
+|realisable
+|realisation
+|realised<pos:adjective>
+|realiser
+|realising<pos:adjective, noun>
+|unrealise
+|unrealised<pos:adjective>
+|unrealisedness
+}}
+
+===Anagrams===
+* {{anagrams|en|a=aeeilrs|earlies}}

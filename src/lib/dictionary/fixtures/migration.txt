@@ -1,0 +1,286 @@
+{{also|Migration}}
+==English==
+{{wp}}
+
+===Etymology===
+From {{der|en|frm|migration}} and its source, {{der|en|la|migrātiō}}, from the participle stem of {{m|la|migrō|t=to migrate}}. Morphologically {{suffix|en|migrate|ion}}.
+
+===Pronunciation===
+* {{IPA|en|/maɪˈɡɹeɪʃ(ə)n/|a=UK}}
+* {{audio|en|LL-Q1860 (eng)-Vealhurl-migration.wav|a=Southern England}}
+* {{rhymes|en|eɪʃən|s=3}}
+
+===Noun===
+{{en-noun|~}}
+
+# An instance of [[moving]] to live in another place for a while.
+# [[seasonal|Seasonal]] [[moving]] of animals, as mammals, birds or fish, especially between [[breeding]] and [[non-breeding]] areas.
+#* {{quote-journal
+|en
+|date=2013-01-01
+|author=Paul Bartel; Ashli Moore
+|title=Avian Migration: The Ultimate Red-Eye Flight
+|volume=101
+|issue=1
+|page=47&ndash;48
+|magazine=w:American Scientist
+|url=http://www.americanscientist.org/issues/issues/feature/2013/1/avian-migration-the-ultimate-red-eye-flight
+|passage=Many of these classic methods are still used, with some modern improvements. For example, with the aid of special microphones and automated sound detection software, ornithologists recently reported [&hellip;] that pine siskins (''Spinus pinus'') undergo an irregular, nomadic type of nocturnal '''migration'''.
+|accessdate=9 May 2013
+|archiveurl=https://web.archive.org/web/20160305011240/http://www.americanscientist.org/issues/issues/feature/2013/1/avian-migration-the-ultimate-red-eye-flight
+|archivedate=5 March 2016
+}}
+# Movement in general.
+#: {{ux|en|The '''migration''' of lead from a can to the food inside it can cause lead poisoning.}}
+# {{lb|en|computing}} Instance of [[changing]] a [[platform]] from an environment to another one.
+# {{lb|en|biochemistry}} The movement of cells in particular directions to specific locations.
+
+====Derived terms====
+{{col3|en|chain migration|internal migration|loop migration|mass migration|relay migration|eco-migration|interregional migration|intraregional migration| climate migration|stepwise migration|abmigration|antimigration|chemomigration|climigration|comigration|countermigration|ecomigration|electromigration|Lessepsian migration|net migration|endomigration|hypermigration|intermigration|migrational|migrationism|migrationist|mismigration|neuromigration|nonmigration|overmigration|palaeomigration|postmigration|premigration|remigration|time migration|cybermigration|e-migration}}
+
+====Related terms====
+{{col|en
+|emigration
+|migrant
+|migrate
+|migratory
+|immigration
+|inmigration,in-migration
+|outmigration,out-migration
+|porting
+}}
+
+====Translations====
+{{trans-top|moving a place to live to another}}
+* Afrikaans: {{t|af|migrasie}}
+* Albanian: {{t+|sq|shpërngulje|f}}, {{t|sq|migrim|m}}
+* Altai:
+*: Southern Altai: {{t|alt|кӧчӱш}}
+* Arabic: {{t+|ar|هِجْرَة|f}}
+* Armenian: {{t+|hy|միգրացիա}}, {{t+|hy|գաղթ}}, {{t+|hy|գաղթում}}
+* Azerbaijani: {{t|az|miqrasiya}}, {{t|az|mühacirət}}, {{t+|az|hicrət}}, {{t|az|köç}}
+* Basque: {{t|eu|migrazio}}
+* Belarusian: {{t|be|мігра́цыя|f}}, {{t|be|перасяле́нне|n}}, {{t|be|перасяле́ньне|n}}
+* Bengali: {{t+|bn|হিজরত}}, {{t|bn|অভিপ্রয়াণ}}
+* Bulgarian: {{t|bg|пресе́лване|n}}, {{t|bg|мигра́ция|f}}
+* Burmese: {{t|my|ရွှေ့ပြောင်းမှု}}, {{t|my|ရွှေ့ပြောင်းခြင်း}}
+* Catalan: {{t|ca|migració|f}}
+* Chinese:
+*: Mandarin: {{t|cmn|徙動|tr=túdòng}}, {{t+|cmn|遷移|tr=qiānyí}}
+* Czech: {{t+|cs|migrace|f}}
+* Danish: {{t|da|migration|c}}
+* Dutch: {{t+|nl|migratie|f}}
+* Esperanto: {{t|eo|migrado}}
+* Estonian: {{t|et|ränne}}, {{t|et|migratsioon}}
+* Finnish: {{t+|fi|muutto}}, {{t|fi|migraatio}}
+* French: {{t+|fr|migration}}
+* Galician: {{t+|gl|migración|f}}
+* Georgian: {{t|ka|მიგრაცია}}, {{t|ka|გადასახლება}}
+* German: {{t|de|Wohnsitzwechsel|m}}, {{t+|de|Migration|f}}
+* Greek: {{t+|el|μετανάστευση|f}}
+*: Ancient Greek: {{t|grc|μετανάστασις|f}}
+* Hebrew: {{t+|he|הֲגִירָה|f|tr=hagirá}}
+* Hindi: {{t+|hi|प्रवास|m}}, {{t|hi|माइग्रेशन|m}}, {{t+|hi|पलायन|m}}
+* Hungarian: {{t+|hu|migráció}}, {{t+|hu|vándorlás}}
+* Icelandic: {{t+|is|fólksflutningar|m}}
+* Indonesian: {{t+|id|migrasi}}
+* Irish: {{t|ga|imirce|f}}
+* Japanese: {{t+|ja|移住|tr=いじゅう, ijū}}
+* Kazakh: {{t+|kk|миграция}}, {{t|kk|көші-қон}}, {{t|kk|көшу}}
+* Khmer: {{t|km|ការធ្វើចំណាកស្រុក}}, {{t+|km|ចំណាកស្រុក}}, {{t|km|ទេសន្តរប្រវេសន៍}}
+* Korean: {{t+|ko|이주(移住)}}
+* Kurdish:
+*: Northern Kurdish: {{t+|kmr|koçberî}}, {{t+|kmr|koç}}
+* Kyrgyz: {{t|ky|миграция}}, {{t+|ky|көчүү}}
+* Lao: {{t|lo|ການອົບພະຍົບ}}
+* Latin: {{t|la|migrātiō|f}}
+* Latvian: {{t|lv|migrācija|f}}, {{t|lv|pārceļošana|f}}
+* Lithuanian: {{t|lt|migracija|f}}
+* Low German:
+*: German Low German: {{t|nds-de|Migratschoon|f}}
+* Macedonian: {{t|mk|преселба|f}}, {{t|mk|селидба|f}}, {{t|mk|миграција|f}}
+* Malay: {{t|ms|migrasi}}, {{t|ms|penghijrahan}}
+* Maltese: {{t|mt|migrazzjoni|f}}
+* Māori: {{t|mi|hekenga}}
+* Mongolian:
+*: Cyrillic: {{t+|mn|нүүдэл}}, {{t|mn|шилжих хөдөлгөөн}}
+* Norwegian:
+*: Bokmål: {{t|nb|migrasjon|m}}
+*: Nynorsk: {{t|nn|migrasjon|m}}
+* Pashto: {{t|ps|مهاجرت|m|tr=mohājerát}}, {{t+|ps|هجرت|tr=hejrát}}
+* Persian:
+*: Iranian Persian: {{t+|fa-ira|مُهاجَرَت}}, {{t+|fa-ira|مُهاجِرَت}}, {{t+|fa-ira|هِجْرَت}}, {{t+|fa-ira|کوچ}}
+* Polish: {{t+|pl|migracja|f}}
+* Portuguese: {{t+|pt|migração|f}}
+* Romanian: {{t+|ro|migrare}}, {{t+|ro|migrație}}
+* Russian: {{t+|ru|мигра́ция|f}}, {{t+|ru|переселе́ние|n}}
+* Scottish Gaelic: {{t|gd|imrich|f}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|миграција|f}}, {{t|sh|сео̀ба|f}}
+*: Latin: {{t+|sh|migracija|f}}, {{t+|sh|seòba|f}}
+* Slovak: {{t|sk|migrácia|f}}
+* Slovene: {{t|sl|migracija|f}}
+* Spanish: {{t+|es|migración|f}}
+* Swedish: {{t+|sv|migration|c}}
+* Tagalog: {{t|tl|ngibambayan}}
+* Tajik: {{t+|tg|муҳоҷират}}, {{t|tg|ҳиҷрат}}, {{t|tg|кӯчиш}}
+* Tamil: {{t+|ta|இடம்பெயர்தல்}}, {{t|ta|புலம்பெயர்வு}}, {{t|ta|குடிபெயர்தல்}}
+* Telugu: {{t+|te|వలస}}
+* Thai: {{t+|th|อพยพ}}, {{t+|th|การอพยพ}}
+* Turkish: {{t|tr|migrasyon}}, {{t+|tr|göç}}, {{t+|tr|hicret}}
+* Turkmen: {{t|tk|migrasiýa}}, {{t|tk|göçüşlik}}
+* Ukrainian: {{t|uk|мігра́ція|f}}, {{t|uk|пересе́лення|n}}
+* Urdu: {{t|ur|ہِجْرَت|f}}, {{t|ur|مائِگْریشَن|m}}, {{t|ur|نَقْلِ مَکانِی|m}}, {{t|ur|مُہاجَرَت|f}}
+* Uyghur: {{t|ug|مىگراسىيە}}, {{t|ug|كۆچۈش}}
+* Uzbek: {{t+|uz|migratsiya}}, {{t|uz|koʻchish}}
+* Vietnamese: {{t+|vi|di dân}}, {{t+|vi|di cư}}
+{{trans-bottom}}
+
+{{trans-top|seasonal moving of animals, birds or fish}}
+* Armenian: {{t+|hy|չու}} {{qualifier|birds}}
+* Belarusian: {{t|be|мігра́цыя|f}}
+* Bulgarian: {{t|bg|мигра́ция|f}}
+* Catalan: {{t|ca|migració|f}}
+* Chinese:
+*: Mandarin: {{t+|cmn|洄游|tr=huíyóu}}, {{t+|cmn|遷徙|tr=qiānxǐ}}
+* Dutch: {{t+|nl|migratie}}, {{t+|nl|trek}}
+* Finnish: {{t+|fi|muutto}}, {{t+|fi|vaellus}}
+* Galician: {{t+|gl|migración|f}}
+* Georgian: {{t|ka|მიმოფრენა}} {{qualifier|birds}}, {{t|ka|გადაფრენა}} {{qualifier|birds}}, {{t|ka|მიგრაცია}}
+* German: {{t+|de|Migration|f}}, {{t+|de|Wanderung|f}}, {{t|de|Vogelwanderung|f}}, {{t+|de|Vogelzug|m}}, {{qualifier|partial}} {{t|de|Vogelstrich|m}}, {{t|de|Tierwanderung|f}}
+* Greek: {{t+|el|αποδημία|f}}, {{t+|el|μετανάστευση|f}}
+* Hindi: {{t+|hi|प्रवास|m}}
+* Irish: {{t|ga|imirce|f}}
+* Japanese: {{t+|ja|回遊|tr=かいゆう, kaiyū}}, {{t+|ja|移動|tr=いどう, idō}}
+* Korean: {{t+|ko|이동(移動)}}, {{t+|ko|회유(回游)}}
+* Kurdish:
+*: Central Kurdish: {{t|ckb|کۆچ}}
+*: Northern Kurdish: {{t+|kmr|koç}}
+*: Southern Kurdish: {{t|sdh|کووچ}}
+* Macedonian: {{t|mk|преселба|f}}, {{t|mk|миграција|f}}
+* Norwegian:
+*: Bokmål: {{t|nb|trekk|n}}, {{t|nb|migrasjon|m}}
+*: Nynorsk: {{t|nn|trekk|n}}, {{t|nn|migrasjon|m}}
+* Persian:
+*: Iranian Persian: {{t+|fa-ira|کوچ}}
+* Polish: {{t+|pl|migracja|f}}
+* Portuguese: {{t+|pt|migração|f}}
+* Romanian: {{t+|ro|migrație}}
+* Russian: {{t+|ru|мигра́ция|f}}
+* Scottish Gaelic: {{t|gd|imrich|f}}
+* Spanish: {{t+|es|migración|f}}
+* Swedish: {{t+|sv|migration|c}}
+* Tajik: {{t|tg|кӯчиш}}, {{t|tg|кӯчидан}}
+* Tamil: {{t+|ta|வலசை}}
+* Telugu: {{t+|te|వలస}}
+* Thai: {{t+|th|อพยพ}}
+* Ukrainian: {{t|uk|мігра́ція|f}}
+* Vietnamese: {{t+|vi|di cư}}
+* Volapük: {{qualifier|birds}} {{t|vo|bödatäv}}, {{qualifier|larks}} {{t|vo|laudatäv}}
+{{trans-bottom}}
+
+{{trans-top|computing: changing a platform from an environment to another one}}
+* Bengali: {{t+|bn|হিজরত}}
+* Galician: {{t+|gl|migración|f}}
+* German: {{t+|de|Migration|f}}
+* Greek: {{t+|el|μετεγκατάσταση|f}}
+* Japanese: {{t+|ja|移行|tr=いこう, ikō}}
+* Korean: {{t+|ko|이주(移住)}}, {{t|ko|이관(移管)}}
+* Russian: {{t+|ru|мигра́ция|f}}
+* Swedish: {{t+|sv|migration}}
+{{trans-bottom}}
+
+{{C|en|Human migration}}
+
+==Danish==
+
+===Etymology===
+From {{der|da|la|migrātiō}}.
+
+===Noun===
+{{da-noun|en|er}}
+
+# {{l|en|migration}} (of people)
+# {{l|en|migration}} (of animals)
+
+====Declension====
+{{da-noun-infl|en|er}}
+
+====Related terms====
+* {{l|da|migrant}}
+* {{l|da|migrere}}
+
+====See also====
+* {{l|da|emigration}}
+* {{l|da|immigration}}
+* {{l|da|folkevandring}}
+
+===References===
+* {{R:DDO}}
+
+==French==
+
+===Etymology===
+From {{der|fr|la|migrātiō|migrātiōnem}}.
+
+===Pronunciation===
+* {{audio|fr|LL-Q150 (fra)-DSwissK-migration.wav|a=<<Switzerland>> (<<Valais>>)}}
+* {{audio|fr|LL-Q150 (fra)-LoquaxFR-migration.wav|a=<<France>> (<<Vosges>>)}}
+* {{audio|fr|LL-Q150 (fra)-Poslovitch-migration.wav|a=<<France>> (<<Vosges>>)}}
+* {{audio|fr|LL-Q150 (fra)-WikiLucas00-migration.wav|a=<<France>> (<<Lyon>>)}}
+
+===Noun===
+{{fr-noun|f}}
+
+# {{l|en|migration}} (of animals)
+# {{l|en|migration}} (of people)
+
+====Related terms====
+* {{l|fr|migrer}}
+
+===Further reading===
+* {{R:fr:TLFi}}
+
+{{C|fr|Human migration}}
+
+==Middle French==
+
+===Noun===
+{{frm-noun|f}}
+
+# {{l|en|migration}} {{gloss|movement from one place to another}}
+
+==Swedish==
+{{wp|sv:}}
+
+===Etymology===
+From {{der|sv|la|migrātiō}}, from {{m|la|migrō||to migrate}} + {{m|la|-ātiō}}.
+
+===Noun===
+{{sv-noun|c}}
+
+# {{l|en|migration}}; an instance of moving to live in another place for a while, often used in regards of immigration
+#: {{ux|sv|'''Migration'''spolitiken har gått överstyr och måste återgå till sansade diskussioner.|The '''migration''' politics has gone overboard and must return to a state of sane discussions.}}
+# {{lb|sv|biology}} {{l|en|migration}}; seasonal moving for animals, as birds or fishes, to breed or find a new home
+# {{lb|sv|computing}} {{l|en|migration}}; instance of changing a platform from an environment to another one
+
+====Declension====
+{{sv-infl-noun-c-er}}
+
+====Derived terms====
+* {{w|Migrationsverket}}
+* {{l|sv|migrationspolitik}}
+
+====Related terms====
+* {{l|sv|migrant}}
+* {{l|sv|migrera}}
+
+====See also====
+* {{l|sv|emigration}}
+* {{l|sv|immigration}}
+
+===References===
+* {{R:svenska.se|so}}
+* {{R:svenska.se|saol}}
+* {{R:svenska.se|saob}}
+* {{R:NE}}
