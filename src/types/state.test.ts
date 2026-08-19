@@ -7,17 +7,16 @@ function state(patch: Partial<UserState>): UserState {
 }
 
 describe('WORD_STATUS_RANK', () => {
-  it('ставить «приховане» слабшим за «вчу»', () => {
-    // Комбінація «приховав тут, вчу там» має розійтися в бік свідомої дії.
-    expect(WORD_STATUS_RANK.hidden).toBeLessThan(WORD_STATUS_RANK.learning);
-    expect(WORD_STATUS_RANK.unknown).toBeLessThan(WORD_STATUS_RANK.hidden);
+  it('впорядкований від «не знаю» до «знаю»', () => {
+    // На цьому порядку тримається злиття: сильніший статус перемагає.
+    expect(WORD_STATUS_RANK.unknown).toBeLessThan(WORD_STATUS_RANK.learning);
     expect(WORD_STATUS_RANK.learning).toBeLessThan(WORD_STATUS_RANK.known);
   });
 });
 
 describe('mergeState — статуси слів', () => {
   it('лишає сильніший статус, незалежно від сторони', () => {
-    const server = state({ words: { deploy: 'hidden', migration: 'known' } });
+    const server = state({ words: { deploy: 'unknown', migration: 'known' } });
     const local = state({ words: { deploy: 'learning', migration: 'learning' } });
 
     expect(mergeState(server, local).words).toEqual({
@@ -29,8 +28,11 @@ describe('mergeState — статуси слів', () => {
   });
 
   it('переносить слова, яких немає на іншій стороні', () => {
-    const merged = mergeState(state({ words: { spike: 'known' } }), state({ words: { churn: 'hidden' } }));
-    expect(merged.words).toEqual({ spike: 'known', churn: 'hidden' });
+    const merged = mergeState(
+      state({ words: { spike: 'known' } }),
+      state({ words: { churn: 'learning' } }),
+    );
+    expect(merged.words).toEqual({ spike: 'known', churn: 'learning' });
   });
 });
 

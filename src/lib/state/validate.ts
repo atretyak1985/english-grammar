@@ -1,7 +1,7 @@
 import { NOTE_MAX } from '@/lib/state/storage';
 import { EMPTY_STATE, type QuizAttempt, type UserState, type WordStatus } from '@/types/state';
 
-const STATUSES: WordStatus[] = ['unknown', 'hidden', 'learning', 'known'];
+const STATUSES: WordStatus[] = ['unknown', 'learning', 'known'];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

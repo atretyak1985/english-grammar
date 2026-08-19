@@ -88,7 +88,7 @@ export const words = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     word: varchar('word', { length: 64 }).notNull(),
-    /** unknown | hidden | learning | known */
+    /** unknown | learning | known */
     status: varchar('status', { length: 16 }).notNull(),
     /** Власна нотатка користувача: переклад, мнемоніка, приклад із життя */
     note: varchar('note', { length: 200 }),

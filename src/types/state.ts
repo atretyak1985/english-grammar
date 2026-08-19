@@ -1,16 +1,10 @@
-/** Статуси слова. Порядок важливий: при злитті з акаунтом перемагає «сильніший». */
-export type WordStatus = 'unknown' | 'hidden' | 'learning' | 'known';
+/** Три статуси слова. Порядок важливий: при злитті з акаунтом перемагає «сильніший». */
+export type WordStatus = 'unknown' | 'learning' | 'known';
 
-/**
- * `hidden` нижче за `learning` навмисно: приховати слово — слабша дія, ніж узяти
- * його на вивчення. Комбінація «приховано на одному пристрої, вчу на іншому»
- * має розходитись у бік «вчу», бо саме її користувач зробив свідомо.
- */
 export const WORD_STATUS_RANK: Record<WordStatus, number> = {
   unknown: 0,
-  hidden: 1,
-  learning: 2,
-  known: 3,
+  learning: 1,
+  known: 2,
 };
 
 export type Theme = 'light' | 'dark';

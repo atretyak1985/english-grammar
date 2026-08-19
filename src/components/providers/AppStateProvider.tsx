@@ -27,11 +27,6 @@ import {
   type WordStatus,
 } from '@/types/state';
 
-/**
- * Цикл по кліку в тексті — лише три щаблі. Через «приховане» читача водити не
- * можна: приховування прибирає слово зі списку, і випадковий клік не має
- * робити цього непомітно.
- */
 const STATUS_CYCLE: WordStatus[] = ['unknown', 'learning', 'known'];
 
 interface AppStateContextValue {
@@ -48,9 +43,6 @@ interface AppStateContextValue {
   wordStatus: (word: string) => WordStatus;
   setWordStatus: (word: string, status: WordStatus) => void;
   cycleWordStatus: (word: string) => void;
-  /** Прибрати слово з поля зору: окрема назва тримає намір у типі */
-  hideWord: (word: string) => void;
-  unhideWord: (word: string) => void;
   note: (word: string) => string;
   setNote: (word: string, text: string) => void;
   setLastTopic: (slug: string) => void;
@@ -156,19 +148,6 @@ export function AppStateProvider({
           ...current,
           words: { ...current.words, [word.toLowerCase()]: status },
         })),
-
-      hideWord: (word) =>
-        update((current) => ({
-          ...current,
-          words: { ...current.words, [word.toLowerCase()]: 'hidden' },
-        })),
-
-      unhideWord: (word) =>
-        update((current) => {
-          const words = { ...current.words };
-          delete words[word.toLowerCase()];
-          return { ...current, words };
-        }),
 
       note: (word) => state.notes[word.toLowerCase()] ?? '',
 

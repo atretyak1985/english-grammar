@@ -14,12 +14,10 @@ type Filter = 'all' | WordStatus;
 const FILTER_LABELS: Record<Filter, string> = {
   all: 'Усі',
   unknown: 'Не знаю',
-  hidden: 'Приховані',
   learning: 'Вчу',
   known: 'Знаю',
 };
 
-/** Які фільтри показуємо кнопками — «приховані» окремим щаблем не є. */
 const FILTERS: Filter[] = ['all', 'unknown', 'learning', 'known'];
 
 /** Сітка таблиці: номер, слово, разів, частка, статуси. */
