@@ -334,6 +334,24 @@ export function Note({
   );
 }
 
+/* ---------- історія мови ---------- */
+
+/**
+ * Звідки взялася форма. Навмисно нейтральний сірий: синій, помаранчевий і
+ * фіолетовий наскрізь означають три часи (CONCEPT 6), і історія не має
+ * вклинюватися в цей код.
+ */
+export function History({ title, children }: { title?: ReactNode; children?: ReactNode }) {
+  return (
+    <div className="bg-surface-2 border-ink-3 my-[18px] rounded-r-[10px] border-l-4 px-[18px] py-3.5">
+      <div className="text-ink-3 mb-[5px] text-[12px] font-extrabold tracking-[1px] uppercase">
+        З історії мови{title ? <> · {title}</> : null}
+      </div>
+      {children}
+    </div>
+  );
+}
+
 /* ---------- мінімальні пари ---------- */
 
 export function MP({ title, children }: { title: ReactNode; children?: ReactNode }) {

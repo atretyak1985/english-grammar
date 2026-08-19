@@ -10,7 +10,7 @@ export const meta: TopicMeta = {
   title: 'Минулі часи',
   desc: 'Past Simple, Past Continuous, Past Perfect (+ Perfect Continuous). Коли який вживати, як їх не плутати і чому «робив» ≠ was doing.',
   level: 'b1',
-  tags: ['14 розділів', '200+ прикладів', 'тест', 'вправи'],
+  tags: ['15 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
 
   pageTitle: 'Минулі часи: Past Simple, Past Continuous, Past Perfect',
@@ -21,7 +21,7 @@ export const meta: TopicMeta = {
   heroLede:
     'Понад 200 прикладів із перекладом, розбір історій речення за реченням, переклад з української, вправи з відповідями і тест. Усі пояснення — українською.',
   heroChips: [
-    '📖 14 розділів',
+    '📖 15 розділів',
     '✍️ 200+ прикладів з перекладом',
     '🔍 Розбір «чому саме цей час»',
     '🧩 Вправи з відповідями',
@@ -126,6 +126,14 @@ export const meta: TopicMeta = {
     },
     {
       n: 13,
+      id: 'history',
+      slug: 'history',
+      title: 'Три епохи в одному часі',
+      short: 'Історія',
+      lede: 'Звідки взялися did, was + V-ing і had + V3 — і чому вони поводяться по-різному.',
+    },
+    {
+      n: 14,
       id: 'cheat',
       slug: 'cheatsheet',
       title: 'Шпаргалка',
@@ -133,7 +141,7 @@ export const meta: TopicMeta = {
       lede: 'Усе вище стисло, однією карткою. Зробіть скріншот.',
     },
     {
-      n: 14,
+      n: 15,
       id: 'plan',
       slug: 'plan',
       title: 'План практики на 14 днів',

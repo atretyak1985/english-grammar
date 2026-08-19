@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { TOPIC_CONTENT } from '@/content/topics';
+import { hasContent, sectionLoader } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
 
 export function generateStaticParams() {
@@ -33,10 +33,15 @@ export async function generateMetadata({
 export default async function TopicAllPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const topic = topicBySlug(slug);
-  const load = TOPIC_CONTENT[slug];
-  if (!topic || !topic.ready || !load) notFound();
+  if (!topic || !topic.ready || !hasContent(slug)) notFound();
 
-  const { default: Content } = await load();
+  // Ті самі файли, що й окремі сторінки розділів — просто всі поспіль.
+  const sections = await Promise.all(
+    topic.sections.map(async (section) => {
+      const load = sectionLoader(slug, section.slug);
+      return load ? { slug: section.slug, Content: (await load()).default } : null;
+    }),
+  );
 
   return (
     <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
@@ -52,7 +57,9 @@ export default async function TopicAllPage({ params }: { params: Promise<{ slug:
         </Link>
       </div>
       <div className="min-w-0">
-        <Content />
+        {sections.filter((entry) => entry !== null).map(({ slug: id, Content }) => (
+          <Content key={id} />
+        ))}
       </div>
     </div>
   );
