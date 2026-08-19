@@ -10,6 +10,43 @@ import type { AnalyzedToken } from '@/lib/analyzer/tenses';
  */
 export const PAGE_CHARS = 1800;
 
+/**
+ * Скільки тексту влазить у зміряну область читання. Порожнє місце під текстом —
+ * це змарнована сторінка, тому розмір сторінки залежить від доступного місця,
+ * а не від константи.
+ *
+ * @param width   ширина області в пікселях
+ * @param height  висота області в пікселях
+ * @param font    кегль
+ * @param lineHeight множник міжрядкового
+ * @param columns кількість колонок тексту
+ */
+export function fitPageChars({
+  width,
+  height,
+  font,
+  lineHeight,
+  columns = 1,
+}: {
+  width: number;
+  height: number;
+  font: number;
+  lineHeight: number;
+  columns?: number;
+}): number {
+  if (width < 200 || height < 120) return PAGE_CHARS;
+
+  const gap = columns > 1 ? 48 * (columns - 1) : 0;
+  const columnWidth = (width - gap) / columns;
+  // Ширина середньої літери — приблизно 0.34 кегля: значення відкалібровано
+  // заміром реального рядка Manrope, а не взяте з голови.
+  const charsPerLine = Math.max(24, Math.floor(columnWidth / (font * 0.34)));
+  const lines = Math.max(4, Math.floor(height / (font * lineHeight)));
+  // 0.88 — запас на короткі рядки в кінці абзаців і на розрив по межі речення:
+  // недобір кількох рядків краще за перелив, бо сторінку не доведеться крутити.
+  return Math.max(400, Math.round(columns * lines * charsPerLine * 0.95));
+}
+
 export interface TextPage {
   /** Індекс першого токена сторінки */
   start: number;
