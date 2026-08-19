@@ -41,20 +41,3 @@ export function WordStatusButtons({ word }: { word: string }) {
     </div>
   );
 }
-
-/**
- * Одна кнопка з циклом «не знаю → вчу → знаю» — права колонка теми і чипи
- * в аналізаторі. Той самий сенс, що й у трьох кнопках (CONCEPT 5.2).
- */
-export function WordStatusCycle({ word }: { word: string }) {
-  const { wordStatus, cycleWordStatus } = useAppState();
-  const status = wordStatus(word);
-  const tone =
-    status === 'unknown' ? IDLE_TONE : status === 'known' ? ACTIVE_TONE.known : ACTIVE_TONE.learning;
-
-  return (
-    <button type="button" onClick={() => cycleWordStatus(word)} className={`${ROW_BUTTON} ${tone}`}>
-      {STATUS_LABELS[status]}
-    </button>
-  );
-}

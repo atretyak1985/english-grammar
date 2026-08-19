@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { TopicContents } from '@/components/topic/TopicContents';
 import { TopicHero } from '@/components/topic/TopicHero';
-import { TopicSidePanel } from '@/components/topic/TopicSidePanel';
+import { TopicVisit } from '@/components/topic/TopicVisit';
 import { hasContent } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
 
@@ -44,7 +44,8 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
     <>
       <TopicHero topic={topic} />
 
-      <div className="mx-auto grid max-w-content grid-cols-1 gap-7 px-[30px] pt-[30px] pb-[70px] xl:grid-cols-[minmax(0,1fr)_264px]">
+      <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
+        <TopicVisit topicSlug={topic.slug} />
         <div className="min-w-0">
           <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
             <h2 className="mt-0 mb-0 text-[27px] font-extrabold tracking-[-0.5px]">Зміст</h2>
@@ -56,10 +57,6 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
             </Link>
           </div>
           <TopicContents topic={topic} />
-        </div>
-
-        <div className="min-w-0">
-          <TopicSidePanel topic={topic} />
         </div>
       </div>
     </>

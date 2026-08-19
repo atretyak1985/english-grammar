@@ -10,7 +10,7 @@ import { useTexts } from '@/lib/state/texts';
 
 /** Три картки входу: «Продовжити», «Аналіз тексту», «Слова» (CONCEPT 2). */
 export function EntryCards() {
-  const { state, readCount } = useAppState();
+  const { state, readCount, isSectionRead } = useAppState();
   const { texts } = useTexts();
 
   const continueTopic =
@@ -18,7 +18,12 @@ export function EntryCards() {
   const read = continueTopic ? readCount(continueTopic.slug) : 0;
   const sections = continueTopic?.sections ?? [];
 
-  const next = sections[Math.min(read, sections.length - 1)];
+  // Саме перший непрочитаний, а не наступний за номером: розділи тепер окремі
+  // сторінки, і читати їх можна в будь-якому порядку.
+  const next = continueTopic
+    ? (sections.find((section) => !isSectionRead(continueTopic.slug, section.id)) ??
+      sections[sections.length - 1])
+    : undefined;
   const continueLabel =
     read > 0
       ? `Прочитано ${read} з ${sections.length} розділів — далі: ${next?.title ?? ''}`

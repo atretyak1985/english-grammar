@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { SectionNav } from '@/components/topic/SectionNav';
-import { TopicSidePanel } from '@/components/topic/TopicSidePanel';
+import { TopicVisit } from '@/components/topic/TopicVisit';
 import { SECTION_CONTENT, sectionLoader } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
 
@@ -56,15 +56,10 @@ export default async function SectionPage({
   const { default: Content } = await found.load();
 
   return (
-    <div className="mx-auto grid max-w-content grid-cols-1 gap-7 px-[30px] pt-[30px] pb-[70px] xl:grid-cols-[minmax(0,1fr)_264px]">
-      <div className="min-w-0">
-        <Content />
-        <SectionNav topic={found.topic} current={found.section} />
-      </div>
-
-      <div className="min-w-0">
-        <TopicSidePanel topic={found.topic} section={found.section} />
-      </div>
+    <div className="mx-auto min-w-0 max-w-content px-[30px] pt-[30px] pb-[70px]">
+      <TopicVisit topicSlug={found.topic.slug} sectionId={found.section.id} />
+      <Content />
+      <SectionNav topic={found.topic} current={found.section} />
     </div>
   );
 }
