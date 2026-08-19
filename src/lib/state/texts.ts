@@ -77,16 +77,19 @@ export function useTexts() {
   const texts = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const ready = useHydrated();
 
-  const addText = useCallback((title: string, body: string) => {
+  /** Повертає ідентифікатор: аналізатору він потрібен, щоб далі читати вже збережений текст. */
+  const addText = useCallback((title: string, body: string): string => {
+    const id = crypto.randomUUID();
     commit([
       {
-        id: crypto.randomUUID(),
+        id,
         title: title.trim() || 'Без назви',
         body,
         createdAt: new Date().toISOString(),
       },
       ...getSnapshot(),
     ]);
+    return id;
   }, []);
 
   const removeText = useCallback((id: string) => {

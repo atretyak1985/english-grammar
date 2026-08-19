@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { topicBySlug } from '@/data/topics';
+import { useReading } from '@/lib/state/reading';
 import { useTexts } from '@/lib/state/texts';
 
 const CARD = 'bg-surface border-line rounded-panel shadow-card overflow-hidden border';
@@ -22,6 +23,9 @@ const dateLabel = (iso: string) => new Date(iso).toLocaleDateString('uk-UA');
 export function AccountScreen({ email }: { email: string | null }) {
   const { state, signedIn, syncing } = useAppState();
   const { texts, removeText } = useTexts();
+  // «Відкрити» мусить сказати аналізатору, який саме текст читати: сам перехід
+  // на /analyze показував би те, що там лежало доти.
+  const { openSaved } = useReading();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
 
@@ -118,7 +122,11 @@ export function AccountScreen({ email }: { email: string | null }) {
                         {dateLabel(text.createdAt)} · {text.body.split(/\s+/).length} слів
                       </div>
                     </div>
-                    <Link href="/analyze" className={SMALL_BUTTON}>
+                    <Link
+                      href="/analyze"
+                      onClick={() => openSaved(text.id, text.title)}
+                      className={SMALL_BUTTON}
+                    >
                       Відкрити
                     </Link>
                     <button

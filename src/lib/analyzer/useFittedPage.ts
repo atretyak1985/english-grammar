@@ -85,14 +85,27 @@ export function useFittedPage({
         // до одного токена — тоді лишаємо найбільший варіант, що вміщався.
         if (!overflowing && fill >= GOOD_FILL) return { ...state, fits, overflows };
         if (overflows > 0 && overflows - fits <= 1) {
-          return state.end === fits ? { ...state, fits, overflows } : { ...state, end: fits, fits, overflows, steps: state.steps + 1 };
+          if (state.end !== fits) {
+            return { ...state, end: fits, fits, overflows, steps: state.steps + 1 };
+          }
+          // Зійшлися — але напівпорожня сторінка означає, що «переливається»
+          // заміряли на застарілій геометрії: одразу після гортання в області
+          // ще стоїть попередній, вищий текст. Знімаємо цю межу й шукаємо далі
+          // вгору, інакше недобір лишився б назавжди — повторний замір сам себе
+          // не виправить, бо пошук уже вважає межу знайденою.
+          if (fill < GOOD_FILL) {
+            return { ...state, fits, overflows: 0, steps: state.steps + 1 };
+          }
+          return { ...state, fits, overflows };
         }
 
         const next = overflowing
           ? Math.max(start + 1, Math.floor((fits + state.end) / 2))
           : overflows > 0
             ? Math.min(total, Math.floor((state.end + overflows) / 2))
-            : Math.min(total, state.end * 2);
+            // Подвоюємо саму сторінку, а не індекс: у кінці книжки подвоєння
+            // абсолютного індексу перескакувало б через увесь залишок тексту.
+            : Math.min(total, start + Math.max(1, state.end - start) * 2);
 
         if (next === state.end) return { ...state, fits, overflows };
         return { key, end: next, fits, overflows, steps: state.steps + 1 };

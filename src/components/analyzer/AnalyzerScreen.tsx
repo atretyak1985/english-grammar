@@ -11,6 +11,7 @@ import { paginate } from '@/lib/analyzer/pages';
 import { TENSE_LABELS, analyzeText } from '@/lib/analyzer/tenses';
 import { useFittedPage } from '@/lib/analyzer/useFittedPage';
 import { useBoxSize, useFitHeight } from '@/lib/analyzer/useViewport';
+import { PAGE_ONE, docKeyOf, useReading } from '@/lib/state/reading';
 import { useTexts } from '@/lib/state/texts';
 import type { TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
@@ -57,8 +58,6 @@ const UNKNOWN_LIMIT = 20;
  * (CONCEPT 4). Чотири перемикачі керують шарами підсвітки.
  */
 export function AnalyzerScreen() {
-  const [text, setText] = useState(DEMO_TEXT);
-  const [fileName, setFileName] = useState<string | null>(null);
   const [layers, setLayers] = useState<Record<TenseKey | 'words', boolean>>({
     ps: true,
     pc: true,
@@ -71,8 +70,19 @@ export function AnalyzerScreen() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const { state, wordStatus, setWordStatus, cycleWordStatus } = useAppState();
-  const { addText } = useTexts();
-  const [saved, setSaved] = useState(false);
+  const { texts, addText } = useTexts();
+  const { doc, positions, openSaved, openLoose, setPosition } = useReading();
+
+  /**
+   * Що читаємо — вирішує сховище читання, а не стан компонента: інакше
+   * завантажена книжка гинула на першому ж переході на іншу сторінку.
+   * У збереженого тексту тіло беремо з бібліотеки, щоб не тримати дві копії.
+   */
+  const fromLibrary = doc.id ? texts.find((item) => item.id === doc.id) : undefined;
+  const text = fromLibrary?.body ?? doc.body ?? DEMO_TEXT;
+  const title = fromLibrary?.title ?? doc.title;
+  const saved = Boolean(fromLibrary);
+  const docKey = docKeyOf(doc);
 
   const analysis = useMemo(() => analyzeText(text), [text]);
 
@@ -97,14 +107,21 @@ export function AnalyzerScreen() {
   const pages = useMemo(() => paginate(analysis.tokens), [analysis.tokens]);
 
   // Позицію тримає номер токена, а не номер сторінки: при зміні розміру вікна
-  // сторінки перераховуються, і читач має залишитися там, де читав.
-  const [anchor, setAnchor] = useState(0);
+  // сторінки перераховуються, і читач має залишитися там, де читав. Вона теж
+  // у сховищі — повернення до книжки на першу сторінку рівноцінне її втраті.
+  const { anchor, trail } = positions[docKey] ?? PAGE_ONE;
 
   // Кінець сторінки — за фактом заміру, а не за підрахунком символів: інакше
   // або лишається порожнє місце, або текст обрізається непомітно.
   const guess = useMemo(() => {
+    const total = analysis.tokens.length;
     const found = pages.find((range) => anchor >= range.start && anchor < range.end);
-    return found ? found.end : Math.min(analysis.tokens.length, anchor + 1);
+    if (!found) return Math.min(total, anchor + 1);
+    // Беремо не кінець розрахункового діапазону, а його довжину від поточної
+    // позиції: межі рухомі, тому після заміру anchor майже ніколи не стоїть на
+    // початку діапазону — і його залишок дав би припущення розміром у кілька
+    // слів замість сторінки.
+    return Math.min(total, anchor + (found.end - found.start));
   }, [pages, anchor, analysis.tokens.length]);
 
   const pageEnd = useFittedPage({
@@ -124,34 +141,31 @@ export function AnalyzerScreen() {
 
 
   // Куди повертатись: межі сторінок рухомі (їх визначає замір), тому «назад»
-  // іде за історією відвіданих початків, а не за перерахунком.
-  const [history, setHistory] = useState<number[]>([]);
-
+  // іде за слідом відвіданих початків, а не за перерахунком.
   const goForward = useCallback(() => {
     if (pageEnd >= analysis.tokens.length) return;
-    setHistory((current) => [...current, anchor]);
-    setAnchor(pageEnd);
+    setPosition(docKey, { anchor: pageEnd, trail: [...trail, anchor] });
     if (readerRef.current) readerRef.current.scrollTop = 0;
-  }, [anchor, pageEnd, analysis.tokens.length]);
+  }, [anchor, trail, docKey, pageEnd, analysis.tokens.length, setPosition]);
 
   /**
    * Номер сторінки — скільки вже перегорнули; оцінка кількості — з фактичного
    * розміру сторінки. Межі рухомі, тому в підписі стоїть «~».
    */
-  const pageNumber = history.length + 1;
+  const pageNumber = trail.length + 1;
   const pageSize = Math.max(1, pageEnd - anchor);
   const pageEstimate = Math.max(pageNumber, Math.ceil(analysis.tokens.length / pageSize));
 
   const goBack = useCallback(() => {
     if (anchor === 0) return;
-    setHistory((current) => {
-      const previous = current[current.length - 1];
-      // Без історії (наприклад, після зміни розміру) беремо приблизну межу.
-      setAnchor(previous ?? (pages.filter((range) => range.end <= anchor).pop()?.start ?? 0));
-      return current.slice(0, -1);
+    const previous = trail[trail.length - 1];
+    setPosition(docKey, {
+      // Без сліду (наприклад, після зміни розміру) беремо приблизну межу.
+      anchor: previous ?? (pages.filter((range) => range.end <= anchor).pop()?.start ?? 0),
+      trail: trail.slice(0, -1),
     });
     if (readerRef.current) readerRef.current.scrollTop = 0;
-  }, [anchor, pages]);
+  }, [anchor, trail, docKey, pages, setPosition]);
 
   // Стрілки гортають сторінки, Esc виходить з повного екрана — але не тоді,
   // коли курсор у полі введення.
@@ -219,12 +233,9 @@ export function AnalyzerScreen() {
     setLayers((current) => ({ ...current, [key]: !current[key] }));
 
   // Текст із модалки — байдуже, вставлений руками чи розпізнаний з файлу.
-  const applyText = (next: string, title?: string) => {
-    if (title) setFileName(title);
-    setText(next);
-    setSaved(false);
-    setAnchor(0);
-    setHistory([]);
+  // Позицію скидати не треба: у нового тексту свій ключ, тобто своя перша сторінка.
+  const applyText = (next: string, name?: string) => {
+    openLoose(next, name ?? null);
   };
 
   return (
@@ -462,8 +473,12 @@ export function AnalyzerScreen() {
           onApply={applyText}
           onClose={() => setDialogOpen(false)}
           onSave={() => {
-            addText(fileName ?? text.slice(0, 40), text);
-            setSaved(true);
+            const label = title ?? text.slice(0, 40);
+            const id = addText(label, text);
+            // Місце читання переносимо на новий ключ: збереження посеред книжки
+            // не мусить відкидати на першу сторінку.
+            setPosition(id, { anchor, trail });
+            openSaved(id, label);
           }}
         />
       ) : null}
