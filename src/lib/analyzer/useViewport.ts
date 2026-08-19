@@ -7,6 +7,39 @@ export interface BoxSize {
   height: number;
 }
 
+/**
+ * Висота області читання, за якої сторінка вміщається у вікно без зовнішнього
+ * скролу. Рахуємо не «100vh мінус вгаданий запас», а фактичний залишок:
+ * висота документа без самої області читання — це і є решта сторінки.
+ */
+export function useFitHeight(ref: RefObject<HTMLElement | null>, fallback = 480): number {
+  const [height, setHeight] = useState(fallback);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const measure = () => {
+      const rest = document.documentElement.scrollHeight - element.clientHeight;
+      const available = window.innerHeight - rest - 8;
+      const next = Math.max(240, Math.min(1200, Math.round(available / 8) * 8));
+      setHeight((current) => (Math.abs(current - next) > 8 ? next : current));
+    };
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(document.body);
+    window.addEventListener('resize', measure);
+    measure();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, [ref]);
+
+  return height;
+}
+
 /** Цільове заповнення області читання: трохи менше за край, щоб не крутити сторінку. */
 const TARGET_FILL = 0.95;
 const TOLERANCE = 0.06;

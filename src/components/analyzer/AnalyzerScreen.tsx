@@ -8,7 +8,7 @@ import { useAppState } from '@/components/providers/AppStateProvider';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { fitPageChars, paginate } from '@/lib/analyzer/pages';
 import { TENSE_LABELS, analyzeText } from '@/lib/analyzer/tenses';
-import { useBoxSize, useFillScale } from '@/lib/analyzer/useViewport';
+import { useBoxSize, useFillScale, useFitHeight } from '@/lib/analyzer/useViewport';
 import { useTexts } from '@/lib/state/texts';
 import type { TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
@@ -64,11 +64,16 @@ export function AnalyzerScreen() {
     words: true,
   });
 
+  // Поле джерела згортається саме, коли текст уже великий: читати книжку
+  // з семирядковим полем над нею — цепів екрана даремно.
+  const [sourceOpen, setSourceOpen] = useState<boolean | null>(null);
+
   const { wordStatus, cycleWordStatus } = useAppState();
   const { addText } = useTexts();
   const [saved, setSaved] = useState(false);
 
   const analysis = useMemo(() => analyzeText(text), [text]);
+  const sourceVisible = sourceOpen ?? text.length < 4000;
 
   // Читання на весь екран: із книжкою на десятки сторінок картка затісна.
   const [fullscreen, setFullscreen] = useState(false);
@@ -79,6 +84,8 @@ export function AnalyzerScreen() {
   // кількість символів у рядку вдвічі.
   const reader = useBoxSize(readerRef);
   const prose = useBoxSize(proseRef);
+  // У картці висота така, щоб сторінка вмістилась у вікно без зовнішнього скролу.
+  const cardHeight = useFitHeight(readerRef);
   // Кількість колонок вирішує доступна область, а не сама колонка тексту:
   // інакше вийшла б циклічна залежність (ширина ← колонки ← ширина).
   const columns = fullscreen && reader.width >= 1100 ? 2 : 1;
@@ -185,12 +192,15 @@ export function AnalyzerScreen() {
   };
 
   return (
-    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
+    <div className={`mx-auto max-w-content px-[30px] pt-[30px] ${sourceVisible ? 'pb-[70px]' : 'pb-6'}`}>
       <h1 className="mt-0 mb-2 text-[32px] font-extrabold tracking-[-0.8px]">Аналіз тексту</h1>
-      <p className="text-ink-2 mt-0 mb-[22px] max-w-[760px] text-[16.5px]">
-        Вставте англійський текст, завантажте PDF або фото сторінки. Кожна знайдена форма
-        підсвічується своїм кольором, а незнайомі слова — пунктиром.
-      </p>
+      {/* Вступ потрібен, поки текст не завантажений; далі місце віддаємо читанню */}
+      {sourceVisible ? (
+        <p className="text-ink-2 mt-0 mb-[22px] max-w-[760px] text-[16.5px]">
+          Вставте англійський текст, завантажте PDF або фото сторінки. Кожна знайдена форма
+          підсвічується своїм кольором, а незнайомі слова — пунктиром.
+        </p>
+      ) : null}
 
       <div className="grid grid-cols-[minmax(0,1fr)_320px] gap-[22px]">
         <div className="flex min-w-0 flex-col gap-4">
@@ -219,10 +229,17 @@ export function AnalyzerScreen() {
                 >
                   {saved ? 'Збережено ✓' : 'Зберегти в бібліотеку'}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setSourceOpen(!sourceVisible)}
+                  className={`${PILL} ${PILL_OFF}`}
+                >
+                  {sourceVisible ? '▴ Згорнути' : `▾ Показати поле · ${analysis.wordCount} слів`}
+                </button>
               </div>
             </div>
 
-            {source === 'text' ? (
+            {!sourceVisible ? null : source === 'text' ? (
               <textarea
                 value={text}
                 onChange={(event) => {
@@ -288,8 +305,9 @@ export function AnalyzerScreen() {
                 // звужує колонку, підгонка скидається і починає коливатись.
                 fullscreen
                   ? 'flex-1 overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-8'
-                  : 'h-[calc(100vh-320px)] min-h-[320px] overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap'
+                  : 'overflow-y-auto [scrollbar-gutter:stable] px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap'
               }
+              style={fullscreen ? undefined : { height: cardHeight }}
             >
               <div
                 ref={proseRef}
