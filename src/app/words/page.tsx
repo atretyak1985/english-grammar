@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import { WordsScreen } from '@/components/words/WordsScreen';
 
 export const metadata: Metadata = {
-  title: 'Слова',
+  title: 'Мій словник',
   description:
-    'Частотний словник з ваших текстів зі статусами «не знаю / вчу / знаю» — порядок вивчення за частотою вживання.',
+    'Слова, які ви позначили «вчу» або «знаю»: транскрипція, англійське означення, приклади, вимова і власні нотатки.',
 };
 
 export default function WordsPage() {
