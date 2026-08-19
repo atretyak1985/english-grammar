@@ -78,3 +78,24 @@ describe('означення на вкладених рівнях', () => {
     expect(resolveTarget('==English==\n# {{plural of|en|study#Noun}}')).toBe('study');
   });
 });
+
+describe('приклади й цитати — окремі поля', () => {
+  it('короткі приклади (#:) не перемішуються з цитатами (#*)', () => {
+    // «perfunctory» має обидва типи: 4 рядки `#:` і 37 рядків `#*`.
+    const entry = parseEntry('perfunctory', fixture('perfunctory'));
+
+    expect(entry?.examples.length).toBeGreaterThan(0);
+    expect(entry?.quotes.length).toBeGreaterThan(0);
+    // Жоден приклад не потрапив у цитати й навпаки.
+    for (const example of entry?.examples ?? []) {
+      expect(entry?.quotes).not.toContain(example);
+    }
+  });
+
+  it('цитати обрізані по довжині, приклади — ні', () => {
+    const entry = parseEntry('improve', fixture('improve'));
+    for (const quote of entry?.quotes ?? []) {
+      expect(quote.length).toBeLessThanOrEqual(200);
+    }
+  });
+});
