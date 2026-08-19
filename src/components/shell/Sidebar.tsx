@@ -6,9 +6,8 @@ import { useMemo, useState } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { useActiveSection } from '@/components/shell/ActiveSectionProvider';
+import { useActiveSection } from '@/components/shell/useActiveSection';
 import { ProgressRing } from '@/components/shell/ProgressRing';
-import { useSectionNav } from '@/components/shell/useSectionNav';
 import { LEVEL_COLOR, TOPICS } from '@/data/topics';
 import type { Level } from '@/types/content';
 
@@ -40,8 +39,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const [query, setQuery] = useState('');
   const { theme, toggleTheme } = useTheme();
   const { readCount, isSectionRead, signedIn, state, resetProgress } = useAppState();
-  const { activeId } = useActiveSection();
-  const goToSection = useSectionNav();
+  const { sectionSlug } = useActiveSection();
 
   const activeTopic = useMemo(() => {
     const match = /^\/topics\/([^/]+)/.exec(pathname);
@@ -164,16 +162,13 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                   <div className="border-line mt-[3px] mb-2 ml-[19px] flex flex-col gap-px border-l pl-[11px]">
                     {sectionsShown.map((section) => {
                       const done = isSectionRead(topic.slug, section.id);
-                      const current = activeId === section.id;
+                      const current = sectionSlug === section.slug;
                       return (
-                        <button
-                          key={section.id}
-                          type="button"
-                          onClick={() => {
-                            goToSection(topic.slug, section.id);
-                            onNavigate?.();
-                          }}
-                          className={`flex w-full cursor-pointer items-center gap-[7px] rounded-[7px] px-2 py-[5px] text-left text-[12.5px] leading-[normal] ${
+                        <Link
+                          key={section.slug}
+                          href={`/topics/${topic.slug}/${section.slug}`}
+                          onClick={onNavigate}
+                          className={`flex w-full items-center gap-[7px] rounded-[7px] px-2 py-[5px] text-left text-[12.5px] leading-[normal] ${
                             current
                               ? 'bg-surface-2 text-ink font-bold'
                               : 'text-ink-2 hover:bg-hover font-medium'
@@ -186,7 +181,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                             {section.short ?? section.title}
                           </span>
                           <span className="text-ok flex-none text-[11px]">{done ? '✓' : ''}</span>
-                        </button>
+                        </Link>
                       );
                     })}
                   </div>

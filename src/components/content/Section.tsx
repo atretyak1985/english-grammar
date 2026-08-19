@@ -1,14 +1,11 @@
-'use client';
-
-import { useEffect, useRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { H2, TenseHead } from '@/components/content/blocks';
-import { useActiveSection } from '@/components/shell/ActiveSectionProvider';
 import type { TenseKey } from '@/types/content';
 
 /**
- * Розділ теми. Дає якір для скролу з сайдбара і повідомляє оболонці,
- * що саме зараз на екрані.
+ * Розділ теми. На своїй сторінці він єдиний, а у вигляді «все одним полотном»
+ * лишається якорем — тому id зберігається.
  */
 export function Section({
   id,
@@ -24,31 +21,10 @@ export function Section({
   tense?: TenseKey;
   children?: ReactNode;
 }) {
-  const ref = useRef<HTMLElement>(null);
-  const { setActiveId } = useActiveSection();
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActiveId(id);
-        }
-      },
-      // Активним вважаємо розділ, чия верхівка щойно пройшла під липкою шапкою.
-      { rootMargin: '-80px 0px -65% 0px', threshold: 0 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [id, setActiveId]);
-
   const heading = `${n}. ${title}`;
 
   return (
-    <section ref={ref} id={id} className="scroll-mt-[78px] pt-[26px] pb-3.5">
+    <section id={id} className="scroll-mt-[78px] pt-[26px] pb-3.5">
       {tense ? <TenseHead t={tense}>{heading}</TenseHead> : <H2>{heading}</H2>}
       {children}
     </section>

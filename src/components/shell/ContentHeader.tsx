@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
-import { useSectionNav } from '@/components/shell/useSectionNav';
 import { READY_TOPICS, TOPICS } from '@/data/topics';
 
 const SCREEN_TITLES: Record<string, string> = {
@@ -18,16 +17,16 @@ const SCREEN_TITLES: Record<string, string> = {
 
 /**
  * Липка шапка контенту: смужка прогресу, хлібні крихти і три швидкі дії
- * (CONCEPT 3.3). «Тест» і «Шпаргалка» прокручують до розділів теми — навіть
- * якщо ви зараз на іншому екрані.
+ * (CONCEPT 3.3). «Тест» і «Шпаргалка» ведуть на відповідні розділи теми —
+ * навіть якщо ви зараз на іншому екрані.
  */
 export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) {
   const pathname = usePathname();
   const { readCount, state } = useAppState();
-  const goToSection = useSectionNav();
 
-  const topicSlug = /^\/topics\/([^/]+)/.exec(pathname)?.[1];
+  const [, topicSlug, sectionSlug] = /^\/topics\/([^/]+)(?:\/([^/]+))?/.exec(pathname) ?? [];
   const topic = TOPICS.find((item) => item.slug === topicSlug);
+  const section = topic?.sections.find((item) => item.slug === sectionSlug);
 
   /** Тема, до якої ведуть швидкі дії: відкрита → остання відкрита → перша готова. */
   const targetTopic = useMemo(
@@ -44,7 +43,13 @@ export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) 
 
   const crumb = topic?.title ?? SCREEN_TITLES[pathname] ?? '';
 
-  const hasSection = (id: string) => targetTopic?.sections.some((section) => section.id === id);
+  /** Слаг розділу теми за його id — «Тест» і «Шпаргалка» ведуть саме туди. */
+  const sectionHref = (id: string) => {
+    const target = targetTopic?.sections.find((item) => item.id === id);
+    return target ? `/topics/${targetTopic?.slug}/${target.slug}` : null;
+  };
+  const quizHref = sectionHref('quiz');
+  const cheatHref = sectionHref('cheat');
 
   return (
     <header className="bg-panel border-line sticky top-0 z-20 border-b">
@@ -75,20 +80,24 @@ export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) 
           <span className="text-line" aria-hidden>
             ›
           </span>
-          <span className="text-ink truncate">{crumb}</span>
+          {section ? (
+            <>
+              <Link href={`/topics/${topic?.slug}`} className="text-inherit hover:underline">
+                {crumb}
+              </Link>
+              <span className="text-line" aria-hidden>
+                ›
+              </span>
+              <span className="text-ink truncate">{section.short ?? section.title}</span>
+            </>
+          ) : (
+            <span className="text-ink truncate">{crumb}</span>
+          )}
         </div>
 
         <div className="flex flex-none gap-2">
-          {targetTopic && hasSection('quiz') ? (
-            <QuickAction onClick={() => goToSection(targetTopic.slug, 'quiz', { markRead: false })}>
-              Тест
-            </QuickAction>
-          ) : null}
-          {targetTopic && hasSection('cheat') ? (
-            <QuickAction onClick={() => goToSection(targetTopic.slug, 'cheat', { markRead: false })}>
-              Шпаргалка
-            </QuickAction>
-          ) : null}
+          {quizHref ? <QuickAction href={quizHref}>Тест</QuickAction> : null}
+          {cheatHref ? <QuickAction href={cheatHref}>Шпаргалка</QuickAction> : null}
           <Link
             href="/analyze"
             className="bg-ps rounded-btn border border-transparent px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold text-white hover:brightness-[1.08]"
@@ -101,14 +110,13 @@ export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) 
   );
 }
 
-function QuickAction({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function QuickAction({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="border-line bg-surface-2 text-ink-2 rounded-btn hover:text-ink hover:border-ink-3 cursor-pointer border px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold"
+    <Link
+      href={href}
+      className="border-line bg-surface-2 text-ink-2 rounded-btn hover:text-ink hover:border-ink-3 border px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold"
     >
       {children}
-    </button>
+    </Link>
   );
 }

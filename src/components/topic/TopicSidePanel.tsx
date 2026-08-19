@@ -4,9 +4,8 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
-import { useActiveSection } from '@/components/shell/ActiveSectionProvider';
 import { WordStatusCycle } from '@/components/words/WordStatusButtons';
-import type { TopicMeta } from '@/types/content';
+import type { TopicMeta, TopicSection } from '@/types/content';
 
 const CARD = 'bg-surface border-line rounded-panel shadow-card border p-4';
 const CARD_LABEL = 'text-ink-3 mb-2.5 text-[10.5px] font-extrabold tracking-[1.1px] uppercase';
@@ -17,17 +16,29 @@ const CARD_BUTTON =
  * Права колонка сторінки теми: прогрес теми і слова з цієї теми (CONCEPT 2).
  * Одне число живить кільце в сайдбарі, смужку в шапці і «N / 14» тут.
  */
-export function TopicSidePanel({ topic }: { topic: TopicMeta }) {
-  const { readCount, isSectionRead, toggleSectionRead, setLastTopic, wordStatus } = useAppState();
-  const { activeId } = useActiveSection();
+export function TopicSidePanel({
+  topic,
+  /** Відкритий розділ — на сторінці змісту його немає */
+  section,
+}: {
+  topic: TopicMeta;
+  section?: TopicSection;
+}) {
+  const { readCount, isSectionRead, toggleSectionRead, markSectionRead, setLastTopic, wordStatus } =
+    useAppState();
 
   // Картка «Продовжити» на головній має знати, де ви зупинились.
   useEffect(() => setLastTopic(topic.slug), [setLastTopic, topic.slug]);
 
+  // Відкритий розділ і є прочитаний: сторінка розділу — це і є факт читання.
+  useEffect(() => {
+    if (section) markSectionRead(topic.slug, section.id);
+  }, [markSectionRead, section, topic.slug]);
+
   const read = readCount(topic.slug);
   const total = topic.sections.length;
   const percent = total === 0 ? 0 : Math.round((read / total) * 100);
-  const activeSection = topic.sections.find((section) => section.id === activeId);
+  const activeSection = section;
   const activeRead = activeSection ? isSectionRead(topic.slug, activeSection.id) : false;
 
   return (

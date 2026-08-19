@@ -1,0 +1,51 @@
+<Section id="stories" n={7} title="Три історії з повним розбором">
+
+<Lede>Найкращий спосіб засвоїти часи — бачити їх у зв'язному тексті. Спочатку прочитайте англійською, потім звірте переклад, потім подивіться розбір кожного дієслова.</Lede>
+
+### Історія 1 — інцидент на продакшні
+
+<Story translation="Учора об 23:00 спрацював пейджер. Я дивився фільм, тож поставив на паузу й відкрив ноутбук. Продакшн лежав. Виявилось, що джуніор двома годинами раніше запушив міграцію прямо в main, і ніхто її не переглянув. Поки я відкочував міграцію, зателефонував CTO. На момент, коли ми відновили сервіс, ми вже втратили близько сорока хвилин трафіку.">
+  Yesterday at 11 p.m. the pager <M t="ps">went</M> off. I <M t="pc">was watching</M> a film, so I <M t="ps">paused</M> it and <M t="ps">opened</M> my laptop. Production <M t="ps">was</M> down. It <M t="ps">turned</M> out that a junior dev <M t="pp">had pushed</M> a migration straight to main two hours earlier and nobody <M t="pp">had reviewed</M> it. While I <M t="pc">was rolling</M> back the migration, my CTO <M t="ps">called</M>. By the time we <M t="ps">restored</M> the service, we <M t="pp">had lost</M> about forty minutes of traffic.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="ps">went off</M></b> — Past Simple</>}>Головна подія, з якої починається історія. Крапка.</BRow>
+  <BRow form={<><b><M t="pc">was watching</M></b> — Past Continuous</>}>Що я робив у той момент. Фон, який перервала подія.</BRow>
+  <BRow form={<><b><M t="ps">paused, opened</M></b> — Past Simple</>}>Послідовність моїх дій. Крапка за крапкою.</BRow>
+  <BRow form={<><b><M t="ps">was</M></b> down — Past Simple</>}>Стан у минулому. <i>be</i> — дієслово стану, Continuous тут неможливий.</BRow>
+  <BRow form={<><b><M t="pp">had pushed, had reviewed</M></b> — Past Perfect</>}>Крок назад: це сталося <b>до</b> того, як спрацював пейджер. Причина всієї історії.</BRow>
+  <BRow form={<><b><M t="pc">was rolling back</M></b> — Past Continuous</>}>Довга дія після <i>while</i>, яку перервав дзвінок.</BRow>
+  <BRow form={<><b><M t="ps">called, restored</M></b> — Past Simple</>}>Знову сюжетні крапки.</BRow>
+  <BRow form={<><b><M t="pp">had lost</M></b> — Past Perfect</>}><i>By the time</i> + результат, що вже накопичився до тієї точки.</BRow>
+</Breakdown>
+
+### Історія 2 — розмова з інвесторами
+
+<Story translation="Минулого березня я полетів до Берліна на нашу першу зустріч з інвесторами. Я ніколи раніше не пітчив справжньому фонду, тож тремтів цілий ранок. Поки я налаштовував слайди, один із партнерів запитав мене про наш churn. На щастя, наш аналітик надіслав мені цифри напередодні ввечері, тож я відповів не вагаючись. Зрештою вони не інвестували, але познайомили нас із двома іншими фондами.">
+  Last March I <M t="ps">flew</M> to Berlin for our first investor meeting. I <M t="pp">had never pitched</M> to a real fund before, so I <M t="pc">was shaking</M> the whole morning. While I <M t="pc">was setting</M> up the slides, one of the partners <M t="ps">asked</M> me a question about our churn rate. Luckily, our analyst <M t="pp">had sent</M> me the numbers the night before, so I <M t="ps">answered</M> without hesitating. They <M t="ps">didn't invest</M> in the end, but they <M t="ps">introduced</M> us to two other funds.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="ps">flew</M></b> — Past Simple</>}><i>Last March</i> — названий час → крапка.</BRow>
+  <BRow form={<><b><M t="pp">had never pitched</M></b> — Past Perfect</>}>Досвід (точніше, його відсутність) до того моменту. Маркер: <i>never … before</i>.</BRow>
+  <BRow form={<><b><M t="pc">was shaking</M></b> — Past Continuous</>}>Тривалий стан протягом ранку. Малює картинку.</BRow>
+  <BRow form={<><b><M t="pc">was setting up</M></b> — Past Continuous</>}>Після <i>while</i> — довга дія.</BRow>
+  <BRow form={<><b><M t="ps">asked</M></b> — Past Simple</>}>Коротка дія, що врізалась у довгу.</BRow>
+  <BRow form={<><b><M t="pp">had sent</M></b> — Past Perfect</>}>Сталося <i>the night before</i> — раніше за момент розповіді.</BRow>
+  <BRow form={<><b><M t="ps">answered, didn't invest, introduced</M></b></>}>Сюжетні крапки. Зверніть увагу: <i>didn't <b>invest</b></i>, не <i>didn't invested</i>.</BRow>
+</Breakdown>
+
+### Історія 3 — побутова, без роботи
+
+<Story translation="У суботу я вирішив політати новим дроном біля озера. Світило сонце, і майже ніхто там не гуляв. Я зарядив батареї напередодні ввечері, тож був готовий. Десять хвилин усе йшло добре. Потім, поки дрон висів над водою, зник сигнал. Виявилось, я забув оновити прошивку. Я його повернув, але руки все ще тремтіли, коли я їхав додому.">
+  On Saturday I <M t="ps">decided</M> to fly the new drone by the lake. The sun <M t="pc">was shining</M> and almost nobody <M t="pc">was walking</M> there. I <M t="pp">had charged</M> the batteries the night before, so I <M t="ps">was</M> ready. Everything <M t="ps">went</M> well for ten minutes. Then, while the drone <M t="pc">was hovering</M> over the water, the signal <M t="ps">dropped</M>. It <M t="ps">turned out</M> I <M t="pp">had forgotten</M> to update the firmware. I <M t="ps">got</M> it back, but my hands <M t="pc">were still shaking</M> when I <M t="ps">drove</M> home.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="pc">was shining, was walking</M></b></>}>Опис сцени — класичний початок історії. Фон перед подіями.</BRow>
+  <BRow form={<><b><M t="pp">had charged, had forgotten</M></b></>}>Обидва — підготовка (або її брак) до головних подій. Крок назад.</BRow>
+  <BRow form={<><b><M t="pc">was hovering</M></b> + <b><M t="ps">dropped</M></b></>}>Хрестоматійна пара «довга дія + коротке переривання».</BRow>
+  <BRow form={<><b><M t="pc">were still shaking</M></b> + <b><M t="ps">drove</M></b></>}>Стан тривав <i>у той час, як</i> відбувалась інша дія.</BRow>
+</Breakdown>
+
+</Section>

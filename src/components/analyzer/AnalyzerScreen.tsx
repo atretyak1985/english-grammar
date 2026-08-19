@@ -1,11 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DEMO_TEXT } from '@/components/analyzer/DEMO_TEXT';
 import { FileSource } from '@/components/analyzer/FileSource';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { isMeaningfulWord } from '@/data/stopwords';
+import { paginate } from '@/lib/analyzer/pages';
 import { TENSE_LABELS, analyzeText } from '@/lib/analyzer/tenses';
 import { useTexts } from '@/lib/state/texts';
 import type { TenseKey } from '@/types/content';
@@ -68,6 +69,39 @@ export function AnalyzerScreen() {
 
   const analysis = useMemo(() => analyzeText(text), [text]);
 
+  // Сторінки як у книзі: довгий документ інакше дає одне полотно на десятки
+  // тисяч елементів. Статистика лишається по всьому тексту.
+  const pages = useMemo(() => paginate(analysis.tokens), [analysis.tokens]);
+  const [page, setPage] = useState(0);
+  const current = Math.min(page, pages.length - 1);
+  const visible = useMemo(() => {
+    const range = pages[current];
+    return range ? analysis.tokens.slice(range.start, range.end) : analysis.tokens;
+  }, [analysis.tokens, pages, current]);
+
+  const goToPage = useCallback(
+    (next: number) => {
+      setPage(Math.max(0, Math.min(next, pages.length - 1)));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [pages.length],
+  );
+
+  // Стрілки гортають сторінки — але не тоді, коли курсор у полі введення.
+  useEffect(() => {
+    if (pages.length < 2) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && /^(INPUT|TEXTAREA)$/.test(target.tagName)) return;
+      if (event.key === 'ArrowRight') goToPage(current + 1);
+      if (event.key === 'ArrowLeft') goToPage(current - 1);
+    };
+
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [current, goToPage, pages.length]);
+
   const unknownHere = useMemo(() => {
     const seen = new Map<string, { status: WordStatus; count: number }>();
     for (const token of analysis.tokens) {
@@ -91,6 +125,7 @@ export function AnalyzerScreen() {
     setFileName(title);
     setText(extracted);
     setSaved(false);
+    setPage(0);
   };
 
   return (
@@ -137,6 +172,7 @@ export function AnalyzerScreen() {
                 onChange={(event) => {
                   setText(event.target.value);
                   setSaved(false);
+                  setPage(0);
                 }}
                 rows={7}
                 className="bg-surface text-ink w-full resize-y border-0 p-4 text-[15px] leading-[1.7] outline-none"
@@ -176,7 +212,7 @@ export function AnalyzerScreen() {
 
             {/* Підсвічений текст */}
             <div className="px-[22px] py-5 text-[16.5px] leading-[2.05] whitespace-pre-wrap">
-              {analysis.tokens.map((token, index) => {
+              {visible.map((token, index) => {
                 if (!token.word) return <span key={index}>{token.raw}</span>;
 
                 const status = wordStatus(token.word);
@@ -203,6 +239,31 @@ export function AnalyzerScreen() {
                 );
               })}
             </div>
+
+            {pages.length > 1 ? (
+              <div className="border-line bg-surface-2 flex items-center justify-between gap-3 border-t px-[22px] py-3">
+                <button
+                  type="button"
+                  onClick={() => goToPage(current - 1)}
+                  disabled={current === 0}
+                  className={`${PILL} ${PILL_OFF} disabled:cursor-default disabled:opacity-40`}
+                >
+                  ← Назад
+                </button>
+                <div className="text-ink-3 text-[12.5px] font-bold">
+                  Сторінка {current + 1} з {pages.length}
+                  <span className="hidden sm:inline"> · гортайте стрілками ← →</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => goToPage(current + 1)}
+                  disabled={current === pages.length - 1}
+                  className={`${PILL} ${PILL_OFF} disabled:cursor-default disabled:opacity-40`}
+                >
+                  Далі →
+                </button>
+              </div>
+            ) : null}
           </div>
         </div>
 

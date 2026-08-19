@@ -5,7 +5,6 @@ import '@/app/globals.css';
 
 import { AppStateProvider } from '@/components/providers/AppStateProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import { ActiveSectionProvider } from '@/components/shell/ActiveSectionProvider';
 import { AppShell } from '@/components/shell/AppShell';
 import { loadShellState } from '@/lib/state/server';
 import { THEME_BOOTSTRAP_SCRIPT } from '@/lib/state/storage';
@@ -64,9 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <ThemeProvider>
           <AppStateProvider signedIn={signedIn} serverState={serverState}>
-            <ActiveSectionProvider>
-              <AppShell>{children}</AppShell>
-            </ActiveSectionProvider>
+            <AppShell>{children}</AppShell>
           </AppStateProvider>
         </ThemeProvider>
       </body>
