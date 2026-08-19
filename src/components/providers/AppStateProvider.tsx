@@ -13,6 +13,7 @@ import {
 } from 'react';
 
 import { useHydrated } from '@/lib/state/hydrated';
+import { NOTE_MAX } from '@/lib/state/storage';
 import {
   getServerStateSnapshot,
   getStateSnapshot,
@@ -26,6 +27,11 @@ import {
   type WordStatus,
 } from '@/types/state';
 
+/**
+ * Цикл по кліку в тексті — лише три щаблі. Через «приховане» читача водити не
+ * можна: приховування прибирає слово зі списку, і випадковий клік не має
+ * робити цього непомітно.
+ */
 const STATUS_CYCLE: WordStatus[] = ['unknown', 'learning', 'known'];
 
 interface AppStateContextValue {
@@ -42,6 +48,11 @@ interface AppStateContextValue {
   wordStatus: (word: string) => WordStatus;
   setWordStatus: (word: string, status: WordStatus) => void;
   cycleWordStatus: (word: string) => void;
+  /** Прибрати слово з поля зору: окрема назва тримає намір у типі */
+  hideWord: (word: string) => void;
+  unhideWord: (word: string) => void;
+  note: (word: string) => string;
+  setNote: (word: string, text: string) => void;
   setLastTopic: (slug: string) => void;
   addAttempt: (attempt: QuizAttempt) => void;
 }
@@ -145,6 +156,31 @@ export function AppStateProvider({
           ...current,
           words: { ...current.words, [word.toLowerCase()]: status },
         })),
+
+      hideWord: (word) =>
+        update((current) => ({
+          ...current,
+          words: { ...current.words, [word.toLowerCase()]: 'hidden' },
+        })),
+
+      unhideWord: (word) =>
+        update((current) => {
+          const words = { ...current.words };
+          delete words[word.toLowerCase()];
+          return { ...current, words };
+        }),
+
+      note: (word) => state.notes[word.toLowerCase()] ?? '',
+
+      setNote: (word, text) =>
+        update((current) => {
+          const key = word.toLowerCase();
+          const notes = { ...current.notes };
+          const trimmed = text.trim().slice(0, NOTE_MAX);
+          if (trimmed) notes[key] = trimmed;
+          else delete notes[key];
+          return { ...current, notes };
+        }),
 
       cycleWordStatus: (word) =>
         update((current) => {

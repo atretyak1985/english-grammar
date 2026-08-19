@@ -1,10 +1,16 @@
-/** Три статуси слова. Порядок важливий: при злитті з акаунтом перемагає «сильніший». */
-export type WordStatus = 'unknown' | 'learning' | 'known';
+/** Статуси слова. Порядок важливий: при злитті з акаунтом перемагає «сильніший». */
+export type WordStatus = 'unknown' | 'hidden' | 'learning' | 'known';
 
+/**
+ * `hidden` нижче за `learning` навмисно: приховати слово — слабша дія, ніж узяти
+ * його на вивчення. Комбінація «приховано на одному пристрої, вчу на іншому»
+ * має розходитись у бік «вчу», бо саме її користувач зробив свідомо.
+ */
 export const WORD_STATUS_RANK: Record<WordStatus, number> = {
   unknown: 0,
-  learning: 1,
-  known: 2,
+  hidden: 1,
+  learning: 2,
+  known: 3,
 };
 
 export type Theme = 'light' | 'dark';
@@ -27,6 +33,8 @@ export interface UserState {
   readSections: Record<string, string[]>;
   /** слово (нижній регістр) → статус */
   words: Record<string, WordStatus>;
+  /** слово → власна нотатка користувача (переклад, мнемоніка, приклад із життя) */
+  notes: Record<string, string>;
   /** остання відкрита тема — для картки «Продовжити» */
   lastTopic: string | null;
   attempts: QuizAttempt[];
@@ -35,6 +43,7 @@ export interface UserState {
 export const EMPTY_STATE: UserState = {
   readSections: {},
   words: {},
+  notes: {},
   lastTopic: null,
   attempts: [],
 };
@@ -56,6 +65,17 @@ export function mergeState(a: UserState, b: UserState): UserState {
     }
   }
 
+  /**
+   * Нотатки: перемагає непорожня, а при двох непорожніх — з `b`, тобто локальна.
+   * Це свідоме спрощення «останній записаний на цьому пристрої перемагає»:
+   * повноцінний `updatedAt` на кожну нотатку не вартий ускладнення, бо
+   * конфлікт можливий лише коли ту саму нотатку правили на двох пристроях.
+   */
+  const notes: Record<string, string> = { ...a.notes };
+  for (const [word, note] of Object.entries(b.notes)) {
+    if (note.trim().length > 0) notes[word] = note;
+  }
+
   const attempts = [...a.attempts, ...b.attempts]
     .filter(
       (attempt, i, all) =>
@@ -69,6 +89,7 @@ export function mergeState(a: UserState, b: UserState): UserState {
   return {
     readSections,
     words,
+    notes,
     lastTopic: b.lastTopic ?? a.lastTopic,
     attempts,
   };

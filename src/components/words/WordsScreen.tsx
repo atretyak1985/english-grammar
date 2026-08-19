@@ -14,9 +14,13 @@ type Filter = 'all' | WordStatus;
 const FILTER_LABELS: Record<Filter, string> = {
   all: 'Усі',
   unknown: 'Не знаю',
+  hidden: 'Приховані',
   learning: 'Вчу',
   known: 'Знаю',
 };
+
+/** Які фільтри показуємо кнопками — «приховані» окремим щаблем не є. */
+const FILTERS: Filter[] = ['all', 'unknown', 'learning', 'known'];
 
 /** Сітка таблиці: номер, слово, разів, частка, статуси. */
 const ROW_GRID = 'grid grid-cols-[30px_minmax(0,1fr)_52px_minmax(60px,90px)_170px] gap-2.5';
@@ -62,7 +66,7 @@ export function WordsScreen() {
       </div>
 
       <div className="mb-3.5 flex flex-wrap gap-[7px]">
-        {(['all', 'unknown', 'learning', 'known'] as Filter[]).map((option) => (
+        {FILTERS.map((option) => (
           <button
             key={option}
             type="button"

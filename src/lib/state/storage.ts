@@ -1,4 +1,4 @@
-import { EMPTY_STATE, type Theme, type UserState } from '@/types/state';
+import { EMPTY_STATE, WORD_STATUS_RANK, type Theme, type UserState, type WordStatus } from '@/types/state';
 
 /**
  * Локальне сховище. Анонімний користувач працює тільки тут (CONCEPT 7):
@@ -7,11 +7,21 @@ import { EMPTY_STATE, type Theme, type UserState } from '@/types/state';
 const STATE_KEY = 'eg.state.v1';
 const THEME_KEY = 'eg.theme.v1';
 
+/** Нотатка — рядок, а не текст: довші записи місце словника не для того. */
+export const NOTE_MAX = 200;
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
-/** Читає стан, прощаючи будь-яке пошкодження даних: краще порожньо, ніж падіння. */
+/**
+ * Читає стан, прощаючи будь-яке пошкодження даних: краще порожньо, ніж падіння.
+ *
+ * Значення статусів і нотаток фільтруються по одному, а не кастяться блоком.
+ * Саме це робить безпечним відкат на попередню версію застосунку: старий код
+ * побачить невідомий йому статус і просто його відкине, замість зберегти в
+ * стані щось, чого не вміє показати. Через це версію ключа не потрібно бити.
+ */
 export function readLocalState(): UserState {
   if (typeof window === 'undefined') return EMPTY_STATE;
   try {
@@ -19,11 +29,31 @@ export function readLocalState(): UserState {
     if (!raw) return EMPTY_STATE;
     const parsed: unknown = JSON.parse(raw);
     if (!isRecord(parsed)) return EMPTY_STATE;
+
+    const words: Record<string, WordStatus> = {};
+    if (isRecord(parsed.words)) {
+      for (const [word, status] of Object.entries(parsed.words)) {
+        if (typeof status === 'string' && status in WORD_STATUS_RANK) {
+          words[word.toLowerCase()] = status as WordStatus;
+        }
+      }
+    }
+
+    const notes: Record<string, string> = {};
+    if (isRecord(parsed.notes)) {
+      for (const [word, note] of Object.entries(parsed.notes)) {
+        if (typeof note !== 'string') continue;
+        const trimmed = note.trim().slice(0, NOTE_MAX);
+        if (trimmed.length > 0) notes[word.toLowerCase()] = trimmed;
+      }
+    }
+
     return {
       readSections: isRecord(parsed.readSections)
         ? (parsed.readSections as UserState['readSections'])
         : {},
-      words: isRecord(parsed.words) ? (parsed.words as UserState['words']) : {},
+      words,
+      notes,
       lastTopic: typeof parsed.lastTopic === 'string' ? parsed.lastTopic : null,
       attempts: Array.isArray(parsed.attempts) ? (parsed.attempts as UserState['attempts']) : [],
     };

@@ -1,6 +1,7 @@
+import { NOTE_MAX } from '@/lib/state/storage';
 import { EMPTY_STATE, type QuizAttempt, type UserState, type WordStatus } from '@/types/state';
 
-const STATUSES: WordStatus[] = ['unknown', 'learning', 'known'];
+const STATUSES: WordStatus[] = ['unknown', 'hidden', 'learning', 'known'];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -34,6 +35,16 @@ export function parseUserState(input: unknown): UserState {
     }
   }
 
+  const notes: Record<string, string> = {};
+  if (isRecord(input.notes)) {
+    for (const [word, note] of Object.entries(input.notes)) {
+      if (word.length === 0 || word.length > 64) continue;
+      if (typeof note !== 'string') continue;
+      const trimmed = note.trim().slice(0, NOTE_MAX);
+      if (trimmed.length > 0) notes[word.toLowerCase()] = trimmed;
+    }
+  }
+
   const attempts: QuizAttempt[] = Array.isArray(input.attempts)
     ? input.attempts.filter((attempt): attempt is QuizAttempt => {
         if (!isRecord(attempt)) return false;
@@ -50,6 +61,7 @@ export function parseUserState(input: unknown): UserState {
   return {
     readSections,
     words,
+    notes,
     lastTopic: typeof input.lastTopic === 'string' ? input.lastTopic : null,
     attempts,
   };

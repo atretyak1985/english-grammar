@@ -24,13 +24,16 @@ export async function loadUserState(userId: string): Promise<UserState> {
   }
 
   const words: Record<string, WordStatus> = {};
+  const notes: Record<string, string> = {};
   for (const row of wordRows) {
     words[row.word] = row.status as WordStatus;
+    if (row.note) notes[row.word] = row.note;
   }
 
   return {
     readSections,
     words,
+    notes,
     lastTopic: settingsRows[0]?.lastTopic ?? null,
     attempts: attemptRows.map((row) => ({
       topicSlug: row.topicSlug,
@@ -50,10 +53,13 @@ export async function saveUserState(userId: string, state: UserState): Promise<v
     sectionIds.map((sectionId) => ({ userId, topicSlug, sectionId })),
   );
 
+  // Нотатка живе в тому самому рядку, що й статус: таблиця вже per-user
+  // з ключем (userId, word), окрема сутність тут нічого не дала б.
   const wordRows = Object.entries(state.words).map(([word, status]) => ({
     userId,
     word,
     status,
+    note: state.notes[word] ?? null,
     updatedAt: new Date(),
   }));
 
@@ -69,7 +75,7 @@ export async function saveUserState(userId: string, state: UserState): Promise<v
         .values(row)
         .onConflictDoUpdate({
           target: [schema.words.userId, schema.words.word],
-          set: { status: row.status, updatedAt: row.updatedAt },
+          set: { status: row.status, note: row.note, updatedAt: row.updatedAt },
         });
     }
 

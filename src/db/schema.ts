@@ -88,8 +88,10 @@ export const words = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     word: varchar('word', { length: 64 }).notNull(),
-    /** unknown | learning | known */
+    /** unknown | hidden | learning | known */
     status: varchar('status', { length: 16 }).notNull(),
+    /** Власна нотатка користувача: переклад, мнемоніка, приклад із життя */
+    note: varchar('note', { length: 200 }),
     /** Дата останнього повторення — основа майбутнього режиму повторення */
     reviewedAt: timestamp('reviewed_at', { withTimezone: true }),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
