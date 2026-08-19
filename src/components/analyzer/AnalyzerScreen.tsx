@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { DEMO_TEXT } from '@/components/analyzer/DEMO_TEXT';
-import { FileSource } from '@/components/analyzer/FileSource';
+import { SourceDialog } from '@/components/analyzer/SourceDialog';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { paginate } from '@/lib/analyzer/pages';
@@ -48,14 +48,11 @@ const CARD_TITLE = 'text-ink-2 text-[12.5px] font-extrabold tracking-[0.4px]';
 const SIDE_CARD = 'bg-surface border-line rounded-panel shadow-card border p-4';
 const SIDE_LABEL = 'text-ink-3 mb-3 text-[10.5px] font-extrabold tracking-[1.1px] uppercase';
 
-type Source = 'text' | 'file';
-
 /**
  * Аналізатор тексту: правило видно не в підручнику, а у справжньому тексті
  * (CONCEPT 4). Чотири перемикачі керують шарами підсвітки.
  */
 export function AnalyzerScreen() {
-  const [source, setSource] = useState<Source>('text');
   const [text, setText] = useState(DEMO_TEXT);
   const [fileName, setFileName] = useState<string | null>(null);
   const [layers, setLayers] = useState<Record<TenseKey | 'words', boolean>>({
@@ -65,19 +62,15 @@ export function AnalyzerScreen() {
     words: true,
   });
 
-  // Поле джерела згортається саме, коли текст уже великий: читати книжку
-  // з семирядковим полем над нею — це пів екрана даремно.
-  const [sourceOpen, setSourceOpen] = useState<boolean | null>(null);
+  // Джерело живе в модалці: рядок над текстом забирав місце постійно, а
+  // потрібен на кілька секунд.
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const { wordStatus, cycleWordStatus } = useAppState();
   const { addText } = useTexts();
   const [saved, setSaved] = useState(false);
 
   const analysis = useMemo(() => analyzeText(text), [text]);
-  // Поле вставки лишається розкритим лише для короткого тексту (стартовий
-  // приклад). Довший текст читають, а не вставляють — і вся вільна висота
-  // потрібна підсвітці.
-  const sourceVisible = sourceOpen ?? text.length < 900;
 
   // Читання на весь екран: із книжкою на десятки сторінок картка затісна.
   const [fullscreen, setFullscreen] = useState(false);
@@ -200,82 +193,21 @@ export function AnalyzerScreen() {
   const toggle = (key: TenseKey | 'words') =>
     setLayers((current) => ({ ...current, [key]: !current[key] }));
 
-  // Текст із файлу приходить уже розпізнаним — далі він нічим не відрізняється
-  // від вставленого руками.
-  const acceptExtracted = (extracted: string, title: string) => {
-    setFileName(title);
-    setText(extracted);
+  // Текст із модалки — байдуже, вставлений руками чи розпізнаний з файлу.
+  const applyText = (next: string, title?: string) => {
+    if (title) setFileName(title);
+    setText(next);
     setSaved(false);
     setAnchor(0);
     setHistory([]);
   };
 
   return (
-    <div className={`mx-auto max-w-content px-[30px] pt-[30px] ${sourceVisible ? 'pb-[70px]' : 'pb-6'}`}>
+    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-6">
       <h1 className="mt-0 mb-2 text-[32px] font-extrabold tracking-[-0.8px]">Аналіз тексту</h1>
-      {/* Вступ потрібен, поки текст не завантажений; далі місце віддаємо читанню */}
-      {sourceVisible ? (
-        <p className="text-ink-2 mt-0 mb-[22px] max-w-[760px] text-[16.5px]">
-          Вставте англійський текст, завантажте PDF або фото сторінки. Кожна знайдена форма
-          підсвічується своїм кольором, а незнайомі слова — пунктиром.
-        </p>
-      ) : null}
 
       <div data-reader-row className="grid grid-cols-[minmax(0,1fr)_320px] gap-[22px]">
         <div className="flex min-w-0 flex-col gap-4">
-          {/* Джерело: текст або файл */}
-          <div className={CARD}>
-            <div className={`${CARD_HEAD} justify-between`}>
-              <div className={CARD_TITLE}>ДЖЕРЕЛО</div>
-              <div className="flex items-center gap-1.5">
-                {(['text', 'file'] as Source[]).map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => setSource(option)}
-                    className={`${PILL} ${source === option ? TENSE_ON.ps : PILL_OFF}`}
-                  >
-                    {option === 'text' ? 'Текст' : 'PDF / фото'}
-                  </button>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => {
-                    addText(fileName ?? text.slice(0, 40), text);
-                    setSaved(true);
-                  }}
-                  className={`${PILL} ${TENSE_ON.ps}`}
-                >
-                  {saved ? 'Збережено ✓' : 'Зберегти в бібліотеку'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSourceOpen(!sourceVisible)}
-                  className={`${PILL} ${PILL_OFF}`}
-                >
-                  {sourceVisible ? '▴ Згорнути' : `▾ Показати поле · ${analysis.wordCount} слів`}
-                </button>
-              </div>
-            </div>
-
-            {!sourceVisible ? null : source === 'text' ? (
-              <textarea
-                value={text}
-                onChange={(event) => {
-                  setText(event.target.value);
-                  setSaved(false);
-                  setAnchor(0);
-                  setHistory([]);
-                }}
-                rows={7}
-                className="bg-surface text-ink w-full resize-y border-0 p-4 text-[15px] leading-[1.7] outline-none"
-                placeholder="Вставте англійський текст…"
-              />
-            ) : (
-              <FileSource onText={acceptExtracted} />
-            )}
-          </div>
-
           {/* Чотири перемикачі шарів */}
           <div
             ref={cardRef}
@@ -311,8 +243,15 @@ export function AnalyzerScreen() {
               </button>
               <button
                 type="button"
-                onClick={() => setFullscreen((open) => !open)}
+                onClick={() => setDialogOpen(true)}
                 className={`${PILL} ${PILL_OFF} ml-auto`}
+              >
+                ⤓ Джерело · {analysis.wordCount} слів
+              </button>
+              <button
+                type="button"
+                onClick={() => setFullscreen((open) => !open)}
+                className={`${PILL} ${PILL_OFF}`}
                 title={fullscreen ? 'Esc' : 'Читати на весь екран'}
               >
                 {fullscreen ? '✕ Згорнути' : '⤢ На весь екран'}
@@ -452,6 +391,19 @@ export function AnalyzerScreen() {
           </div>
         </div>
       </div>
+
+      {dialogOpen ? (
+        <SourceDialog
+          text={text}
+          saved={saved}
+          onApply={applyText}
+          onClose={() => setDialogOpen(false)}
+          onSave={() => {
+            addText(fileName ?? text.slice(0, 40), text);
+            setSaved(true);
+          }}
+        />
+      ) : null}
     </div>
   );
 }
