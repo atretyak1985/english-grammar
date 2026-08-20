@@ -77,10 +77,12 @@ export function useMDXComponents(components: MDXComponents = {}): MDXComponents 
     td: Td,
     blockquote: ({ children }) => <Note>{children}</Note>,
 
-    // ті самі заголовки, але як явні теги в MDX
+    // ті самі заголовки й абзац, але як явні теги в MDX — потрібні там, де
+    // текст стоїть поруч із JSX-сусідами всередині картки чи виноски
     H2,
     H3,
     H4,
+    P,
 
     // блоки теми
     Section,

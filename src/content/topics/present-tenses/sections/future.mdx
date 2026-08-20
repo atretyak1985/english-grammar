@@ -1,0 +1,78 @@
+<Section id="future" n={8} title="Теперішній час про майбутнє">
+
+<Lede>Англійська регулярно говорить про майбутнє теперішнім часом — і в кількох випадках <b>will буде прямою помилкою</b>. Це недовгий розділ, але саме він найшвидше прибирає з мовлення «шкільний» присмак.</Lede>
+
+### 8.1 Розклад і розпорядок → Present Simple
+
+<Muted>Якщо подія стоїть у розкладі, таблиці чи програмі — вона не «трапиться», вона просто <i>така є</i>. Тому Present Simple.</Muted>
+
+<ExList>
+  <Ex ua="Потяг відходить о 6:40." why="Розклад потягів — властивість світу, а не мій план.">The train <M t="ps">leaves</M> at 6:40.</Ex>
+  <Ex ua="Наступний спринт починається в понеділок.">The next sprint <M t="ps">starts</M> on Monday.</Ex>
+  <Ex ua="Коли закінчується підписка?">When <M t="ps">does</M> the subscription <M t="ps">expire</M>?</Ex>
+  <Ex ua="Демо в програмі о третій, відразу після обіду.">The demo <M t="ps">is</M> at three, right after lunch.</Ex>
+</ExList>
+
+### 8.2 Домовленість із датою → Present Continuous
+
+<Muted>Якщо ви з кимось <b>домовились</b> і це вже в календарі — Continuous. Це найприродніший спосіб говорити про свої найближчі плани, значно живіший за <i>will</i>.</Muted>
+
+<ExList>
+  <Ex ua="Ми зустрічаємось із вендором у четвер." why="Час узгоджений, зустріч у календарі.">We <M t="pc">are meeting</M> the vendor on Thursday.</Ex>
+  <Ex ua="Я летю в Берлін наступного тижня." why="Квиток куплений — це домовленість зі світом.">I <M t="pc">am flying</M> to Berlin next week.</Ex>
+  <Ex ua="Що ти робиш у пʼятницю ввечері?" why={<>Найзвичайніший спосіб запитати про плани. <i>What will you do on Friday?</i> звучить книжно.</>}>What <M t="pc">are</M> you <M t="pc">doing</M> on Friday evening?</Ex>
+  <Ex ua="Завтра я не працюю." why={<>✗ <i>I don&apos;t work tomorrow</i> звучало б як про постійний графік.</>}>I <M t="pc">am not working</M> tomorrow.</Ex>
+</ExList>
+
+<Note title="Розклад чи домовленість — швидка перевірка">
+  Спитайте: <b>це чийсь розклад чи моя домовленість?</b>
+
+  <i>The train leaves at six</i> — розклад залізниці, я на нього не впливаю → Simple.<br />
+  <i>I&apos;m taking the six o&apos;clock train</i> — моє рішення й мій план → Continuous.
+
+  Обидва про той самий потяг і той самий час — але дивляться з різних боків.
+</Note>
+
+### 8.3 Після when, if, as soon as, until, before, after — теперішній час
+
+<Lede>Це найважливіше правило розділу. У підрядному реченні часу або умови англійська <b>не ставить will</b>, хоч ідеться про майбутнє. Українська ставить майбутній час в обох частинах — тому калька виникає майже автоматично.</Lede>
+
+<GoodBad>
+  <Bad>I'll call you when the migration <b>will finish</b>.<br />If the latency <b>will go</b> above the threshold, the alert fires.<br />We'll deploy as soon as the tests <b>will pass</b>.</Bad>
+  <Good>I'll call you when the migration <b>finishes</b>.<br />If the latency <b>goes</b> above the threshold, the alert fires.<br />We'll deploy as soon as the tests <b>pass</b>.</Good>
+</GoodBad>
+
+<ExList>
+  <Ex ua="Я скажу тобі, щойно вендор відповість." why={<>Після <i>as soon as</i> — теперішній час. <i>will</i> лишається тільки в головній частині.</>}>I <b>will</b> let you know as soon as the vendor <M t="ps">replies</M>.</Ex>
+  <Ex ua="Не мерджте, поки ревʼю не завершиться." why={<>Після <i>until</i> — теперішній час. І зверніть увагу: <i>until</i> уже несе «не», тому другого заперечення не треба.</>}>Don't merge until the review <M t="ps">is</M> done.</Ex>
+  <Ex ua="Перед тим як почнеш, перевір змінні середовища.">Before you <M t="ps">start</M>, check the environment variables.</Ex>
+  <Ex ua="Якщо ти вже надіслав рахунок, скажи." why={<>Perfect у підрядному реченні теж можливий — забороняється саме <i>will</i>, а не будь-який інший час.</>}>If you <M t="pp">have already sent</M> the invoice, let me know.</Ex>
+</ExList>
+
+<Note variant="warn" title="Коли when усе-таки бере will">
+  Правило стосується <i>when</i> у значенні «коли настане момент». Але <i>when</i> буває і питальним словом у непрямому питанні — і там <i>will</i> цілком доречний:
+
+  <b>I'll call you when the deploy finishes.</b> — коли завершиться (обставина часу) → без will.<br />
+  <b>I don't know when the deploy will finish.</b> — не знаю, коли завершиться (непряме питання) → з will.
+
+  Розрізняє їх зміст: у першому реченні <i>when</i> відповідає на «в який момент я подзвоню», у другому — це те, <b>про що</b> я не знаю.
+</Note>
+
+### 8.4 Коротко про сусідів: will і going to
+
+<Muted>Це не тема цього розділу, але без них картина неповна. Один рядок на кожен варіант.</Muted>
+
+| Форма | Що означає | Приклад |
+|---|---|---|
+| **Present Simple** | розклад, програма, таблиця | The train **leaves** at six. |
+| **Present Continuous** | домовленість, дата в календарі | I**'m meeting** them at six. |
+| **going to** | намір або видима ознака | I**'m going to** refactor this. · It**'s going to** rain. |
+| **will** | рішення в моменті мовлення, обіцянка, прогноз | OK, I**'ll** do it. · It **will** be fine. |
+
+<Note variant="tip" title="Що з цього справді змінює вашу мову">
+  Українці майже все майбутнє кажуть через <i>will</i> — і саме тому мовлення звучить рівно й трохи неживо. Найшвидший спосіб це виправити: <b>у розмові про свої найближчі плани переходьте на Present Continuous</b>.
+
+  Замість <i>I will meet them on Thursday</i> — <b>I&apos;m meeting them on Thursday</b>. Одна ця заміна дає більше «природності», ніж будь-яке розширення словника.
+</Note>
+
+</Section>

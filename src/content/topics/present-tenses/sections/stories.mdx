@@ -1,0 +1,64 @@
+<Section id="stories" n={9} title="Три тексти з повним розбором">
+
+<Lede>Правила дають розуміння, а зв'язний текст — відчуття. Спочатку прочитайте англійською, потім звірте переклад, і лише потім подивіться розбір кожного дієслова. Тут немає жодної вправи: тут треба побачити, як чотири часи працюють в одному абзаці.</Lede>
+
+### Текст 1 — ранковий апдейт на стендапі
+
+<Story translation="Доброго ранку. Коротко: міграція досі виконується — вона йде вже близько трьох годин, це довше, ніж ми очікували. Я вже двічі перевірив логи й помилок не бачу, тож, думаю, вона просто повільна. Вендор ще не відповів на мій лист, тому сьогодні я це ескалюю. Крім того, за цей спринт я закрив чотири тікети, а по обіді беруся за пул-реквест Олени. Зазвичай реліз роблю я, але цього тижня передаю його Сергієві — я на чергуванні.">
+  Morning. Quick update: the migration <M t="pc">is still running</M> — it <M t="pp">has been going</M> for about three hours now, which <M t="ps">is</M> longer than we <M t="ps">expected</M>. I <M t="pp">have already checked</M> the logs twice and I <M t="ps">don't see</M> any errors, so I <M t="ps">think</M> it <M t="ps">is</M> just slow. The vendor <M t="pp">hasn't replied</M> to my email yet, so I <M t="pc">am escalating</M> it today. Apart from that, I <M t="pp">have closed</M> four tickets this sprint, and I <M t="pc">am reviewing</M> Olena's pull request this afternoon. I usually <M t="ps">run</M> the release, but this week I <M t="pc">am handing</M> it over to Serhii — I <M t="ps">am</M> on call.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="pc">is still running</M></b> — Present Continuous</>}>Процес у цю хвилину. <i>still</i> додає «довше, ніж хотілося б».</BRow>
+  <BRow form={<><b><M t="pp">has been going</M></b> — Perfect Continuous</>}>Тривалість процесу, який досі не спинився: <i>for about three hours</i>. На питання «скільки часу» відповідає саме цей час.</BRow>
+  <BRow form={<><b><M t="ps">is</M></b> longer, <b><M t="ps">don't see</M></b>, <b><M t="ps">think</M></b> — Present Simple</>}>Три дієслова стану поспіль. Continuous до них не застосовується: ✗ <i>I&apos;m not seeing</i>, ✗ <i>I&apos;m thinking it&apos;s slow</i>.</BRow>
+  <BRow form={<><b><M t="pp">have already checked</M></b> — Present Perfect</>}>Результат, важливий зараз: логи вже перевірені, отже далі їх дивити не треба. <i>already</i> — між <i>have</i> і V3.</BRow>
+  <BRow form={<><b><M t="pp">hasn't replied … yet</M></b> — Present Perfect</>}>Відповіді немає на цю мить, але вона очікується. <i>yet</i> — у кінці.</BRow>
+  <BRow form={<><b><M t="pc">am escalating</M></b> — Present Continuous</>}>План на сьогодні, вже вирішений. Тому не <i>will escalate</i>.</BRow>
+  <BRow form={<><b><M t="pp">have closed</M></b> — Present Perfect</>}>Підрахунок у відкритому періоді: <i>this sprint</i> ще триває, і тікетів може стати пʼять.</BRow>
+  <BRow form={<><b><M t="pc">am reviewing</M></b> — Present Continuous</>}>Домовленість на сьогоднішній день. Про майбутнє, і це нормально.</BRow>
+  <BRow form={<>usually <b><M t="ps">run</M></b> — Present Simple</>}>Постійний розподіл обовʼязків. Прислівник частоти стоїть перед дієсловом.</BRow>
+  <BRow form={<><b><M t="pc">am handing</M></b> over — Present Continuous</>}>Тимчасовий виняток на цей тиждень — саме тому Continuous, а не Simple.</BRow>
+</Breakdown>
+
+### Текст 2 — представлення спікерки на конференції
+
+<Story translation="Марина працює в безпеці дванадцять років. Зараз вона керує командою з девʼятьох людей у фінтех-компанії в Берліні й двічі на рік читає курс із моделювання загроз. Вона була майже на всіх європейських конференціях з безпеки, і на чотирьох із них виступала. Просто зараз вона пише книжку про реагування на інциденти — вона працює над нею з минулої весни. Слово «експерт» їй не подобається, але вона бачила більше зламів, ніж будь-хто з моїх знайомих.">
+  Maryna <M t="pp">has worked</M> in security for twelve years. She currently <M t="ps">leads</M> a team of nine at a fintech company in Berlin, and she <M t="ps">teaches</M> a course on threat modelling twice a year. She <M t="pp">has been</M> to almost every European security conference, and she <M t="pp">has spoken</M> at four of them. Right now she <M t="pc">is writing</M> a book about incident response — she <M t="pp">has been working</M> on it since last spring. She <M t="ps">doesn't like</M> the word <i>expert</i>, but she <M t="pp">has seen</M> more breaches than anyone I <M t="ps">know</M>.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="pp">has worked</M></b> for twelve years — Present Perfect</>}>Найважливіший рядок тексту. Період почався в минулому й триває, тому ✗ <i>works for twelve years</i>. Українською тут теперішній час — і саме звідси помилка.</BRow>
+  <BRow form={<><b><M t="ps">leads</M></b>, <b><M t="ps">teaches</M></b> — Present Simple</>}>Постійні ролі й регулярність (<i>twice a year</i>). Зверніть увагу на <i>-es</i> у <i>teaches</i>.</BRow>
+  <BRow form={<><b><M t="pp">has been</M></b> to — Present Perfect</>}>Досвід: була і повернулася. Порівняйте <i>has gone to</i> — це означало б, що вона там зараз.</BRow>
+  <BRow form={<><b><M t="pp">has spoken</M></b> — Present Perfect</>}>Скільки разів за все життя, без жодної дати. Назвіть рік — і час доведеться змінити на Past Simple.</BRow>
+  <BRow form={<><b><M t="pc">is writing</M></b> — Present Continuous</>}>Незавершений проєкт у процесі. <i>Right now</i> тут означає «на цьому етапі життя», а не «в цю секунду».</BRow>
+  <BRow form={<><b><M t="pp">has been working</M></b> since — Perfect Continuous</>}>Наголос на тривалості того самого процесу. <i>since last spring</i> — точка початку, а не проміжок.</BRow>
+  <BRow form={<><b><M t="ps">doesn't like</M></b>, <b><M t="ps">know</M></b> — Present Simple</>}>Дієслова стану. І <i>-s</i> уже сидить у <i>doesn&apos;t</i>: ✗ <i>doesn&apos;t likes</i>.</BRow>
+  <BRow form={<><b><M t="pp">has seen</M></b> — Present Perfect</>}>Досвід у порівнянні: більше, ніж будь-хто, — до цього моменту.</BRow>
+</Breakdown>
+
+### Текст 3 — переписка з другом, без роботи
+
+<Story translation="Привіт — ти ще в офісі? Я чекаю під кавʼярнею вже двадцять хвилин, і телефон сідає. Я знаю, ти завжди в пʼятницю працюєш до ночі, але ти казав — сьома. Хай так: я взяв тобі каву, вона холоне. Якщо вийдеш зараз, будеш тут за десять хвилин. Я нікуди не піду — у мене на сьогодні більше нічого немає.">
+  Hey — <M t="ps">are</M> you still at the office? I <M t="pp">have been waiting</M> outside the café for twenty minutes and my phone <M t="pc">is dying</M>. I <M t="ps">know</M> you always <M t="ps">work</M> late on Fridays, but you said seven. Anyway, I <M t="pp">have ordered</M> you a coffee; it <M t="pc">is getting</M> cold. If you <M t="ps">leave</M> now, you'll be here in ten minutes. I <M t="pc">am not going</M> anywhere — I <M t="ps">have</M> nothing else planned.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="ps">are</M></b> you still at the office — Present Simple</>}>Дієслово <i>be</i>: питання без <i>do</i>. ✗ <i>Do you still be…</i></BRow>
+  <BRow form={<><b><M t="pp">have been waiting</M></b> for twenty minutes — Perfect Continuous</>}>Найтиповіший випадок цього часу: скільки часу вже триває те, що досі триває. Українською — теперішній: «чекаю вже двадцять хвилин».</BRow>
+  <BRow form={<><b><M t="pc">is dying</M></b>, <b><M t="pc">is getting</M></b> cold — Present Continuous</>}>Дві зміни в процесі. Дієслова зміни (<i>get, grow, die, rise</i>) майже завжди йдуть у Continuous.</BRow>
+  <BRow form={<><b><M t="ps">know</M></b>, always <b><M t="ps">work</M></b> — Present Simple</>}>Стан і звичка. <i>always</i> тут нейтральне — це просто його графік, без роздратування.</BRow>
+  <BRow form={<><b><M t="pp">have ordered</M></b> — Present Perfect</>}>Результат, який видно на столі. Коли саме замовив — не важливо.</BRow>
+  <BRow form={<>If you <b><M t="ps">leave</M></b> now, you <b>will be</b> here — Present Simple</>}>Після <i>if</i> — теперішній час, <i>will</i> лишається тільки в головній частині. ✗ <i>If you will leave</i>.</BRow>
+  <BRow form={<><b><M t="pc">am not going</M></b> anywhere — Present Continuous</>}>Про найближче майбутнє: рішення вже ухвалене.</BRow>
+  <BRow form={<><b><M t="ps">have</M></b> nothing else planned — Present Simple</>}><i>have</i> у значенні «мати» — стан. ✗ <i>I&apos;m having nothing else planned</i>.</BRow>
+</Breakdown>
+
+<Note variant="tip" title="Що з цим робити далі">
+  Візьміть текст 1 і перепишіть його <b>про свій справжній робочий тиждень</b>: що досі виконується, що ви вже зробили, що робите просто зараз, що заплановане на завтра. Вісім-десять речень.
+
+  Це найдорожча вправа в усій темі, бо змушує вибирати час не з таблиці, а з власної ситуації — а саме цього й вимагає жива мова.
+</Note>
+
+</Section>

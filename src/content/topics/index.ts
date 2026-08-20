@@ -28,6 +28,26 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     cheatsheet: () => import('@/content/topics/past-tenses/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/past-tenses/sections/plan.mdx'),
   },
+  'present-tenses': {
+    idea: () => import('@/content/topics/present-tenses/sections/idea.mdx'),
+    'present-simple': () => import('@/content/topics/present-tenses/sections/present-simple.mdx'),
+    'present-continuous': () =>
+      import('@/content/topics/present-tenses/sections/present-continuous.mdx'),
+    'present-perfect': () => import('@/content/topics/present-tenses/sections/present-perfect.mdx'),
+    'perfect-vs-past': () => import('@/content/topics/present-tenses/sections/perfect-vs-past.mdx'),
+    markers: () => import('@/content/topics/present-tenses/sections/markers.mdx'),
+    comparison: () => import('@/content/topics/present-tenses/sections/comparison.mdx'),
+    future: () => import('@/content/topics/present-tenses/sections/future.mdx'),
+    stories: () => import('@/content/topics/present-tenses/sections/stories.mdx'),
+    translation: () => import('@/content/topics/present-tenses/sections/translation.mdx'),
+    mistakes: () => import('@/content/topics/present-tenses/sections/mistakes.mdx'),
+    decision: () => import('@/content/topics/present-tenses/sections/decision.mdx'),
+    exercises: () => import('@/content/topics/present-tenses/sections/exercises.mdx'),
+    quiz: () => import('@/content/topics/present-tenses/sections/quiz.mdx'),
+    history: () => import('@/content/topics/present-tenses/sections/history.mdx'),
+    cheatsheet: () => import('@/content/topics/present-tenses/sections/cheatsheet.mdx'),
+    plan: () => import('@/content/topics/present-tenses/sections/plan.mdx'),
+  },
 };
 
 export function hasContent(slug: string): boolean {

@@ -1,4 +1,5 @@
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
+import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
 import type { Level, TopicMeta } from '@/types/content';
 
 /* ============================================================
@@ -15,13 +16,8 @@ function planned(topic: Omit<TopicMeta, 'sections' | 'ready' | 'tags'>): TopicMe
 
 export const TOPICS: readonly TopicMeta[] = [
   pastTenses,
+  presentTenses,
 
-  planned({
-    slug: 'present-tenses',
-    title: 'Теперішні часи',
-    desc: 'Present Simple, Present Continuous, Present Perfect. Головна пастка українців: Present Perfect vs Past Simple.',
-    level: 'b1',
-  }),
   planned({
     slug: 'articles',
     title: 'Артиклі: a / an / the / нуль',
