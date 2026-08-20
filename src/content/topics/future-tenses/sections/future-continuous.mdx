@@ -1,0 +1,75 @@
+import { TimelineFutureContinuous } from '../diagrams';
+
+<Section id="cont" n={6} title="Future Continuous — буде відбуватися" tense="fc">
+
+<Lede>Форма рідка — приблизно одне речення з двадцяти про майбутнє — але в двох випадках незамінна. І з нею звʼязана окрема пастка українців, спільна з минулими часами: «буду робити» <b>не</b> означає автоматично <i>will be doing</i>.</Lede>
+
+### 6.1 Форма
+
+<Formula
+  lines={[
+    { sign: '+', body: <>підмет <K>+ will be + V-ing</K></>, comment: "I'll be running the migration" },
+    { sign: '−', body: <>підмет <Neg>+ won&apos;t be + V-ing</Neg></>, comment: "I won't be using the room" },
+    { sign: '?', body: <><Q>Will</Q> + підмет <Q>+ be + V-ing</Q> … ?</>, comment: 'Will you be using the room?' },
+  ]}
+  note="Дієслова стану сюди не входять: ✗ I'll be knowing. → I'll know."
+/>
+
+<SvgBox>
+  <TimelineFutureContinuous />
+</SvgBox>
+
+### 6.2 Три випадки вживання
+
+#### ① Процес у названий момент майбутнього
+
+<ExList>
+  <Ex ua="Завтра о десятій я буду запускати перехід." why="У той момент дія вже триватиме: почнеться раніше, скінчиться пізніше. Саме тому не will run.">At ten tomorrow I <M t="fc">will be running</M> the cutover.</Ex>
+  <Ex ua="Не дзвони близько шостої — я буду на дзвінку з клієнтом." why="Мене буде зайнято саме в той відрізок.">Don't call around six — I <M t="fc">will be talking</M> to the client.</Ex>
+  <Ex ua="Цього часу наступного тижня ми вже будемо розгортати нову версію." why={<><b>this time next week</b> — маркер, майже прикріплений до цієї форми.</>}>This time next week we <M t="fc">will be rolling out</M> the new version.</Ex>
+</ExList>
+
+#### ② Ввічливе питання про чужі плани
+
+<Muted>Найкорисніший випадок у робочому житті. Future Continuous прибирає з питання будь-який натиск: воно про обставини, а не про прохання.</Muted>
+
+<ExList>
+  <Ex ua="Ви будете користуватися переговорною після обіду?" why={<>Порівняйте: <i>Will you use the room?</i> звучить як прохання поступитися. Continuous просто цікавиться.</>}><M t="fc">Will</M> you <M t="fc">be using</M> the meeting room after lunch?</Ex>
+  <Ex ua="Ти будеш у офісі в пʼятницю?">
+    <M t="fc">Will</M> you <M t="fc">be coming</M> to the office on Friday?
+  </Ex>
+  <Ex ua="Ви плануєте платити карткою?" why="Стандартна фраза в магазинах і готелях — саме через ввічливість цієї форми.">
+    <M t="fc">Will</M> you <M t="fc">be paying</M> by card?
+  </Ex>
+</ExList>
+
+#### ③ Дія, що піде своїм ходом
+
+<ExList>
+  <Ex ua="Не хвилюйся, я все одно буду перевіряти логи — гляну і твій сервіс." why="Дія й так запланована, тому додаткове прохання нічого не коштує.">Don't worry, I <M t="fc">will be checking</M> the logs anyway.</Ex>
+  <Ex ua="Я буду там о шостій, тож заберу й твій пропуск.">I <M t="fc">will be</M> there at six anyway, so I'll pick up your badge too.</Ex>
+</ExList>
+
+### 6.3 Пастка виду: «буду робити» ≠ will be doing
+
+<Lede>Це та сама помилка, що в темі минулих часів («робив» ≠ <i>was doing</i>), тільки перенесена в майбутнє. Українське «буду працювати» — це недоконаний вид, а не обовʼязково процес у конкретний момент.</Lede>
+
+<GoodBad>
+  <Bad>I <b>will be working</b> on it tomorrow, I promise.<br />I <b>will be sending</b> you the report.<br />We <b>will be shipping</b> two releases next month.</Bad>
+  <Good>I <b>will work</b> on it tomorrow, I promise.<br />I <b>will send</b> you the report.<br />We <b>will ship</b> two releases next month.</Good>
+</GoodBad>
+
+<Muted><b>Чому так.</b> Обіцянка, зобовʼязання й підрахунок — це не процеси в конкретний момент, а факти про майбутнє. Continuous додав би до них зайвий сенс: <i>«I&apos;ll be working on it tomorrow»</i> означає «завтра в якийсь момент застанете мене посеред цієї роботи», а не «завтра зроблю».</Muted>
+
+<MP title="Та сама робота, різний сенс">
+  <MPRow note={<>Обіцянка: завтра я цим займуся. Про конкретну годину нічого не сказано.</>}>I <M t="fs">will work</M> on it tomorrow.</MPRow>
+  <MPRow note={<>О другій я буду посеред цієї роботи. Наголос на моменті.</>}>At two I <M t="fc">will be working</M> on it.</MPRow>
+</MP>
+
+<Note variant="tip" title="Перевірка, чи потрібен Continuous">
+  Спитайте себе: <b>чи є в реченні названий момент майбутнього</b> — година, «this time next week», «when you arrive»?
+
+  Якщо є і дія в той момент триватиме — беріть <i>will be + V-ing</i>. Якщо ні — беріть простий <i>will</i>. Сумніваєтесь: простий <i>will</i> правильний частіше.
+</Note>
+
+</Section>

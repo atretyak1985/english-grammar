@@ -21,7 +21,7 @@ import { useReview } from '@/lib/analyzer/useReview';
 import { useBoxSize, useFitHeight } from '@/lib/analyzer/useViewport';
 import { PAGE_ONE, docKeyOf, useReading } from '@/lib/state/reading';
 import { useTexts } from '@/lib/state/texts';
-import type { TenseKey } from '@/types/content';
+import { TENSE_HIGHLIGHT, type TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
 
 /**
@@ -79,22 +79,6 @@ const TENSE_ON: Record<TenseKey, string> = {
   fs: 'border-ps border-double border-[3px] bg-ps-bg text-ps-dk',
   fc: 'border-pc border-double border-[3px] bg-pc-bg text-pc-dk',
   fp: 'border-pp border-double border-[3px] bg-pp-bg text-pp-dk',
-};
-
-const TENSE_HIGHLIGHT: Record<TenseKey, string> = {
-  ps: 'text-ps bg-ps-bg border-b-2 border-ps',
-  pc: 'text-pc bg-pc-bg border-b-2 border-pc',
-  pp: 'text-pp bg-pp-bg border-b-2 border-pp',
-  prs: 'text-ps bg-ps-bg border-b-2 border-dashed border-ps',
-  prc: 'text-pc bg-pc-bg border-b-2 border-dashed border-pc',
-  prp: 'text-pp bg-pp-bg border-b-2 border-dashed border-pp',
-  // Майбутні йдуть підкресленням, а не рамкою: `border-style: double` на
-  // рядковому елементі не роздільна — на трьох пікселях браузер малює її
-  // суцільною, і майбутнє ставало б неможливо відрізнити від минулого.
-  // Заміряно на скріншоті, а не припущено.
-  fs: 'text-ps bg-ps-bg underline decoration-double decoration-1 underline-offset-[3px]',
-  fc: 'text-pc bg-pc-bg underline decoration-double decoration-1 underline-offset-[3px]',
-  fp: 'text-pp bg-pp-bg underline decoration-double decoration-1 underline-offset-[3px]',
 };
 
 const TENSE_BAR: Record<TenseKey, string> = {
