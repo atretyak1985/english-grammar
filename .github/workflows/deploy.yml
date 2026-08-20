@@ -1,0 +1,74 @@
+# Деплой у Cloud Run. Спрацьовує лише на пуш у main, а туди можна потрапити
+# тільки через pull request із dev — правила гілок це стережуть.
+#
+# Автентифікація без ключів: GitHub видає OIDC-токен, GCP міняє його на
+# короткоживучий доступ через Workload Identity Federation. Жодного JSON-ключа
+# сервісного акаунта в секретах репозиторію немає й бути не повинно.
+name: Деплой
+
+on:
+  push:
+    branches: [main]
+  # Ручний запуск — щоб перевикотити той самий код без порожнього коміту.
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+env:
+  PROJECT: grammalens-app
+  REGION: europe-west4
+  SERVICE: grammalens
+  IMAGE: europe-west4-docker.pkg.dev/grammalens-app/app/web
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/912724662559/locations/global/workloadIdentityPools/github/providers/github
+          service_account: github-deploy@grammalens-app.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Дозволити docker пушити в Artifact Registry
+        run: gcloud auth configure-docker europe-west4-docker.pkg.dev --quiet
+
+      # Тег за SHA коміта, а не latest: за адресою образу завжди видно, який
+      # саме код зараз обслуговує сайт, і відкат — це деплой попереднього тегу.
+      - name: Зібрати образ
+        run: docker build -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" .
+
+      - name: Запушити образ
+        run: docker push --all-tags "$IMAGE"
+
+      - name: Викотити
+        run: |
+          gcloud run deploy "$SERVICE" \
+            --image="$IMAGE:${{ github.sha }}" \
+            --region="$REGION" --project="$PROJECT" \
+            --platform=managed --allow-unauthenticated \
+            --service-account=grammalens-run@grammalens-app.iam.gserviceaccount.com \
+            --set-secrets=ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,AUTH_SECRET=AUTH_SECRET:latest,DATABASE_URL=DATABASE_URL:latest \
+            --memory=1Gi --cpu=1 --min-instances=0 --max-instances=3 --timeout=300
+
+      # Викот, який відповідає 500, — це не викот. Перевіряємо бойову адресу,
+      # а не run.app: між ними стоїть мапінг домену, і зламатися може він.
+      - name: Перевірити, що сайт живий
+        run: |
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://grammalens.com/ || true)
+            echo "спроба $i: $CODE"
+            [ "$CODE" = "200" ] && exit 0
+            sleep 15
+          done
+          echo "сайт не відповів 200 після викоту"
+          exit 1
