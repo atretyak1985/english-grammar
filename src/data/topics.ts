@@ -1,4 +1,5 @@
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
+import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
 import type { Level, TopicMeta } from '@/types/content';
 
@@ -17,6 +18,7 @@ function planned(topic: Omit<TopicMeta, 'sections' | 'ready' | 'tags'>): TopicMe
 export const TOPICS: readonly TopicMeta[] = [
   pastTenses,
   presentTenses,
+  futureTenses,
 
   planned({
     slug: 'articles',

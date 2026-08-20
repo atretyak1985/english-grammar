@@ -85,6 +85,28 @@ export const ASPECT_TEXT: Record<Aspect, string> = {
   perfect: 'text-pp',
 };
 
+/**
+ * Як конструкція виглядає підсвіченою в тексті. Живе тут, а не в екрані
+ * аналізатора, бо тепер цим користуються двоє: сам аналізатор і картка-легенда
+ * у темі, яка цей код і пояснює. Дві копії розійшлися б рівно тоді, коли
+ * легенда почала б обіцяти не те, що читач бачить.
+ */
+export const TENSE_HIGHLIGHT: Record<TenseKey, string> = {
+  ps: 'text-ps bg-ps-bg border-b-2 border-ps',
+  pc: 'text-pc bg-pc-bg border-b-2 border-pc',
+  pp: 'text-pp bg-pp-bg border-b-2 border-pp',
+  prs: 'text-ps bg-ps-bg border-b-2 border-dashed border-ps',
+  prc: 'text-pc bg-pc-bg border-b-2 border-dashed border-pc',
+  prp: 'text-pp bg-pp-bg border-b-2 border-dashed border-pp',
+  // Майбутні йдуть підкресленням, а не рамкою: `border-style: double` на
+  // рядковому елементі не роздільна — на трьох пікселях браузер малює її
+  // суцільною, і майбутнє ставало б неможливо відрізнити від минулого.
+  // Заміряно на скріншоті, а не припущено.
+  fs: 'text-ps bg-ps-bg underline decoration-double decoration-1 underline-offset-[3px]',
+  fc: 'text-pc bg-pc-bg underline decoration-double decoration-1 underline-offset-[3px]',
+  fp: 'text-pp bg-pp-bg underline decoration-double decoration-1 underline-offset-[3px]',
+};
+
 /** Розділ усередині теми: власна сторінка, рядок у сайдбарі та якір у повному вигляді. */
 export interface TopicSection {
   /** id елемента <Section> — якір на сторінці «все одним полотном» і ключ прогресу */
