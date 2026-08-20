@@ -70,6 +70,14 @@ export interface BatchState {
    * статистика по всьому документу залишалася б недосяжною до кінця читання.
    */
   chunks: { start: number; end: number; matches: ReviewedMatch[] }[];
+  /**
+   * `true` рівно тоді, коли ЦЕЙ виклик сам створив батч (`client.messages.
+   * batches.create` справді відбувся). Відсутнє в усіх інших випадках, включно
+   * з опитуванням уже створеного батча (`status: 'pending'` там теж, але
+   * рахунок за нього вже виставлено раніше) — саме тому за статусом одним
+   * рахунок не визначити, а за цим полем можна.
+   */
+  created?: boolean;
 }
 
 /** `custom_id` обмежений довжиною, тому в ньому порядковий номер, а не хеш. */
@@ -206,7 +214,9 @@ async function submit(
     .onConflictDoNothing();
 
   console.info(`batch: ${batch.id}, шматків ${requests.length} з ${chunks.length}`);
-  return await collect(text, 'pending');
+  // `created: true` лягає лише тут: це єдине місце, де `batches.create`
+  // справді пішов у мережу, тобто рахунок за документ уже виставлено.
+  return { ...(await collect(text, 'pending')), created: true };
 }
 
 /**

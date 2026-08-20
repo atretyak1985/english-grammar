@@ -93,6 +93,44 @@ export function AnalyzerScreen() {
     <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-6">
       <h1 className="mt-0 mb-2 text-[32px] font-extrabold tracking-[-0.8px]">Аналіз тексту</h1>
 
+      {/*
+       * Деградація шару уточнення, не помилка (CONCEPT 8.1): локальна
+       * підсвітка нижче лишається робочою і плашка її не ховає — вона лише
+       * пояснює, чому далі не стане точнішою.
+       */}
+      {review.block ? (
+        <div
+          className={`bg-surface shadow-card mb-4 rounded-r-[10px] border-l-4 px-4 py-3.5 text-[13.5px] ${
+            review.block.reason === 'auth-required' ? 'border-l-ps' : 'border-l-pc'
+          }`}
+        >
+          {review.block.reason === 'auth-required' ? (
+            <>
+              <b>Уточнення моделлю доступне після входу.</b> Локальна підсвітка нижче лишається як
+              є. <Link href="/login" className="underline">
+                Увійти
+              </Link>{' '}
+              або <Link href="/library" className="underline">
+                відкрити бібліотеку
+              </Link>{' '}
+              — там розбір уже готовий.
+            </>
+          ) : (
+            <>
+              <b>
+                Слова цього місяця закінчились: {review.block.monthlyWords - review.block.remainingWords} з{' '}
+                {review.block.monthlyWords}.
+              </b>{' '}
+              Локальна підсвітка нижче лишається як є.{' '}
+              <Link href="/pricing" className="underline">
+                Переглянути тарифи
+              </Link>
+              .
+            </>
+          )}
+        </div>
+      ) : null}
+
       <ReaderCanvas
         text={text}
         docKey={docKey}
