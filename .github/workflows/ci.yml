@@ -1,0 +1,44 @@
+# Перевірки на кожен pull request і на кожен пуш у dev.
+#
+# Той самий набір, що й `make check` локально, плюс збірка: типи й лінт не
+# ловлять помилок, які виникають лише під час прод-збірки MDX і трасування.
+name: Перевірки
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev]
+
+# Новий пуш у ту саму гілку скасовує попередній прогін: чекати на застарілий
+# результат немає сенсу, а хвилини раннера не безкоштовні.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Типи
+        run: npm run typecheck
+
+      - name: Лінт
+        run: npm run lint
+
+      - name: Тести
+        run: npm test
+
+      # Збірка без жодних секретів — і це навмисна перевірка: застосунок мусить
+      # збиратися без бази й без ключів, інакше зламається образ для Cloud Run.
+      - name: Збірка
+        run: npm run build
