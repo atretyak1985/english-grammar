@@ -3,8 +3,69 @@ import type { ReactNode } from 'react';
 /** Рівень складності теми — впливає на колір точки в сайдбарі й смужки на картці. */
 export type Level = 'a2' | 'b1' | 'b2' | 'c1';
 
-/** Три часи, які застосунок розрізняє кольором наскрізь: теорія, підсвітка, схеми. */
-export type TenseKey = 'ps' | 'pc' | 'pp';
+/**
+ * Шість конструкцій, які застосунок розрізняє наскрізь: теорія, підсвітка, схеми.
+ *
+ * Розмічені вони двома осями, а не одним списком, і це не формальність — саме
+ * так їх бачить читач. Колір означає ВИД (Simple, Continuous, Perfect), стиль
+ * підкреслення означає ЧАС (минулий чи теперішній). Тому синій — це «простий»
+ * і в `ps`, і в `prs`, а фіолетовий — «перфект» в обох часах.
+ *
+ * Практична вигода саме там, де в темі «Теперішні часи» головна пастка:
+ * Present Perfect проти Past Simple — це фіолетовий проти синього, і різниця
+ * видна ще до того, як читач навів курсор на підпис.
+ */
+export const TENSE_KEYS = ['ps', 'pc', 'pp', 'prs', 'prc', 'prp'] as const;
+
+export type TenseKey = (typeof TENSE_KEYS)[number];
+
+/**
+ * Чи це взагалі відомий ключ. Потрібно у трьох місцях — схема інструмента для
+ * моделі, перевірка її відповіді й читання кешу з бази, — і саме тому живе
+ * тут одне. Три копії списку розійшлися б рівно на наступній конструкції:
+ * забути оновити перевірку кешу означало б мовчки відкидати цілий розібраний
+ * текст і платити за нього повторно.
+ */
+export function isTenseKey(value: unknown): value is TenseKey {
+  return typeof value === 'string' && (TENSE_KEYS as readonly string[]).includes(value);
+}
+
+/** Вид конструкції — задає колір. */
+export type Aspect = 'simple' | 'continuous' | 'perfect';
+
+/** Час конструкції — задає стиль підкреслення. */
+export type TenseTime = 'past' | 'present';
+
+export const TENSE_ASPECT: Record<TenseKey, Aspect> = {
+  ps: 'simple',
+  pc: 'continuous',
+  pp: 'perfect',
+  prs: 'simple',
+  prc: 'continuous',
+  prp: 'perfect',
+};
+
+export const TENSE_TIME: Record<TenseKey, TenseTime> = {
+  ps: 'past',
+  pc: 'past',
+  pp: 'past',
+  prs: 'present',
+  prc: 'present',
+  prp: 'present',
+};
+
+/**
+ * Класи кольору за видом. Токени лишилися з іменами `--ps` / `--pc` / `--pp`
+ * з часів, коли застосунок знав лише минулі часи; тепер вони означають вид, а
+ * не час. Перейменування зачепило б тему Tailwind, обидві теми оформлення і
+ * всі схеми, не змінивши ані пікселя — тому лишаємо імена й фіксуємо значення
+ * тут. Класи мусять бути літералами: Tailwind збирає їх статичним пошуком.
+ */
+export const ASPECT_TEXT: Record<Aspect, string> = {
+  simple: 'text-ps',
+  continuous: 'text-pc',
+  perfect: 'text-pp',
+};
 
 /** Розділ усередині теми: власна сторінка, рядок у сайдбарі та якір у повному вигляді. */
 export interface TopicSection {
