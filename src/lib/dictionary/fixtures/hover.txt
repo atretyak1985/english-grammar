@@ -1,0 +1,300 @@
+{{also|Hover|høver}}
+==English==
+{{was wotd|2023|January|31}}
+
+===Etymology===
+{{multiple images
+|width = 250
+|direction = vertical
+|image1 = Hen protecting her chicks.jpg
+|caption1 = A [[hen#Noun|hen]] hovering ''(verb sense 1.2)'' her [[chick#Noun|chicks]].
+|image2 = Colibri-thalassinus-001-edit.jpg
+|caption2 = A type of [[hummingbird]] called a {{vern|Mexican violetear}} ({{taxlink|Colibri thalassinus|species}}) hovering ''(verb sense 2.1)'' while [[feed#Verb|feeding]] on [[nectar#Noun|nectar]] from a [[flower#Noun|flower]].
+|image3 = Canadian SAR Comorant and USCG boat.jpg
+|caption3 = A {{w|Royal Canadian Air Force}} [[helicopter#Noun|helicopter]] hovering ''(verb sense 2.1)'' over a {{w|United States Coast Guard}} [[boat#Noun|boat]] while [[lower#Verb|lowering]] a [[rescue#Noun|rescue]] [[swimmer]] during a [[search and rescue|search-and-rescue]] [[drill#Noun|drill]].
+|image4 = HTML tooltip.png
+|caption4 = When a [[cursor#Noun|cursor]] hovers ''(verb sense 2.3)'' over a [[hyperlink#Noun|hyperlink]], a [[tooltip]] explaining the hyperlinked word appears.
+}}
+
+{{root|en|ine-pro|*keh₂p-}}
+The {{glossary|verb}} is derived from {{inh|en|enm|hoveren|t=to float in the air, hover; to stay}},<ref>{{R:MED Online|entry=họ̄veren|pos=v|id=MED21406}}</ref> probably from {{m|enm|hoven|t=hover; of a bird: to fly high in the air, soar}}<ref>{{R:MED Online|entry=họ̄ven|pos=''v.''(1)|noformat=1|id=MED21401}}</ref> (which it displaced) + {{m|enm|-er-|pos={{glossary|frequentative}} {{glossary|suffix}}}}.<ref>{{R:MED Online|entry=-er-|pos=''suf.''(3)|noformat=1|id=MED14274}}</ref> {{m|enm||Hoven}} is probably derived from {{inh|en|ang|*hōfian}}, from {{m|ang|hōfon}}, the {{glossary|plural}} {{glossary|past}} {{glossary|indicative}} form of {{m|ang|hebban|t=to lift, raise}}, from {{inh|en|gmw-pro|*habbjan}}, from {{inh|en|gem-pro|*habjaną|t=to lift; to heave}}, ultimately from {{inh|en|ine-pro|*kap-|*keh₂p-|to hold, seize}}. The English word is analysable as {{suffix|en|hove|t1=(''obsolete'') to remain suspended, float, hover; to linger, wait|er|id2=frequentative|pos2=frequentative suffix}}.<ref>Compare {{R:OED Online|pos=''v.''{{sup|1}}|noformat=1|id=88986|date=December 2022|nodot=1}}; {{R:Lexico|pos=v}}</ref>
+
+The {{glossary|noun}} is derived from the verb.<ref>{{R:OED Online|pos=''n.''{{sup|2}}|noformat=1|id=88984|date=June 2022|nodot=1}}; {{R:Lexico|pos=n}}</ref>
+
+===Pronunciation===
+* {{IPA|en|/ˈhɒvə/|a=RP}}, {{q|other UK also}} {{IPA|en|/ˈhʌvə/}}
+* {{IPA|en|/ˈhʌvɚ/|/ˈhɑvɚ/|a=GA,CA}}
+** {{audio|en|En-us-hover.ogg|a=GA}}
+** {{audio|en|LL-Q1860 (eng)-Simplificationalizer-hover.wav|a=New Jersey}}
+* {{IPA|en|/ˈhɔvə/|/ˈhavə/|a=AU}}
+* {{rhymes|en|ɒvə(ɹ)|ʌvə(ɹ)|s=2}}
+* {{hyphenation|en|hov|er}}
+
+===Verb===
+{{en-verb}}
+
+# {{lb|en|transitive}}
+## To [[keep#Verb|keep]] (something, such as an [[aircraft]]) in a [[stationary#Adjective|stationary]] [[state#Noun|state]] in the [[air#Noun|air]].
+## Of a [[bird#Noun|bird]]: to [[shelter#Verb|shelter]] ([[chick#Noun|chicks]]) under its [[body#Noun|body]] and [[wing#Noun|wings]]; {{lb|en|by extension}} of a [[thing]]: to [[cover#Verb|cover]] or [[surround#Verb|surround]] (something).
+##* {{quote-book|en|author=[[w:Gilbert White|Gil[bert] White]]|chapter=Letter XXXII. To the Same.|title=[[w:The Natural History and Antiquities of Selborne|The Natural History and Antiquities of Selborne, in the County of Southampton:{{nb...|With Engravings, and an Appendix.}}]]|location=London|publisher={{...|Printed by}} [[w:Thomas Bensley|T[homas] Bensley]]; for [[w:Benjamin White (publisher)|B[enjamin] White and Son]],{{nb...|at Horace’s Head, Fleet Street.}}|year=1789|page=212|pageurl=https://books.google.com/books?id=yVsOAAAAQAAJ&pg=PA212|oclc=3423785|passage=Castration has a ſtrange effect: it emaſculates both man, beaſt, and bird, and brings them to a near reſemblance of the other ſex. {{...}} Capons have ſmall combs and gills, and look pallid about the head, like pullets; they alſo vvalk vvithout any parade, and '''hover''' chickens like hens.}}
+## {{lb|en|obsolete}} Of a bird or [[insect]]: to [[flap#Verb|flap]] (its wings) so it can [[remain#Verb|remain]] stationary in the air.
+##* {{RQ:Sylvester Du Bartas|year=1611|day=5|page=142|passage=O'er the [[dear|deer]] Corps ſomtimes her vvings ſhe [an eagle] '''hovers''', / Somtimes the dead breſt vvith her breſt ſhe covers, {{...}}}}
+##* {{RQ:Behn Luckey Chance|page=5|passage=Thus have I lain conceal'd like a vvinter Fly, hoping for ſome bleſt Sun-Shine to vvarm me into Life again, and make me '''hover''' my flagging VVings; {{...}}}}
+# {{lb|en|intransitive}}
+## To remain stationary or [[float#Verb|float]] in the air.
+##: {{ux|en|The hummingbird '''hovered''' by the plant.}}
+##* {{quote-book|en|author=w:Stephen Gosson|chapter=The Schoole of Abuse,{{nb...|Conteining a Plesaunt Inuective against Poets, Pipers, Plaiers, Iesters, and such like Caterpillers of a Commonwelth: Setting vp the Flagge of Defiaunce to Their Mischieuous Exercise, and Overthrowing Their Bulwarkes, by Prophane Writers, Naturall Reason, and Common Experience: A Discourse as Pleasaunt for Gentlemen that Fauour Learning, as Profitable for All that wyll Follow Vertue.}}|title=The School of Abuse, Containing a Pleasant Invective against Poets, Pipers, Players, Jesters, &c.{{nb...|[...] With an Introduction Regarding the Author and His Works.}}|location=London|publisher={{...|Reprinted [by]}} [Frederic Shoberl, Jun.] for the Shakespeare Society|year=1579|year_published=1841|page=49|pageurl=https://books.google.com/books?id=WjAJAAAAQAAJ&pg=PA49|oclc=311576778|passage=[T]hough you go to Theaters to see sport, {{w|Cupid}} may cache you ere you departe. The little god '''hovereth''' aboute you, and fanneth you with his wings to kindle fire: when you are set as fixed whites, Desire draweth his arrow to the head, and sticketh it uppe to the fethers, and Fancy bestireth him to shed his poyson through every vayne.}}
+##* {{RQ:Shakespeare Sonnets|poem=A Lover's Complaint|sig=L2|verso=1|page=234|passage=Thus meerely vvith the garment of a grace, / The naked and concealed feind he couerd, / That th'vnexperient gaue the tempter place, / VVhich like a Cherubin aboue them '''houerd''', / VVho young and ſimple vvould not be ſo louerd.}}
+##* {{RQ:Boyle Occasional Reflections|part=2|chapter=III|chaptername=Killing a Crow (out of a Window) in a Hog’s-trough, and Immediately Tracing the Ensuing Reflection with a Pen Made of One of His Quills|page=149|passage=Long and patiently did I vvait for this unlucky Crovv {{...}} till at length having guzzl'd and croak'd enough, vvhen by '''hovering''' over his beloved Dainties, he had raiſ'd himſelf high enough, to prompt me to fire at him, {{...}}}}
+##* {{RQ:Defoe Tradesman|volume=II|part=II|chapter=Of such Tradesmen who by the Necessary Consequences of Their Business are Oblig'd to be Accessary to the Propagation of Vice, and the Encrease of the Wickedness of the Times, and that All the Immorality of the Age is Not Occasion'd by the Ale-houses and the Taverns|pages=163–163|pageref=163|passage=[T]he Mercers encreaſing prodigiouſly vvent back into the City; there like Bees unhiv'd they '''hover''' about a vvhile, not knovving vvhere to fix; but at laſt, as if they vvould come back to the old Hive in ''Pater-noſter Rovv'', but could not be admitted, the ſvvarm ſettled on ''Lu''[''d'']''gate-hill''.}}
+##* {{RQ:Melville Moby-Dick|chapter=The Mast-head|page=176|passage=Over Descartian vortices you '''hover'''. And perhaps, at mid-day, in the fairest weather, with one half-throttled shriek you drop through that transparent air into the summer sea, no more to rise for ever.}}
+##* {{quote-book|en|author=William Platt|chapter=‘His Will Be Done!’|title=Mothers and Sons. A Story of Real Life.{{nb...|[...] In Three Volumes.}}|location=London|publisher=Charles J. Skeet,{{nb...|publisher, 10, King William Street, Charing Cross.}}|year=1857|volume=I|page=87|pageurl=https://books.google.com/books?id=grxroi57RJUC&pg=PA87|oclc=85108862|passage=Thou '''hoveredst''', like a guardian angel—healing in thy wings, and glad-tidings all around thee—over the poor lost-one.}}
+##* {{RQ:Black Green Pastures|volume=II|chapter=The Isobars|page=150|passage=Here are there were smaller craft—wherries, steam-launches, tenders, and what not; and they seemed like so many flies '''hovering''' on the surface of the water when they came near that majestic ship.}}
+##* {{RQ:Stevenson Dynamiter|chapter=Story of the Fair Cuban|page=171|passage={{...}} I found we were lying in a roadstead among many low and rocky islets, '''hovered''' about by an innumerable cloud of sea-fowl.}}
+##* {{quote-journal|en|newspaper=w:The Economist|archiveurl=https://web.archive.org/web/20221018195210/https://www.economist.com/international/2013/06/29/travels-and-travails|title=Travels and travails|location=London|publisher=w:Economist Group|date=29 June 2013|volume=407|issue=8842|page=55|issn=0013-0613|oclc=805074337|passage=Even without '''hovering''' drones, a lurking assassin, a thumping score and a denouement, the real-life story of {{w|Edward Snowden}}, a rogue spy on the run, could be straight out of the cinema. But, as with Hollywood, the subplots and exotic locations may distract from the real message: America's discomfort and its foes' glee.|footer={{small|An adjective use.}}}}
+## {{lb|en|figuratively}}
+### ''Sometimes followed by'' '''[[over#Preposition|over]]''': to [[hang around]] or [[linger]] in a [[place#Noun|place]], especially in an [[uncertain]] [[manner#Noun|manner]].
+###: {{synonyms|en|wasp around}}
+###: {{ux|en|His pen '''hovered''' above the paper.}}
+###: {{ux|en|The strange man '''hovered''' outside the gents’ toilet.}}
+###: {{ux|en|The visitors were '''hovering''' at the door, seemingly unwilling to enter.}}
+###: {{ux|en|Some helicopter parents weren’t so much dropping off their kids as '''hovering''' over them until the event started.}}
+###* {{RQ:Marston Antonio and Mellida|act=IV|sig=F4|page=52|passage=Alas, this that you ſee, is not ''Antonio'', / His ſpirit '''houers''' in ''Piero''’s Court, / Hurling about his agill faculties, / To apprehend the ſight of ''Mellida'': {{...}}}}
+###* {{RQ:Thomson Works|volume=II|title=Ode|section=stanza III|page=220|passage=Oh! if thou '''hover'ſt''' round my vvalk, / VVhile, under ev'ry vvell-knovvn tree, / I to thy fancy'd ſhadovv talk, / And every tear is full of thee.}}
+###* {{quote-book|en|author=w:Martin Luther|chapter=Of the Last Day of Judgment|translator=Henry Bell|editor=Joseph Kerby|title=The Familiar Discourses of Dr. Martin Luther, (the Great Reformer), which He Held with Various Learned Men at His Table, &c. on the Important Doctrines of Religion;{{nb...|Containing Histories, Prophecies, Directions, Instructions, &c. Collected First Together by Dr. Antonius Lauterbach, and afterwards Disposed into Certain Common-places by John Aurifaber, D.D. Translated from the High German into the English Tongue, by Captain Henry Bell. To which is Prefixed, the Life and Character of Dr. Martin Luther: By John Gottlieb Burckhardt, D.D. Minister of the German Lutheran Congregation at the Savoy, in London. A New Edition. Revised and Corrected by Joseph Kerby, V.D.M. With Short Notes after each Chapter.}}|edition=new|location=Lewes, East Sussex|publisher=Sussex Press,{{nb...|Lewes: Printed and sold by}} John Baxter; London: Baldwin, Craddock, and Joy,{{nb...|Paternoster Row; H. Mozley, Derby; and all booksellers.}}|year=1818|page=408|pageurl=https://books.google.com/books?id=nF8UAAAAQAAJ&pg=PA408|oclc=13569573|passage=[T]he fat swimmeth above, and the best thereof '''hovereth''' always uppermost; but the unclean matter, or the dregs is left at the bottom like a dead carcase and worthless thing. Even so likewise, God will deal at the day of judgment, therewith he will separate all things through fire, will separate the righteous from the ungodly, {{...}}}}
+###* {{RQ:Bulwer-Lytton Lucretia|volume=III|chapter=Epilogue to Part the Second|pages=288–289|pageref=288|passage=But often, when he felt the harshness of experience creep over him— {{...}} the image of that fair child, {{...}} '''hovered''' over him; and the very air grew warmer, as if with a living breath.}}
+###* {{RQ:Eliot Romola|volume=II|chapter=Romola in Her Place|page=275|passage=Pestilence was '''hovering''' in the track of famine.}}
+###* {{RQ:Stevenson Treasure Island|chapter=The Sea Chest|page=28|passage=The neighbourhood, to our ears, seemed haunted by approaching footsteps; and what between the dead body of the captain on the parlour floor, and the thought of that detestable blind beggar '''hovering''' near at hand, and ready to return, there were moments when, as the saying goes, I jumped in my skin for terror.}}
+###* {{quote-journal|en|date=2023 February 8|author=Sir Michael Holden|title=Comment: Boom or bust: time to decide|journal=RAIL|issue=976|page=3|text="Overall satisfaction with rail journey", as measured fortnightly by Transport Focus, has maintained a broadly flat line at around 85% across the last four months of travel disruption, while "satisfaction with punctuality/reliabilty" is '''hovering''' around 75%.}}
+### To be [[indecisive]] or uncertain; to [[vacillate]], to [[waver#Verb|waver]].
+###: {{ux|en|Filling in the voting form, I '''hovered''' between Labour and Liberal Democrat.}}
+###* {{RQ:Spenser Ireland|year=1809|page=134|passage=And the reason why the land-lord will no longer covenant with him [the husbandman], is, for that he dayly looketh after change and alteration, and '''hovereth''' in expectation of new worlds.}}
+###* {{RQ:Spectator|author=Addison|issue=441|date=26 July 1712|page=175|passage=When the soul is '''hovering''' in the last moments of its separation, {{...}} what can support her under such tremblings of thought, such fear, such anxiety, such apprehensions, but the casting of all her cares upon Him who first gave her being, who has conducted her through one stage of it, and will be always with her in her progress through eternity?}}
+###* {{RQ:Black Phaeton|volume=I|chapter=Prinz Eugen, der edle Ritter|page=45|passage=Arthur Ashburton was rather cold and distant towards her, and was obviously in a bad temper. He even '''hovered''' on the verge of rudeness towards both herself and the Lieutenant.}}
+## {{lb|en|computing}} ''Chiefly followed by'' '''over''': to [[use#Verb|use]] a [[mouse#Noun|mouse]] or other [[device]] to [[place#Verb|place]] a [[cursor#Noun|cursor]] over something on a [[screen#Noun|screen]] such as a [[hyperlink#Noun|hyperlink]] or [[icon]] without [[clicking]], so as to [[produce#Verb|produce]] a [[result#Noun|result]] (such as the [[appearance]] of a [[tooltip]]).
+##: {{ux|en|A tooltip appears when you '''hover''' over this link.}}
+## {{lb|en|nautical}} To [[travel#Verb|travel]] in a [[hovercraft]] as it [[move#Verb|moves]] above a [[water#Noun|water]] [[surface#Noun|surface]].
+
+====Conjugation====
+{{en-conj|old=1}}
+
+====Derived terms====
+{{col|en|hoverbarge|hovercycle|hoverslam|hovertrain
+|hoverable
+|hoverbike
+|hoverboard
+|hoverboat
+|hovercam
+|hovercar
+|hoverchair
+|hovercraft
+|hovered<pos:adjective>
+|hoverer
+|hover-height
+|[[hovering]] {{qualifier|adjective|noun}}
+|hoveringly
+|hoverjet
+|hoverpack
+|hoverport
+|overhovering
+|windhover
+}}
+
+====Related terms====
+* {{l|en|hove}}
+
+====Descendants====
+* {{desc|cy|hofran}}
+
+====Translations====
+{{trans-top|to keep (something, such as an aircraft) in a stationary state in the air}}
+* Afrikaans: {{t|af|sweef}}
+* Dutch: {{t+|nl|omzweven}}
+* Finnish: {{t|fi|leijuttaa}}
+* German: {{t|de|schwebend halten}}
+* Greenlandic: {{t|kl|niviorpaa}}
+* Italian: {{t|it|librarsi}} {{qualifier|reflexive}}
+{{trans-bottom}}
+
+{{trans-top|of a bird: to shelter (chicks) under its body and wings}}
+* Finnish: {{t|fi|[[suojella]] [[siipi|siivillään]]}}, {{t|fi|[[kätkeä]] [[siipi|siipiensä]] [[alle]]}}
+* German: {{t+|de|behüten}}
+{{trans-bottom}}
+
+{{trans-see|of a thing: to cover or surround (something)|cover|surround}}
+
+{{trans-top-see|to remain stationary or float in the air|levitate}}
+* Afrikaans: {{t|af|sweef}}
+* Arabic: {{t|ar|حَامَ}}
+* Baatonum: {{t|bba|bɛɛri}}
+* Belarusian: {{t|be|луна́ць}}, {{t+|be|віта́ць}}
+* Bikol:
+*: Central Bikol: {{t+|bcl|lupad|alt=lupád}}
+* Bulgarian: {{t|bg|нося се}}, {{t|bg|рея се}}
+* Catalan: {{t+|ca|zumzejar}}
+* Cebuano: {{t|ceb|langaw}} {{qualifier|of an insect}}
+* Chinese:
+*: Cantonese: {{t|yue|摟|tr=lau1}} {{qualifier|of an insect}}
+*: Mandarin: {{t+|cmn|翱翔|tr=áoxiáng}}, {{t+|cmn|高飛|tr=gāofēi}}, {{t|cmn|懸停|tr=xuántíng}} {{qualifier|aviation}}, {{t+|cmn|㝼|tr=yū}}
+* Czech: {{t|cs|vznášet|impf}}
+* Dutch: {{t+|nl|omzweven}}, {{t+|nl|zweven}}
+* Esperanto: {{t|eo|flugpendi}}, {{t|eo|ŝvebi}}
+* Estonian: {{t|et|hõljuma}}
+* Finnish: {{t+|fi|leijailla}}, {{t+|fi|leijua}}, {{t|fi|lekuttaa}} {{qualifier|of a bird}}, {{t|fi|lekutella}} {{qualifier|of a bird}}
+* French: {{t+|fr|éventiller}} {{qualifier|of a bird}}, {{t+|fr|planer}}
+* Galician: {{t|gl|barutar}}, {{t+|gl|pairar}}, {{t+|gl|peneirar}}, {{t|gl|peneirarse}}, {{t|gl|atariñar}}, {{t+|gl|tordear}}
+* Ge'ez: {{t|gez|ጸለለ}}
+* German: {{t+|de|rütteln}} {{qualifier|of a bird of prey}}, {{t+|de|schweben}}, {{t|de|stillstehen (in der Luft)}}
+*: Central Franconian: {{t|gmw-cfr|schwevve}}
+* Greek: {{t+|el|αιωρούμαι}}, {{t|el|αλαφροζυγιάζομαι}}
+* Greenlandic: {{t|kl|agiorpoq}}, {{t|kl|qangatavoq}}
+* Hebrew: {{t+|he|רִחֵף|tr=rikhéf}}
+* Icelandic: {{t|is|sveima}}, {{t|is|svífa}}
+* Ido: {{t+|io|flugetar}}
+* Indonesian: {{t+|id|layang}}
+* Irish: {{t|ga|ainligh}}
+* Italian: {{t+|it|volteggiare}}
+* Latin: {{t|la|oberrō}}, {{t+|la|pendeō}}, {{t|la|volitō}}
+* Latvian: {{t+|lv|peldēt}}, {{t+|lv|stāvēt}}
+* Limburgish: {{t|li|schwéëve}}
+* Luxembourgish: {{t|lb|schwiewen}}
+* Macedonian: {{t|mk|ле́бди}}
+* Malagasy: {{t+|mg|mihevaheva}}
+* Maltese: {{t|mt|sseqqer}}
+* Māori: {{t|mi|tīonioni}} {{qualifier|of a bird}}, {{t|mi|topaki}}
+* Norwegian:
+*: Bokmål: {{t+|nb|sveve}}
+*: Nynorsk: {{t|nn|sveve}}
+* Occitan: {{t+|oc|flotejar}}, {{t+|oc|planar}}
+* Polish: {{t+|pl|zawisać|impf}}, {{t+|pl|zawisnąć|pf}}
+* Portuguese: {{t+|pt|pairar}}
+* Romanian: {{t+|ro|pluti}}
+* Russian: {{t+|ru|нависа́ть|impf}} {{qualifier|of clouds}}, {{t+|ru|пари́ть|impf}}, {{t+|ru|порха́ть|impf}} {{qualifier|of a butterfly}}, {{t+|ru|ре́ять|impf}}, {{t+|ru|вита́ть|impf}}, {{t+|ru|ви́ться|impf}}, {{t+|ru|зависа́ть|impf}}, {{t+|ru|зави́снуть|pf}}
+* Scots: {{t|sco|hover}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|лѐбдети}}, {{t|sh|лѐбдјети}}
+*: Latin: {{t|sh|lèbdeti}}, {{t+|sh|lèbdjeti}}
+* Spanish: {{t+|es|cernerse}}, {{t+|es|levitar}}, {{t+|es|revolotear}}, {{t|es|revoletear}}
+* Swedish: {{t+|sv|sväva}}
+* Thai: {{t+|th|ร่อน}}
+* Turkish: {{t|tr|havada durmak}}, {{t+|tr|uçmak}}
+* Ukrainian: {{t|uk|ширя́ти|impf}}
+* Vietnamese: {{t+|vi|lượn}}
+* Welsh: {{t+|cy|hofran}}
+* Yiddish: {{t|yi|שוועבן}}
+* ǃXóõ: {{t|nmn|ǀxâã}}
+{{trans-bottom}}
+
+{{trans-top|to hang around or linger in a place, especially in an uncertain manner}}
+* Chinese:
+*: Mandarin: {{t+|cmn|彽徊|tr=dīhuái}} {{qualifier|literary, rare}}, {{t+|cmn|盤旋|tr=pánxuán}}, {{t+|cmn|縈繞|tr=yíngrào}}
+* Finnish: {{t+|fi|norkoilla}}
+* French: {{t+|fr|faire du sur-place}}
+* German: {{t+|de|verweilen}}, {{t|de|rumhängen (coll.)}}
+* Italian: {{t+|it|aggirarsi}}, {{t+|it|attardarsi}}, {{t+|it|gironzolare}}, {{t+|it|indugiare}}, {{t+|it|ronzare|alt=ronzàre}} {{qualifier|figuratively}}, {{t|it|ronzare intorno}}
+* Japanese: {{t|ja|揉み合う|tr=もみあう, momiau}} {{qualifier|of stock market prices}}
+* Korean: {{t+|ko|맴돌다}}
+* Latin: {{t|la|circumvolitō}} {{qualifier|figuratively}}, {{t|la|impendeō}}, {{t+|la|pendeō}}
+* Macedonian: {{t|mk|се вр́ти}}, {{t|mk|се вр́тка}}
+* Portuguese: {{t|pt|voltear}}
+* Russian: {{t+|ru|болта́ться|impf}} {{qualifier|informal}}, {{t+|ru|ме́шкать|impf}}, {{t+|ru|слоня́ться|impf}} {{qualifier|informal}}, {{t+|ru|верте́ться|impf}} {{qualifier|informal}}
+* Spanish: {{t+|es|rondar}}
+* Vietnamese: {{t+|vi|luẩn quẩn}}, {{t+|vi|chờn vờn}}
+{{trans-bottom}}
+
+{{trans-top-also|to be indecisive or uncertain|vacillate|waver|doubt|hesitate}}
+* Bulgarian: {{t|bg|колебая се}}
+* Czech: {{t|cs|balancovat|impf}}
+* Finnish: {{t+|fi|epäröidä}}, {{t|fi|häilyä}}, {{t|fi|[[olla]] [[kahden vaiheilla]]}}
+* French: {{t+|fr|hésiter}}
+* Galician: {{t|gl|atariñar}}, {{t|gl|bambanear}}, {{t+|gl|bambear}}, {{t|gl|dubidar}}, {{t|gl|musear}}, {{t|gl|nutar}}, {{t+|gl|tordear}}
+* German: {{t+|de|zögern}}, {{t|de|unsicher sein}}
+* Greek: {{t+|el|αιωρούμαι}}
+* Italian: {{t+|it|esitare}}, {{t|it|essere in bilico}}, {{t|it|essere indeciso}}, {{t|it|essere sospeso}}, {{t+|it|pencolare}}
+* Macedonian: {{t|mk|се ко́леба}}
+* Portuguese: {{t+|pt|hesitar}}, {{t+|pt|vacilar}}
+* Romanian: {{t+|ro|oscila}}
+* Russian: {{t+|ru|колеба́ться|impf}}
+{{trans-bottom}}
+
+{{trans-top|to use a mouse or other device to place a cursor over (something on a screen) without clicking, so as to produce a result}}
+* Chinese:
+*: Mandarin: {{t|cmn|懸停|tr=xuántíng}}
+* Czech: {{t|cs|[[najet]] [[kurzorem]] [[na]] [[hyperodkaz]]}}
+* Finnish: {{t+|fi|kohdistaa}}, {{t+|fi|osoittaa}}
+* French: {{t|fr|[[placer]] [[le]] [[curseur]] [[au-dessus]] [[d'un]] [[hyperlien]]}}
+* German: {{t+|de|bewegen}} {{qualifier|with [[zu]]}}, {{t+|de|fahren}} {{qualifier|with [[über]]}}, {{t+|de|positionieren}} {{qualifier|with [[auf]]}}
+* Italian: {{t|it|[[passare]] [[il]] [[cursore]] [[sopra]]}}
+* Norwegian: {{t|no|oversveve}}
+* Romanian: {{t|ro|plasa cursorul peste link}}
+* Spanish: {{t|es|[[colocar]] [[el]] [[puntero]] [[sobre]]}}
+* Vietnamese: {{t|vi|rê chuột}}, {{t|vi|rê con trỏ}}
+{{trans-bottom}}
+
+{{trans-top|to travel in a hovercraft as it moves above a water surface}}
+* Finnish: {{t|fi|[[kulkea]] [[ilmatyynyalus|ilmatyynyaluksella]]}}
+* German: {{t|de|schweben (entlang, über)}}
+{{trans-bottom}}
+
+===Noun===
+{{en-noun}}
+
+# An [[act#Noun|act]], or the [[state#Noun|state]], of [[remain#Verb|remaining]] [[stationary#Adjective|stationary]] in the [[air#Noun|air]] or some other [[place#Noun|place]].
+# A [[flock#Noun|flock]] of [[bird#Noun|birds]] [[flutter#Verb|fluttering]] in the air in one place.
+# {{lb|en|figuratively}} An act, or the state, of being [[suspended#Adjective|suspended]]; a [[suspension]].
+# {{lb|en|chiefly|Southern England}} A [[cover#Noun|cover]]; a [[protection]]; a [[shelter#Noun|shelter]]; specifically, an [[overhanging#Verb|overhanging]] [[bank#Noun|bank]] or [[stone#Noun|stone]] under which [[fish#Noun|fish]] can [[shelter#Verb|shelter]]; also, a shelter for [[hen#Noun|hens]] [[brood#Verb|brooding]] their [[egg#Noun|eggs]].
+#* {{RQ:Carew Survey of Cornwall|folio=105|verso=1|passage=Oyſters grevv vpon boughs of trees (an Indian miracle) vvhich vvere caſt in {{quote-gloss|the pond}} thither, to ſerue as a '''houer''' for the fiſh.}}
+#* {{RQ:Kingsley Water-Babies|page=116|passage=And now, down the rushing stream, {{...}} past dark '''hovers''' under swirling banks, from which great trout rushed out on Tom, thinking him to be good to eat, and turned back sulkily, for the fairies sent them home again with a tremendous scolding, for daring to meddle with a water-baby; {{...}}}}
+#* {{RQ:Kingsley Health and Education|page=234|passage=Without the instinct of self-preservation, which causes the sea-anemone to contract its tentacles, or the fish to dash into its '''hover''', species would be extermined wholesale by involuntary suicide.}}
+
+====Derived terms====
+* {{l|en|hovercard}}
+* {{l|en|hoverfly}}, {{vern|hover fly}}
+* {{l|en|hover hand}}
+* {{l|en|hover text}}
+
+====Translations====
+{{trans-top|act, or the state, of remaining stationary in the air or some other place}}
+* Finnish: {{t+|fi|leijuminen}}, {{t+|fi|leijunta}}
+* German: {{t+|de|Schwebezustand}}
+{{trans-bottom}}
+
+{{trans-top|flock of birds fluttering in the air in one place}}
+* Finnish: {{t|fi|[[paikallaan]] [[pysyä|pysyvä]] [[lintuparvi]]}}, {{t|fi|[[leijuva]] [[lintuparvi]]}}
+* German: {{t|de|Auffliegen (Geflügel)|n}}
+{{trans-bottom}}
+
+{{trans-see|act, or the state, of being suspended|suspension}}
+{{trans-see|cover; protection; shelter|cover|protection|shelter}}
+
+{{trans-top|overhanging bank or stone under which fish can shelter}}
+* Finnish: {{t+|fi|kieleke}}
+* German: {{t|de|Versteck (hinter Steinen)|n}}
+{{trans-bottom}}
+
+===References===
+<references/>
+
+===Further reading===
+* {{pedia|2=hover (disambiguation)}}
+* {{R:Century}}
+* {{R:Webster 1913}}
+* {{R:OneLook}}
+
+==Norwegian Bokmål==
+
+===Alternative forms===
+* {{alt|nb|høver}}
+
+===Noun===
+{{head|nb|noun form|g=m}}
+
+# {{inflection of|nb|hov||indef|p}}
+
+==Scots==
+
+===Verb===
+{{sco-verb}}
+
+# to [[#English|hover]]
+# to [[pause]] {{gloss|in hesitation}}

@@ -1,0 +1,130 @@
+import { TimelinePastPerfect } from '../diagrams';
+
+<Section id="perf" n={4} title="Past Perfect — передминулий" tense="pp">
+
+<Lede>Час «перемотки назад». Ви вже розповідаєте про минуле — і треба зробити крок <b>ще далі</b> назад. Це його єдина робота.</Lede>
+
+### 4.1 Форма — найпростіша з усіх: однакова для всіх осіб
+
+<Formula
+  lines={[
+    { sign: '+', body: <>Підмет <K>+ had + V3</K></>, comment: 'I had finished, she had gone, they had built' },
+    { sign: '−', body: <>Підмет <Neg>+ hadn&apos;t + V3</Neg></>, comment: "I hadn't seen it before" },
+    { sign: '?', body: <><Q>Had</Q> + підмет <Q>+ V3</Q> … ?</>, comment: 'Had you tested it?' },
+  ]}
+  note="Скорочення: I'd / you'd / he'd = I had (або I would — зрозуміло з контексту). Короткі відповіді: Yes, I had. / No, I hadn't."
+/>
+
+<SvgBox caption={<><b>When I arrived, the team had already left.</b> — Коли я приїхав, команда вже пішла. Past Perfect завжди вимірюється відносно точки в Past Simple.</>}>
+  <TimelinePastPerfect />
+</SvgBox>
+
+### 4.2 Шість випадків уживання — з розбором
+
+#### ① Дія перед іншою дією в минулому
+
+<ExList>
+  <Ex ua="На момент, коли клієнт підключився, ми вже виправили баг." why={<><i>By the time</i> — майже гарантований сигнал Past Perfect.</>}>By the time the client joined, we <M t="pp">had fixed</M> the bug.</Ex>
+  <Ex ua="Коли я відкрив ноутбук, батарея вже сіла.">When I opened the laptop, the battery <M t="pp">had already died</M>.</Ex>
+  <Ex ua="Зустріч закінчилася до того, як я дійшов.">The meeting <M t="pp">had finished</M> before I got there.</Ex>
+  <Ex ua="На момент запуску він уже пішов з компанії.">He <M t="pp">had left</M> the company by the time we launched.</Ex>
+</ExList>
+
+#### ② Причина ситуації в минулому — «чому так вийшло»
+
+<ExList>
+  <Ex ua="Деплой упав, бо ми не запустили міграції." why="Причина завжди раніша за наслідок → Past Perfect.">The deploy failed because we <M t="pp">hadn't run</M> the migrations.</Ex>
+  <Ex ua="Вона була в люті — їй ніхто не сказав про зміну.">She was furious — nobody <M t="pp">had told</M> her about the change.</Ex>
+  <Ex ua="Я не міг зайти, бо забув перепустку.">I couldn't get in because I <M t="pp">had forgotten</M> my badge.</Ex>
+  <Ex ua="Машина не заводилась — акумулятор сів.">The car wouldn't start — the battery <M t="pp">had gone</M> flat.</Ex>
+</ExList>
+
+#### ③ Досвід до певного моменту в минулому
+
+<ExList>
+  <Ex ua="Це був мій перший пітч — раніше я ніколи не говорив з інвесторами.">It was my first pitch — I <M t="pp">had never spoken</M> to investors before.</Ex>
+  <Ex ua="Це було найкраще демо, яке я коли-небудь бачив." why={<>Після найвищого ступеня (<i>the best, the first, the worst</i>) у минулому — Past Perfect.</>}>It was the best demo I <M t="pp">had ever seen</M>.</Ex>
+  <Ex ua="Я вперше керував таким великим дроном.">It was the first time I <M t="pp">had flown</M> a drone that big.</Ex>
+</ExList>
+
+#### ④ Непряма мова — зсув часу назад
+
+| Пряма мова | Непряма мова |
+|---|---|
+| «I **finish** at six.» <Ua>Present Simple</Ua> | He said he **finished** at six. <Ua>→ Past Simple</Ua> |
+| «I **am working**.» <Ua>Present Continuous</Ua> | He said he **was working**. <Ua>→ Past Continuous</Ua> |
+| «I **finished** it.» <Ua>Past Simple</Ua> | He said he **had finished** it. <Ua>→ Past Perfect</Ua> |
+| «I **have finished** it.» <Ua>Present Perfect</Ua> | He said he **had finished** it. <Ua>→ Past Perfect</Ua> |
+| «I **was testing** it.» <Ua>Past Continuous</Ua> | He said he **had been testing** it. |
+
+<Muted><b>Логіка проста:</b> кожен час «відступає» на один крок назад. Past Perfect — остання зупинка, далі відступати нема куди, тому Past Perfect залишається Past Perfect.</Muted>
+
+#### ⑤ Третій умовний — жаль про минуле
+
+<ExList>
+  <Ex ua="Якби ми додали моніторинг, ми б помітили це раніше." why={<>Формула: <b>If + had + V3, … would have + V3</b>. Розповідає про те, чого не сталося.</>}>If we <M t="pp">had added</M> monitoring, we <b>would have caught</b> it earlier.</Ex>
+  <Ex ua="Якби я знав про дедлайн, я б не поїхав.">If I <M t="pp">had known</M> about the deadline, I <b>wouldn't have taken</b> the trip.</Ex>
+  <Ex ua="Вона б приєдналася, якби ти її запросив.">She <b>would have joined</b> us if you <M t="pp">had invited</M> her.</Ex>
+</ExList>
+
+#### ⑥ Нездійснені плани й надії
+
+<ExList>
+  <Ex ua="Я сподівався закрити раунд до червня. (але не закрив)">I <M t="pp">had hoped</M> to close the round by June.</Ex>
+  <Ex ua="Ми планували запуститись у першому кварталі. (не вийшло)">We <M t="pp">had planned</M> to launch in Q1.</Ex>
+  <Ex ua="Я збирався тобі подзвонити, але зустріч затягнулась." why={<>Конструкція <b>was/were going to</b> — «збирався, але не зробив». Дуже вживана.</>}>I <b>was going to</b> call you, but the meeting ran over.</Ex>
+</ExList>
+
+### 4.3 Слова-маркери
+
+<Chips>
+  <Chip t="pp">by the time — на той момент, коли</Chip>
+  <Chip t="pp">by 2020 — до 2020</Chip>
+  <Chip t="pp">before — до того як</Chip>
+  <Chip t="pp">after — після того як</Chip>
+  <Chip t="pp">already — уже</Chip>
+  <Chip t="pp">just — щойно</Chip>
+  <Chip t="pp">never … before — ніколи раніше</Chip>
+  <Chip t="pp">until then — до того часу</Chip>
+  <Chip t="pp">it was the first time — це був перший раз</Chip>
+  <Chip t="pp">as soon as — щойно, як тільки</Chip>
+</Chips>
+
+<History title="чому саме третя форма">
+  Перфект виріс із присвійної конструкції: <i>«I have the letter written»</i> — «маю листа написаним», де <i>written</i> було прикметником-дієприкметником при слові <i>letter</i>. Згодом фраза перерозклалася: <i>have</i> стало допоміжним, а дієприкметник прив'язався до нього — <i>«I have written the letter»</i>.
+
+  Past Perfect — та сама конструкція, у якій <i>have</i> просто пересунули в минуле: <b>had + V3</b>. Ось чому там завжди третя форма — колись вона була означенням, а не частиною дієслова.
+</History>
+
+<Note variant="trap" title="⚠ Найбільша помилка — вживати Past Perfect занадто часто">
+  Past Perfect — це <b>не</b> «час для всього давнього». Він потрібен лише тоді, коли без нього <b>порядок подій був би незрозумілий</b>. Якщо ви розповідаєте події по порядку, або слова <i>before / after / then</i> уже показують послідовність — <b>Past Simple достатньо і звучить природніше</b>.
+
+  <GoodBad>
+    <Bad>I <b>had woken up</b>, I <b>had made</b> coffee and then I <b>had opened</b> my laptop.</Bad>
+    <Good>I <b>woke up</b>, <b>made</b> coffee and <b>opened</b> my laptop.<br /><Ua>Події йдуть по порядку → перемотка не потрібна.</Ua></Good>
+  </GoodBad>
+
+  <GoodBad>
+    <Meh>After I <b>had reviewed</b> the PR, I merged it.</Meh>
+    <Good>After I <b>reviewed</b> the PR, I merged it.<br /><Ua>Слово «after» уже показує порядок — носії тут не вживають perfect.</Ua></Good>
+  </GoodBad>
+
+  <b>Просте правило-фільтр:</b> приберіть <i>had</i> подумки. Якщо зміст не змінився і порядок подій усе одно зрозумілий — <i>had</i> не потрібне.
+</Note>
+
+### 4.4 Past Perfect Continuous — had been + V-ing
+
+Та сама перемотка назад, але з наголосом на <b>тривалості процесу</b> до тієї точки в минулому.
+
+<ExList>
+  <Ex ua="Коли ми знайшли витік, сервіс деградував уже три години.">By the time we found the leak, the service <b>had been degrading</b> for three hours.</Ex>
+  <Ex ua="Вона була виснажена — вона дебажила з 6-ї ранку.">She was exhausted — she <b>had been debugging</b> since 6 a.m.</Ex>
+  <Ex ua="Земля була мокра, бо йшов дощ." why="Класика: видимий результат зараз-у-минулому + процес, що його спричинив.">The ground was wet because it <b>had been raining</b>.</Ex>
+</ExList>
+
+| Past Perfect Simple — результат | Past Perfect Continuous — процес |
+|---|---|
+| I **had written** three reports. <Ua>Три готові звіти — важливий результат.</Ua> | I **had been writing** reports all day. <Ua>Важливо, що я писав цілий день.</Ua> |
+| He **had painted** the room. <Ua>Кімната пофарбована.</Ua> | He **had been painting** — that's why his hands were dirty. <Ua>Звідси брудні руки.</Ua> |
+
+</Section>

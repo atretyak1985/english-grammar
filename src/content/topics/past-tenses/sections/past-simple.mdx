@@ -1,0 +1,174 @@
+import { TimelinePastSimple } from '../diagrams';
+
+<Section id="simple" n={2} title="Past Simple — простий минулий" tense="ps">
+
+<Lede>Основний робочий час. Якщо ви просто розповідаєте, що сталося — це ваш час за замовчуванням. Близько 80% усіх розповідей про минуле в живій мові.</Lede>
+
+### 2.1 Форма — повна таблиця
+
+<Formula
+  lines={[
+    { sign: '+', body: <>I / you / he / she / it / we / they <K>+ V2</K></>, comment: 'worked, went, built — 2-га форма' },
+    { sign: '−', body: <>Підмет <Neg>+ did not (didn&apos;t) + V1</Neg></>, comment: "didn't work, didn't go — 1-ша форма!" },
+    { sign: '?', body: <><Q>Did</Q> + підмет <Q>+ V1</Q> … ?</>, comment: 'Did you deploy? — НЕ «Did you deployed?»' },
+    { sign: '?', body: <>Wh- + <Q>did</Q> + підмет <Q>+ V1</Q> … ?</>, comment: 'Where did you go? What did he say?' },
+  ]}
+  note="Короткі відповіді: Yes, I did. / No, I didn't."
+/>
+
+#### Дієслово to be — окремий випадок, без did
+
+|  | Стверджувальне | Заперечне | Питальне |
+|---|---|---|---|
+| **I / he / she / it** | I **was** tired. | I **wasn't** tired. | **Was** I tired? |
+| **you / we / they** | They **were** late. | They **weren't** late. | **Were** they late? |
+
+<Muted><b>Чому так?</b> <i>Was / were</i> — самі по собі допоміжні дієслова. Їм не потрібен «помічник» <i>did</i>, вони самі вміють утворювати заперечення й питання.</Muted>
+
+<GoodBad>
+  <Bad>I <b>didn't was</b> at the meeting.<br /><b>Did</b> you <b>were</b> there?</Bad>
+  <Good>I <b>wasn't</b> at the meeting.<br /><b>Were</b> you there?</Good>
+</GoodBad>
+
+<Note variant="warn" title="Правило, яке порушують усі — «минулий час позначається один раз»">
+  Щойно ви сказали <code>did</code> — основне дієслово повертається до початкової форми. Уявіть, що <i>did</i> «забирає» минулий час собі, і дієслову вже нічого не залишається.
+
+  <GoodBad>
+    <Bad>Did you <b>saw</b> the incident report?<br />He didn't <b>came</b> to the standup.<br />Why did she <b>left</b> so early?</Bad>
+    <Good>Did you <b>see</b> the incident report?<br />He didn't <b>come</b> to the standup.<br />Why did she <b>leave</b> so early?</Good>
+  </GoodBad>
+</Note>
+
+<History title="звідки взялося саме did">
+  Конструкція з <i>do</i> у запереченнях і питаннях (*do-support*) з'явилася лише у XV–XVI ст. У Шекспіра ще паралельно живуть <i>«I know not»</i> і <i>«I do not know»</i> — обидва були нормою. Саме тому модальні дієслова її не беруть: <i>can</i>, <i>must</i>, <i>should</i> сформувалися раніше й залишилися в старій системі, де заперечення утворювалося просто додаванням <i>not</i>. Тому <i>«didn't can»</i> неможливе, а <i>«couldn't»</i> — норма.
+</History>
+
+<SvgBox>
+  <TimelinePastSimple />
+</SvgBox>
+
+### 2.2 Шість випадків уживання — з розбором
+
+#### ① Завершена дія з конкретним часом у минулому
+
+<ExList>
+  <Ex ua="Ми перейшли на ECS минулої весни." why={<>Є маркер <i>last spring</i> — час названий і закінчився.</>}>We <M t="ps">migrated</M> to ECS last spring.</Ex>
+  <Ex ua="Я купив запчастини для дрона три тижні тому." why={<><i>ago</i> завжди тягне за собою Past Simple.</>}>I <M t="ps">bought</M> the drone parts three weeks ago.</Ex>
+  <Ex ua="Вона надіслала договір у понеділок вранці.">She <M t="ps">sent</M> the contract on Monday morning.</Ex>
+  <Ex ua="Клієнт учора не відповів." why={<>Заперечення: didn&apos;t + <b>reply</b>, а не <i>replied</i>.</>}>The client <M t="ps">didn't reply</M> yesterday.</Ex>
+  <Ex ua="Коли ти почав вчити англійську?" why="Питання про конкретний момент → тільки Past Simple, ніколи Present Perfect.">When <M t="ps">did</M> you <M t="ps">start</M> learning English?</Ex>
+</ExList>
+
+#### ② Послідовність подій — розповідь
+
+<ExList>
+  <Ex ua="Я відкрив дашборд, побачив сплеск і викликав чергового інженера." why="Три крапки поспіль. Порядок слів = порядок подій, ніяких додаткових часів не треба.">I <M t="ps">opened</M> the dashboard, <M t="ps">saw</M> the spike, and <M t="ps">paged</M> the on-call engineer.</Ex>
+  <Ex ua="Він зайшов, сів і попросив цифри.">He <M t="ps">walked</M> in, <M t="ps">sat</M> down and <M t="ps">asked</M> for the numbers.</Ex>
+  <Ex ua="Ми відкотили деплой, перезапустили сервіс і написали пост-мортем.">We <M t="ps">rolled back</M> the deploy, <M t="ps">restarted</M> the service and <M t="ps">wrote</M> a post-mortem.</Ex>
+</ExList>
+
+#### ③ Повторювана дія в минулому — звичка
+
+<ExList>
+  <Ex ua="Джуніором я працював майже щовихідних.">As a junior I <M t="ps">worked</M> most weekends.</Ex>
+  <Ex ua="Раніше я грав на гітарі щовечора. (а зараз ні)" why={<><b>used to + V1</b> — спеціальна конструкція для звички, якої більше немає. Дуже природна в мовленні.</>}>I <b>used to play</b> guitar every evening.</Ex>
+  <Ex ua="Кожного літа ми їздили в гори." why={<><b>would + V1</b> — теж повторювана дія, але звучить літературніше, з ноткою ностальгії. З дієсловами стану не вживається.</>}>Every summer we <b>would drive</b> to the mountains.</Ex>
+  <Ex ua="Він телефонував мені щодня того тижня.">He <M t="ps">called</M> me every day that week.</Ex>
+</ExList>
+
+<Note title="used to чи would — коротко">
+  <b>used to</b> — і для дій, і для станів: <i>I used to work there. I used to have long hair.</i> ✓<br />
+  <b>would</b> — тільки для повторюваних <b>дій</b>: <i>We would meet every Friday.</i> ✓ · <i>I would have long hair.</i> ✗<br />
+  Заперечення й питання зручніше через Past Simple: <i>I didn't use to smoke</i> (зверніть увагу: <b>use</b>, без -d, бо є <i>did</i>).
+</Note>
+
+#### ④ Стан або факт у минулому
+
+<ExList>
+  <Ex ua="API був страшенно повільний.">The API <M t="ps">was</M> painfully slow.</Ex>
+  <Ex ua="У нього було двоє підлеглих і жодного бюджету.">He <M t="ps">had</M> two direct reports and no budget.</Ex>
+  <Ex ua="Я знав відповідь, але промовчав." why={<><i>know</i> — дієслово стану, форми <i>was knowing</i> не існує.</>}>I <M t="ps">knew</M> the answer but <M t="ps">stayed</M> quiet.</Ex>
+  <Ex ua="Машина належала моєму батькові.">The car <M t="ps">belonged</M> to my father.</Ex>
+</ExList>
+
+#### ⑤ Завершений період часу
+
+<ExList>
+  <Ex ua="Я прожив у Львові шість років. (уже не живу)" why={<>Порівняйте: <i>I <b>have lived</b> in Lviv for six years</i> = і досі там живу.</>}>I <M t="ps">lived</M> in Lviv for six years.</Ex>
+  <Ex ua="Ми працювали разом з 2018 по 2021.">We <M t="ps">worked</M> together from 2018 to 2021.</Ex>
+  <Ex ua="Збій тривав сорок хвилин.">The outage <M t="ps">lasted</M> forty minutes.</Ex>
+</ExList>
+
+#### ⑥ Коротка дія, що перериває іншу
+
+<ExList>
+  <Ex ua="Поки я презентував, зник Wi-Fi." why="Довга дія — Continuous, коротка (та, що «врізалась») — Simple.">While I was presenting, the Wi-Fi <M t="ps">dropped</M>.</Ex>
+  <Ex ua="Я їхав додому, коли загорілася лампочка помилки.">I was driving home when the warning light <M t="ps">came</M> on.</Ex>
+</ExList>
+
+### 2.3 Слова-маркери
+
+<Chips>
+  <Chip t="ps">yesterday — учора</Chip>
+  <Chip t="ps">last week / month / year</Chip>
+  <Chip t="ps">two hours ago — дві години тому</Chip>
+  <Chip t="ps">in 2019</Chip>
+  <Chip t="ps">then — потім</Chip>
+  <Chip t="ps">after that — після цього</Chip>
+  <Chip t="ps">first … then … finally</Chip>
+  <Chip t="ps">when I was a student</Chip>
+  <Chip t="ps">the other day — днями</Chip>
+  <Chip t="ps">in the morning (минулого дня)</Chip>
+  <Chip t="ps">once — колись</Chip>
+  <Chip t="ps">at 6 p.m.</Chip>
+</Chips>
+
+<History title="-ed — це колишнє окреме слово">
+  Закінчення <b>-ed</b> — германський винахід: в інших індоєвропейських мовах його немає. Найпоширеніша версія походження — суфікс виріс із дієслова зі значенням «робити» (той самий корінь, що дав <i>do</i>), яке приліплювалося до основи: умовно «love-did» → <i>loved</i>. Тобто буквально «я зробив любити».
+
+  Мови роблять так постійно. Майбутній час в іспанській <i>cantaré</i> виріс із латинського <i>cantare habeo</i> — «маю співати». Окреме слово стирається до закінчення.
+</History>
+
+### 2.4 Правопис закінчення -ed
+
+| Правило | Приклади |
+|---|---|
+| За замовчуванням — додаємо **-ed** | work → work**ed** · deploy → deploy**ed** · check → check**ed** |
+| Закінчується на **-e** → додаємо лише **-d** | scale → scale**d** · migrate → migrate**d** · close → close**d** |
+| Приголосна + **-y** → **-ied** | try → tr**ied** · deny → den**ied** · apply → appl**ied** |
+| Голосна + **-y** → просто **-ed** | play → play**ed** · enjoy → enjoy**ed** · delay → delay**ed** |
+| Один склад «приголосна-голосна-приголосна» → **подвоюємо** останню | stop → sto**pp**ed · plan → pla**nn**ed · ship → shi**pp**ed · drop → dro**pp**ed |
+| Два склади з наголосом на останньому → подвоюємо | refer → refe**rr**ed · permit → permi**tt**ed · prefer → prefe**rr**ed |
+| Наголос на першому складі → НЕ подвоюємо | open → open**ed** · visit → visit**ed** · happen → happen**ed** |
+
+<Note title="🔊 Вимова -ed — три звуки, а не один">
+  Українці майже завжди вимовляють <i>/ɪd/</i> скрізь. У 70% випадків це помилка, і саме вона одразу видає неносія.
+
+  | Звук | Після чого | Приклади |
+  |---|---|---|
+  | **/t/** | глухих приголосних: p, k, f, s, ʃ, tʃ | stop**ped** /stɒpt/ · work**ed** /wɜːkt/ · watch**ed** /wɒtʃt/ · help**ed** /helpt/ · miss**ed** /mɪst/ |
+  | **/d/** | дзвінких приголосних і голосних | call**ed** /kɔːld/ · clos**ed** /kləʊzd/ · play**ed** /pleɪd/ · open**ed** /ˈəʊpənd/ |
+  | **/ɪd/** | **тільки** після **t** або **d** | want**ed** /ˈwɒntɪd/ · need**ed** /ˈniːdɪd/ · updat**ed** /ˈʌpdeɪtɪd/ · start**ed** /ˈstɑːtɪd/ |
+
+  Промовте вголос кілька разів: <i>«We shipped it, tested it and deployed it»</i> → /ʃɪpt/ · /ˈtestɪd/ · /dɪˈplɔɪd/
+</Note>
+
+### 2.5 Неправильні дієслова — за групами, так легше запамʼятати
+
+<Muted>V2 — для Past Simple. V3 — знадобиться для Past Perfect. Цей самий список використовує аналізатор тексту, тому підсвітка й теорія говорять про одні й ті самі слова.</Muted>
+
+<History title="неправильні дієслова — не виняток, а старша система">
+  Спочатку минулий час утворювався **зміною голосної в корені**, а не закінченням: sing – sang – sung, drive – drove – driven, take – took – taken. Ця техніка називається **аблаут** і успадкована ще з праіндоєвропейської. У давньоанглійській такі дієслова («сильні») ділилися на сім чітких класів зі своїми схемами чергування. Тобто <i>took</i> замість <i>taked</i> — це не поломка, це реліквія.
+
+  Слабка модель з <i>-ed</i> стала **продуктивною**, тобто моделлю за замовчуванням: кожне нове або запозичене дієслово одразу отримує <i>-ed</i>. Після норманського завоювання тисячі французьких слів (realise, continue, prefer) прийшли вже «правильними» — і з того самого механізму сьогодні виходять <i>googled</i> і <i>downloaded</i>.
+
+  Сильні дієслова поступово переходили в правильні, і вижили переважно найчастотніші — часте вживання тримає форму в пам'яті. <i>Help</i> колись було сильним (healp, holpen), але вживалося недостатньо часто й стало <i>helped</i>. А <i>take</i>, <i>go</i>, <i>come</i> встояли.
+
+  Крайній випадок — **суплетивізм**, коли форми зібрані з різних коренів. <i>Went</i> спершу було минулим від дієслова <i>wend</i> («прямувати») і просто вкралося в парадигму <i>go</i>. А <i>be</i> зібране аж із трьох коренів: am/is, was/were, be.
+</History>
+
+<IrregularVerbs group="a" />
+<IrregularVerbs group="b" />
+<IrregularVerbs group="c" />
+
+</Section>

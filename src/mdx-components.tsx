@@ -1,0 +1,131 @@
+import type { MDXComponents } from 'mdx/types';
+
+import {
+  Badge,
+  Bad,
+  BRow,
+  Breakdown,
+  Card,
+  CardTitle,
+  Cheat,
+  CheatCode,
+  CheatRow,
+  Chip,
+  Chips,
+  Cm,
+  En,
+  Ex,
+  ExList,
+  Formula,
+  Good,
+  GoodBad,
+  Grid2,
+  Grid3,
+  H2,
+  H3,
+  H4,
+  Hr,
+  InlineCode,
+  K,
+  Lede,
+  Li,
+  M,
+  Meh,
+  MP,
+  MPRow,
+  Muted,
+  Neg,
+  History,
+  Note,
+  Ol,
+  P,
+  Q,
+  Story,
+  SvgBox,
+  Table,
+  Td,
+  TenseHead,
+  Th,
+  Tr,
+  Ua,
+  Ul,
+} from '@/components/content/blocks';
+import { Drills } from '@/components/content/Drills';
+import { IrregularVerbs, StateVerbs } from '@/components/content/IrregularVerbs';
+import { Section } from '@/components/content/Section';
+import { Quiz } from '@/components/quiz/Quiz';
+
+/**
+ * Одна мапа для всього MDX: і розмітка markdown, і компоненти теми.
+ * Завдяки їй у тексті теми не потрібні імпорти — просто <Note>, <ExList>, <M>.
+ */
+export function useMDXComponents(components: MDXComponents = {}): MDXComponents {
+  return {
+    // markdown
+    h2: H2,
+    h3: H3,
+    h4: H4,
+    p: P,
+    ul: Ul,
+    ol: Ol,
+    li: Li,
+    code: InlineCode,
+    hr: Hr,
+    table: Table,
+    tr: Tr,
+    th: Th,
+    td: Td,
+    blockquote: ({ children }) => <Note>{children}</Note>,
+
+    // ті самі заголовки, але як явні теги в MDX
+    H2,
+    H3,
+    H4,
+
+    // блоки теми
+    Section,
+    Lede,
+    Muted,
+    Card,
+    CardTitle,
+    Grid2,
+    Grid3,
+    TenseHead,
+    Badge,
+    Formula,
+    K,
+    Neg,
+    Q,
+    Cm,
+    ExList,
+    Ex,
+    GoodBad,
+    Bad,
+    Good,
+    Meh,
+    History,
+    Note,
+    MP,
+    MPRow,
+    Chips,
+    Chip,
+    Story,
+    Breakdown,
+    BRow,
+    Cheat,
+    CheatRow,
+    CheatCode,
+    SvgBox,
+    En,
+    Ua,
+    M,
+
+    // інтерактив і дані
+    Drills,
+    Quiz,
+    IrregularVerbs,
+    StateVerbs,
+
+    ...components,
+  };
+}

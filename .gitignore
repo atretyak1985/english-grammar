@@ -3,3 +3,26 @@ Thumbs.db
 *.tmp
 .vscode/
 .idea/
+
+# Node / Next
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env*.local
+
+# Drizzle
+drizzle/meta/_journal.json.bak
+
+# Артефакти звірки з макетом — великі й відтворювані
+.design-verify/
+
+# Локальні налаштування агентів
+.claude/
+.serena/
+.swarmery/

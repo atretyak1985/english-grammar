@@ -1,0 +1,137 @@
+import { TimelinePastContinuous } from '../diagrams';
+
+<Section id="cont" n={3} title="Past Continuous — минулий тривалий" tense="pc">
+
+<Lede>Відповідає не на «що сталося?», а на «що відбувалося навколо?». Це декорація сцени — сам по собі він майже ніколи не є суттю речення.</Lede>
+
+### 3.1 Форма
+
+<Formula
+  lines={[
+    { sign: '+', body: <>I / he / she / it <K>was</K> + V-ing · you / we / they <K>were</K> + V-ing</> },
+    { sign: '−', body: <>Підмет <Neg>+ wasn&apos;t / weren&apos;t + V-ing</Neg></> },
+    { sign: '?', body: <><Q>Was / Were</Q> + підмет + V-ing … ?</>, comment: 'тут НЕМАЄ did — was/were уже допоміжні' },
+    { sign: '?', body: <>What <Q>were</Q> you <Q>doing</Q> at 9 p.m.?</>, comment: 'класичне питання про момент' },
+  ]}
+  note="Короткі відповіді: Yes, I was. / No, I wasn't."
+/>
+
+#### Правопис -ing
+
+| Правило | Приклади |
+|---|---|
+| Зазвичай просто **+ ing** | work → work**ing** · check → check**ing** |
+| Німа **-e** зникає | make → mak**ing** · write → writ**ing** · close → clos**ing** |
+| Один склад CVC → подвоєння | run → ru**nn**ing · sit → si**tt**ing · get → ge**tt**ing · plan → pla**nn**ing |
+| **-ie** → **-ying** | lie → l**ying** · die → d**ying** · tie → t**ying** |
+| **-ee** залишається | see → see**ing** · agree → agree**ing** |
+
+<SvgBox>
+  <TimelinePastContinuous />
+</SvgBox>
+
+### 3.2 Сім випадків уживання — з розбором
+
+#### ① Дія тривала в конкретний момент минулого
+
+<ExList>
+  <Ex ua="О 9-й ранку я був на дзвінку з клієнтом." why="Питання «що ти робив о 9-й?» — не «що сталося», а «що тривало».">At 9 a.m. I <M t="pc">was sitting</M> in a client call.</Ex>
+  <Ex ua="Рік тому в цей час я жив у Варшаві.">This time last year I <M t="pc">was living</M> in Warsaw.</Ex>
+  <Ex ua="Що ти робив, коли я подзвонив?">What <M t="pc">were</M> you <M t="pc">doing</M> when I called?</Ex>
+  <Ex ua="Опівночі команда все ще тестувала.">The team <M t="pc">was still testing</M> at midnight.</Ex>
+</ExList>
+
+#### ② Довгу дію перервала коротка
+
+<ExList>
+  <Ex ua="Я писав пост-мортем, коли ліг Slack." why="Довга дія — Continuous. Коротка, що «врізалась» — Simple.">I <M t="pc">was writing</M> the post-mortem when Slack <M t="ps">went</M> down.</Ex>
+  <Ex ua="Вона пояснювала архітектуру, коли її перебив CEO.">She <M t="pc">was explaining</M> the architecture when the CEO <M t="ps">interrupted</M> her.</Ex>
+  <Ex ua="Ми їхали в аеропорт, коли лопнула шина.">We <M t="pc">were driving</M> to the airport when the tyre <M t="ps">blew</M>.</Ex>
+  <Ex ua="Я заряджав авто, коли зникло світло.">I <M t="pc">was charging</M> the car when the power <M t="ps">went</M> out.</Ex>
+</ExList>
+
+#### ③ Дві дії одночасно
+
+<ExList>
+  <Ex ua="Поки він презентував, я спостерігав за обличчями інвесторів." why="Обидві дії довгі й одночасні → обидві в Continuous.">While he <M t="pc">was pitching</M>, I <M t="pc">was watching</M> the investors' faces.</Ex>
+  <Ex ua="Вона готувала, поки я лагодив роутер.">She <M t="pc">was cooking</M> while I <M t="pc">was fixing</M> the router.</Ex>
+</ExList>
+
+#### ④ Атмосфера, опис сцени
+
+<ExList>
+  <Ex ua="Йшов дощ, офіс гудів, і ніхто не брав слухавку." why="Класичний початок історії: спочатку фон, потім головна подія в Past Simple.">It <M t="pc">was raining</M>, the office <M t="pc">was buzzing</M>, and nobody <M t="pc">was answering</M> the phone.</Ex>
+  <Ex ua="Сонце сідало, а дрони все ще літали.">The sun <M t="pc">was setting</M> and the drones <M t="pc">were still flying</M>.</Ex>
+</ExList>
+
+#### ⑤ Тимчасова ситуація
+
+<ExList>
+  <Ex ua="Того місяця я працював із Варшави. (тимчасово)" why={<>Порівняйте: <i>I worked in Warsaw for a year</i> — просто факт про період.</>}>That month I <M t="pc">was working</M> out of Warsaw.</Ex>
+  <Ex ua="Того тижня він заміняв тімліда.">He <M t="pc">was covering</M> for the team lead that week.</Ex>
+</ExList>
+
+#### ⑥ Роздратування — always / constantly / forever
+
+<ExList>
+  <Ex ua="Він вічно пушив прямо в main. (з негативом)" why={<>Порівняйте нейтральне: <i>He always pushed to main</i> — просто факт, без емоції.</>}>He <M t="pc">was always pushing</M> straight to main.</Ex>
+  <Ex ua="Вони постійно змінювали вимоги. (і це дратувало)">They <M t="pc">were constantly changing</M> the requirements.</Ex>
+</ExList>
+
+#### ⑦ Мʼякший, ввічливіший тон
+
+<ExList>
+  <Ex ua="Я хотів запитати, чи можемо перенести дзвінок." why={<>Найкорисніша фраза в цьому розділі. <i>I was wondering if…</i> звучить значно ввічливіше, ніж <i>I want</i> або <i>Can you</i>.</>}>I <M t="pc">was wondering</M> if we could move the call.</Ex>
+  <Ex ua="Я сподівався, ти зможеш глянути цей PR.">I <M t="pc">was hoping</M> you could take a look at this PR.</Ex>
+</ExList>
+
+<History title="was hunting — колись «was on hunting»">
+  Тривалі часи розвинулися з конструкції «be + on + віддієслівний іменник»: <i>he was on huntinge</i> → <i>he was a-hunting</i> → <i>he was hunting</i>. Тобто «він був на полюванні» — стан, а не дія. Повністю ця модель закріпилася лише в Новий час і розрослася у XVIII–XIX ст. Через це походження Continuous і досі тяготіє до значення «перебувати в процесі», а не «зробити».
+</History>
+
+<Note variant="trap" title="⚠ Дієслова стану НЕ вживаються з -ing">
+  Дієслова думки, почуттів, володіння і сприйняття описують <b>стан</b>, а не дію. Вони залишаються в Past Simple.
+
+  <StateVerbs />
+
+  <GoodBad>
+    <Bad>I <b>was knowing</b> the answer.<br />We <b>were needing</b> more time.<br />She <b>was having</b> a laptop.</Bad>
+    <Good>I <b>knew</b> the answer.<br />We <b>needed</b> more time.<br />She <b>had</b> a laptop.</Good>
+  </GoodBad>
+
+  <b>Але:</b> деякі з них МОЖУТЬ мати -ing, коли змінюють значення на активну дію:
+
+  | Стан (Simple) | Дія (Continuous) |
+  |---|---|
+  | I **thought** it was fine. — вважав | I **was thinking** about the architecture. — обмірковував |
+  | She **had** a car. — мала | She **was having** lunch / a meeting. — обідала / була на зустрічі |
+  | The soup **tasted** odd. — мав смак | He **was tasting** the soup. — куштував |
+  | He **looked** tired. — виглядав | He **was looking** for the file. — шукав |
+  | I **saw** the problem. — бачив | I **was seeing** a specialist. — ходив до фахівця |
+</Note>
+
+### 3.3 while чи when — правило, якому можна довіряти
+
+<Grid2>
+  <Card>
+    <H4>WHILE + довга дія</H4>
+    <b>While</b> I <M t="pc">was reviewing</M> the code, she <M t="ps">called</M>.
+    <Ua>Після <i>while</i> — майже завжди Past Continuous.</Ua>
+  </Card>
+  <Card>
+    <H4>WHEN + коротка дія</H4>
+    I <M t="pc">was reviewing</M> the code <b>when</b> she <M t="ps">called</M>.
+    <Ua>Після <i>when</i> — майже завжди Past Simple.</Ua>
+  </Card>
+</Grid2>
+
+<Note variant="warn" title="Одне слово змінює весь зміст — вивчіть ці три речення напам'ять">
+  <En>When I arrived, they <b>started</b> the meeting.</En>
+  <Ua>Я прийшов, і потім вони почали. → я був вчасно.</Ua>
+  <En>When I arrived, they <b>were starting</b> the meeting.</En>
+  <Ua>Зустріч якраз починалася. → я трохи запізнився.</Ua>
+  <En>When I arrived, they <b>had started</b> the meeting.</En>
+  <Ua>Зустріч уже почалася раніше. → я запізнився.</Ua>
+</Note>
+
+</Section>

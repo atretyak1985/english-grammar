@@ -1,0 +1,212 @@
+==English==
+
+===Pronunciation===
+* {{IPA|en|/ɪmˈpɹuːv/}}
+* {{audio|en|en-us-improve.ogg|a=US}}
+* {{rhymes|en|uːv|s=2}}
+
+===Etymology 1===
+From {{der|en|xno|emprouwer}}, from {{der|en|fro|en-}} + {{m|fro|prou||profit}}, from {{der|en|la-vul|prode||advantageous, profitable}}.
+
+====Alternative forms====
+* {{l|en|emprove}} {{qualifier|obsolete}}
+
+====Verb====
+{{en-verb}}
+
+# {{lb|en|transitive}} To make (something) [[better]]; to [[increase]] the [[value]] or [[productivity]] (of something).
+#: {{ux|en|Painting the woodwork will '''improve''' this house.}}
+#: {{ux|en|Buying more servers would '''improve''' performance.}}
+#* {{quote-journal|en|date=2013-06-22|volume=407|issue=8841|page=70|magazine=w:The Economist
+|title=[http://www.economist.com/news/finance-and-economics/21579879-buy-out-firm-really-does-focus-operational-improvements-engineers Engineers of a different kind]
+|passage=Private-equity nabobs bristle at being dubbed mere financiers. Piling debt onto companies’ balance-sheets is only a small part of what leveraged buy-outs are about, they insist. '''Improving''' the workings of the businesses they take over is just as core to their calling, if not more so. Much of their pleading is public-relations bluster.}}
+# {{lb|en|intransitive}} To become better.
+#: {{ux|en|I have '''improved''' since taking the tablets.}}
+#: {{ux|en|The error messages have '''improved''' since the last version, when they were incomprehensible.}}
+#* {{RQ:Ferguson Zollenstein|chapter=IV|page=41|passage=“My Continental prominence is '''improving''',” I commented dryly. Von Lindowe cut at a furze bush with his silver-mounted rattan. “Quite so,” he said as dryly, his hand at his mustache. “I may say if your intentions were known your life would not be worth a curse.”}}
+# {{lb|en|dated}} To use or employ to good purpose; to turn to profitable account.
+#: {{ux|en|to '''improve''' one's time;&emsp; to '''improve''' his means}}
+#* {{RQ:Barrow Works|sermonname=The Reward of Honouring God|passage=We shall especially honour God, by discharging faithfully those offices which God hath entrusted us with: by '''improving''' diligently those talents which God hath committed to us}}
+#* {{RQ:Spectator|issue=111|date=7 July 1711|page=96|passage=[A] hint that I do not remember to have seen opened and '''improved''' {{...}}}}
+#* {{quote-text|en|year=1715|author=w:Isaac Watts|title=s:Against Idleness and Mischief
+|passage=How doth the little busy bee / '''Improve''' each shining hour.}}
+#* {{RQ:Blackstone Commentaries|book=III|chapter=Of Judgment, and It's Incidents|page=392|passage=[T]he court has alſo an opportunity, which it ſeldom fails to '''improve''', {{...}}}}
+#* '''March 7, 1778''', {{w|George Washington}}, ''letter''
+#*: True policy, as well as good faith, in my opinion, binds us to '''improve''' the occasion.
+
+=====Synonyms=====
+* {{sense|to make something better}} {{l|en|ameliorate}}, {{l|en|better}}, {{l|en|batten}}, {{l|en|enhance}}; See also [[Thesaurus:improve]]
+
+=====Antonyms=====
+* {{antsense|to make something worse}} {{l|en|deteriorate}}, {{l|en|worsen}}; See also [[Thesaurus:aggravate]]
+* {{antsense|to become worse}} {{l|en|deteriorate}}, {{l|en|worsen}}; See also [[Thesaurus:worsen]]
+
+=====Derived terms=====
+{{col|en|disimprove|improvability|improvable|misimprove|reimprove
+|on the improve|improve on|improve the occasion|improve upon|improvement|improver|improving|improving agent|improving lease|self-improve}}
+
+=====Translations=====
+{{trans-top-see|to make something better|perfect|upgrade|enhance|augment|boost|potentiate}}
+* Abkhaz: {{t|ab|а́иӷьтәра}}
+* Afrikaans: {{t+|af|verbeter}}
+* Albanian: {{t+|sq|përmirësoj}}
+* American Sign Language: {{t|ase|B@TipForearm-PalmBack B@Forearm-PalmBack B@BaseForearm-PalmBack}}
+* Arabic: {{t+|ar|حَسَّنَ}}
+* Armenian: {{t+|hy|բարելավել}}, {{t+|hy|լավացնել}}, {{t+|hy|կատարելագործել}}, {{t+|hy|զարգացնել}}
+* Asturian: {{t|ast|ameyorar}}, {{t|ast|meyorar}}
+* Avar: {{t|av|лъикӏлъизабизе}}
+* Azerbaijani: {{t|az|yaxşilaşdirmaq}}, {{t|az|təkmilləşdirmək}}, {{t|az|mükəmməlləşdirmək}}
+* Basque: {{t|eu|hobetu}}
+* Belarusian: {{t|be|паляпша́ць|impf}}, {{t|be|пале́пшыць|pf}}
+* Breton: {{t+|br|gwellaat}}
+* Bulgarian: {{t+|bg|подобря́вам|impf}}, {{t|bg|подобря́|pf}}, {{t|bg|усъвърше́нствам|impf}}
+* Catalan: {{t+|ca|millorar}}
+* Chechen: {{t-needed|ce}}
+* Chinese:
+*: Mandarin: {{t+|cmn|改善|tr=gǎishàn}}, {{t+|cmn|提高|tr=tígāo}}
+* Choctaw: {{t|cho|achukmʋlichi}}
+* Comorian:
+*: Ngazidja Comorian: {{t|zdj|rekeɓesha|alt=urekeɓesha}}
+* Cornish: {{t|kw|gwellhe}}
+* Czech: {{t+|cs|zlepšovat|impf}}, {{t+|cs|zlepšit|pf}}, {{t|cs|vylepšovat|impf}}, {{t+|cs|vylepšit|pf}}
+* Danish: {{t+|da|forbedre}}
+* Dutch: {{t|nl|[[beter]] [[maken]]}}, {{t+|nl|verbeteren}}, {{t+|nl|beteren}}
+* Esperanto: {{t|eo|plibonigi}}
+* Faroese: {{t|fo|betra}}
+* Finnish: {{t+|fi|parantaa}}
+* French: {{t+|fr|améliorer}}, {{t+|fr|amender}}
+* Frisian:
+*: West Frisian: {{t|fy|ferbetterje}}, {{t|fy|betarje}}
+* Galician: {{t+|gl|mellorar}}
+* Georgian: {{t|ka|აუმჯობესებს}}
+* German: {{t+|de|verbessern}}
+* Gothic: {{t|got|𐌱𐍉𐍄𐌾𐌰𐌽}}
+* Greek: {{t+|el|βελτιώνω}}
+* Hebrew: {{t+|he|שיפר|tr=shippér|alt=שיפר \ שִׁפֵּר}}
+* Hindi: {{t+|hi|सुधरना}}
+* Hungarian: {{t+|hu|javít}}, {{t+|hu|tökéletesít}}
+* Icelandic: {{t|is|betra}}
+* Ido: {{t+|io|bonigar}}
+* Ingrian: {{t|izh|parentaa}}
+* Interlingua: {{t|ia|meliorar}}
+* Irish: {{t|ga|leasaigh}}, {{t|ga|cuir feabhas ar}}
+* Italian: {{t+|it|migliorare}}, {{t+|it|perfezionare}}, {{t|it|fare migliorie}}
+* Japanese: {{t+|ja|改良|tr=かいりょうする, kairyō suru|alt=改良する}}, {{t+|ja|改善|tr=かいぜんする, kaizen suru|alt=改善する}}, {{t+|ja|良い|alt=良くする|tr=よくする, yoku suru}}
+* Korean: {{t+|ko|개선하다}}
+* Latin: {{t|la|meliorem facio}}
+* Macedonian: {{t|mk|подобрува|impf}}, {{t|mk|подобри|pf}}
+* Malay: {{t-needed|ms}}
+* Māori: {{t|mi|whakapai}}, {{t|mi|whakawhanake}}
+* Mongolian: {{t-needed|mn}}
+* Norman: {{t|nrf|amender}}
+* Norwegian:
+*: Bokmål: {{t+|nb|forbedre}}, {{t+|nb|bedre}}
+*: Nynorsk: {{t|nn|betra}}
+* Occitan: {{t|oc|amelhorar}}
+* Old English: {{t|ang|æþelian}}
+* Old Norse: {{t|non|betra}}
+* Oromo: {{t|om|wayyeessuu}}
+* Ossetian: {{t|os|фӕхуыздӕр кӕнын}}
+* Persian: {{t|fa|بهبود دادن|tr=behbud dâdan}}
+* Polish: {{t+|pl|poprawiać|impf}}, {{t+|pl|poprawić|pf}}, {{t+|pl|ulepszać|impf}}, {{t+|pl|ulepszyć|pf}}, {{t+|pl|polepszać|impf}}, {{t+|pl|polepszyć|pf}}, {{t|pl|usprawniać|impf}}, {{t|pl|usprawnić|pf}}
+* Portuguese: {{t+|pt|melhorar}}
+* Romanian: {{t+|ro|îmbunătăți}}
+* Romansh: {{t|rm|meglierar}}
+* Russian: {{t+|ru|улучша́ть|impf}}, {{t+|ru|улу́чшить|pf}}, {{t+|ru|соверше́нствовать|impf}}, {{t+|ru|нала́дить|pf}}, {{t+|ru|поправля́ть|impf}}, {{t+|ru|попра́вить|pf}}, {{t+|ru|нала́живать|impf}}, {{t+|ru|нала́дить|pf}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|побољша́вати|impf}}, {{t|sh|побо̀љшати|pf}}
+*: Latin: {{t+|sh|poboljšávati|impf}}, {{t+|sh|pobòljšati|pf}}
+* Slovak: {{t|sk|zlepšovať|impf}}, {{t|sk|zlepšiť|pf}}, {{t|sk|vylepšovať|impf}}, {{t|sk|vylepšiť|pf}}
+* Slovene: {{t|sl|izboljševati|impf}}, {{t|sl|izboljšati|pf}}
+* Spanish: {{t+|es|mejorar}}, {{t+|es|embonar}}
+* Swedish: {{t+|sv|förbättra}}, {{t+|sv|bättra}}
+* Tagalog: {{t|tl|pagandahin}}, {{t+|tl|ayusin}}
+* Thai: {{t+|th|ปรับปรุง}}
+* Tibetan: {{t-needed|bo}}
+* Turkish: {{t+|tr|düzeltmek}}
+* Tuvan: {{t-needed|tyv}}
+* Ukrainian: {{t|uk|полі́пшувати|impf}}, {{t|uk|полі́пшити|pf}}, {{t|uk|покра́щувати|impf}}, {{t|uk|покра́щити|pf}}
+* Vietnamese: {{t+|vi|cải thiện}}, {{t+|vi|cải tiến}}
+* Volapük: {{t+|vo|gudükumön}}
+* Welsh: {{t+|cy|gwella}}
+* Yiddish: {{t|yi|פֿאַרבעסערן}}
+{{trans-bottom}}
+
+{{trans-top|to become better}}
+* American Sign Language: {{t|ase|B@TipForearm-PalmBack B@Forearm-PalmBack B@BaseForearm-PalmBack}}
+* Arabic: {{t|ar|تَحَسَّنَ}}
+* Armenian: {{t+|hy|լավանալ}}, {{t+|hy|բարելավվել}}, {{t+|hy|զարգանալ}}
+* Asturian: {{t|ast|ameyorar}}, {{t|ast|meyorar}}
+* Azerbaijani: {{t|az|yaxşılaşmaq}}, {{t|az|təkmilləşmək}}, {{t|az|mükəmməlləşmək}}
+* Belarusian: {{t|be|паляпша́цца|impf}}, {{t|be|пале́пшыцца|pf}}
+* Bulgarian: {{t+|bg|подобрявам|impf|alt=подобря́вам се}}, {{t|bg|подобря|pf|alt=подобря́ се}}
+* Catalan: {{t+|ca|millorar}}
+* Chinese:
+*: Mandarin: {{t+|cmn|改善|tr=gǎishàn|}}, {{t+|cmn|提高|tr=tígāo}}, {{t+|cmn|向上|tr=xiàngshàng}}
+* Czech: {{t+|cs|zlepšovat|impf|alt=zlepšovat se}}, {{t+|cs|zlepšit|pf|alt=zlepšit se}}, {{t|cs|vylepšovat|impf|alt=vylepšovat se}}, {{t+|cs|vylepšit|pf|alt=vylepšit se}}
+* Danish: {{t+|da|forbedre|alt=forbedre sig}}
+* Dutch: {{t+|nl|beteren}}
+* Finnish: {{t+|fi|parantua}}
+* French: {{t+|fr|améliorer|alt=s'améliorer}}
+* Galician: {{t+|gl|mellorar}}
+* German: {{t+|de|verbessern|alt=sich verbessern}}
+* Greek: {{t+|el|βελτιώνομαι}}
+* Hebrew: {{t|he|הִשְׁתַּפֵּר|tr=hishtapér}}
+* Hungarian: {{t+|hu|gyógyul}}, {{t+|hu|javul}}, {{t+|hu|meggyógyul}}, {{t+|hu|megjavul}}, {{t|hu|rendbe jön}}, {{t+|hu|talpra áll}}
+* Ingrian: {{t|izh|pareta}}, {{t|izh|mukahua}}
+* Irish: {{t|ga|téigh i bhfeabhas}}
+* Italian: {{t+|it|migliorare}}, {{t|it|stare meglio}}, {{t+|it|riprendersi}}
+* Japanese: {{t+|ja|好転|tr=こうてんする, kōten suru|alt=好転する}}, {{t+|ja|良い|alt=良くなる|tr=よくなる, yoku naru}}
+* Korean: {{t+|ko|개선되다}}
+* Latin: {{t|la|melior fio}}, {{t|la|melius fio}}
+* Macedonian: {{t|mk|се подобрува|impf}}, {{t|mk|се подобри|pf}}
+* Malay: {{t-needed|ms}}
+* Norwegian:
+*: Bokmål: {{t+|nb|forbedre|alt=forbedre seg}}
+* Oromo: {{t|om|fooyyessuu}}
+* Persian: {{t+|fa|بهبود یافتن|tr=behbud yâftan}}
+* Pohnpeian: {{t|pon|kamwahu}}
+* Polish: {{t+|pl|poprawiać|impf|alt=poprawiać się}}, {{t+|pl|poprawić|pf|alt=poprawić się}}
+* Portuguese: {{t+|pt|melhorar}}
+* Quechua: {{t|qu|allinyay}}
+* Romanian: {{t|ro|a se îmbunătăți}}
+* Russian: {{t+|ru|улучша́ться|impf}}, {{t+|ru|улу́чшиться|pf}}, {{t+|ru|поправля́ться|impf}}, {{t+|ru|попра́виться|pf}}, {{t+|ru|нала́живаться|impf}}, {{t+|ru|нала́диться|pf}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|побољшавати|impf|alt=побољша́вати се}}, {{t|sh|побољшати|pf|alt=побо̀љшати се}}
+*: Latin: {{t+|sh|poboljšavati|impf|alt=poboljšávati se}}, {{t+|sh|poboljšati|pf|alt=pobòljšati se}}
+* Slovak: {{t|sk|zlepšovať|impf|alt=zlepšovať sa}}, {{t|sk|zlepšiť|pf|alt=zlepšiť sa}}, {{t|sk|vylepšovať|impf|alt=vylepšovať sa}}, {{t|sk|vylepšiť|pf|alt=vylepšiť sa}}
+* Slovene: {{t|sl|izboljševati|impf|alt=izboljševati se}}, {{t|sl|izboljšati|pf|alt=izboljšati se}}
+* Spanish: {{t+|es|mejorar}}
+* Swahili: {{t+|sw|boresha}}
+* Swedish: {{t|sv|[[bli]] [[bättre]]}}, {{t+|sv|förbättras}}
+* Thai: {{t|th|ดีขึ้น}}, {{t+|th|ทุเลา}}
+* Tibetan: {{t-needed|bo}}
+* Turkish: {{t+|tr|iyileştirmek}}
+* Ukrainian: {{t|uk|полі́пшуватися|impf}}, {{t|uk|полі́пшитися|pf}}, {{t|uk|покра́щуватися|impf}}, {{t|uk|покра́щитися|pf}}
+* Vietnamese: {{t+|vi|cải thiện}}
+* Volapük: {{t+|vo|gudikumön}}
+* Welsh: {{t+|cy|gwella}}
+{{trans-bottom}}
+
+{{checktrans-top}}
+* Telugu: {{t+check|te|మెరుగుపరచు}} {{qualifier|transitive}} {{t-check|te|మెరుగుపడు}}
+* Woiwurrung: {{t-check|wyi|marrin-ing}}
+* Yucatec Maya: {{t-check|yua|ma’alobkin}}, {{t-check|yua|ma’alobtal}}
+{{trans-bottom}}
+
+===Etymology 2===
+From {{der|en|la|improbō||disapprove, reject}}. {{dbt|en|improbate}}.
+
+====Verb====
+{{en-verb}}
+
+# {{lb|en|obsolete}} To disprove or make void; to refute.
+#* {{RQ:Tyndale Obedience|chapter=[Of the Sacramentes.] Of Order.|folio=xciij|folioend=xciij|versoend=1|folioref=xciij|versoref=1|passage=One ſayth this and a nother that&nbsp;/ but can not agre. Nether can any of them make ſo ſtronge a reaſon vvhich a nother can not '''improve'''.}}
+# {{lb|en|obsolete}} To disapprove of; to find fault with; to reprove; to censure.
+#* {{RQ:Tyndale Obedience|chapter=The .IIIJ. Senses of yͤ Scripture|folio=cxlix|passage=[W]hen he reherſed his preachinge and his doynges vnto the hye Apoſtles&nbsp;/ they coulde '''improve''' no thinge {{...}}}}
+#* {{RQ:Homer Chapman Iliads|year=1843|book=X|page=218|passage=You would '''improve''' his negligence, too oft to ease retir’d: {{...}}}}
+
+===Further reading===
+* {{R:Keywords|page=160}}
+
+{{cln|en|ergative verbs}}

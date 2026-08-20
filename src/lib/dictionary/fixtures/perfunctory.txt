@@ -1,0 +1,73 @@
+==English==
+{{was wotd|2009|February|21}}
+
+===Etymology===
+{{root|en|ine-pro|*bʰewg-|id=enjoy}}
+From {{der|en|la-lat|perfunctōrius||[[careless]], [[negligent]]}}, from the past participial stem of {{m|la||[[perfungor]], perfunct-|perform, carry through}}, from {{m|la|per-}} + {{m|la|fungor}}.
+
+===Pronunciation===
+* {{IPA|en|/pəˈfʌŋk.t(ə)ɹɪ/|a=UK}}
+* {{IPA|en|/pɚˈfʌŋk.tɚ.i/|a=US}}
+* {{audio|en|en-us-perfunctory.ogg|a=US}}
+
+===Adjective===
+{{en-adj}}
+
+# Done only or merely to conform to a minimal standard or to fulfill a [[protocol]] or presumptive duty.
+#: {{syn|en|automatic|cursory|obligatory|pro forma|token|unthinking}}
+#* {{quote-book|en|year=1918|author=w:Edgar Rice Burroughs|title={{w|The Land That Time Forgot (novel)|The Land That Time Forgot}}|chapter=VIII|passage=I caught the gist of what he was saying--which in effect was that he had found and captured this Galu, that she was his and that he defied anyone to question his right of possession. It appeared to me, as I afterward learned was the fact, that I was witnessing the most primitive of marriage ceremonies. The assembled members of the tribe looked on and listened in a sort of dull and '''perfunctory''' apathy, for the speaker was by far the mightiest of the clan.}}
+#* {{RQ:Bellow Humboldt's Gift|year=1976|page=338|passage=He then poured some wine for me to taste, and harassed me with '''perfunctory''' courtesies that had to be acknowledged.}}
+#* {{quote-journal
+|en
+|date=July 30, 2017
+|author=Ali Barthwell
+|title=Ice and fire finally meet in a front-loaded episode of Game Of Thrones (newbies)
+|work=The Onion AV Club
+|url=http://www.avclub.com/tvclub/fire-and-ice-finally-meet-dragonstone-258748
+|page=
+|passage=The second section of the episode charged from Winterfell to Highgarden and Oldtown in a way that felt '''perfunctory'''. I found myself asking, “We’re just getting to Winterfell?”}}
+#* {{quote-journal|en|author=Luke Broadwater; Emily Cochrane; Matt Stevens|title=Congress Rejects Republican Challenge to Pennsylvania Electors, After Day of Chaos|work=The New York Times|date=2021-01-06|url=https://www.nytimes.com/live/2021/01/06/us/electoral-vote|issn=0362-4331|passage=Even as former administration officials and Democratic leaders called on the president to tell his supporters to “go home,” Mr. Trump for hours did little to discourage them from storming the building. Instead, he issued two '''perfunctory''' tweets in which he asked them merely to remain “peaceful.”}}
+# Performed in a [[careless]] or [[indifferent]] manner as a thing of [[rote]].
+#: {{syn|en|haphazard|mechanical|slipshod}}
+#: {{ant|en|careful|complete|thorough}}
+#: {{ux|en|He did a '''perfunctory''' job cleaning his dad's car, finishing quickly but leaving a few spots still dirty.}}
+#* {{quote-book|en|year=1992|author=Peter Bowbrick|title=The Economics of Quality, Grades, and Brands|url=http://books.google.ca/books?id=zygOAAAAQAAJ&pg=PA55&dq=%22perfunctory%22|page=55|passage=Alternatively it may mean that a '''perfunctory''' search is enough to ensure that a purchase is acceptable, so less search is carried out.}}
+
+====Derived terms====
+{{col|en|nonperfunctory
+|perfunctorily|perfunctoriness}}
+
+====Translations====
+{{trans-top|performed out of routine, with little care}}
+* Bulgarian: {{t+|bg|повърхностен}}, {{t+|bg|небрежен}}
+* Catalan: {{t|ca|perfuntori}}, {{t+|ca|descurat}}
+* Chinese:
+*: Mandarin: {{t+|cmn|敷衍|tr=fūyǎn}}, {{t+|cmn|含糊|tr=hánhu}}, {{t|cmn|不痛不癢|tr=bùtòngbùyǎng}}
+* Czech: {{t+|cs|formální}}, {{t+|cs|ledabylý}}, {{t+|cs|povrchní}}, {{t|cs|letmý}}, {{t|cs|zběžný}}
+* Danish: {{t|da|skødesløs}}, {{t|da|overfladisk}}
+* Dutch: {{t+|nl|plichtmatig|alt=(louter) plichtmatig}}, {{t+|nl|machinaal}}, {{t+|nl|werktuiglijk}}, {{t+|nl|routineus}}
+* Esperanto: {{t|eo|supraĵa}}, {{t+|eo|indiferenta}}
+* Finnish: {{t|fi|rutiininomainen}}, {{t|fi|pintapuolinen}}, {{t+|fi|puolihuolimaton}}
+* French: {{t+|fr|sommaire}}, {{t+|fr|superficiel}}, {{t+|fr|négligeant}}, {{t+|fr|pour la forme}}, {{t+|fr|de pure forme}}, {{t+|fr|détaché}}, {{t+|fr|bâclé}}
+* German: {{t+|de|flüchtig}}, {{t+|de|maschinell}}, {{t+|de|oberflächlich}}, {{t|de|der Form halber}}, {{t+|de|formell}}, {{t+|de|pro forma}}, {{t+|de|routinemäßig}}, {{t+|de|nachlässig}}
+* Greek: {{t+|el|διεκπεραιωτικός}}
+* Hungarian: {{t+|hu|felületes}}, {{t+|hu|hanyag}}, {{q|glance}} {{t+|hu|futó}}
+* Irish: {{t|ga|sleamchúiseach}}, {{t|ga|neamhaireach}}
+* Italian: {{t+|it|superficiale}}, {{t+|it|sbrigativo}}
+* Japanese: {{t+|ja|御座成|tr=おざなりの, ozanari no|alt=御座成の}}
+* Polish: {{t+|pl|pobieżny}}, {{t+|pl|powierzchowny}}
+* Portuguese: {{t+|pt|perfunctório}}
+* Romanian: {{t|ro|cu superficialitate}}, {{t|ro|cu neglijenââ}}, {{t+|ro|superficial}}
+* Russian: {{t+|ru|небре́жный}}, {{t+|ru|пове́рхностный}}, {{t+|ru|машина́льный}}, {{t+|ru|форма́льный}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|махиналан}}, {{t|sh|макиналан}}
+*: Latin: {{t+|sh|mahinalan}}, {{t+|sh|makinalan}}
+* Spanish: {{t+|es|superficial}}, {{t+|es|perfunctorio}}, {{t+|es|rutinario}}, {{t+|es|somero}}, {{t|es|maquinal}}
+* Swedish: {{t+|sv|invand}}, {{t+|sv|slentrianmässig}}, {{t+|sv|vana}}
+* Ukrainian: {{t|uk|поверхневий|m}}, {{t+|uk|формальний|m}}, {{t|uk|машинальний|m}}, {{t|uk|недбалий|m}}
+* Vietnamese: {{t+|vi|qua loa}}, {{t+|vi|hời hợt}}, {{t+|vi|đại khái}}
+* Yiddish: {{t|yi|אויבנאויפֿיק}}
+{{trans-bottom}}
+
+===See also===
+* {{l|en|pro forma}}

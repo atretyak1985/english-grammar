@@ -1,0 +1,9 @@
+==English==
+
+===Pronunciation===
+* {{rhymes|en|ɔɪd|s=2}}
+
+===Verb===
+{{head|en|verb form}}
+
+# {{infl of|en|deploy||ed-form}}
