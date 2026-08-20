@@ -1,3 +1,5 @@
+import { headers } from 'next/headers';
+
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import NextAuth, { type NextAuthResult, type Session } from 'next-auth';
 import type { Provider } from 'next-auth/providers';
@@ -63,8 +65,18 @@ const result: NextAuthResult = NextAuth({
 
 export const { handlers, signIn, signOut } = result;
 
-/** Сеанс або null. Ніколи не кидає — без налаштованого входу сайт працює як гість. */
+/**
+ * Сеанс або null. Ніколи не кидає — без налаштованого входу сайт працює як гість.
+ *
+ * Заголовки читаються ПЕРШИМ рядком, до перевірки налаштувань, і це не
+ * формальність. Без цього звертання гілка «вхід не налаштований» не торкається
+ * запиту зовсім, Next вважає сторінку статичною і запікає її під час збірки — а
+ * в образі змінних середовища немає. Наслідок: у продакшені з робочим входом
+ * сторінка назавжди показує «вхід ще не налаштований», і жоден перезапуск цього
+ * не змінює, бо HTML уже готовий.
+ */
 export async function currentSession(): Promise<Session | null> {
+  await headers();
   if (!isAuthConfigured()) return null;
   try {
     return await result.auth();
