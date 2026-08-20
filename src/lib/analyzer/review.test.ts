@@ -63,19 +63,21 @@ describe('review', () => {
     expect(result?.matches).toEqual([{ from: 2, to: 4, tense: 'pp' }]);
   });
 
-  it('пропускає найдовшу справжню конструкцію — чотири слова', async () => {
-    answer([{ from: 1, to: 4, tense: 'pp' }]);
+  it('пропускає найдовшу справжню конструкцію — пʼять слів', async () => {
+    // «is not going to work» — періфрастичне майбутнє з запереченням, найдовша
+    // форма, яку взагалі можна зустріти. Саме під неї підняли межу проміжку.
+    answer([{ from: 1, to: 5, tense: 'fs' }]);
 
-    // 'He had not been working then' → слова 1..4 це «had not been working».
-    const result = await review('He had not been working then');
+    // 'It is not going to work today' → слова 1..5 у токенах 2..10.
+    const result = await review('It is not going to work today');
 
-    expect(result?.matches).toEqual([{ from: 2, to: 8, tense: 'pp' }]);
+    expect(result?.matches).toEqual([{ from: 2, to: 10, tense: 'fs' }]);
   });
 
   it('відкидає задовгий проміжок: конструкція не буває на пів речення', async () => {
-    answer([{ from: 0, to: 4, tense: 'ps' }]);
+    answer([{ from: 0, to: 6, tense: 'ps' }]);
 
-    const result = await review('He had not been working then');
+    const result = await review('It is not going to work today');
 
     expect(result?.matches).toEqual([]);
   });

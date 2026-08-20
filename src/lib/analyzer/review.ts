@@ -28,7 +28,7 @@ import { type AnalyzedToken, analyzeText, normalizeWord } from './tenses';
  * робить старі відповіді неспівставними, і без цієї версії вони жили б у базі
  * далі, мовчки віддаючи розмітку за попередніми правилами.
  */
-export const PROMPT_VERSION = 3;
+export const PROMPT_VERSION = 4;
 
 /**
  * `effort` приймають не всі моделі: Haiku 4.5 відповідає на нього 400
@@ -39,8 +39,13 @@ function supportsEffort(model: string): boolean {
   return !model.includes('haiku');
 }
 
-/** Найдовша конструкція — «had / have not been working»: допоміжні, заперечення, дієслово. */
-const MAX_SPAN_WORDS = 4;
+/**
+ * Найдовша справжня конструкція — пʼять слів: «is not going to work». Форми на
+ * `will` вкладаються в чотири («won't have been working»), але періфрастичне
+ * майбутнє з запереченням довше, і обрізати його означало б віддати читачеві
+ * половину конструкції.
+ */
+const MAX_SPAN_WORDS = 5;
 
 /** Скільки максимум збігів приймаємо: більше, ніж слів, модель повернути не може. */
 const MAX_MATCHES = 4000;
@@ -104,17 +109,20 @@ export interface Review {
  * коштують дешевше, ніж їхня відсутність, і водночас знімають найчастіші
  * помилки розмітки.
  */
-const SYSTEM = `You mark verb constructions in English text for a language-learning reader — a Ukrainian speaker studying the past and present tenses.
+const SYSTEM = `You mark verb constructions in English text for a language-learning reader — a Ukrainian speaker studying the past, present and future tenses.
 
 The text arrives as numbered word tokens in the form <index>:<word>. Punctuation stays attached to the word it belongs to. You return the indices, never the words.
 
-Mark exactly six kinds of construction:
+Mark exactly nine kinds of construction — three aspects across three times:
 - ps — Past Simple: a finite past-tense verb ("walked", "went", "was", "did not go").
 - pc — Past Continuous: was/were (+ not) + V-ing.
 - pp — Past Perfect: had (+ not) + past participle, including Past Perfect Continuous ("had been working").
 - prs — Present Simple: a finite present-tense verb ("deploy", "scales", "is", "does not know").
 - prc — Present Continuous: am/is/are (+ not) + V-ing.
 - prp — Present Perfect: have/has (+ not) + past participle, including Present Perfect Continuous ("has been working").
+- fs — Future Simple: will/shall (+ not) + bare verb ("will deploy", "won't be ready"), and also "be going to" + bare verb ("is going to fail").
+- fc — Future Continuous: will (+ not) + be + V-ing ("will be waiting").
+- fp — Future Perfect: will (+ not) + have + past participle, including Future Perfect Continuous ("will have been running").
 
 Spans:
 - One match per construction. "from" is its first token — the auxiliary when there is one; "to" is the last token, the lexical verb. An adverb standing between them ("had never seen", "have already fixed") stays inside the span.
@@ -129,10 +137,12 @@ Choosing between the labels:
 - "have"/"has" followed by a noun phrase is lexical "have" and belongs to Present Simple: "I have two reports" is prs on "have" alone. The same shape in the past ("I had lunch") is ps on "had" alone.
 - "'s" is either "is" or "has": before V-ing it is "is" (prc), before a past participle it is "has" (prp). Before a noun it is a possessive and not a verb at all.
 - am/is/are used as the main verb ("she is tired", "the service is down", "the door is locked") is prs, spanning only that token. was/were in the same role is ps.
+- A PRESENT form carrying future meaning stays present. "The train leaves at six" is prs, "We are meeting the vendor on Thursday" is prc, even though both talk about the future: the label follows the form, not the moment being described. Only will/shall and "be going to" make it future.
+- "be going to" is fs only when a bare verb follows it: "I am going to deploy" is fs. When a noun phrase follows, it is literal movement and stays Present Continuous: "I am going to the office" is prc on "am going". If the following word could be either ("I am going to work"), prefer prc.
 
 Do NOT mark:
 - participial adjectives ("a tired engineer", "an interested reader");
-- infinitives ("to deploy"), imperatives ("check the logs"), or a bare stem governed by a modal ("can deploy", "will finish", "should know") — and never mark the modal itself;
+- infinitives ("to deploy"), imperatives ("check the logs"), or a bare stem governed by a modal OTHER than will/shall ("can deploy", "should know", "must ship", "might break") — and never mark those modals themselves. will and shall are the exception: they build Future Simple and the span covers both words;
 - nouns that merely end in -ed or -s. A plural noun ("the logs", "two releases") is not a Present Simple verb: mark a word prs only when it is the finite verb of its clause.
 
 Worked examples. Input, then the matches you would report and why.
@@ -165,8 +175,21 @@ Input: 0:He 1:doesn't 2:know 3:yet, 4:and 5:he 6:has 7:two 8:reports.
   {from: 6, to: 6, prs} — "has" is lexical "have" here; "two reports" is its object.
 
 Input: 0:The 1:job 2:had 3:not 4:been 5:working 6:before 7:we 8:fixed 9:it.
-  {from: 2, to: 5, pp} — "had not been working", the longest shape you will meet.
-  {from: 8, to: 8, ps} — "fixed".`;
+  {from: 2, to: 5, pp} — "had not been working".
+  {from: 8, to: 8, ps} — "fixed".
+
+Input: 0:I'll 1:call 2:you 3:when 4:the 5:build 6:finishes, 7:and 8:by 9:Friday 10:we 11:will 12:have 13:shipped 14:it.
+  {from: 0, to: 1, fs} — "I'll call": the contraction token starts the span.
+  {from: 6, to: 6, prs} — "finishes": after "when" the form is present, so the label is present even though the meaning is future.
+  {from: 11, to: 13, fp} — "will have shipped".
+
+Input: 0:She 1:is 2:going 3:to 4:resign, 5:but 6:right 7:now 8:she 9:is 10:going 11:to 12:the 13:office.
+  {from: 1, to: 4, fs} — "is going to resign": a bare verb follows, so this is the "be going to" future.
+  {from: 9, to: 10, prc} — "is going" to the office is literal movement; "to the office" is a noun phrase and stays outside the span.
+
+Input: 0:At 1:six 2:we 3:will 4:be 5:waiting, 6:and 7:the 8:report 9:will 10:be 11:ready.
+  {from: 3, to: 5, fc} — "will be waiting".
+  {from: 9, to: 10, fs} — "will be" with an adjective after it is Future Simple of "be"; "ready" stays outside.`;
 
 const REPORT_TOOL = {
   name: 'report_matches',
