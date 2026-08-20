@@ -14,7 +14,7 @@ PG_DB        := english_grammar
 
 .DEFAULT_GOAL := help
 .PHONY: help install dev build start check typecheck lint test \
-        db db-stop db-logs db-shell db-push db-seed db-studio db-reset clean
+        db db-stop db-logs db-shell db-push db-seed db-studio db-reset grant-plan clean
 
 help: ## Показати цю довідку
 	@echo 'Граматика англійської — команди:'
@@ -92,6 +92,9 @@ db-seed: db ## Засіяти бібліотеку й тарифи з артеф
 
 db-studio: db ## Drizzle Studio у браузері
 	npm run db:studio
+
+grant-plan: db ## Активувати тариф вручну: make grant-plan EMAIL=... PLAN=basic MONTHS=1
+	EMAIL='$(EMAIL)' PLAN='$(PLAN)' MONTHS='$(MONTHS)' npm run grant-plan
 
 db-reset: ## Знести базу разом з даними і накотити схему заново (потрібно FORCE=1)
 	@if [ "$(FORCE)" != "1" ]; then \

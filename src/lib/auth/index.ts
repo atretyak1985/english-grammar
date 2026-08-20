@@ -1,3 +1,5 @@
+import { headers } from 'next/headers';
+
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import NextAuth, { type NextAuthResult, type Session } from 'next-auth';
 import type { Provider } from 'next-auth/providers';
@@ -63,8 +65,19 @@ const result: NextAuthResult = NextAuth({
 
 export const { handlers, signIn, signOut } = result;
 
-/** Сеанс або null. Ніколи не кидає — без налаштованого входу сайт працює як гість. */
+/**
+ * Сеанс або null. Ніколи не кидає — без налаштованого входу сайт працює як гість.
+ *
+ * Заголовки читаються ПЕРШИМ рядком, до перевірки налаштувань, і це не
+ * формальність. Без цього звертання гілка «входу немає» не торкається запиту
+ * зовсім, Next вважає сторінку статичною і запікає її під час збірки — а в
+ * образі змінних середовища немає. Для `/account` це означало б найгірше:
+ * сторінка викликає `redirect('/login?next=/account')`, тому в збірку лягає
+ * готовий 307, який віддається БЕЗ виконання компонента — і кабінет стає
+ * недосяжним навіть для того, хто щойно увійшов.
+ */
 export async function currentSession(): Promise<Session | null> {
+  await headers();
   if (!isAuthConfigured()) return null;
   try {
     return await result.auth();
