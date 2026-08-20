@@ -1,0 +1,98 @@
+<Section id="markers" n={6} title="Слова-маркери: already, yet, just, still, for, since, ever">
+
+<Lede>Половина помилок у теперішніх часах — не в самому часі, а в маленькому слові поруч і в тому, де воно стоїть. Ці слова роблять подвійну роботу: вони і підказують час, і самі вимагають правильного місця в реченні.</Lede>
+
+### 6.1 already, yet, still — три «вже» і «ще»
+
+|  | Значення | Де стоїть | Приклад |
+|---|---|---|---|
+| **already** | вже (сталося, і це радше швидше, ніж очікували) | між `have` і V3 | I've **already** deployed it. <Ua>Я вже задеплоїв.</Ua> |
+| **yet** | ще (не сталося, але очікується) | у **кінці**, лише в − і ? | I haven't deployed it **yet**. <Ua>Я ще не задеплоїв.</Ua> |
+| **still** | досі (триває довше, ніж хотілося б) | перед смисловим дієсловом | The pipeline is **still** running. <Ua>Пайплайн досі виконується.</Ua> |
+
+<GoodBad>
+  <Bad>I have deployed it <b>already</b> not.<br />Have you <b>yet</b> finished?<br />I <b>yet</b> haven&apos;t seen the alert.</Bad>
+  <Good>I haven&apos;t deployed it <b>yet</b>.<br />Have you finished <b>yet</b>?<br />I haven&apos;t seen the alert <b>yet</b>.</Good>
+</GoodBad>
+
+<Note title="already в питанні — це здивування">
+  <b>Have you finished yet?</b> — нейтральне питання: «ти вже закінчив?»<br />
+  <b>Have you finished already?</b> — здивування: «невже вже закінчив? так швидко?»
+
+  Різниця чутна й важлива. Питання з <i>already</i>, поставлене нейтрально, може прозвучати як недовіра.
+</Note>
+
+<Note variant="warn" title="still чи yet у запереченні — тонка, але помітна різниця">
+  <b>He hasn&apos;t replied yet.</b> — ще не відповів, і це нормально: очікую відповідь.<br />
+  <b>He still hasn&apos;t replied.</b> — досі не відповів, і це вже задовго: у реченні чується нетерпіння.
+
+  Зверніть увагу на місце: <i>still</i> стоїть <b>перед</b> <i>hasn&apos;t</i>, а <i>yet</i> — у кінці.
+</Note>
+
+### 6.2 just — щойно
+
+<ExList>
+  <Ex ua="Вона щойно пішла." why={<><i>just</i> завжди між <i>have</i> і V3. У кінець його не виносять.</>}>She has <b>just</b> left.</Ex>
+  <Ex ua="Я щойно побачив твоє повідомлення — вибач.">I've <b>just</b> seen your message — sorry.</Ex>
+  <Ex ua="Ми щойно розгорнули хотфікс.">We've <b>just</b> pushed a hotfix.</Ex>
+</ExList>
+
+<Muted><b>just</b> має й друге значення — «просто, лише»: <i>I just need five minutes</i>. Розрізняє їх час: із Perfect це «щойно», з Simple — «просто».</Muted>
+
+### 6.3 for, since, in — скільки, з якого моменту, за який час
+
+|  | Що позначає | Приклад |
+|---|---|---|
+| **for** | **скільки часу** триває (проміжок) | I've worked here **for six years**. <Ua>шість років</Ua> |
+| **since** | **з якого моменту** (точка на календарі) | I've worked here **since 2019**. <Ua>з 2019-го</Ua> |
+| **in** | **за який час** щось було зроблено | We fixed it **in ten minutes**. <Ua>за десять хвилин</Ua> |
+
+<GoodBad>
+  <Bad>I've worked here <b>since</b> six years.<br />I've known her <b>for</b> 2015.</Bad>
+  <Good>I've worked here <b>for</b> six years.<br />I've known her <b>since</b> 2015.<br /><Ua>Перевірка: після <i>since</i> має стояти дата або подія, після <i>for</i> — кількість.</Ua></Good>
+</GoodBad>
+
+<Note title="since може вести за собою ціле речення">
+  <b>since + іменник:</b> since Monday · since the outage · since 2019<br />
+  <b>since + речення в Past Simple:</b> since I <b>joined</b> the team · since we <b>added</b> the index
+
+  Зверніть увагу на час у другій частині: подія-початок стоїть у <b>Past Simple</b>, а головне речення — у Perfect. <i>I&apos;ve been on call since I joined.</i>
+</Note>
+
+### 6.4 ever, never — досвід за все життя
+
+<ExList>
+  <Ex ua="Ти колись працював із цим вендором?" why={<><i>ever</i> живе в питаннях і означає «хоч колись за все життя».</>}>Have you <b>ever</b> worked with that vendor?</Ex>
+  <Ex ua="Я ніколи не бачив такої латентності." why={<><i>never</i> саме є запереченням, тому <i>haven&apos;t</i> тут неможливе: ✗ <i>I haven&apos;t never seen</i>.</>}>I've <b>never</b> seen latency like that.</Ex>
+  <Ex ua="Це найгірший інцидент, який у нас був." why={<>Після найвищого ступеня (<i>the worst, the best, the first</i>) — Perfect із <i>ever</i>.</>}>It's the worst outage we've <b>ever</b> had.</Ex>
+</ExList>
+
+### 6.5 lately, recently, so far — маркери відкритого періоду
+
+|  | Значення | Приклад |
+|---|---|---|
+| **lately** | останнім часом (радше в ? і −) | Have you seen him **lately**? |
+| **recently** | нещодавно (і з Perfect, і з Past Simple) | We've **recently** moved to ECS. · We moved **recently**. |
+| **so far** | поки що, на цю мить | Nobody has complained **so far**. |
+| **up to now** | до цього моменту | Up to now, everything has worked. |
+| **these days** | цими днями (звичайно з Continuous) | We're shipping faster **these days**. |
+
+<Muted><b>recently</b> — єдиний із цього списку, який спокійно вживається і з Past Simple: <i>We moved recently</i> ✓. Решта тягне за собою Perfect.</Muted>
+
+### 6.6 Місце маркера в реченні — коротка зведена таблиця
+
+| Слово | Місце | Приклад |
+|---|---|---|
+| already, just, never, ever, always | **між** `have`/`has` і V3 | I have **already** sent it. |
+| yet | у **кінці**, лише − і ? | I haven't sent it **yet**. |
+| still | **перед** дієсловом (і перед `haven't`) | It's **still** running. · He **still** hasn't replied. |
+| for, since, so far, lately | у **кінці** | I've known her **since 2015**. |
+| always, usually, often (Present Simple) | **перед** смисловим дієсловом, **після** `be` | I **usually** work from home. · She is **always** late. |
+
+<Note variant="tip" title="Найдешевший спосіб перестати помилятися з місцем">
+  Ці слова майже не бувають самі по собі — вони живуть у зчепленні з допоміжним дієсловом. Тому вчіть їх не окремо, а <b>цілими блоками</b>: <code>have already</code>, <code>have just</code>, <code>have never</code>, <code>haven't … yet</code>, <code>still hasn't</code>.
+
+  Пʼять блоків, вимовлених уголос по десять разів, працюють краще за будь-яку таблицю: далі рука вставляє слово на потрібне місце сама.
+</Note>
+
+</Section>
