@@ -8,7 +8,7 @@ import { READY_TOPICS } from '@/data/topics';
 import { wordFrequency } from '@/lib/analyzer/vocabulary';
 import { useTexts } from '@/lib/state/texts';
 
-/** Три картки входу: «Продовжити», «Аналіз тексту», «Слова» (CONCEPT 2). */
+/** Картки входу: «Продовжити», «Аналіз тексту», «Слова», «Бібліотека» (CONCEPT 2). */
 export function EntryCards() {
   const { state, readCount, isSectionRead } = useAppState();
   const { texts } = useTexts();
@@ -62,6 +62,14 @@ export function EntryCards() {
         accent="border-l-pp"
         title="Слова за частотою"
         desc={`${corpusSize} слів з ваших текстів · ${known} позначено «знаю»`}
+      />
+      <EntryCard
+        href="/library"
+        kicker="Бібліотека"
+        kickerClass="text-ok"
+        accent="border-l-ok"
+        title="Оповідання з готовою підсвіткою"
+        desc="Розбір уже готовий — читайте без входу, без очікування."
       />
     </div>
   );
