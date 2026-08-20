@@ -89,6 +89,61 @@ describe('findMatches — скорочення, приклеєні до підм
   });
 });
 
+describe('findMatches — майбутні часи', () => {
+  it('will + V1 → Future Simple одним проміжком', () => {
+    expect(matches('We will deploy on Friday.')).toEqual([{ from: 2, to: 4, tense: 'fs' }]);
+  });
+
+  it('will be + V-ing → Future Continuous', () => {
+    expect(matches('I will be waiting at six.')).toEqual([{ from: 2, to: 6, tense: 'fc' }]);
+  });
+
+  it('will have + V3 → Future Perfect', () => {
+    expect(matches('By Friday we will have shipped it.')).toEqual([
+      { from: 6, to: 10, tense: 'fp' },
+    ]);
+  });
+
+  it('will have been + V-ing → той самий Future Perfect', () => {
+    // Perfect Continuous складено в `fp` так само, як у минулому й теперішньому:
+    // три часи мусять поводитися однаково, інакше матриця перестає бути системою.
+    expect(matches('It will have been running for a year.')).toEqual([
+      { from: 2, to: 8, tense: 'fp' },
+    ]);
+  });
+
+  it("'ll → Future Simple від першого токена", () => {
+    expect(matches("I'll call you back.")).toEqual([{ from: 0, to: 2, tense: 'fs' }]);
+  });
+
+  it("won't + V1 → Future Simple разом із запереченням", () => {
+    expect(matches("It won't scale.")).toEqual([{ from: 2, to: 4, tense: 'fs' }]);
+  });
+
+  it('shall — той самий Future Simple, а не окремий час', () => {
+    expect(matches('Shall we start?')).toEqual([{ from: 0, to: 2, tense: 'fs' }]);
+  });
+
+  it('will be + прикметник — Future Simple дієслова be, а не Continuous', () => {
+    // «will be ready» — тут `be` смислове. Правило Continuous не спрацьовує,
+    // бо далі немає -ing, і конструкцію дожене загальне правило will + слово.
+    expect(matches('The report will be ready.')).toEqual([{ from: 4, to: 6, tense: 'fs' }]);
+  });
+
+  it('will have + іменник — Future Simple смислового have, а не перфект', () => {
+    expect(matches('We will have lunch later.')).toEqual([{ from: 2, to: 4, tense: 'fs' }]);
+  });
+
+  it('довша форма виграє в коротшої: перфект не розпадається на fs плюс дієслово', () => {
+    // Найважливіший тест блоку. Якби правило «will + слово» перевірялося раніше,
+    // «will have finished» дало б Future Simple на «will have» і окремо
+    // підсвічене «finished» як Past Simple по закінченню -ed.
+    expect(matches('We will have finished by then.')).toEqual([
+      { from: 2, to: 6, tense: 'fp' },
+    ]);
+  });
+});
+
 describe('findMatches — межа між минулим і теперішнім', () => {
   it('had + V3 лишається Past Perfect, а не стає теперішнім', () => {
     expect(matches('We had finished the migration.')).toEqual([
@@ -133,6 +188,13 @@ describe('findMatches — документовані межі локальног
     expect(matches('The service is down.')).toEqual([]);
   });
 
+  it('be going to локально виглядає як Present Continuous', () => {
+    // «going to deploy» — майбутнє, «going to the office» — рух, і на поверхні
+    // вони однакові. Шаблон не бачить, іменник далі чи дієслово, тому обидва
+    // випадки лишаються Present Continuous, а розрізняє їх модель.
+    expect(matches('I am going to deploy it.')).toEqual([{ from: 2, to: 4, tense: 'prc' }]);
+  });
+
   it('-ing у прикметнику дає хибний Present Continuous — і це відомо', () => {
     // Шаблон не відрізняє «is working» від «is interesting». Помилка свідома:
     // вона дешева, видима читачеві й знімається розбором моделі.
@@ -141,17 +203,20 @@ describe('findMatches — документовані межі локальног
 });
 
 describe('analyzeText', () => {
-  it('рахує всі шість конструкцій, а не лише знайдені', () => {
-    const { stats } = analyzeText('I have fixed it and I was working then.');
+  it('рахує всі девʼять конструкцій, а не лише знайдені', () => {
+    const { stats } = analyzeText('I have fixed it, I was working then and I will call you.');
 
     expect(stats.prp.count).toBe(1);
     expect(stats.pc.count).toBe(1);
+    expect(stats.fs.count).toBe(1);
     // Ключі решти часів мусять існувати з нулем: панель статистики читає їх
     // без перевірки, і відсутній ключ поклав би сторінку.
     expect(stats.ps.count).toBe(0);
+    expect(stats.pp.count).toBe(0);
     expect(stats.prs.count).toBe(0);
     expect(stats.prc.count).toBe(0);
-    expect(stats.pp.count).toBe(0);
+    expect(stats.fc.count).toBe(0);
+    expect(stats.fp.count).toBe(0);
   });
 
   it('розмальовує кожен токен конструкції, а межі позначає окремо', () => {

@@ -4,18 +4,30 @@ import type { ReactNode } from 'react';
 export type Level = 'a2' | 'b1' | 'b2' | 'c1';
 
 /**
- * Шість конструкцій, які застосунок розрізняє наскрізь: теорія, підсвітка, схеми.
+ * Девʼять конструкцій, які застосунок розрізняє наскрізь: теорія, підсвітка,
+ * схеми. Це рівно матриця 3 × 3 — три види на три часи, — і саме тому вони
+ * розмічені двома осями, а не одним списком.
  *
- * Розмічені вони двома осями, а не одним списком, і це не формальність — саме
- * так їх бачить читач. Колір означає ВИД (Simple, Continuous, Perfect), стиль
- * підкреслення означає ЧАС (минулий чи теперішній). Тому синій — це «простий»
- * і в `ps`, і в `prs`, а фіолетовий — «перфект» в обох часах.
+ * Колір означає ВИД (Simple, Continuous, Perfect). Стиль підкреслення означає
+ * ЧАС: минулий — суцільне, теперішній — штрихове, майбутній — подвійне. Тому
+ * синій — це «простий» і в `ps`, і в `prs`, і в `fs`, а фіолетовий — «перфект»
+ * у всіх трьох часах.
  *
  * Практична вигода саме там, де в темі «Теперішні часи» головна пастка:
  * Present Perfect проти Past Simple — це фіолетовий проти синього, і різниця
  * видна ще до того, як читач навів курсор на підпис.
  */
-export const TENSE_KEYS = ['ps', 'pc', 'pp', 'prs', 'prc', 'prp'] as const;
+export const TENSE_KEYS = [
+  'ps',
+  'pc',
+  'pp',
+  'prs',
+  'prc',
+  'prp',
+  'fs',
+  'fc',
+  'fp',
+] as const;
 
 export type TenseKey = (typeof TENSE_KEYS)[number];
 
@@ -34,7 +46,7 @@ export function isTenseKey(value: unknown): value is TenseKey {
 export type Aspect = 'simple' | 'continuous' | 'perfect';
 
 /** Час конструкції — задає стиль підкреслення. */
-export type TenseTime = 'past' | 'present';
+export type TenseTime = 'past' | 'present' | 'future';
 
 export const TENSE_ASPECT: Record<TenseKey, Aspect> = {
   ps: 'simple',
@@ -43,6 +55,9 @@ export const TENSE_ASPECT: Record<TenseKey, Aspect> = {
   prs: 'simple',
   prc: 'continuous',
   prp: 'perfect',
+  fs: 'simple',
+  fc: 'continuous',
+  fp: 'perfect',
 };
 
 export const TENSE_TIME: Record<TenseKey, TenseTime> = {
@@ -52,6 +67,9 @@ export const TENSE_TIME: Record<TenseKey, TenseTime> = {
   prs: 'present',
   prc: 'present',
   prp: 'present',
+  fs: 'future',
+  fc: 'future',
+  fp: 'future',
 };
 
 /**
