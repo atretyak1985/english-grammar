@@ -1,14 +1,20 @@
 import { MODEL, getClaude } from '@/lib/claude';
-import type { TenseKey } from '@/types/content';
+import { TENSE_KEYS, isTenseKey, type TenseKey } from '@/types/content';
 
-import { type AnalyzedToken, analyzeText } from './tenses';
+import { type AnalyzedToken, analyzeText, normalizeWord } from './tenses';
 
 /**
- * Розбір минулих часів моделлю — другий прохід поверх локальних правил
- * (`tenses.ts`). Локальні правила лишаються основою: вони дають розмітку
+ * Розбір минулих і теперішніх часів моделлю — другий прохід поверх локальних
+ * правил (`tenses.ts`). Локальні правила лишаються основою: вони дають розмітку
  * миттєво, безкоштовно й без мережі. Модель викликається, щоб прибрати те, чого
  * шаблони не вміють розрізняти — «a tired engineer» проти «he tired quickly»,
  * «had lunch» проти «had finished», — і щоб знайти пропущене.
+ *
+ * Для теперішніх часів модель не доповнення, а основне джерело. Present Simple
+ * без допоміжного дієслова шаблоном не видно взагалі: «we deploy» — це чиста
+ * основа, а «it scales» відрізняється від іменника в множині лише за роллю в
+ * реченні. Локальний шар дає тут щонайбільше `do` / `does`, тому все інше
+ * приходить саме звідси.
  *
  * Модель повертає НОМЕРИ ТОКЕНІВ, а не розмічений текст. Причини дві: текст
  * назад коштував би стільки ж вихідних токенів, скільки й уперед вхідних, і
@@ -22,7 +28,7 @@ import { type AnalyzedToken, analyzeText } from './tenses';
  * робить старі відповіді неспівставними, і без цієї версії вони жили б у базі
  * далі, мовчки віддаючи розмітку за попередніми правилами.
  */
-export const PROMPT_VERSION = 1;
+export const PROMPT_VERSION = 3;
 
 /**
  * `effort` приймають не всі моделі: Haiku 4.5 відповідає на нього 400
@@ -33,11 +39,37 @@ function supportsEffort(model: string): boolean {
   return !model.includes('haiku');
 }
 
-/** Найдовша конструкція — «had not been working»: допоміжні, заперечення, дієслово. */
+/** Найдовша конструкція — «had / have not been working»: допоміжні, заперечення, дієслово. */
 const MAX_SPAN_WORDS = 4;
 
 /** Скільки максимум збігів приймаємо: більше, ніж слів, модель повернути не може. */
 const MAX_MATCHES = 4000;
+
+/**
+ * Займенники, які модель час від часу затягує в проміжок разом із дієсловом:
+ * «I think» замість «think», «we expected» замість «expected». Промпт це
+ * забороняє прямою вимогою, але заборона в промпті — це прохання, а не
+ * гарантія, тому межу підрізаємо самі.
+ *
+ * Це не косметика. Підсвітка вчить, ДЕ конструкція починається, і зайвий
+ * займенник у ній повідомляє неправду: нібито підмет — частина дієслівної
+ * форми. Помилка тим шкідливіша, що виглядає впевнено.
+ *
+ * Скорочень тут немає й бути не може: у «I've» підмет зрощений з допоміжним в
+ * один токен, відрізати його нема як, і сам токен справді починає конструкцію.
+ */
+const BARE_SUBJECTS = new Set([
+  'i',
+  'you',
+  'he',
+  'she',
+  'it',
+  'we',
+  'they',
+  'there',
+  'this',
+  'that',
+]);
 
 export interface ReviewedMatch {
   /** Індекс у масиві токенів `analyzeText`, з якого починається конструкція. */
@@ -59,8 +91,6 @@ export interface Review {
   usage: { input: number; output: number; cacheRead: number; cacheWrite: number };
 }
 
-const TENSES: readonly TenseKey[] = ['ps', 'pc', 'pp'];
-
 /**
  * Системний промпт стабільний побайтово і йде під `cache_control`: він
  * однаковий для кожного тексту, тому з другого запиту коштує близько десятої
@@ -74,48 +104,73 @@ const TENSES: readonly TenseKey[] = ['ps', 'pc', 'pp'];
  * коштують дешевше, ніж їхня відсутність, і водночас знімають найчастіші
  * помилки розмітки.
  */
-const SYSTEM = `You mark past-tense verb constructions in English text for a language-learning reader.
+const SYSTEM = `You mark verb constructions in English text for a language-learning reader — a Ukrainian speaker studying the past and present tenses.
 
 The text arrives as numbered word tokens in the form <index>:<word>. Punctuation stays attached to the word it belongs to. You return the indices, never the words.
 
-Mark exactly three kinds of construction:
-- ps — Past Simple: a finite verb in the past tense ("walked", "went", "was", "did not go").
+Mark exactly six kinds of construction:
+- ps — Past Simple: a finite past-tense verb ("walked", "went", "was", "did not go").
 - pc — Past Continuous: was/were (+ not) + V-ing.
 - pp — Past Perfect: had (+ not) + past participle, including Past Perfect Continuous ("had been working").
+- prs — Present Simple: a finite present-tense verb ("deploy", "scales", "is", "does not know").
+- prc — Present Continuous: am/is/are (+ not) + V-ing.
+- prp — Present Perfect: have/has (+ not) + past participle, including Present Perfect Continuous ("has been working").
 
-Rules:
-- One match per construction. "from" is the first token of it — the auxiliary when there is one; "to" is the last token, the lexical verb. An adverb standing between them ("had never seen") stays inside the span.
-- Only finite verbs in the past tense. Do NOT mark: participial adjectives ("a tired engineer", "an interested reader"), present perfect ("have finished"), present-tense passives, infinitives, or nouns that merely end in -ed.
-- "had" followed by a noun phrase is the Past Simple of "have" ("I had lunch") — mark it ps on the "had" token alone, not pp.
-- was/were as the main verb ("she was tired") is ps, spanning only the was/were token.
-- Spans must not overlap, and must be sorted by "from" ascending.
+Spans:
+- One match per construction. "from" is its first token — the auxiliary when there is one; "to" is the last token, the lexical verb. An adverb standing between them ("had never seen", "have already fixed") stays inside the span.
+- A contracted auxiliary is glued to its subject in one token ("I've", "she's", "they're", "I'm"). That whole token is the first token of the span; you cannot split it.
+- A finite verb with no auxiliary spans that ONE token alone. Never reach backwards into the subject: "we expected" is a single match on "expected", and "the service scales" is a single match on "scales". A copula or lexical "have"/"had" behaves the same way — what follows it is its complement, not part of the verb.
+- An adverb belongs inside a span only when it stands BETWEEN an auxiliary and its lexical verb ("have already checked"). An adverb before a bare verb stays outside: "usually run" is a match on "run" alone.
+- Spans must not overlap, must be sorted by "from" ascending, and are never longer than four tokens.
 - Report every occurrence, including repeated ones. Report nothing else.
+
+Choosing between the labels:
+- The past/present split is this reader's hardest problem — settle it first. "I fixed it" is ps; "I have fixed it" is prp. A named finished time ("yesterday", "in 2019", "an hour ago", "last week") forces ps and rules prp out.
+- "have"/"has" followed by a noun phrase is lexical "have" and belongs to Present Simple: "I have two reports" is prs on "have" alone. The same shape in the past ("I had lunch") is ps on "had" alone.
+- "'s" is either "is" or "has": before V-ing it is "is" (prc), before a past participle it is "has" (prp). Before a noun it is a possessive and not a verb at all.
+- am/is/are used as the main verb ("she is tired", "the service is down", "the door is locked") is prs, spanning only that token. was/were in the same role is ps.
+
+Do NOT mark:
+- participial adjectives ("a tired engineer", "an interested reader");
+- infinitives ("to deploy"), imperatives ("check the logs"), or a bare stem governed by a modal ("can deploy", "will finish", "should know") — and never mark the modal itself;
+- nouns that merely end in -ed or -s. A plural noun ("the logs", "two releases") is not a Present Simple verb: mark a word prs only when it is the finite verb of its clause.
 
 Worked examples. Input, then the matches you would report and why.
 
 Input: 0:A 1:tired 2:engineer 3:had 4:lunch 5:and 6:left.
-  {from: 3, to: 3, ps} — "had" is the past of lexical "have"; the span is the verb alone, "lunch" is its object and stays outside.
+  {from: 3, to: 3, ps} — "had" is lexical "have" in the past; "lunch" is its object and stays outside.
   {from: 6, to: 6, ps} — "left" is an irregular past form.
-  "tired" is not marked: it is a participial adjective describing the engineer, not a finite verb.
+  "tired" is not marked: a participial adjective describing the engineer, not a finite verb.
 
 Input: 0:She 1:had 2:never 3:seen 4:it, 5:so 6:she 7:was 8:waiting.
   {from: 1, to: 3, pp} — "had ... seen"; the adverb "never" sits inside the span.
   {from: 7, to: 8, pc} — "was waiting".
 
-Input: 0:We 1:have 2:finished 3:and 4:the 5:door 6:is 7:locked.
-  No matches. "have finished" is present perfect, not past perfect; "is locked" is a present-tense passive.
+Input: 0:We 1:have 2:already 3:finished, 4:but 5:I 6:sent 7:the 8:invoice 9:yesterday.
+  {from: 1, to: 3, prp} — "have already finished": no time is named, the result is what matters now.
+  {from: 6, to: 6, ps} — "sent": "yesterday" names a finished period, so this is Past Simple, never Present Perfect.
 
-Input: 0:He 1:was 2:tired 3:when 4:they 5:did 6:not 7:call.
-  {from: 1, to: 1, ps} — "was" as the main verb; the adjective "tired" stays outside the span.
-  {from: 5, to: 7, ps} — "did not call" is one negated Past Simple construction.
+Input: 0:I've 1:been 2:waiting 3:and 4:she's 5:working 6:while 7:he's 8:gone.
+  {from: 0, to: 2, prp} — "I've been waiting" is Present Perfect Continuous; the contraction token starts the span.
+  {from: 4, to: 5, prc} — "she's working": before V-ing the "'s" is "is".
+  {from: 7, to: 8, prp} — "he's gone": before a past participle the "'s" is "has".
 
-Input: 0:The 1:report 2:had 3:not 4:been 5:working 6:properly 7:before 8:we 9:fixed 10:it.
+Input: 0:Our 1:service 2:handles 3:a 4:million 5:requests 6:and 7:the 8:logs 9:look 10:fine.
+  {from: 2, to: 2, prs} — "handles" is the finite present verb of its clause; "Our service" is its subject and stays outside the span.
+  {from: 9, to: 9, prs} — "look" is the finite present verb; a bare stem is still Present Simple.
+  "requests" and "logs" are not marked: plural nouns, not verbs.
+
+Input: 0:He 1:doesn't 2:know 3:yet, 4:and 5:he 6:has 7:two 8:reports.
+  {from: 1, to: 2, prs} — "doesn't know" is one negated Present Simple construction.
+  {from: 6, to: 6, prs} — "has" is lexical "have" here; "two reports" is its object.
+
+Input: 0:The 1:job 2:had 3:not 4:been 5:working 6:before 7:we 8:fixed 9:it.
   {from: 2, to: 5, pp} — "had not been working", the longest shape you will meet.
-  {from: 9, to: 9, ps} — "fixed".`;
+  {from: 8, to: 8, ps} — "fixed".`;
 
 const REPORT_TOOL = {
   name: 'report_matches',
-  description: 'Report every past-tense construction found in the numbered text.',
+  description: 'Report every past- or present-tense verb construction found in the numbered text.',
   strict: true,
   input_schema: {
     type: 'object' as const,
@@ -127,7 +182,7 @@ const REPORT_TOOL = {
           properties: {
             from: { type: 'integer' },
             to: { type: 'integer' },
-            tense: { type: 'string', enum: TENSES },
+            tense: { type: 'string', enum: TENSE_KEYS },
           },
           required: ['from', 'to', 'tense'],
           additionalProperties: false,
@@ -168,7 +223,7 @@ function numbered(list: { raw: string }[]): string {
  * помилку тут означало б втратити ВЕСЬ розбір через один зіпсований збіг, тоді
  * як решта розмітки цілком придатна.
  */
-function accept(raw: unknown, list: { index: number }[]): ReviewedMatch[] {
+function accept(raw: unknown, list: { index: number; raw: string }[]): ReviewedMatch[] {
   if (typeof raw !== 'object' || raw === null) return [];
   const { matches } = raw as { matches?: unknown };
   if (!Array.isArray(matches)) return [];
@@ -189,14 +244,21 @@ function accept(raw: unknown, list: { index: number }[]): ReviewedMatch[] {
     // Перекриття робить розмітку неоднозначною: один токен не може належати
     // двом часам, а перший збіг уже виграв.
     if (start <= guard) continue;
-    if (typeof tense !== 'string' || !TENSES.includes(tense as TenseKey)) continue;
+    if (!isTenseKey(tense)) continue;
 
     guard = end;
+
+    // Підрізаємо голий підмет на початку проміжку. Тільки коли далі ще є що
+    // підсвічувати: односкладний збіг на самому займеннику модель не робить, а
+    // якби зробила, порожнього проміжку з нього виходити не має.
+    const first = normalizeWord(list[start]?.raw ?? '');
+    const begin = start < end && first !== null && BARE_SUBJECTS.has(first) ? start + 1 : start;
+
     // Назовні йдуть індекси токенів — саме ними оперує рендер підсвітки.
     out.push({
-      from: list[start]?.index ?? 0,
+      from: list[begin]?.index ?? 0,
       to: list[end]?.index ?? 0,
-      tense: tense as TenseKey,
+      tense,
     });
   }
 

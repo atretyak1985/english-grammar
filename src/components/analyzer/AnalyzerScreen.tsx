@@ -24,30 +24,60 @@ import { useTexts } from '@/lib/state/texts';
 import type { TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
 
-const TENSE_ORDER: TenseKey[] = ['ps', 'pc', 'pp'];
+/**
+ * Порядок перемикачів: спершу три минулі, потім три теперішні. Так вони й
+ * подані в темах, тому легенда читається як зміст сайту, а не як алфавіт.
+ */
+const TENSE_ORDER: TenseKey[] = ['ps', 'pc', 'pp', 'prs', 'prc', 'prp'];
+
+/* ------------------------------------------------------------------
+   Колір бере ВИД, стиль лінії бере ЧАС: минулі — суцільна, теперішні —
+   штрихована. Саме штрих, а не пунктир: пунктиром тут уже підкреслені
+   незнайомі слова, і два схожі знаки з різним змістом читалися б як один.
+   Тому Present Perfect і Past Simple — це фіолетовий проти
+   синього, а не два відтінки одного, і головна пастка теми «Теперішні часи»
+   видна в тексті без наведення курсора.
+
+   Мапи розписані всіма шістьма ключами, а не зібрані з двох осей у рантаймі:
+   Tailwind знаходить класи статичним пошуком по коду, і склеєне ім'я
+   (`text-${aspect}`) до збірки просто не потрапило б.
+   ------------------------------------------------------------------ */
 
 const TENSE_TEXT: Record<TenseKey, string> = {
   ps: 'text-ps',
   pc: 'text-pc',
   pp: 'text-pp',
+  prs: 'text-ps',
+  prc: 'text-pc',
+  prp: 'text-pp',
 };
 
+/** Увімкнений перемикач. Пунктирна рамка в теперішніх — та сама ознака часу. */
 const TENSE_ON: Record<TenseKey, string> = {
   ps: 'border-ps bg-ps-bg text-ps-dk',
   pc: 'border-pc bg-pc-bg text-pc-dk',
   pp: 'border-pp bg-pp-bg text-pp-dk',
+  prs: 'border-ps border-dashed bg-ps-bg text-ps-dk',
+  prc: 'border-pc border-dashed bg-pc-bg text-pc-dk',
+  prp: 'border-pp border-dashed bg-pp-bg text-pp-dk',
 };
 
 const TENSE_HIGHLIGHT: Record<TenseKey, string> = {
-  ps: 'text-ps bg-ps-bg',
-  pc: 'text-pc bg-pc-bg',
-  pp: 'text-pp bg-pp-bg',
+  ps: 'text-ps bg-ps-bg border-b-2 border-ps',
+  pc: 'text-pc bg-pc-bg border-b-2 border-pc',
+  pp: 'text-pp bg-pp-bg border-b-2 border-pp',
+  prs: 'text-ps bg-ps-bg border-b-2 border-dashed border-ps',
+  prc: 'text-pc bg-pc-bg border-b-2 border-dashed border-pc',
+  prp: 'text-pp bg-pp-bg border-b-2 border-dashed border-pp',
 };
 
 const TENSE_BAR: Record<TenseKey, string> = {
   ps: 'bg-ps',
   pc: 'bg-pc',
   pp: 'bg-pp',
+  prs: 'bg-ps',
+  prc: 'bg-pc',
+  prp: 'bg-pp',
 };
 
 const PILL = 'cursor-pointer rounded-full border px-[11px] py-[5px] text-[12px] leading-[normal] font-bold';
@@ -63,13 +93,17 @@ const UNKNOWN_LIMIT = 20;
 
 /**
  * Аналізатор тексту: правило видно не в підручнику, а у справжньому тексті
- * (CONCEPT 4). Чотири перемикачі керують шарами підсвітки.
+ * (CONCEPT 4). Перемикачі керують шарами підсвітки — по одному на кожну з
+ * шести конструкцій плюс незнайомі слова.
  */
 export function AnalyzerScreen() {
   const [layers, setLayers] = useState<Record<TenseKey | 'words', boolean>>({
     ps: true,
     pc: true,
     pp: true,
+    prs: true,
+    prc: true,
+    prp: true,
     words: true,
   });
 
@@ -272,7 +306,7 @@ export function AnalyzerScreen() {
 
       <div data-reader-row className="grid grid-cols-[minmax(0,1fr)_320px] gap-[22px]">
         <div className="flex min-w-0 flex-col gap-4">
-          {/* Чотири перемикачі шарів */}
+          {/* Сім перемикачів шарів: шість конструкцій і незнайомі слова */}
           <div
             ref={cardRef}
             className={

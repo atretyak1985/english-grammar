@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 
 import { getDb, schema } from '@/db';
 import { MODEL } from '@/lib/claude';
-import type { TenseKey } from '@/types/content';
+import { isTenseKey } from '@/types/content';
 
 import { PROMPT_VERSION, type ReviewedMatch, review } from './review';
 
@@ -95,8 +95,8 @@ export function fromRow(raw: unknown): ReviewedMatch[] | undefined {
     if (typeof item !== 'object' || item === null) return undefined;
     const { from, to, tense } = item as { from?: unknown; to?: unknown; tense?: unknown };
     if (!Number.isInteger(from) || !Number.isInteger(to)) return undefined;
-    if (tense !== 'ps' && tense !== 'pc' && tense !== 'pp') return undefined;
-    out.push({ from: from as number, to: to as number, tense: tense as TenseKey });
+    if (!isTenseKey(tense)) return undefined;
+    out.push({ from: from as number, to: to as number, tense });
   }
   return out;
 }
