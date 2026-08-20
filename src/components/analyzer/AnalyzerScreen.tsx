@@ -8,8 +8,16 @@ import { useAppState } from '@/components/providers/AppStateProvider';
 import { IDLE_TONE, ROW_BUTTON } from '@/components/words/WordStatusButtons';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { paginate } from '@/lib/analyzer/pages';
-import { TENSE_LABELS, analyzeText } from '@/lib/analyzer/tenses';
+import {
+  TENSE_LABELS,
+  applyMatches,
+  findMatches,
+  mergeMatches,
+  statsOf,
+  tokenize,
+} from '@/lib/analyzer/tenses';
 import { useFittedPage } from '@/lib/analyzer/useFittedPage';
+import { useReview } from '@/lib/analyzer/useReview';
 import { useBoxSize, useFitHeight } from '@/lib/analyzer/useViewport';
 import { PAGE_ONE, docKeyOf, useReading } from '@/lib/state/reading';
 import { useTexts } from '@/lib/state/texts';
@@ -84,7 +92,11 @@ export function AnalyzerScreen() {
   const saved = Boolean(fromLibrary);
   const docKey = docKeyOf(doc);
 
-  const analysis = useMemo(() => analyzeText(text), [text]);
+  // Токени рахуються один раз і живлять усе, що не залежить від розбору:
+  // пагінацію, частоту слів і межі шматків. Підсвітка працює з окремою копією,
+  // бо накладання збігів токени мутує.
+  const tokens = useMemo(() => tokenize(text), [text]);
+  const local = useMemo(() => findMatches(tokens), [tokens]);
 
   // Читання на весь екран: із книжкою на десятки сторінок картка затісна.
   const [fullscreen, setFullscreen] = useState(false);
@@ -104,7 +116,7 @@ export function AnalyzerScreen() {
   //
   // Розбиття за символами — лише приблизне: воно дає початкове припущення і
   // оцінку кількості сторінок. Справжню межу знаходить замір нижче.
-  const pages = useMemo(() => paginate(analysis.tokens), [analysis.tokens]);
+  const pages = useMemo(() => paginate(tokens), [tokens]);
 
   // Позицію тримає номер токена, а не номер сторінки: при зміні розміру вікна
   // сторінки перераховуються, і читач має залишитися там, де читав. Вона теж
@@ -114,7 +126,7 @@ export function AnalyzerScreen() {
   // Кінець сторінки — за фактом заміру, а не за підрахунком символів: інакше
   // або лишається порожнє місце, або текст обрізається непомітно.
   const guess = useMemo(() => {
-    const total = analysis.tokens.length;
+    const total = tokens.length;
     const found = pages.find((range) => anchor >= range.start && anchor < range.end);
     if (!found) return Math.min(total, anchor + 1);
     // Беремо не кінець розрахункового діапазону, а його довжину від поточної
@@ -122,16 +134,32 @@ export function AnalyzerScreen() {
     // початку діапазону — і його залишок дав би припущення розміром у кілька
     // слів замість сторінки.
     return Math.min(total, anchor + (found.end - found.start));
-  }, [pages, anchor, analysis.tokens.length]);
+  }, [pages, anchor, tokens.length]);
 
   const pageEnd = useFittedPage({
     readerRef,
     proseRef,
     start: anchor,
     guess,
-    total: analysis.tokens.length,
+    total: tokens.length,
     resetKey: `${fullscreen ? 'full' : 'card'}:${columns}:${reader.height}:${text.length}`,
   });
+
+  // Модель розбирає те, що читають: сторінку й один шматок уперед. Ціла книжка
+  // одним запитом не йде — платити наперед за триста сторінок, з яких прочитають
+  // двадцять, немає сенсу (CONCEPT 4.1).
+  const review = useReview(text, tokens, anchor, pageEnd);
+
+  // Підсвічений документ: там, де модель уже відповіла, — її збіги; далі —
+  // локальні правила, щоб текст поза розібраним не лишався зовсім без розмітки.
+  const analysis = useMemo(
+    () => applyMatches(tokenize(text), mergeMatches(local, review.matches, review.ranges)),
+    [text, local, review.matches, review.ranges],
+  );
+
+  // Числа рахуються ТІЛЬКИ по розібраному: підсвітка поза ним шаблонна, і
+  // змішувати її в статистику означало б видати шаблонну точність за перевірену.
+  const stats = useMemo(() => statsOf(tokens, review.matches), [tokens, review.matches]);
 
   const visible = useMemo(
     () => analysis.tokens.slice(anchor, pageEnd),
@@ -143,10 +171,10 @@ export function AnalyzerScreen() {
   // Куди повертатись: межі сторінок рухомі (їх визначає замір), тому «назад»
   // іде за слідом відвіданих початків, а не за перерахунком.
   const goForward = useCallback(() => {
-    if (pageEnd >= analysis.tokens.length) return;
+    if (pageEnd >= tokens.length) return;
     setPosition(docKey, { anchor: pageEnd, trail: [...trail, anchor] });
     if (readerRef.current) readerRef.current.scrollTop = 0;
-  }, [anchor, trail, docKey, pageEnd, analysis.tokens.length, setPosition]);
+  }, [anchor, trail, docKey, pageEnd, tokens.length, setPosition]);
 
   /**
    * Номер сторінки — скільки вже перегорнули; оцінка кількості — з фактичного
@@ -154,7 +182,7 @@ export function AnalyzerScreen() {
    */
   const pageNumber = trail.length + 1;
   const pageSize = Math.max(1, pageEnd - anchor);
-  const pageEstimate = Math.max(pageNumber, Math.ceil(analysis.tokens.length / pageSize));
+  const pageEstimate = Math.max(pageNumber, Math.ceil(tokens.length / pageSize));
 
   const goBack = useCallback(() => {
     if (anchor === 0) return;
@@ -198,14 +226,14 @@ export function AnalyzerScreen() {
   // а не по поточній сторінці, і клік по слову її не перераховує.
   const frequency = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const token of analysis.tokens) {
+    for (const token of tokens) {
       if (!token.word || !isMeaningfulWord(token.word)) continue;
       counts.set(token.word, (counts.get(token.word) ?? 0) + 1);
     }
     return [...counts.entries()]
       .map(([word, count]) => ({ word, count }))
       .sort((a, b) => b.count - a.count || a.word.localeCompare(b.word));
-  }, [analysis.tokens]);
+  }, [tokens]);
 
   // Відбір — дешевий прохід уже згорнутим списком. Залежність саме від
   // `state.words`, а не від `wordStatus`: остання — нова замикання на кожен
@@ -227,7 +255,7 @@ export function AnalyzerScreen() {
     setWordStatus(word, status);
   };
 
-  const maxTenseCount = Math.max(...TENSE_ORDER.map((tense) => analysis.stats[tense].count), 1);
+  const maxTenseCount = Math.max(...TENSE_ORDER.map((tense) => stats[tense].count), 1);
 
   const toggle = (key: TenseKey | 'words') =>
     setLayers((current) => ({ ...current, [key]: !current[key] }));
@@ -264,7 +292,7 @@ export function AnalyzerScreen() {
                   aria-pressed={layers[tense]}
                   className={`${PILL} ${layers[tense] ? TENSE_ON[tense] : PILL_OFF}`}
                 >
-                  {TENSE_LABELS[tense]} <span className="opacity-70">{analysis.stats[tense].count}</span>
+                  {TENSE_LABELS[tense]} <span className="opacity-70">{stats[tense].count}</span>
                 </button>
               ))}
               <button
@@ -345,7 +373,7 @@ export function AnalyzerScreen() {
               </div>
             </div>
 
-            {analysis.tokens.length > pageSize ? (
+            {tokens.length > pageSize ? (
               <div className="border-line bg-surface-2 flex items-center justify-between gap-3 border-t px-[22px] py-3">
                 <button
                   type="button"
@@ -362,7 +390,7 @@ export function AnalyzerScreen() {
                 <button
                   type="button"
                   onClick={goForward}
-                  disabled={pageEnd >= analysis.tokens.length}
+                  disabled={pageEnd >= tokens.length}
                   className={`${PILL} ${PILL_OFF} disabled:cursor-default disabled:opacity-40`}
                 >
                   Далі →
@@ -384,7 +412,7 @@ export function AnalyzerScreen() {
               <div className={SIDE_LABEL}>Знайдено в тексті</div>
               <div className="flex flex-col gap-[9px]">
                 {TENSE_ORDER.map((tense) => {
-                  const stat = analysis.stats[tense];
+                  const stat = stats[tense];
                   return (
                     <div key={tense}>
                       <div className="flex justify-between text-[13.5px] font-bold">
@@ -404,6 +432,16 @@ export function AnalyzerScreen() {
                   );
                 })}
               </div>
+
+              {/* Числа стосуються розібраної частини, і мовчати про це не можна:
+                  на книжці розібрано кілька відсотків, і «Past Simple 12» без
+                  підпису читалося б як підсумок по всьому тексту. */}
+              {review.words < review.totalWords ? (
+                <div className="text-ink-3 mt-3 text-[12.5px]">
+                  Пораховано по прочитаному: {review.words} з {review.totalWords} слів. Числа
+                  ростуть, поки гортаєте.
+                </div>
+              ) : null}
             </div>
 
             <div className={SIDE_CARD}>

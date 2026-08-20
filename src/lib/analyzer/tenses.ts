@@ -116,7 +116,13 @@ function isVerbCandidate(word: string | null): boolean {
   return word !== null && word.length > 1 && !word.endsWith("n't");
 }
 
-interface Match {
+/**
+ * Знайдена конструкція як пара меж у масиві токенів. Ту саму форму повертає
+ * розбір моделлю (`review.ts`) — тому серверні збіги лягають на текст тим самим
+ * кодом, що й локальні, і розходження між двома підсвітками неможливе за
+ * побудовою.
+ */
+export interface Match {
   from: number;
   to: number;
   tense: TenseKey;
@@ -140,15 +146,23 @@ function nextWordIndex(tokens: AnalyzedToken[], from: number): number | null {
   return null;
 }
 
-export function analyzeText(text: string): AnalysisResult {
-  const tokens: AnalyzedToken[] = text.split(/(\s+)/).map((raw) => ({
+/**
+ * Ділення тексту на токени зі збереженням пробілів. Винесено окремо, бо це
+ * ЄДИНЕ джерело нумерації: і локальні правила, і модель адресують слова
+ * номерами в цьому масиві, тому розділяти текст двома різними способами не
+ * можна навіть випадково.
+ */
+export function tokenize(text: string): AnalyzedToken[] {
+  return text.split(/(\s+)/).map((raw) => ({
     raw,
     word: /^\s*$/.test(raw) ? null : normalizeWord(raw),
     tense: null,
     startsMatch: false,
     endsMatch: false,
   }));
+}
 
+export function findMatches(tokens: AnalyzedToken[]): Match[] {
   const matches: Match[] = [];
 
   for (let i = 0; i < tokens.length; i += 1) {
@@ -198,6 +212,42 @@ export function analyzeText(text: string): AnalysisResult {
     }
   }
 
+  return matches;
+}
+
+/**
+ * Розмальовує токени за списком збігів і рахує статистику. Токени МУТУЮТЬСЯ, і
+ * саме тому кожен виклик має отримувати свіжий `tokenize`: накласти другий
+ * набір збігів на вже розмічений масив означало б додати нову підсвітку, не
+ * знявши стару.
+ */
+export function applyMatches(tokens: AnalyzedToken[], matches: Match[]): AnalysisResult {
+  for (const match of matches) {
+    for (let i = match.from; i <= match.to; i += 1) {
+      const token = tokens[i];
+      if (token) token.tense = match.tense;
+    }
+    const startToken = tokens[match.from];
+    const endToken = tokens[match.to];
+    if (startToken) startToken.startsMatch = true;
+    if (endToken) endToken.endsMatch = true;
+  }
+
+  return {
+    tokens,
+    stats: statsOf(tokens, matches),
+    wordCount: tokens.filter((token) => token.word !== null).length,
+  };
+}
+
+/**
+ * Скільки конструкцій кожного часу дає цей список збігів. Рахується окремо від
+ * розмальовування, бо панель статистики і підсвітка живляться РІЗНИМИ списками:
+ * підсвічено весь документ (де ще немає розбору моделлю — локальними
+ * правилами), а рахувати треба лише розібране, інакше числа обіцяли б точність,
+ * якої в них немає.
+ */
+export function statsOf(tokens: AnalyzedToken[], matches: Match[]): Record<TenseKey, TenseStat> {
   const stats: Record<TenseKey, TenseStat> = {
     ps: { count: 0, examples: [] },
     pc: { count: 0, examples: [] },
@@ -208,14 +258,8 @@ export function analyzeText(text: string): AnalysisResult {
     const parts: string[] = [];
     for (let i = match.from; i <= match.to; i += 1) {
       const token = tokens[i];
-      if (!token) continue;
-      token.tense = match.tense;
-      if (token.word) parts.push(token.word);
+      if (token?.word) parts.push(token.word);
     }
-    const startToken = tokens[match.from];
-    const endToken = tokens[match.to];
-    if (startToken) startToken.startsMatch = true;
-    if (endToken) endToken.endsMatch = true;
 
     const stat = stats[match.tense];
     stat.count += 1;
@@ -225,9 +269,38 @@ export function analyzeText(text: string): AnalysisResult {
     }
   }
 
-  return {
-    tokens,
-    stats,
-    wordCount: tokens.filter((token) => token.word !== null).length,
-  };
+  return stats;
+}
+
+/**
+ * Зшиває розбір моделлю з локальним. Локальний збіг відкидається, щойно він
+ * ХОЧ ЯК перетинається з розібраним проміжком, а не лише коли лежить у ньому
+ * цілком: там, де модель уже висловилася, її слово остаточне, і залишок
+ * шаблонного збігу на межі дав би дві підсвітки на одному токені.
+ */
+export function mergeMatches(
+  local: Match[],
+  model: Match[],
+  ranges: { start: number; end: number }[],
+): Match[] {
+  const analyzed = (match: Match) =>
+    ranges.some((range) => match.from <= range.end && match.to >= range.start);
+
+  return [...local.filter((match) => !analyzed(match)), ...model].sort((a, b) => a.from - b.from);
+}
+
+/** Розбір локальними правилами: працює миттєво, без мережі й без ключа. */
+export function analyzeText(text: string): AnalysisResult {
+  const tokens = tokenize(text);
+  return applyMatches(tokens, findMatches(tokens));
+}
+
+/**
+ * Розбір за готовим списком збігів — тим, що прийшов з `/api/analyze`. Локальні
+ * правила при цьому НЕ застосовуються: відповідь моделі повна, а не доповнення,
+ * тому змішування двох списків дало б подвійну розмітку там, де вони збіглися,
+ * і залишки хибних збігів там, де модель їх свідомо не назвала.
+ */
+export function analyzeWithMatches(text: string, matches: Match[]): AnalysisResult {
+  return applyMatches(tokenize(text), matches);
 }
