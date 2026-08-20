@@ -130,6 +130,47 @@ describe('review', () => {
     ]);
   });
 
+  it('підрізає голий підмет на початку проміжку', async () => {
+    // Модель зрідка віддає «I think» замість «think». Підсвітка вчить, де
+    // конструкція починається, тому займенник у ній — не дрібниця, а неправда.
+    answer([{ from: 0, to: 1, tense: 'prs' }]);
+
+    // 'I think it works' → слова 0..3 лежать у токенах 0, 2, 4, 6.
+    const result = await review('I think it works');
+
+    expect(result?.matches).toEqual([{ from: 2, to: 2, tense: 'prs' }]);
+  });
+
+  it('НЕ підрізає скорочення: у «I&apos;ve» підмет зрощений з допоміжним', async () => {
+    answer([{ from: 0, to: 1, tense: 'prp' }]);
+
+    const result = await review("I've fixed it");
+
+    expect(result?.matches).toEqual([{ from: 0, to: 2, tense: 'prp' }]);
+  });
+
+  it('проміжок на самому займеннику не стає порожнім', async () => {
+    answer([{ from: 0, to: 0, tense: 'prs' }]);
+
+    const result = await review('I think it works');
+
+    expect(result?.matches).toEqual([{ from: 0, to: 0, tense: 'prs' }]);
+  });
+
+  it('приймає всі шість часів, а не лише минулі три', async () => {
+    answer([
+      { from: 1, to: 2, tense: 'prp' },
+      { from: 3, to: 3, tense: 'prs' },
+    ]);
+
+    const result = await review('She has finished it');
+
+    expect(result?.matches).toEqual([
+      { from: 2, to: 4, tense: 'prp' },
+      { from: 6, to: 6, tense: 'prs' },
+    ]);
+  });
+
   it('порожній текст не йде в мережу', async () => {
     const result = await review('   ');
 

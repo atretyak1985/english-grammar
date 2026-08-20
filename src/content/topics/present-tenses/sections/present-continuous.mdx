@@ -1,0 +1,153 @@
+import { TimelinePresentContinuous } from '../diagrams';
+
+<Section id="cont" n={3} title="Present Continuous — теперішній тривалий" tense="prc">
+
+<Lede>Час вузького кадру: дія почалась, ще не скінчилась, і ви показуєте її саме в цьому стані. Українською він майже завжди перекладається тим самим «роблю», що й Present Simple, — тому вибір між ними доводиться робити не на слух, а свідомо.</Lede>
+
+### 3.1 Форма
+
+<Formula
+  lines={[
+    { sign: '+', body: <>I <K>am</K> · he/she/it <K>is</K> · we/you/they <K>are</K> <K>+ V-ing</K></>, comment: "I'm deploying, she's reviewing" },
+    { sign: '−', body: <>підмет <Neg>+ am/is/are not + V-ing</Neg></>, comment: "I'm not deploying, it isn't running" },
+    { sign: '?', body: <><Q>Am / Is / Are</Q> + підмет <Q>+ V-ing</Q> … ?</>, comment: 'Are you working on it?' },
+    { sign: '?', body: <>Wh- + <Q>am/is/are</Q> + підмет <Q>+ V-ing</Q> … ?</>, comment: 'What are you working on?' },
+  ]}
+  note="Ніякого do / does: am, is, are — самі допоміжні. ✗ Do you working?"
+/>
+
+<Muted>Скорочення в мовленні обовʼязкові, повні форми звучать підкреслено: <b>I'm</b>, <b>you're</b>, <b>he's</b>, <b>we're</b>, <b>they're</b>; <b>isn't</b>, <b>aren't</b>. Для першої особи заперечення скорочується тільки так: <b>I'm not</b> — форми <i>amn't</i> у стандартній мові немає.</Muted>
+
+<SvgBox>
+  <TimelinePresentContinuous />
+</SvgBox>
+
+### 3.2 Шість випадків уживання — з розбором
+
+#### ① Просто зараз, у цю хвилину
+
+<ExList>
+  <Ex ua="Не можу говорити — я саме розмовляю з вендором." why="Класичний випадок: дія в процесі саме в момент мовлення.">I can't talk — I <M t="prc">am talking</M> to the vendor.</Ex>
+  <Ex ua="Над чим ти зараз працюєш?" why={<>Порівняйте: <i>What do you do?</i> = «Ким ти працюєш?». Різниця величезна, і її часто плутають.</>}>What <M t="prc">are</M> you <M t="prc">working</M> on?</Ex>
+  <Ex ua="Пайплайн ще виконується — дай йому дві хвилини.">The pipeline <M t="prc">is still running</M> — give it two minutes.</Ex>
+  <Ex ua="Чому ти не відповідаєш у чаті?">Why <M t="prc">aren't</M> you <M t="prc">answering</M> in the chat?</Ex>
+</ExList>
+
+#### ② Тимчасово, у цей період — але не обовʼязково в цю секунду
+
+<ExList>
+  <Ex ua="Цього місяця я підміняю тімліда." why={<>Я не роблю цього просто зараз — але період обмежений і видимий. Порівняйте: <i>I cover for him</i> = це моя постійна роль.</>}>I <M t="prc">am covering</M> for the team lead this month.</Ex>
+  <Ex ua="Ми зараз наймаємо двох бекендників." why="Процес найму триває тижнями, але він скінчиться. Це не характеристика компанії.">We <M t="prc">are hiring</M> two backend engineers at the moment.</Ex>
+  <Ex ua="Цього тижня він працює з дому." why={<><i>He works from home</i> означало б, що так у нього завжди.</>}>He <M t="prc">is working</M> from home this week.</Ex>
+  <Ex ua="Я живу в мами, поки роблю ремонт." why={<>Тимчасове житло → Continuous. Постійне: <i>I live in Lviv</i>.</>}>I <M t="prc">am staying</M> at my mother's while the flat is being repaired.</Ex>
+</ExList>
+
+#### ③ Зміна, тенденція, розвиток
+
+<Muted>Це найнедооціненіший випадок. Українці майже завжди беруть тут Simple — і речення втрачає рух.</Muted>
+
+<ExList>
+  <Ex ua="Латентність зростає." why={<>Дієслова зміни — <i>get, grow, rise, fall, improve, increase, become</i> — у Continuous означають «процес іде».</>}>The latency <M t="prc">is going</M> up.</Ex>
+  <Ex ua="Утримання користувачів покращується, але повільно.">Retention <M t="prc">is improving</M>, but slowly.</Ex>
+  <Ex ua="Все більше команд переходить на цей підхід." why={<><i>More and more…</i> — стандартна пара з Continuous.</>}>More and more teams <M t="prc">are moving</M> to this approach.</Ex>
+  <Ex ua="Ставати легше не стає." why="Гумористична конструкція, але граматика справжня: процес не змінюється.">It <M t="prc">is not getting</M> any easier.</Ex>
+</ExList>
+
+#### ④ Домовленість на майбутнє
+
+<ExList>
+  <Ex ua="Ми зустрічаємось із вендором у четвер." why={<>Дата в календарі → Continuous. Це не «план узагалі», а домовленість. Детально в розділі 8.</>}>We <M t="prc">are meeting</M> the vendor on Thursday.</Ex>
+  <Ex ua="Я летю в Берлін наступного тижня." why="Квиток куплений — тому Continuous, а не will.">I <M t="prc">am flying</M> to Berlin next week.</Ex>
+  <Ex ua="Що ти робиш у пʼятницю ввечері?">What <M t="prc">are</M> you <M t="prc">doing</M> on Friday evening?</Ex>
+</ExList>
+
+#### ⑤ Роздратування з always, constantly, forever
+
+<ExList>
+  <Ex ua="Він постійно пушить у main без ревʼю." why={<>Continuous + <i>always</i> = скарга. Порівняйте нейтральне <i>He always pushes to main</i> — просто факт про його процес.</>}>He <M t="prc">is always pushing</M> to main without review.</Ex>
+  <Ex ua="Вони вічно змінюють вимоги посередині спринту.">They <M t="prc">are forever changing</M> the requirements mid-sprint.</Ex>
+  <Ex ua="Я постійно забуваю оновити тікет.">I <M t="prc">am constantly forgetting</M> to update the ticket.</Ex>
+</ExList>
+
+#### ⑥ Ввічливість і мʼякість
+
+<ExList>
+  <Ex ua="Я сподіваюсь, ми зможемо перенести дзвінок." why="Continuous робить прохання менш прямим і тому ввічливішим. Запамʼятайте цілим блоком.">I <M t="prc">am hoping</M> we can move the call.</Ex>
+  <Ex ua="Я бачу цю проблему інакше." why={<>Хоч <i>see</i> тут дієслово стану, у цій формулі Continuous звучить мʼякше й обережніше.</>}>I <M t="prc">am not seeing</M> the problem the same way.</Ex>
+  <Ex ua="Що ви хочете сказати?" why={<>Пряме <i>What do you mean?</i> може прозвучати різко; Continuous зменшує тиск.</>}>What <M t="prc">are</M> you <M t="prc">saying</M> exactly?</Ex>
+</ExList>
+
+### 3.3 Дієслова стану — головне обмеження цього часу
+
+<Lede>Continuous показує <b>процес</b>. Якщо дієслово не позначає процес, а позначає стан — процесу немає, і форма з -ing неможлива. Це не примха: <i>«я знаю»</i> не має середини, яку можна показати.</Lede>
+
+<StateVerbs />
+
+<GoodBad>
+  <Bad>I <b>am not understanding</b> this diagram.<br />We <b>are needing</b> the numbers by Friday.<br />He <b>is having</b> two direct reports.</Bad>
+  <Good>I <b>don&apos;t understand</b> this diagram.<br />We <b>need</b> the numbers by Friday.<br />He <b>has</b> two direct reports.</Good>
+</GoodBad>
+
+#### Дієслова з двома значеннями — і тоді -ing можливе
+
+<Muted>Частина дієслів має і значення стану, і значення дії. У другому значенні Continuous не лише можливий, а й обовʼязковий.</Muted>
+
+| Дієслово | Стан → Simple | Дія → Continuous |
+|---|---|---|
+| **have** | I **have** two laptops. <Ua>мати</Ua> | I **am having** lunch with the CTO. <Ua>обідати, проводити</Ua> |
+| **think** | I **think** it's a bad idea. <Ua>вважати</Ua> | I **am thinking** about the architecture. <Ua>міркувати</Ua> |
+| **see** | I **see** what you mean. <Ua>розуміти</Ua> | I **am seeing** the client at four. <Ua>зустрічатися</Ua> |
+| **look** | She **looks** tired. <Ua>виглядати</Ua> | She **is looking** at the logs. <Ua>дивитися</Ua> |
+| **taste** | This coffee **tastes** burnt. <Ua>мати смак</Ua> | He **is tasting** the sauce. <Ua>пробувати</Ua> |
+| **feel** | I **feel** it's the right call. <Ua>вважати</Ua> | I **am feeling** better today. <Ua>почуватися — обидва варіанти живі</Ua> |
+| **be** | He **is** careless. <Ua>він такий завжди</Ua> | He **is being** careless. <Ua>він так поводиться зараз</Ua> |
+
+<Note variant="tip" title="Найкорисніша пара з цієї таблиці">
+  <b>He is careless</b> — це характеристика людини: він неуважний за вдачею.<br />
+  <b>He is being careless</b> — це оцінка поведінки: зараз він поводиться неуважно, хоч зазвичай ні.
+
+  Друга форма — надзвичайно корисна в робочих розмовах: вона критикує вчинок, а не людину. <i>You&apos;re being unfair</i> звучить куди мʼякше, ніж <i>You are unfair</i>.
+</Note>
+
+### 3.4 Правопис -ing
+
+| Правило | Приклади |
+|---|---|
+| За замовчуванням — додаємо **-ing** | work → work**ing** · push → push**ing** · check → check**ing** |
+| Закінчується на **-e** → **-e** зникає | scale → scal**ing** · migrate → migrat**ing** · come → com**ing** |
+| Але **-ee, -oe, -ye** → **-e** лишається | see → see**ing** · agree → agree**ing** · dye → dye**ing** |
+| Один склад «приголосна-голосна-приголосна» → **подвоюємо** | run → ru**nn**ing · ship → shi**pp**ing · stop → sto**pp**ing · get → ge**tt**ing |
+| Два склади з наголосом на останньому → подвоюємо | begin → begi**nn**ing · refer → refe**rr**ing · permit → permi**tt**ing |
+| Наголос на першому складі → НЕ подвоюємо | open → open**ing** · listen → listen**ing** · offer → offer**ing** |
+| **-ie** → **-ying** | lie → l**ying** · die → d**ying** · tie → t**ying** |
+| **-c** після голосної (брит.) → **-ck** | panic → pani**ck**ing · traffic → traffi**ck**ing |
+
+### 3.5 Слова-маркери
+
+<Chips>
+  <Chip t="prc">now / right now — зараз</Chip>
+  <Chip t="prc">at the moment — цієї миті</Chip>
+  <Chip t="prc">currently — на цей момент</Chip>
+  <Chip t="prc">today / this week / this month</Chip>
+  <Chip t="prc">these days — цими днями</Chip>
+  <Chip t="prc">still — досі</Chip>
+  <Chip t="prc">always (з роздратуванням)</Chip>
+  <Chip t="prc">more and more — все більше</Chip>
+  <Chip t="prc">Look! / Listen!</Chip>
+  <Chip t="prc">tomorrow (домовленість)</Chip>
+</Chips>
+
+<Note variant="trap" title="Пастка: this week буває і Continuous, і Perfect">
+  <b>I&apos;m covering for her this week.</b> — процес триває, кадр вузький → Continuous.<br />
+  <b>I&apos;ve closed nine tickets this week.</b> — підрахунок результатів за відкритий період → Perfect.
+
+  Однакове <i>this week</i>, різні часи, і вирішує це не маркер, а те, що ви показуєте: <b>процес</b> чи <b>підсумок</b>.
+</Note>
+
+<History title="be + V-ing виросло з прийменника">
+  Тривала форма — порівняно нове явище. У середньоанглійській казали <i>he was on huntinge</i> — буквально «він був на полюванні», з іменником після прийменника. Прийменник стерся до <i>a-</i> (<i>he was a-hunting</i> — цю форму ще можна почути в народних піснях), а потім зник зовсім, і те, що лишилося, стало дієслівною формою.
+
+  Обовʼязковою вона зробилася лише в новій англійській — і саме тому Continuous досі відчувається як «додаткова оптика», а не як базовий час.
+</History>
+
+</Section>

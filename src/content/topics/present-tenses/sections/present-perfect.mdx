@@ -1,0 +1,178 @@
+import { TimelinePresentPerfect } from '../diagrams';
+
+<Section id="perf" n={4} title="Present Perfect — теперішній перфект (+ Perfect Continuous)" tense="prp">
+
+<Lede>Єдиний англійський час, у якого немає українського відповідника. Через це його не можна «перекласти» — його доводиться зрозуміти. Добра новина: ідея одна, і вона проста. <b>Дія сталася в минулому, але ви говорите про неї тому, що вона важлива зараз.</b></Lede>
+
+### 4.1 Форма
+
+<Formula
+  lines={[
+    { sign: '+', body: <>I / you / we / they <K>have + V3</K></>, comment: "I have finished → I've finished" },
+    { sign: '+', body: <>he / she / it <K>has + V3</K></>, comment: "she has finished → she's finished" },
+    { sign: '−', body: <>підмет <Neg>+ have not / has not + V3</Neg></>, comment: "haven't finished, hasn't finished" },
+    { sign: '?', body: <><Q>Have / Has</Q> + підмет <Q>+ V3</Q> … ?</>, comment: 'Have you finished? — НЕ «Did you have finished?»' },
+    { sign: '?', body: <>Wh- + <Q>have / has</Q> + підмет <Q>+ V3</Q> … ?</>, comment: 'How many tickets have you closed?' },
+  ]}
+  note="V3 — третя форма: worked, deployed, seen, done, written. Для правильних дієслів V3 = V2."
+/>
+
+<Muted><b>V3, а не V2.</b> Для правильних дієслів різниці не видно (<i>worked — worked</i>), і саме тому помилка з неправильними виникає так легко: ✗ <i>I have <b>saw</b> it</i> замість <i>I have <b>seen</b> it</i>. Таблиці неправильних дієслів — у кінці розділу.</Muted>
+
+<Note variant="trap" title="Пастка скорочення: 's — це has чи is?">
+  Обидва скорочуються однаково, і на письмі теж. Розрізняє їх наступне слово:
+
+  <b>She&apos;s working</b> → далі -ing → це <i>is</i> → Present Continuous.<br />
+  <b>She&apos;s worked</b> → далі V3 → це <i>has</i> → Present Perfect.<br />
+  <b>She&apos;s been working</b> → далі <i>been</i> → це <i>has</i> → Present Perfect Continuous.
+
+  Те саме з <i>&apos;d</i>: <i>he&apos;d done</i> = <i>had</i>, <i>he&apos;d do</i> = <i>would</i>.
+</Note>
+
+<SvgBox>
+  <TimelinePresentPerfect />
+</SvgBox>
+
+### 4.2 Шість випадків уживання — з розбором
+
+#### ① Результат, важливий зараз — часу дії не називають
+
+<ExList>
+  <Ex ua="Я виправив баг. (він зараз виправлений)" why={<>Коли саме — не сказано і не важливо. Важливо, який стан справ на цю хвилину.</>}>I <M t="prp">have fixed</M> the bug.</Ex>
+  <Ex ua="Її немає на дзвінку — вона пішла з компанії." why={<>Наслідок для теперішнього: пішла, тому її немає. Порівняйте: <i>She left in March</i> — там названий місяць, отже Past Simple.</>}>She isn't on the call — she <M t="prp">has left</M> the company.</Ex>
+  <Ex ua="Ми втратили доступ до продакшну." why="Ви говорите не про подію, а про проблему, яка є прямо зараз.">We <M t="prp">have lost</M> production access.</Ex>
+  <Ex ua="Я забув пароль." why={<>Українською минулий час, англійською — наслідок у теперішньому: пароля в мене зараз немає.</>}>I <M t="prp">have forgotten</M> the password.</Ex>
+</ExList>
+
+#### ② Досвід — будь-коли до цього моменту
+
+<ExList>
+  <Ex ua="Я ніколи не бачив такої латентності." why={<><i>never</i> ставиться між <i>have</i> і V3. Другого заперечення не треба — <i>never</i> уже заперечення.</>}>I <M t="prp">have never seen</M> latency like that.</Ex>
+  <Ex ua="Ти колись ескалював інцидент рівня P1?" why={<><i>ever</i> = «хоч колись за все життя». Найчастіше питання про досвід ставлять саме так.</>}><M t="prp">Have</M> you <M t="prp">ever escalated</M> a P1?</Ex>
+  <Ex ua="Я працював із трьома різними вендорами." why="Скільки разів — за все життя до цього моменту. Дат немає.">I <M t="prp">have worked</M> with three different vendors.</Ex>
+  <Ex ua="Ми вже проходили це двічі." why={<><i>been through</i> — надзвичайно вживана фраза про пережитий досвід.</>}>We <M t="prp">have been</M> through this twice already.</Ex>
+</ExList>
+
+#### ③ Період, який ще не закінчився — for і since
+
+<Muted>Це той випадок, де українці помиляються найчастіше, бо українською тут природний <b>теперішній</b> час.</Muted>
+
+<ExList>
+  <Ex ua="Я працюю тут шість років." why={<>✗ <i>I work here for six years</i>. Період почався в минулому й триває — тільки Perfect.</>}>I <M t="prp">have worked</M> here for six years.</Ex>
+  <Ex ua="Я знаю його з університету." why={<><i>know</i> — дієслово стану, тому Perfect, а не Perfect Continuous.</>}>I <M t="prp">have known</M> him since university.</Ex>
+  <Ex ua="Ми не бачилися з тієї конференції.">We <M t="prp">haven't spoken</M> since that conference.</Ex>
+  <Ex ua="Скільки ти вже на цій посаді?" why={<>Якби посада вже скінчилась: <i>How long were you in that role?</i></>}>How long <M t="prp">have</M> you <M t="prp">been</M> in this role?</Ex>
+</ExList>
+
+<Note title="for чи since — правило одного рядка">
+  <b>for</b> + <i>скільки часу</i> триває: for six years, for two weeks, for ten minutes.<br />
+  <b>since</b> + <i>з якого моменту</i>: since 2019, since Monday, since I joined, since that outage.
+
+  Помилка-калька: ✗ <i>since six years</i>. Українською «вже шість років» і «з 2019-го» звучать однаково буденно, тому <i>since</i> тягне за собою кількість. Тримайте перевірку: після <i>since</i> має стояти <b>точка на календарі</b>, а не тривалість.
+</Note>
+
+#### ④ Щойно, вже, ще ні — just, already, yet
+
+<ExList>
+  <Ex ua="Вона щойно пішла." why={<>Американці частіше кажуть <i>She just left</i> — обидва варіанти нормальні (розділ 5).</>}>She <M t="prp">has just left</M>.</Ex>
+  <Ex ua="Я вже надіслав рахунок." why={<><i>already</i> — між <i>have</i> і V3.</>}>I <M t="prp">have already sent</M> the invoice.</Ex>
+  <Ex ua="Ми ще не завершили міграцію." why={<><i>yet</i> — у самому кінці речення, тільки в запереченнях і питаннях.</>}>We <M t="prp">haven't finished</M> the migration yet.</Ex>
+  <Ex ua="Ти вже глянув пул-реквест?"><M t="prp">Have</M> you <M t="prp">looked</M> at the pull request yet?</Ex>
+</ExList>
+
+#### ⑤ Підрахунок у відкритому періоді
+
+<ExList>
+  <Ex ua="Цього тижня ми випустили два релізи." why={<><i>this week</i> ще триває, до нього можна додати третій реліз → період відкритий.</>}>We <M t="prp">have shipped</M> two releases this week.</Ex>
+  <Ex ua="Сервіс падав тричі за сьогодні.">The service <M t="prp">has gone</M> down three times today.</Ex>
+  <Ex ua="Поки що не скаржився ніхто." why={<><i>so far</i> = «на цю мить», один із найнадійніших маркерів Perfect.</>}>Nobody <M t="prp">has complained</M> so far.</Ex>
+  <Ex ua="Скільки тікетів ти закрив за цей спринт?">How many tickets <M t="prp">have</M> you <M t="prp">closed</M> this sprint?</Ex>
+</ExList>
+
+#### ⑥ Готові конструкції, які тягнуть Perfect за собою
+
+<ExList>
+  <Ex ua="Я питаю про передачу справ уже третій раз." why={<><i>It is the first / second / third time…</i> — завжди Present Perfect. У минулому було б Past Perfect.</>}>This is the third time I <M t="prp">have asked</M> about the handover.</Ex>
+  <Ex ua="Це найгірший інцидент, який у нас був." why="Після найвищого ступеня порівняння — Perfect.">This is the worst outage we <M t="prp">have had</M>.</Ex>
+  <Ex ua="Це вперше, коли релізом займається не він.">It's the first time he <M t="prp">hasn't run</M> the release.</Ex>
+</ExList>
+
+<Note variant="trap" title="been чи gone — різниця, яка змінює зміст">
+  <b>He has been to Berlin.</b> — Він був у Берліні (і вже повернувся). Це <b>досвід</b>.<br />
+  <b>He has gone to Berlin.</b> — Він поїхав до Берліна (і зараз він там). Це <b>де він є</b>.
+
+  Практичний варіант тієї самої пари: <i>She&apos;s been to the client&apos;s office</i> (була, знає, як там) проти <i>She&apos;s gone to the client&apos;s office</i> (поїхала, її немає в офісі).
+</Note>
+
+### 4.3 Present Perfect Continuous — коли важлива тривалість
+
+<Lede><b>have / has been + V-ing.</b> Той самий охват, що й у Present Perfect — від минулого до зараз — але наголос переноситься з <i>результату</i> на <i>процес</i> і його тривалість.</Lede>
+
+<Formula
+  lines={[
+    { sign: '+', body: <>підмет <K>+ have / has been + V-ing</K></>, comment: "I've been waiting, she's been working" },
+    { sign: '−', body: <>підмет <Neg>+ haven&apos;t / hasn&apos;t been + V-ing</Neg></>, comment: "I haven't been sleeping well" },
+    { sign: '?', body: <><Q>Have / Has</Q> + підмет <Q>+ been + V-ing</Q> … ?</>, comment: 'How long have you been waiting?' },
+  ]}
+  note="Дієслова стану сюди не входять: ✗ I've been knowing him. → I've known him."
+/>
+
+<MP title="Perfect чи Perfect Continuous — те саме речення">
+  <MPRow note={<>Наголос на <b>результаті</b>: звіт готовий, можна читати.</>}>I <M t="prp">have written</M> the report.</MPRow>
+  <MPRow note={<>Наголос на <b>процесі</b>: я сидів над ним весь ранок; чи готовий — не сказано.</>}>I <M t="prp">have been writing</M> the report all morning.</MPRow>
+</MP>
+
+<MP title="Ще одна пара — той самий вендор">
+  <MPRow note={<>Скільки разів. Підрахунок закінчених дій.</>}>I <M t="prp">have called</M> them three times.</MPRow>
+  <MPRow note={<>Скільки часу. Дія тягнулась і, найпевніше, ще не дала результату.</>}>I <M t="prp">have been calling</M> them all week.</MPRow>
+</MP>
+
+<ExList>
+  <Ex ua="Скільки ти вже чекаєш на їхню відповідь?" why={<><i>How long</i> + дія, що триває → майже завжди Perfect Continuous.</>}>How long <M t="prp">have</M> you <M t="prp">been waiting</M> for their reply?</Ex>
+  <Ex ua="Латентність зростає, відколи ми додали новий індекс." why={<><i>since</i> + процес, що не спинився.</>}>The latency <M t="prp">has been growing</M> since we added the new index.</Ex>
+  <Ex ua="Він виглядає виснаженим — він два тижні підряд гасить пожежі.">He looks exhausted — he <M t="prp">has been firefighting</M> for two weeks straight.</Ex>
+  <Ex ua="Хто пив мою каву?" why="Класична пара: видимий слід дії, а не її результат. Чашка порожня — хтось цим займався.">Who <M t="prp">has been drinking</M> my coffee?</Ex>
+</ExList>
+
+<Note variant="tip" title="Проста перевірка, який із двох брати">
+  Спитайте себе: <b>відповідь на «скільки часу» чи на «скільки разів»?</b>
+
+  «Скільки часу» → <i>have been + V-ing</i>. «Скільки разів» або «що вже готово» → <i>have + V3</i>.
+
+  І пам'ятайте про дієслова стану: у них процесу немає, тому вони завжди беруть звичайний Perfect. ✗ <i>I&apos;ve been knowing</i>, ✗ <i>I&apos;ve been owning</i>.
+</Note>
+
+### 4.4 Слова-маркери
+
+<Chips>
+  <Chip t="prp">already — вже</Chip>
+  <Chip t="prp">yet — ще (у ? і −)</Chip>
+  <Chip t="prp">just — щойно</Chip>
+  <Chip t="prp">ever / never</Chip>
+  <Chip t="prp">for six years</Chip>
+  <Chip t="prp">since 2019</Chip>
+  <Chip t="prp">so far — поки що</Chip>
+  <Chip t="prp">up to now</Chip>
+  <Chip t="prp">lately / recently</Chip>
+  <Chip t="prp">today / this week / this year</Chip>
+  <Chip t="prp">how long — скільки часу</Chip>
+  <Chip t="prp">It's the first time…</Chip>
+</Chips>
+
+### 4.5 Третя форма — таблиці неправильних дієслів
+
+<Muted>Present Perfect живе на <b>V3</b> — останній колонці. Це той самий список, який використовує аналізатор тексту, тому теорія й підсвітка говорять про одні й ті самі слова. Група A найлегша: там усі три форми однакові, отже вчити нічого.</Muted>
+
+<IrregularVerbs group="a" />
+<IrregularVerbs group="b" />
+<IrregularVerbs group="c" />
+
+<Note variant="warn" title="Три пари, які плутають найчастіше">
+  <b>see — saw — seen</b>: ✗ <i>I have saw</i> → ✓ <i>I have seen</i><br />
+  <b>do — did — done</b>: ✗ <i>I have did</i> → ✓ <i>I have done</i><br />
+  <b>go — went — gone</b>: ✗ <i>I have went</i> → ✓ <i>I have gone</i>
+
+  Правило-запобіжник: після <i>have / has</i> ніколи не стоїть форма, яку ви вживаєте самостійно в минулому часі. Якщо слово може стояти саме (<i>I saw it</i>) — воно V2, і після <i>have</i> йому не місце.
+</Note>
+
+</Section>

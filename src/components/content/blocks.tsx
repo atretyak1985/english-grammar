@@ -1,41 +1,45 @@
 import type { ReactNode } from 'react';
 
-import type { TenseKey } from '@/types/content';
+import {
+  ASPECT_TEXT,
+  TENSE_ASPECT,
+  TENSE_TIME,
+  type Aspect,
+  type TenseKey,
+} from '@/types/content';
 
 /* ============================================================
    Будівельні блоки контенту тем.
    Кожен компонент — це те, що раніше було CSS-класом у main.css.
    Усі стилі на токенах, тому працюють в обох темах.
+
+   Колірні мапи ключовані ВИДОМ, а не конструкцією: Present Perfect і Past
+   Perfect однаково фіолетові, бо колір у застосунку означає вид. Час
+   конструкції показує стиль підкреслення — див. `M` нижче.
    ============================================================ */
 
-const TENSE_TEXT: Record<TenseKey, string> = {
-  ps: 'text-ps',
-  pc: 'text-pc',
-  pp: 'text-pp',
+const ASPECT_BADGE: Record<Aspect, string> = {
+  simple: 'bg-ps-bg text-ps',
+  continuous: 'bg-pc-bg text-pc',
+  perfect: 'bg-pp-bg text-pp',
 };
 
-const TENSE_BADGE: Record<TenseKey, string> = {
-  ps: 'bg-ps-bg text-ps',
-  pc: 'bg-pc-bg text-pc',
-  pp: 'bg-pp-bg text-pp',
+const ASPECT_BORDER: Record<Aspect, string> = {
+  simple: 'border-t-ps',
+  continuous: 'border-t-pc',
+  perfect: 'border-t-pp',
 };
 
-const TENSE_BORDER: Record<TenseKey, string> = {
-  ps: 'border-t-ps',
-  pc: 'border-t-pc',
-  pp: 'border-t-pp',
+const ASPECT_DOT: Record<Aspect, string> = {
+  simple: 'bg-ps',
+  continuous: 'bg-pc',
+  perfect: 'bg-pp',
 };
 
-const TENSE_DOT: Record<TenseKey, string> = {
-  ps: 'bg-ps',
-  pc: 'bg-pc',
-  pp: 'bg-pp',
-};
-
-const TENSE_CHIP: Record<TenseKey, string> = {
-  ps: 'border-ps-line bg-ps-bg text-ps-dk',
-  pc: 'border-pc-line bg-pc-bg text-pc-dk',
-  pp: 'border-pp-line bg-pp-bg text-pp-dk',
+const ASPECT_CHIP: Record<Aspect, string> = {
+  simple: 'border-ps-line bg-ps-bg text-ps-dk',
+  continuous: 'border-pc-line bg-pc-bg text-pc-dk',
+  perfect: 'border-pp-line bg-pp-bg text-pp-dk',
 };
 
 /* ---------- текст і заголовки ---------- */
@@ -90,15 +94,31 @@ export function Ua({ children }: { children?: ReactNode }) {
   return <span className="text-ink-3 block text-[14px] font-normal">{children}</span>;
 }
 
-/** Підсвітка дієслова кольором часу: <M t="ps">shipped</M>. */
+/**
+ * Підсвітка дієслова: <M t="ps">shipped</M> · <M t="prp">have fixed</M>.
+ *
+ * Колір бере вид, а штрихове підкреслення додається теперішнім часам — тим
+ * самим знаком, яким їх позначає аналізатор тексту. Минулі часи лишаються без
+ * підкреслення: вони були в застосунку першими, читач уже звик до чистого
+ * кольору, і саме на цьому тлі штрих читається як «а це вже теперішній».
+ */
 export function M({ t, children }: { t: TenseKey; children?: ReactNode }) {
-  return <mark className={`bg-transparent p-0 font-bold ${TENSE_TEXT[t]}`}>{children}</mark>;
+  const present =
+    TENSE_TIME[t] === 'present'
+      ? 'underline decoration-dashed decoration-2 underline-offset-[3px]'
+      : '';
+
+  return (
+    <mark className={`bg-transparent p-0 font-bold ${ASPECT_TEXT[TENSE_ASPECT[t]]} ${present}`}>
+      {children}
+    </mark>
+  );
 }
 
 export function Badge({ t, children }: { t: TenseKey; children?: ReactNode }) {
   return (
     <span
-      className={`inline-block rounded-md px-2.5 py-[5px] text-[11px] font-extrabold tracking-[1.2px] uppercase ${TENSE_BADGE[t]}`}
+      className={`inline-block rounded-md px-2.5 py-[5px] text-[11px] font-extrabold tracking-[1.2px] uppercase ${ASPECT_BADGE[TENSE_ASPECT[t]]}`}
     >
       {children}
     </span>
@@ -128,7 +148,7 @@ export function Card({
   return (
     <div
       className={`bg-surface border-line rounded-card shadow-card my-[18px] border px-[22px] py-5 ${
-        tense ? `border-t-4 ${TENSE_BORDER[tense]}` : ''
+        tense ? `border-t-4 ${ASPECT_BORDER[TENSE_ASPECT[tense]]}` : ''
       } ${className}`}
     >
       {children}
@@ -153,7 +173,7 @@ export function Grid3({ children }: { children?: ReactNode }) {
 export function TenseHead({ t, children }: { t: TenseKey; children?: ReactNode }) {
   return (
     <div className="mb-1 flex items-center gap-[13px]">
-      <span className={`h-3.5 w-3.5 flex-none rounded-full ${TENSE_DOT[t]}`} />
+      <span className={`h-3.5 w-3.5 flex-none rounded-full ${ASPECT_DOT[TENSE_ASPECT[t]]}`} />
       <H2>{children}</H2>
     </div>
   );
@@ -385,7 +405,7 @@ export function Chip({ t, children }: { t?: TenseKey; children?: ReactNode }) {
   return (
     <span
       className={`rounded-full border px-3 py-1.5 text-[13px] font-semibold ${
-        t ? TENSE_CHIP[t] : 'border-line bg-surface text-ink-2'
+        t ? ASPECT_CHIP[TENSE_ASPECT[t]] : 'border-line bg-surface text-ink-2'
       }`}
     >
       {children}
@@ -437,10 +457,10 @@ export function Cheat({ title, children }: { title: ReactNode; children?: ReactN
   );
 }
 
-const CHEAT_LABEL: Record<TenseKey, string> = {
-  ps: 'text-[#7dd3fc]',
-  pc: 'text-[#fcd34d]',
-  pp: 'text-[#c4b5fd]',
+const CHEAT_LABEL: Record<Aspect, string> = {
+  simple: 'text-[#7dd3fc]',
+  continuous: 'text-[#fcd34d]',
+  perfect: 'text-[#c4b5fd]',
 };
 
 export function CheatRow({
@@ -454,7 +474,7 @@ export function CheatRow({
 }) {
   return (
     <div className="border-deep-line grid grid-cols-1 items-start gap-3.5 border-b py-3 last:border-b-0 sm:grid-cols-[180px_1fr]">
-      <div className={`text-[13px] font-extrabold ${t ? CHEAT_LABEL[t] : 'text-[#94a3b8]'}`}>
+      <div className={`text-[13px] font-extrabold ${t ? CHEAT_LABEL[TENSE_ASPECT[t]] : 'text-[#94a3b8]'}`}>
         {label}
       </div>
       <div className="text-deep-ink text-[14.5px]">{children}</div>

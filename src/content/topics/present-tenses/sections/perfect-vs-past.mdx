@@ -1,0 +1,138 @@
+import { ClosedVsOpen } from '../diagrams';
+
+<Section id="vspast" n={5} title="Present Perfect чи Past Simple — головна пастка">
+
+<Lede>Найважливіший розділ теми. Обидва часи українською перекладаються однаково — «я зробив», — тому різниця для нас <b>невидима на слух</b>. Її не можна вгадати; її треба вирішити свідомо, і для цього достатньо однієї перевірки.</Lede>
+
+<Card tense="prp">
+  <CardTitle>Перевірка з одного питання</CardTitle>
+  <P><b>Період, у якому ця дія сталася, вже закрився?</b></P>
+  <P><b>Так, закрився</b> (yesterday, last week, in 2019, an hour ago) → <M t="ps">Past Simple</M>. У закритий період нічого не додати.</P>
+  <P><b>Ні, ще триває</b> (today, this week, this year, ever, so far, і взагалі «моє життя») → <M t="prp">Present Perfect</M>. До відкритого періоду ще можна додати наступну таку дію.</P>
+  <Muted>Зверніть увагу, що питання <b>не про давність дії</b>. «Я щойно надіслав» — це Perfect, хоч це було 30 секунд тому. «Я надіслав учора» — це Past Simple, хоч це було лише вчора. Вирішує не давність, а <b>закритість періоду</b>.</Muted>
+</Card>
+
+<SvgBox caption={<>Та сама дія, той самий інтервал до «зараз» — і різні часи, бо в одному випадку рамка періоду вже зачинилась, а в іншому ні.</>}>
+  <ClosedVsOpen />
+</SvgBox>
+
+### 5.1 Два списки, які варто знати напам'ять
+
+| Період ЗАКРИТИЙ → Past Simple | Період ВІДКРИТИЙ → Present Perfect |
+|---|---|
+| yesterday · the day before yesterday | today · this morning (якщо ранок триває) |
+| last week / month / year / Friday | this week / month / year |
+| two hours ago · a minute ago | so far · up to now · until now |
+| in 2019 · in March · on Monday | ever · never · in my life |
+| when I was a student | since 2019 · for six years |
+| at six o'clock · then | recently · lately · these days |
+| **When…?** (питання про момент) | **How long…?** (питання про тривалість) |
+
+<Note variant="trap" title="Найкоротший спосіб запам'ятати">
+  Якщо в реченні є <b>ago</b>, <b>yesterday</b> або <b>рік</b> — Present Perfect неможливий фізично. Це не стилістика й не відтінок — це помилка того самого ґатунку, що неузгоджений відмінок в українській.
+
+  І навпаки: якщо є <b>since</b>, <b>so far</b> або <b>How long</b> — Past Simple буде помилкою.
+</Note>
+
+### 5.2 Мінімальні пари — те саме речення, різний час
+
+<MP title="Рахунок вендору">
+  <MPRow note={<>● Подія в закритому вчора. Ви розповідаєте <b>історію</b>.</>}>I <M t="ps">sent</M> the invoice yesterday.</MPRow>
+  <MPRow note={<>⏵ Стан справ зараз: рахунок у них. Коли — не важливо.</>}>I <M t="prp">have sent</M> the invoice.</MPRow>
+</MP>
+
+<MP title="Релізи">
+  <MPRow note={<>Минулий місяць скінчився: цифра остаточна.</>}>We <M t="ps">shipped</M> two releases last month.</MPRow>
+  <MPRow note={<>Цей місяць триває: до двох може додатися третій.</>}>We <M t="prp">have shipped</M> two releases this month.</MPRow>
+</MP>
+
+<MP title="Робота в компанії">
+  <MPRow note={<>Я там <b>більше не працюю</b>. Період закрився.</>}>I <M t="ps">worked</M> at that company for six years.</MPRow>
+  <MPRow note={<>Я <b>досі там працюю</b>. Період відкритий.</>}>I <M t="prp">have worked</M> at that company for six years.</MPRow>
+</MP>
+
+<MP title="Знайомство з людиною">
+  <MPRow note={<>Одна подія: познайомились на конференції у 2019-му.</>}>I <M t="ps">met</M> him at a conference in 2019.</MPRow>
+  <MPRow note={<>Стан, що триває: я його знаю з того часу й досі.</>}>I <M t="prp">have known</M> him since 2019.</MPRow>
+</MP>
+
+<MP title="Втрачений ключ доступу">
+  <MPRow note={<>Розповідь про минулий інцидент. Може, ключ уже знайшли.</>}>I <M t="ps">lost</M> the access key.</MPRow>
+  <MPRow note={<>Проблема прямо зараз: ключа в мене немає.</>}>I <M t="prp">have lost</M> the access key.</MPRow>
+</MP>
+
+<MP title="Сніданок">
+  <MPRow note={<>Просто факт про ранок, який уже минув.</>}>I <M t="ps">had</M> breakfast at seven.</MPRow>
+  <MPRow note={<>Тому їсти не хочу. Наслідок для теперішнього — я сита.</>}>I <M t="prp">have had</M> breakfast.</MPRow>
+</MP>
+
+### 5.3 Чому саме українцям це так важко
+
+<Card>
+  <H4>Українська ділить дієслова інакше</H4>
+  <P>Українська система будується на <b>виді</b>: «писав» (недоконаний) проти «написав» (доконаний). Англійська система будується на <b>охваті періоду</b>. Ці дві сітки не збігаються — і жодне з українських дієслів не має в собі інформації про те, чи період закритий.</P>
+  <P>Тому «Я написав звіт» — це, залежно від контексту, і <i>I wrote the report</i>, і <i>I have written the report</i>. Українське речення просто <b>не містить</b> тієї інформації, яку англійське мусить містити. Її треба добудувати з ситуації.</P>
+</Card>
+
+<Card>
+  <H4>А в деяких мовах перфект вільно бере «вчора» — і збиває з пантелику</H4>
+  <P>Якщо ви вчили німецьку, тут особлива небезпека: німецьке <i>Ich habe es gestern gemacht</i> («я зробив це вчора») з перфектом — цілком нормально. Французьке <i>Je l'ai fait hier</i> — теж. Конструкція <b>та сама</b> («маю зроблене»), а обмеження — різні.</P>
+  <P>Англійська пішла окремим шляхом і зробила заборону жорсткою: <b>назвав момент — втратив право на перфект</b>. Тому інтуїція, перенесена з іншої європейської мови, тут не працює.</P>
+</Card>
+
+### 5.4 Найчастіші конкретні помилки
+
+<GoodBad>
+  <Bad>I <b>have finished</b> it yesterday.</Bad>
+  <Good>I <b>finished</b> it yesterday.<br /><Ua>Є <i>yesterday</i> — період закритий.</Ua></Good>
+</GoodBad>
+
+<GoodBad>
+  <Bad><b>When have you joined</b> the team?</Bad>
+  <Good><b>When did you join</b> the team?<br /><Ua><i>When</i> питає про момент, а Perfect моменту не називає. Ці двоє несумісні в принципі.</Ua></Good>
+</GoodBad>
+
+<GoodBad>
+  <Bad>I <b>work</b> here for six years.</Bad>
+  <Good>I <b>have worked</b> here for six years.<br /><Ua>Найпоширеніша помилка теми. Українською теперішній час, англійською — Perfect.</Ua></Good>
+</GoodBad>
+
+<GoodBad>
+  <Bad>I <b>am working</b> here since 2019.</Bad>
+  <Good>I <b>have been working</b> here since 2019.<br /><Ua><i>since</i> вимагає Perfect. Continuous без <i>have been</i> тут неможливий.</Ua></Good>
+</GoodBad>
+
+<GoodBad>
+  <Bad>Did you <b>ever been</b> to Berlin?</Bad>
+  <Good><b>Have</b> you <b>ever been</b> to Berlin?<br /><Ua>Питання про досвід за все життя → Perfect. Американський розмовний варіант <i>Did you ever go to Berlin?</i> теж існує, але <i>did … been</i> неправильно завжди.</Ua></Good>
+</GoodBad>
+
+### 5.5 Дві прикрі деталі, через які здається, що правило «не працює»
+
+<Note title="① Британці й американці розходяться в дрібницях">
+  З <i>just</i>, <i>already</i> та <i>yet</i> британська норма вимагає Perfect, а американська допускає Past Simple:
+
+  <b>BrE:</b> I&apos;ve just eaten. · Have you finished yet? · I&apos;ve already told him.<br />
+  <b>AmE:</b> I just ate. · Did you finish yet? · I already told him.
+
+  Обидва варіанти зрозуміють будь-де. Порада проста: <b>беріть британський</b>. Він правильний в обох нормах, а американський — лише в одній.
+</Note>
+
+<Note title="② today і this morning можуть бути закритими">
+  Період вважається закритим не за годинником, а <b>в голові мовця</b>. Якщо ранок для вас уже закінчився, ви скажете:
+
+  <b>I had three calls this morning.</b> — ранок позаду, це вже історія.<br />
+  <b>I&apos;ve had three calls this morning.</b> — ранок ще триває, я в ньому.
+
+  Обидва правильні. Це не виняток із правила, а сам його механізм: правило спирається на те, як ви <i>бачите</i> період, а не на календар.
+</Note>
+
+<Note variant="tip" title="Що робити, коли часу на роздуми немає">
+  У живій розмові ви не встигнете прогнати цю схему. Тому запам'ятайте один поведінковий рефлекс:
+
+  <b>Назвали час — переходьте на Past Simple.</b> Щойно з вашого рота вилетіло <i>yesterday</i>, <i>last week</i>, <i>in 2019</i> або <i>ago</i>, дієслово мусить бути V2. І навпаки: якщо ви <b>не збираєтесь</b> називати час, а хочете сказати про стан справ — беріть <i>have + V3</i>.
+
+  Ця одна звичка забирає приблизно 80% помилок теми.
+</Note>
+
+</Section>
