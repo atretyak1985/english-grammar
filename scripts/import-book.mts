@@ -17,7 +17,7 @@
  * Шляхи імпортів ВІДНОСНІ, з розширенням `.ts`, — як і в `seed-library.mts`:
  * файл виконує `tsx` поза Next.js, і alias `@/` для нього не діє.
  */
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { chunksOf, chunkText, type Chunk } from '../src/lib/analyzer/chunks.ts';
@@ -52,10 +52,17 @@ interface Options {
 
 const USAGE = `Внести книжку в бібліотеку.
 
+Переноси рядків працюють у прямому виклику, бо зворотний слеш тут поза лапками:
+
   npm run import-book -- --in <файл|URL> --slug <slug> \\
     --title "Назва" --author "Автор" \\
     --source "Project Gutenberg" --license "public domain" \\
     --source-url "https://..." [--sort-order 1] [--review]
+
+Через make ARGS доводиться писати ОДНИМ рядком: усередині лапок зворотний слеш
+рядка не переносить, а лишається в значенні, і Make виконує тільки перший рядок.
+
+  make import-book ARGS='--in <файл|URL> --slug <slug> --title "Назва" --author "Автор" --source "Project Gutenberg" --license "public domain" --source-url "https://..."'
 
   --in          PDF, .txt або http(s) URL. Шапку й підвал Project Gutenberg
                 скрипт зрізає сам.
@@ -68,15 +75,37 @@ function parseArgs(argv: string[]): Options {
   const raw = new Map<string, string>();
   let useReview = false;
 
-  for (let i = 0; i < argv.length; i += 1) {
-    const arg = argv[i];
+  /**
+   * Аргументи нормалізуються ДО розбору: обрізаються з боків, а порожні
+   * відкидаються. Це не косметика, а конкретний випадок — `make import-book
+   * ARGS='…'` із перенесенням рядка всередині лапок. Зворотний слеш там не
+   * переносить рядок, а лишається в значенні, тому Make виконує лише перший
+   * рядок і в argv прилітає аргумент з одних пробілів. Розбирати його як
+   * введення означало б звинувачувати людину в тому, що зробила оболонка.
+   */
+  const args: string[] = [];
+  for (const item of argv) {
+    const trimmed = item.trim();
+    if (trimmed === '') continue;
+    if (trimmed === '\\') {
+      throw new Error(
+        "У аргументах лишився зворотний слеш. Усередині ARGS='…' він не переносить рядок, а " +
+          'потрапляє в значення — через це Make виконує лише перший рядок. Запишіть ARGS одним ' +
+          'рядком або викличте `npm run import-book -- …` напряму.',
+      );
+    }
+    args.push(trimmed);
+  }
+
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
     if (arg === undefined) continue;
     if (arg === '--review') {
       useReview = true;
       continue;
     }
     if (!arg.startsWith('--')) throw new Error(`Незрозумілий аргумент "${arg}".\n\n${USAGE}`);
-    const value = argv[i + 1];
+    const value = args[i + 1];
     if (value === undefined || value.startsWith('--')) {
       throw new Error(`Аргумент ${arg} без значення.\n\n${USAGE}`);
     }
@@ -155,6 +184,21 @@ function stripGutenberg(text: string): string {
   return text.slice(from, to).trim();
 }
 
+/**
+ * Найчастіша помилка тут — не зламаний файл, а заповнювач із документації,
+ * скопійований дослівно: `--in book.pdf`. Сире `ENOENT: no such file` у такому
+ * разі не бреше, але й не допомагає, тому шлях перевіряється до читання, а
+ * повідомлення називає прапорець і нагадує про заповнювач.
+ */
+function requireFile(spec: string): void {
+  if (existsSync(spec)) return;
+
+  const hint = ['book.pdf', 'book.txt', 'story.txt'].includes(spec)
+    ? ' Це заповнювач із README — підставте справжній шлях або URL.'
+    : '';
+  throw new Error(`--in ${spec}: файла немає.${hint}`);
+}
+
 async function readInput(spec: string): Promise<string> {
   if (/^https?:\/\//.test(spec)) {
     const response = await fetch(spec);
@@ -162,6 +206,8 @@ async function readInput(spec: string): Promise<string> {
     console.log(`завантажено ${spec}`);
     return normalizeExtractedText(await response.text());
   }
+
+  requireFile(spec);
   if (spec.toLowerCase().endsWith('.pdf')) return readPdf(spec);
   return normalizeExtractedText(readFileSync(spec, 'utf8'));
 }
