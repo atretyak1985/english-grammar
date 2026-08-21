@@ -6,6 +6,7 @@ import { useAppState } from '@/components/providers/AppStateProvider';
 import { IDLE_TONE, ROW_BUTTON } from '@/components/words/WordStatusButtons';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { paginate } from '@/lib/analyzer/pages';
+import { UNKNOWN_LIMIT, pickUnknown } from '@/lib/analyzer/vocabulary';
 import {
   TENSE_LABELS,
   applyMatches,
@@ -91,9 +92,6 @@ const CARD_HEAD = 'border-line bg-surface-2 flex items-center gap-2 border-b px-
 const CARD_TITLE = 'text-ink-2 text-[12.5px] font-extrabold tracking-[0.4px]';
 const SIDE_CARD = 'bg-surface border-line rounded-panel shadow-card border p-4';
 const SIDE_LABEL = 'text-ink-3 mb-3 text-[10.5px] font-extrabold tracking-[1.1px] uppercase';
-
-/** Скільки незнайомих слів показуємо: наступне підтягується після кожної дії. */
-const UNKNOWN_LIMIT = 20;
 
 export interface ReaderCanvasProps {
   text: string;
@@ -275,10 +273,7 @@ export function ReaderCanvas({
   // Відбір — дешевий прохід уже згорнутим списком. Залежність саме від
   // `state.words`, а не від `wordStatus`: остання — нова замикання на кожен
   // рендер провайдера, через що весь документ перескановувався б на кожен клік.
-  const unknownHere = useMemo(
-    () => frequency.filter((entry) => (state.words[entry.word] ?? 'unknown') === 'unknown'),
-    [frequency, state.words],
-  );
+  const unknownHere = useMemo(() => pickUnknown(frequency, state.words), [frequency, state.words]);
 
   /** Показуємо двадцять; наступне підтягується саме, бо список перерахувався. */
   const shown = unknownHere.slice(0, UNKNOWN_LIMIT);

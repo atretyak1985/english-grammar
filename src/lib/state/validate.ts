@@ -1,7 +1,7 @@
 import { NOTE_MAX } from '@/lib/state/storage';
 import { EMPTY_STATE, type QuizAttempt, type UserState, type WordStatus } from '@/types/state';
 
-const STATUSES: WordStatus[] = ['unknown', 'learning', 'known'];
+const STATUSES: WordStatus[] = ['unknown', 'hidden', 'learning', 'known'];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -40,8 +40,11 @@ export function parseUserState(input: unknown): UserState {
     for (const [word, note] of Object.entries(input.notes)) {
       if (word.length === 0 || word.length > 64) continue;
       if (typeof note !== 'string') continue;
-      const trimmed = note.trim().slice(0, NOTE_MAX);
-      if (trimmed.length > 0) notes[word.toLowerCase()] = trimmed;
+      // Задовга нотатка відкидається цілком, а не обрізається: мовчазна обрізка
+      // віддала б урізаний текст за повний. Той самий принцип, що в /api/analyze,
+      // де задовгий документ дістає чесну відмову замість половини розмітки.
+      const text = note.trim();
+      if (text.length > 0 && text.length <= NOTE_MAX) notes[word.toLowerCase()] = text;
     }
   }
 
