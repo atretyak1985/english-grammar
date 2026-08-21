@@ -1,0 +1,91 @@
+# Засів бібліотеки й тарифів у продакшн-базу. Запускається ВРУЧНУ, з вкладки
+# Actions, і навмисно не висить на пуші.
+#
+# Чому окремим workflow, а не кроком у «Деплой»: артефакти бібліотеки лежать у
+# git, але сторінки `/library` читають базу, тому нова книжка не з'являється в
+# продакшені сама. Вішати засів на кожен викот означало б робити деплой залежним
+# від доступності бази — недоступна база валила б викот, який до неї не має
+# стосунку. А запуск на вимогу ще й дає операцію, яку можна повторити, не
+# перевикочуючи образ.
+#
+# Образ Cloud Run для цього не годиться: `Dockerfile` збирає Next standalone, і
+# в фінальний шар не потрапляють ні `scripts/`, ні `src/content/library/`, ні
+# `tsx` із devDependencies. Тому засів іде з чекауту репозиторію на раннері.
+#
+# `DATABASE_URL` дістає сам раннер із Secret Manager через Workload Identity
+# Federation — той самий доступ, що й у «Деплою». Значення не потрапляє ні в
+# лог, ні в секрети репозиторію: воно живе лише в змінній оточення одного кроку.
+name: Засів бібліотеки
+
+on:
+  workflow_dispatch:
+    inputs:
+      push_schema:
+        description: 'Накотити схему перед засівом (drizzle-kit push --force). Потрібно лише на порожній базі.'
+        type: boolean
+        default: false
+
+# Два засіви одночасно писали б у ті самі рядки. `cancel-in-progress: false` —
+# бо обривати запис у базу посеред транзакції гірше, ніж дочекатися.
+concurrency:
+  group: seed-production
+  cancel-in-progress: false
+
+env:
+  PROJECT: grammalens-app
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # `npm ci`, а не `--omit=dev`: засів виконує `tsx`, а це devDependency.
+      - name: Залежності
+        run: npm ci
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/912724662559/locations/global/workloadIdentityPools/github/providers/github
+          service_account: github-deploy@grammalens-app.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      # Схема — лише коли попросили явно. `drizzle-kit push` міняє структуру
+      # бойової бази, тому робити це на кожному засіві не можна: засів
+      # ідемпотентний і безпечний, накочування схеми — ні.
+      - name: Накотити схему
+        if: ${{ inputs.push_schema }}
+        run: |
+          DATABASE_URL="$(gcloud secrets versions access latest \
+            --secret=DATABASE_URL --project="$PROJECT")" \
+            npm run db:push -- --force
+
+      # Значення секрета підставляється підстановкою команди в тому ж рядку, що
+      # й виклик: воно не проходить ні через `echo`, ні через вивід кроку.
+      - name: Засіяти
+        run: |
+          DATABASE_URL="$(gcloud secrets versions access latest \
+            --secret=DATABASE_URL --project="$PROJECT")" \
+            npm run db:seed
+
+      # Засів без видимого наслідку — не засів. Перевіряємо бойову адресу, бо
+      # саме її бачить читач: сторінка книжки мусить віддати 200, а не 404.
+      - name: Перевірити, що бібліотека віддає книжки
+        run: |
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 \
+            https://grammalens.com/library/alice-in-wonderland || true)
+          echo "/library/alice-in-wonderland: $CODE"
+          [ "$CODE" = "200" ] || {
+            echo 'Сторінка книжки не віддає 200 — засів не дав наслідку.'
+            exit 1
+          }
