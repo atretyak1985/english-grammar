@@ -14,7 +14,7 @@ PG_DB        := english_grammar
 
 .DEFAULT_GOAL := help
 .PHONY: help install dev build start check typecheck lint test \
-        db db-stop db-logs db-shell db-push db-seed db-studio db-reset grant-plan clean
+        db db-stop db-logs db-shell db-push db-seed db-studio db-reset grant-plan import-book clean
 
 help: ## Показати цю довідку
 	@echo 'Граматика англійської — команди:'
@@ -89,6 +89,9 @@ db-push: db ## Накотити схему з src/db/schema.ts
 
 db-seed: db ## Засіяти бібліотеку й тарифи з артефактів репозиторію
 	npm run db:seed
+
+import-book: ## Внести книжку в бібліотеку: make import-book ARGS='--in file.pdf --slug ... --title ...'
+	npm run import-book -- $(ARGS)
 
 db-studio: db ## Drizzle Studio у браузері
 	npm run db:studio
