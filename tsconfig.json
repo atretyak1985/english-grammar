@@ -13,6 +13,12 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "noEmit": true,
+    // Скрипти в `scripts/*.mts` імпортують із явним розширенням `.ts` — так їх
+    // виконує Node без збірки. Щоб вони не лишалися поза перевіркою типів
+    // (а вони лишалися: `include` мав лише `**/*.ts`, і тихий баг у
+    // `seed-library.mts` жив там непоміченим), дозволяємо ці шляхи. Безпечно
+    // саме тому, що вище стоїть `noEmit`.
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -35,6 +41,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.mts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
