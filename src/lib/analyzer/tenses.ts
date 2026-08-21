@@ -14,8 +14,12 @@ import type { TenseKey } from '@/types/content';
  *   5. have / has / 've / 's + V3               → Present Perfect
  *   6. am / is / are / 'm / 're / 's + …ing     → Present Continuous
  *   7. do / does / don't / doesn't + слово      → Present Simple
- *   8. слово зі списку неправильних (V2)        → Past Simple
- *   9. закінчення -ed                           → Past Simple
+ *   8. will / 'll / won't + have + been + …ing  → Future Perfect
+ *   9. will / 'll / won't + have + V3           → Future Perfect
+ *  10. will / 'll / won't + be + …ing           → Future Continuous
+ *  11. will / 'll / won't + слово               → Future Simple
+ *  12. слово зі списку неправильних (V2)        → Past Simple
+ *  13. закінчення -ed                           → Past Simple
  *
  * Допоміжне і смислове дієслово підсвічуються як ОДНА конструкція — саме
  * зв'язку «had + V3» чи «have been + V-ing» треба навчитися бачити.
@@ -35,7 +39,16 @@ import type { TenseKey } from '@/types/content';
  *   іменника в множині лише за контекстом. Тому цей час знаходить майже
  *   винятково модель (`review.ts`), а локальний шар дає його тільки там, де є
  *   `do` / `does`. Це не недогляд, а межа шаблонного підходу: правило, яке
- *   ловило б кожне слово на `-s`, підсвітило б половину іменників у тексті.
+ *   ловило б кожне слово на `-s`, підсвітило б половину іменників у тексті;
+ * — **`be going to` локально теж не розпізнається.** «I am going to deploy» —
+ *   майбутнє, а «I am going to the office» — рух, і на поверхні вони
+ *   однакові: різниця лише в тому, іменник далі чи дієслово. «I am going to
+ *   work» двозначне навіть для людини. Тому цю форму лишено моделі, а
+ *   локально вона поки виглядає як Present Continuous («am going»).
+ *
+ * Майбутні часи, натомість, розпізнаються надійно: `will` — слово однозначне,
+ * без другого значення й без омонімів серед іменників, тому шаблон тут дає
+ * майже те саме, що дала б модель.
  *
  * Для навчальної підсвітки цього достатньо: локальний шар з'являється миттєво
  * й безкоштовно, а розбір моделлю приходить поверх нього і має остаточне слово.
@@ -84,6 +97,12 @@ const DID = new Set(['did', "didn't"]);
 const HAVE = new Set(['have', 'has', "haven't", "hasn't"]);
 const BE_PRESENT = new Set(['am', 'is', 'are', "isn't", "aren't"]);
 const DO_PRESENT = new Set(['do', 'does', "don't", "doesn't"]);
+/**
+ * `shall` тут не для повноти таблиці: у британських документах і питаннях
+ * («Shall we start?») він живий, а вести його окремим часом не варто — це той
+ * самий Future Simple.
+ */
+const WILL = new Set(['will', "won't", 'shall', "shan't"]);
 
 export interface AnalyzedToken {
   /** Токен як у джерелі — з пунктуацією і пробілами */
@@ -118,6 +137,9 @@ export const TENSE_LABELS: Record<TenseKey, string> = {
   prs: 'Present Simple',
   prc: 'Present Continuous',
   prp: 'Present Perfect',
+  fs: 'Future Simple',
+  fc: 'Future Continuous',
+  fp: 'Future Perfect',
 };
 
 /** Прибирає пунктуацію з країв слова, лишає внутрішній апостроф: didn't, wasn't. */
@@ -156,10 +178,11 @@ function isV3Form(word: string | null): boolean {
  * без розбору речення не вийде. Локальний шар просто мовчить, і слово дістає
  * розмітку від моделі.
  */
-function contraction(word: string | null): 'be' | 'have' | 'either' | null {
+function contraction(word: string | null): 'be' | 'have' | 'will' | 'either' | null {
   if (word === null) return null;
   if (word.endsWith("'m") || word.endsWith("'re")) return 'be';
   if (word.endsWith("'ve")) return 'have';
+  if (word.endsWith("'ll")) return 'will';
   if (word.endsWith("'s")) return 'either';
   return null;
 }
@@ -300,13 +323,68 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
       }
     }
 
-    // 8. неправильне дієслово у формі V2 → Past Simple
+    // 8-11. will / 'll / won't + … → майбутні часи
+    //
+    // Порядок перевірок від довшого до коротшого, і це важливо: «will have
+    // finished» мусить стати перфектом ЩЕ ДО того, як спрацює загальне правило
+    // «will + слово», інакше конструкція розпалася б на Future Simple плюс
+    // окремо підсвічене дієслово.
+    if (WILL.has(word) || contraction(word) === 'will') {
+      const next = nextWordIndex(tokens, i);
+      const nextWord = next === null ? null : (tokens[next]?.word ?? null);
+
+      if (next !== null) {
+        // will have been working
+        if (nextWord === 'have') {
+          const third = nextWordIndex(tokens, next);
+          const thirdWord = third === null ? null : (tokens[third]?.word ?? null);
+
+          if (third !== null && thirdWord === 'been') {
+            const fourth = nextWordIndex(tokens, third);
+            if (fourth !== null && isIngForm(tokens[fourth]?.word ?? null)) {
+              matches.push({ from: i, to: fourth, tense: 'fp' });
+              i = fourth;
+              continue;
+            }
+          }
+
+          // will have finished — але НЕ «will have lunch»: там `have` смислове,
+          // і це звичайний Future Simple, який дожене правило нижче.
+          if (third !== null && isV3Form(thirdWord) && !DETERMINERS.has(thirdWord ?? '')) {
+            matches.push({ from: i, to: third, tense: 'fp' });
+            i = third;
+            continue;
+          }
+        }
+
+        // will be working
+        if (nextWord === 'be') {
+          const third = nextWordIndex(tokens, next);
+          if (third !== null && isIngForm(tokens[third]?.word ?? null)) {
+            matches.push({ from: i, to: third, tense: 'fc' });
+            i = third;
+            continue;
+          }
+        }
+
+        // will deploy · will be fine · will have lunch — усе це Future Simple.
+        // Проміжок тягнеться до наступного слова, бо саме зв'язку «will + V»
+        // читач і має побачити цілою.
+        if (isVerbCandidate(nextWord)) {
+          matches.push({ from: i, to: next, tense: 'fs' });
+          i = next;
+          continue;
+        }
+      }
+    }
+
+    // 12. неправильне дієслово у формі V2 → Past Simple
     if (V2_FORMS.has(word)) {
       matches.push({ from: i, to: i, tense: 'ps' });
       continue;
     }
 
-    // 9. закінчення -ed → Past Simple
+    // 13. закінчення -ed → Past Simple
     if (isEdForm(word)) {
       matches.push({ from: i, to: i, tense: 'ps' });
     }
@@ -355,6 +433,9 @@ export function statsOf(tokens: AnalyzedToken[], matches: Match[]): Record<Tense
     prs: { count: 0, examples: [] },
     prc: { count: 0, examples: [] },
     prp: { count: 0, examples: [] },
+    fs: { count: 0, examples: [] },
+    fc: { count: 0, examples: [] },
+    fp: { count: 0, examples: [] },
   };
 
   for (const match of matches) {

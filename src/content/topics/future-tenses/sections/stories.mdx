@@ -1,0 +1,63 @@
+<Section id="stories" n={11} title="Три тексти з повним розбором">
+
+<Lede>Правила дають розуміння, а зв'язний текст — відчуття. Спочатку прочитайте англійською, потім звірте переклад, і лише потім подивіться розбір кожної форми. Тут немає жодної вправи: тут треба побачити, як шість способів говорити про майбутнє працюють в одному абзаці.</Lede>
+
+### Текст 1 — план тижня на планувальній зустрічі
+
+<Story translation="Отже, план на цей тиждень. Код-фриз починається в середу — так у релізному календарі, тут ми нічого не змінимо. Я запускаю перехід у четвер о десятій, тож у той час я буду недоступний; якщо щось зламається, пишіть Сергієві. До пʼятниці ми вже випустимо виправлення платежів, обіцяю. Ми не збираємось цього кварталу братися за рефакторинг — так вирішили минулого тижня. І ще: після демо я подзвоню вендору, бо їхня квота ось-ось закінчиться.">
+  So, the plan for this week. The code freeze <M t="prs">starts</M> on Wednesday — that's the release calendar, we <M t="fs">won't change</M> it. I <M t="prc">am running</M> the cutover at ten on Thursday, so I <M t="fc">will be</M> unavailable then; if anything <M t="prs">breaks</M>, message Serhii. By Friday we <M t="fp">will have shipped</M> the payments fix, I promise. We <M t="fs">are not going to start</M> the refactor this quarter — we <M t="ps">decided</M> that last week. One more thing: after the demo I <M t="fs">will call</M> the vendor, because their quota <b>is about to</b> run out.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="prs">starts</M></b> — Present Simple</>}>Релізний календар — це розклад, а не чиєсь рішення. Тому теперішня форма, хоч ідеться про середу.</BRow>
+  <BRow form={<><b><M t="fs">won't change</M></b> — will</>}>Рішення-констатація, ухвалена в цю мить: ми на це не підемо.</BRow>
+  <BRow form={<><b><M t="prc">am running</M></b> — Present Continuous</>}>Домовленість із часом: четвер, десята. Це вже в календарі, тому не <i>will run</i>.</BRow>
+  <BRow form={<><b><M t="fc">will be</M></b> unavailable — Future Continuous</>}>Стан у названий момент майбутнього. З дієсловом <i>be</i> форма з -ing неможлива, тому просто <i>will be</i>.</BRow>
+  <BRow form={<>if anything <b><M t="prs">breaks</M></b> — Present Simple</>}>Після <i>if</i> — теперішній час. ✗ <i>if anything will break</i>.</BRow>
+  <BRow form={<><b><M t="fp">will have shipped</M></b> — Future Perfect</>}><i>By Friday</i> = «до пʼятниці вже готово». Без перфекта речення означало б «у пʼятницю».</BRow>
+  <BRow form={<><b><M t="fs">are not going to start</M></b> — going to</>}>Рішення ухвалене раніше — і наступне речення це прямо підтверджує.</BRow>
+  <BRow form={<><b><M t="ps">decided</M></b> — Past Simple</>}>Єдина минула форма в тексті: є названий закритий час <i>last week</i>.</BRow>
+  <BRow form={<><b><M t="fs">will call</M></b> — will</>}>Рішення, яке я озвучую саме зараз, у цій розмові.</BRow>
+  <BRow form={<><b>is about to</b> run out</>}>«Ось-ось» — найближче майбутнє. Сильніше за <i>going to</i> за відчуттям невідкладності.</BRow>
+</Breakdown>
+
+### Текст 2 — лист клієнту
+
+<Story translation="Дякую за терпіння. Оновлення виходить у вівторок о 09:00 за UTC — це наше стандартне вікно релізів. Простою не буде. Ми переносимо ваші дані в новий кластер того ж вечора, і на той час, коли ви зайдете в понеділок, міграція вже завершиться. Якщо щось піде не так, ми відкотимо все протягом години. Наступного місяця ваша підписка поновлюється автоматично; якщо ви хочете змінити тариф, повідомте мене до пʼятниці. Я буду в офісі до шостої, тож встигну відповісти сьогодні.">
+  Thank you for your patience. The update <M t="prs">goes</M> out at 09:00 UTC on Tuesday — that's our standard release window. There <M t="fs">will be</M> no downtime. We <M t="prc">are moving</M> your data to the new cluster the same evening, and by the time you <M t="prs">log</M> in on Monday, the migration <M t="fp">will have finished</M>. If anything <M t="prs">goes</M> wrong, we <M t="fs">will roll</M> everything back within an hour. Next month your subscription <M t="prs">renews</M> automatically; if you <M t="prs">want</M> to change the plan, let me know <b>by</b> Friday. I <M t="fc">will be</M> in the office <b>until</b> six, so I <M t="fs">will</M> still <M t="fs">reply</M> today.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="prs">goes</M></b> out, <b><M t="prs">renews</M></b> — Present Simple</>}>Релізне вікно й автопоновлення — регламент. Найформальніший і найспокійніший спосіб повідомити дату.</BRow>
+  <BRow form={<>There <b><M t="fs">will be</M></b> no downtime — will</>}>Твердження-обіцянка. Саме тут <i>will</i> доречний: ми беремо зобовʼязання.</BRow>
+  <BRow form={<><b><M t="prc">are moving</M></b> — Present Continuous</>}>Заплановано на конкретний вечір. Домовленість, а не намір.</BRow>
+  <BRow form={<>by the time you <b><M t="prs">log</M></b> in — Present Simple</>}>Після <i>by the time</i> — теперішній час, хоч подія в майбутньому.</BRow>
+  <BRow form={<><b><M t="fp">will have finished</M></b> — Future Perfect</>}>Завершиться до тієї точки. Дві майбутні події, і перфект показує, яка з них раніша.</BRow>
+  <BRow form={<>if anything <b><M t="prs">goes</M></b> wrong … <b><M t="fs">will roll</M></b></>}>Класична пара першого умовного: теперішній у підрядному, <i>will</i> у головному.</BRow>
+  <BRow form={<><b>by</b> Friday проти <b>until</b> six</>}>Найкорисніший рядок листа. <i>by</i> — дедлайн для одноразової дії, <i>until</i> — тривалість присутності. Переставте їх — і зміните домовленість.</BRow>
+</Breakdown>
+
+### Текст 3 — переписка з другом, без роботи
+
+<Story translation="Слухай, у мене змінилися плани. У пʼятницю я не працюю — лечу до батьків, квитки вже куплені. Потяг відходить о 6:40, тож о шостій я вже буду на вокзалі. Візьму твою книжку з собою й поверну наступного тижня, обіцяю. Мама, певно, вже спекла щось — вона завжди пече, коли я приїжджаю. І ще: не дзвони в суботу зранку, я буду спати. Якщо буде щось термінове, пиши.">
+  Listen, my plans <M t="pp">have changed</M>. I <M t="prc">am not working</M> on Friday — I <M t="prc">am flying</M> to my parents, the tickets are already booked. The train <M t="prs">leaves</M> at 6:40, so at six I <M t="fc">will be</M> at the station already. I <M t="fs">will take</M> your book with me and <M t="fs">give</M> it back next week, I promise. Mum <M t="fp">will have baked</M> something — she always <M t="prs">bakes</M> when I <M t="prs">visit</M>. One more thing: don't call on Saturday morning, I <M t="fc">will be sleeping</M>. If anything <M t="prs">is</M> urgent, text me.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b><M t="pp">have changed</M></b> — Present Perfect</>}>Результат важливий зараз: плани вже інші. Коли саме змінилися — не сказано.</BRow>
+  <BRow form={<><b><M t="prc">am not working</M></b>, <b><M t="prc">am flying</M></b> — Present Continuous</>}>Дві домовленості поспіль. Квитки куплені, тому ✗ <i>I won&apos;t work</i>.</BRow>
+  <BRow form={<><b><M t="prs">leaves</M></b> — Present Simple</>}>Розклад потяга. Не моє рішення взагалі.</BRow>
+  <BRow form={<><b><M t="fc">will be</M></b> at the station — Future Continuous</>}>Стан у названий момент — о шостій. Точніше за просте <i>will be</i> без часу.</BRow>
+  <BRow form={<><b><M t="fs">will take</M></b>, <b><M t="fs">give</M></b> — will</>}>Обіцянка. Зверніть увагу: у другій частині <i>will</i> не повторюється — воно поширюється на обидва дієслова.</BRow>
+  <BRow form={<><b><M t="fp">will have baked</M></b> — Future Perfect</>}>Тут форма майбутнього говорить про минуле: це припущення з високою впевненістю, «певно, вже спекла».</BRow>
+  <BRow form={<>always <b><M t="prs">bakes</M></b> when I <b><M t="prs">visit</M></b></>}>Регулярність плюс теперішній після <i>when</i>. Два різні приводи для тієї самої форми.</BRow>
+  <BRow form={<><b><M t="fc">will be sleeping</M></b> — Future Continuous</>}>Процес у названий відрізок майбутнього. Саме через це прохання не дзвонити звучить обґрунтованим.</BRow>
+</Breakdown>
+
+<Note variant="tip" title="Що з цим робити далі">
+  Візьміть текст 1 і перепишіть його <b>про свій справжній наступний тиждень</b>: що в розкладі, що домовлено, що ви обіцяєте, що буде готово до дедлайну, чого не збираєтесь робити. Вісім-десять речень.
+
+  Це найдорожча вправа в усій темі, бо змушує вибирати форму не з таблиці, а з власної ситуації — а саме цього й вимагає жива мова.
+</Note>
+
+</Section>

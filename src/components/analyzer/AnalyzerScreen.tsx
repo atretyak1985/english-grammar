@@ -21,22 +21,35 @@ import { useReview } from '@/lib/analyzer/useReview';
 import { useBoxSize, useFitHeight } from '@/lib/analyzer/useViewport';
 import { PAGE_ONE, docKeyOf, useReading } from '@/lib/state/reading';
 import { useTexts } from '@/lib/state/texts';
-import type { TenseKey } from '@/types/content';
+import { TENSE_HIGHLIGHT, type TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
 
 /**
- * Порядок перемикачів: спершу три минулі, потім три теперішні. Так вони й
- * подані в темах, тому легенда читається як зміст сайту, а не як алфавіт.
+ * Порядок перемикачів: минулі, теперішні, майбутні — трійками за часом. Так
+ * вони й подані в темах, тому легенда читається як зміст сайту, а не як
+ * алфавіт, і три рядки пігулок самі показують матрицю 3 × 3.
  */
-const TENSE_ORDER: TenseKey[] = ['ps', 'pc', 'pp', 'prs', 'prc', 'prp'];
+const TENSE_ORDER: TenseKey[] = [
+  'ps',
+  'pc',
+  'pp',
+  'prs',
+  'prc',
+  'prp',
+  'fs',
+  'fc',
+  'fp',
+];
 
 /* ------------------------------------------------------------------
    Колір бере ВИД, стиль лінії бере ЧАС: минулі — суцільна, теперішні —
-   штрихована. Саме штрих, а не пунктир: пунктиром тут уже підкреслені
-   незнайомі слова, і два схожі знаки з різним змістом читалися б як один.
-   Тому Present Perfect і Past Simple — це фіолетовий проти
-   синього, а не два відтінки одного, і головна пастка теми «Теперішні часи»
-   видна в тексті без наведення курсора.
+   штрихована, майбутні — подвійна. Пунктира в цьому наборі немає навмисно:
+   ним тут уже підкреслені незнайомі слова, і два схожі знаки з різним змістом
+   читалися б як один.
+
+   Тому Present Perfect і Past Simple — це фіолетовий проти синього, а не два
+   відтінки одного, і головна пастка теми «Теперішні часи» видна в тексті без
+   наведення курсора.
 
    Мапи розписані всіма шістьма ключами, а не зібрані з двох осей у рантаймі:
    Tailwind знаходить класи статичним пошуком по коду, і склеєне ім'я
@@ -50,6 +63,9 @@ const TENSE_TEXT: Record<TenseKey, string> = {
   prs: 'text-ps',
   prc: 'text-pc',
   prp: 'text-pp',
+  fs: 'text-ps',
+  fc: 'text-pc',
+  fp: 'text-pp',
 };
 
 /** Увімкнений перемикач. Пунктирна рамка в теперішніх — та сама ознака часу. */
@@ -60,15 +76,9 @@ const TENSE_ON: Record<TenseKey, string> = {
   prs: 'border-ps border-dashed bg-ps-bg text-ps-dk',
   prc: 'border-pc border-dashed bg-pc-bg text-pc-dk',
   prp: 'border-pp border-dashed bg-pp-bg text-pp-dk',
-};
-
-const TENSE_HIGHLIGHT: Record<TenseKey, string> = {
-  ps: 'text-ps bg-ps-bg border-b-2 border-ps',
-  pc: 'text-pc bg-pc-bg border-b-2 border-pc',
-  pp: 'text-pp bg-pp-bg border-b-2 border-pp',
-  prs: 'text-ps bg-ps-bg border-b-2 border-dashed border-ps',
-  prc: 'text-pc bg-pc-bg border-b-2 border-dashed border-pc',
-  prp: 'text-pp bg-pp-bg border-b-2 border-dashed border-pp',
+  fs: 'border-ps border-double border-[3px] bg-ps-bg text-ps-dk',
+  fc: 'border-pc border-double border-[3px] bg-pc-bg text-pc-dk',
+  fp: 'border-pp border-double border-[3px] bg-pp-bg text-pp-dk',
 };
 
 const TENSE_BAR: Record<TenseKey, string> = {
@@ -78,6 +88,9 @@ const TENSE_BAR: Record<TenseKey, string> = {
   prs: 'bg-ps',
   prc: 'bg-pc',
   prp: 'bg-pp',
+  fs: 'bg-ps',
+  fc: 'bg-pc',
+  fp: 'bg-pp',
 };
 
 const PILL = 'cursor-pointer rounded-full border px-[11px] py-[5px] text-[12px] leading-[normal] font-bold';
@@ -94,7 +107,7 @@ const UNKNOWN_LIMIT = 20;
 /**
  * Аналізатор тексту: правило видно не в підручнику, а у справжньому тексті
  * (CONCEPT 4). Перемикачі керують шарами підсвітки — по одному на кожну з
- * шести конструкцій плюс незнайомі слова.
+ * девʼяти конструкцій плюс незнайомі слова.
  */
 export function AnalyzerScreen() {
   const [layers, setLayers] = useState<Record<TenseKey | 'words', boolean>>({
@@ -104,6 +117,9 @@ export function AnalyzerScreen() {
     prs: true,
     prc: true,
     prp: true,
+    fs: true,
+    fc: true,
+    fp: true,
     words: true,
   });
 
@@ -306,7 +322,7 @@ export function AnalyzerScreen() {
 
       <div data-reader-row className="grid grid-cols-[minmax(0,1fr)_320px] gap-[22px]">
         <div className="flex min-w-0 flex-col gap-4">
-          {/* Сім перемикачів шарів: шість конструкцій і незнайомі слова */}
+          {/* Десять перемикачів шарів: девʼять конструкцій і незнайомі слова */}
           <div
             ref={cardRef}
             className={

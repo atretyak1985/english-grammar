@@ -51,6 +51,7 @@ import {
   Ul,
 } from '@/components/content/blocks';
 import { Drills } from '@/components/content/Drills';
+import { HighlightLegend } from '@/components/content/HighlightLegend';
 import { IrregularVerbs, StateVerbs } from '@/components/content/IrregularVerbs';
 import { Section } from '@/components/content/Section';
 import { Quiz } from '@/components/quiz/Quiz';
@@ -77,12 +78,16 @@ export function useMDXComponents(components: MDXComponents = {}): MDXComponents 
     td: Td,
     blockquote: ({ children }) => <Note>{children}</Note>,
 
-    // ті самі заголовки й абзац, але як явні теги в MDX — потрібні там, де
-    // текст стоїть поруч із JSX-сусідами всередині картки чи виноски
+    // ті самі заголовки, абзац і списки, але як явні теги в MDX — потрібні
+    // там, де текст стоїть поруч із JSX-сусідами всередині картки чи виноски
+    // і розмітка markdown до нього вже не застосовується
     H2,
     H3,
     H4,
     P,
+    Ul,
+    Ol,
+    Li,
 
     // блоки теми
     Section,
@@ -124,6 +129,7 @@ export function useMDXComponents(components: MDXComponents = {}): MDXComponents 
 
     // інтерактив і дані
     Drills,
+    HighlightLegend,
     Quiz,
     IrregularVerbs,
     StateVerbs,

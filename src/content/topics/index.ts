@@ -48,6 +48,29 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     cheatsheet: () => import('@/content/topics/present-tenses/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/present-tenses/sections/plan.mdx'),
   },
+  'future-tenses': {
+    idea: () => import('@/content/topics/future-tenses/sections/idea.mdx'),
+    will: () => import('@/content/topics/future-tenses/sections/will.mdx'),
+    'going-to': () => import('@/content/topics/future-tenses/sections/going-to.mdx'),
+    'will-vs-going-to': () =>
+      import('@/content/topics/future-tenses/sections/will-vs-going-to.mdx'),
+    'present-forms': () => import('@/content/topics/future-tenses/sections/present-forms.mdx'),
+    'future-continuous': () =>
+      import('@/content/topics/future-tenses/sections/future-continuous.mdx'),
+    'future-perfect': () => import('@/content/topics/future-tenses/sections/future-perfect.mdx'),
+    markers: () => import('@/content/topics/future-tenses/sections/markers.mdx'),
+    comparison: () => import('@/content/topics/future-tenses/sections/comparison.mdx'),
+    highlight: () => import('@/content/topics/future-tenses/sections/highlight.mdx'),
+    stories: () => import('@/content/topics/future-tenses/sections/stories.mdx'),
+    translation: () => import('@/content/topics/future-tenses/sections/translation.mdx'),
+    mistakes: () => import('@/content/topics/future-tenses/sections/mistakes.mdx'),
+    decision: () => import('@/content/topics/future-tenses/sections/decision.mdx'),
+    exercises: () => import('@/content/topics/future-tenses/sections/exercises.mdx'),
+    quiz: () => import('@/content/topics/future-tenses/sections/quiz.mdx'),
+    history: () => import('@/content/topics/future-tenses/sections/history.mdx'),
+    cheatsheet: () => import('@/content/topics/future-tenses/sections/cheatsheet.mdx'),
+    plan: () => import('@/content/topics/future-tenses/sections/plan.mdx'),
+  },
 };
 
 export function hasContent(slug: string): boolean {

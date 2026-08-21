@@ -6,6 +6,7 @@ import {
   TENSE_TIME,
   type Aspect,
   type TenseKey,
+  type TenseTime,
 } from '@/types/content';
 
 /* ============================================================
@@ -97,19 +98,23 @@ export function Ua({ children }: { children?: ReactNode }) {
 /**
  * Підсвітка дієслова: <M t="ps">shipped</M> · <M t="prp">have fixed</M>.
  *
- * Колір бере вид, а штрихове підкреслення додається теперішнім часам — тим
- * самим знаком, яким їх позначає аналізатор тексту. Минулі часи лишаються без
- * підкреслення: вони були в застосунку першими, читач уже звик до чистого
- * кольору, і саме на цьому тлі штрих читається як «а це вже теперішній».
+ * Колір бере вид, а підкреслення — час: штрих у теперішніх, подвійна лінія в
+ * майбутніх, тими самими знаками, якими їх позначає аналізатор тексту. Минулі
+ * часи лишаються без підкреслення: вони були в застосунку першими, читач уже
+ * звик до чистого кольору, і саме на цьому тлі лінія читається як «а це вже
+ * не минуле».
  */
-export function M({ t, children }: { t: TenseKey; children?: ReactNode }) {
-  const present =
-    TENSE_TIME[t] === 'present'
-      ? 'underline decoration-dashed decoration-2 underline-offset-[3px]'
-      : '';
+const TIME_LINE: Record<TenseTime, string> = {
+  past: '',
+  present: 'underline decoration-dashed decoration-2 underline-offset-[3px]',
+  future: 'underline decoration-double decoration-1 underline-offset-[3px]',
+};
 
+export function M({ t, children }: { t: TenseKey; children?: ReactNode }) {
   return (
-    <mark className={`bg-transparent p-0 font-bold ${ASPECT_TEXT[TENSE_ASPECT[t]]} ${present}`}>
+    <mark
+      className={`bg-transparent p-0 font-bold ${ASPECT_TEXT[TENSE_ASPECT[t]]} ${TIME_LINE[TENSE_TIME[t]]}`}
+    >
       {children}
     </mark>
   );

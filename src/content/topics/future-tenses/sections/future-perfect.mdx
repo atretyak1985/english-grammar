@@ -1,0 +1,76 @@
+import { TimelineFuturePerfect } from '../diagrams';
+
+<Section id="perf" n={7} title="Future Perfect — буде вже зроблено (+ Perfect Continuous)" tense="fp">
+
+<Lede>Форма дедлайнів, звітів і планів. Вона відповідає на питання, якого решта форм поставити не може: <b>що буде вже зроблено до певного моменту в майбутньому?</b> У робочому листуванні вона трапляється значно частіше, ніж у розмові.</Lede>
+
+### 7.1 Форма
+
+<Formula
+  lines={[
+    { sign: '+', body: <>підмет <K>+ will have + V3</K></>, comment: "I'll have finished by six" },
+    { sign: '−', body: <>підмет <Neg>+ won&apos;t have + V3</Neg></>, comment: "we won't have finished by then" },
+    { sign: '?', body: <><Q>Will</Q> + підмет <Q>+ have + V3</Q> … ?</>, comment: 'Will you have finished by six?' },
+    { sign: '+', body: <>підмет <K>+ will have been + V-ing</K></>, comment: 'Perfect Continuous: скільки часу триватиме' },
+  ]}
+  note="V3 — третя форма: shipped, seen, done, written. Для правильних дієслів V3 = V2."
+/>
+
+<SvgBox>
+  <TimelineFuturePerfect />
+</SvgBox>
+
+### 7.2 Три випадки вживання
+
+#### ① Завершиться до майбутньої точки
+
+<ExList>
+  <Ex ua="До пʼятниці ми вже випустимо виправлення." why={<><b>by</b> + точка = «до цього моменту вже готово». Порівняйте: <i>We&apos;ll ship it on Friday</i> означає «у пʼятницю», а не «до пʼятниці».</>}>By Friday we <M t="fp">will have shipped</M> the fix.</Ex>
+  <Ex ua="На той час, коли клієнт підключиться, ми вже все розгорнемо." why={<>Після <i>by the time</i> — теперішній час, а в головній частині перфект.</>}>By the time the client <M t="prs">joins</M>, we <M t="fp">will have deployed</M> everything.</Ex>
+  <Ex ua="До того часу, як ти прочитаєш це, я вже вилечу.">By the time you <M t="prs">read</M> this, I <M t="fp">will have left</M>.</Ex>
+  <Ex ua="До кінця кварталу ми ще не закриємо цей раунд." why="Заперечна форма — саме вона найчастіше потрібна у звітах про ризики.">We <M t="fp">won't have closed</M> the round by the end of the quarter.</Ex>
+</ExList>
+
+#### ② Скільки часу триватиме — Perfect Continuous
+
+<ExList>
+  <Ex ua="У червні я працюватиму тут уже шість років." why={<>Наголос на тривалості, яка накопичиться до точки. Порівняйте з розділом 4 теми «Теперішні часи»: там та сама логіка, але точка — «зараз».</>}>In June I <M t="fp">will have been working</M> here for six years.</Ex>
+  <Ex ua="До завершення міграції ми будемо з нею вже вісім годин." why="Скільки часу забере процес, який ще триває.">When the migration finishes, we <M t="fp">will have been running</M> it for eight hours.</Ex>
+  <Ex ua="Наступного місяця цьому сервісу буде десять років." why={<>Для дієслів стану — звичайний перфект: ✗ <i>will have been being</i>.</>}>Next month the service <M t="fp">will have been</M> live for ten years.</Ex>
+</ExList>
+
+#### ③ Припущення про те, що вже сталося
+
+<Muted>Менш відомий, але дуже вживаний випадок: форма майбутнього, яка говорить про минуле. Це припущення з високою впевненістю.</Muted>
+
+<ExList>
+  <Ex ua="Ти, мабуть, уже бачив цей звіт." why="Я не питаю про майбутнє — я припускаю, що це вже сталося. Дуже ввічливий спосіб не образити людину поясненням очевидного.">You <M t="fp">will have seen</M> the report already.</Ex>
+  <Ex ua="Вони, певно, вже вирішили без нас.">They <M t="fp">will have decided</M> without us by now.</Ex>
+</ExList>
+
+### 7.3 by чи until — різниця, на якій зривають дедлайни
+
+<Lede>Обидва українською «до». Але <b>by</b> означає точку, до якої дія має завершитися, а <b>until</b> — весь період, протягом якого щось триває. Помилка тут не стилістична: вона змінює домовленість.</Lede>
+
+|  | Значення | Приклад |
+|---|---|---|
+| **by** | **не пізніше ніж** — точка дедлайну | Send it **by Friday**. <Ua>Надішли не пізніше пʼятниці.</Ua> |
+| **until / till** | **аж до** — весь період триває | I'll be here **until Friday**. <Ua>Я тут аж до пʼятниці.</Ua> |
+
+<GoodBad>
+  <Bad>Please send the report <b>until</b> Friday.<br />I'll be in the office <b>by</b> six.</Bad>
+  <Good>Please send the report <b>by</b> Friday.<br /><Ua>дедлайн — одноразова дія</Ua>I'll be in the office <b>until</b> six.<br /><Ua>присутність триває весь час</Ua></Good>
+</GoodBad>
+
+<Muted><b>Просте правило.</b> Дія одноразова (надіслати, здати, приїхати) → <b>by</b>. Дія тривала (бути, чекати, працювати) → <b>until</b>. Перше речення в лівій колонці — класична причина зірваних термінів у листуванні з носіями: <i>«until Friday»</i> вони прочитають як «можна не надсилати аж до пʼятниці».</Muted>
+
+<Note variant="tip" title="Коли Future Perfect не потрібен">
+  Так само, як Past Perfect, ця форма легко стає надмірною. Якщо в реченні вже є <i>by</i> або <i>by the time</i>, порядок подій зрозумілий — і носій часто обходиться простішим часом:
+
+  <b>By Friday we&apos;ll have shipped it.</b> ✓ — акуратно й точно<br />
+  <b>By Friday we&apos;ll ship it.</b> ✓ — теж кажуть, у розмові навіть частіше
+
+  Перевірка та сама, що з Past Perfect: приберіть <i>have</i>. Якщо зміст не змінився, форма не обовʼязкова. У листі краще лишити, у розмові — можна прибрати.
+</Note>
+
+</Section>

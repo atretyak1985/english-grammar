@@ -4,18 +4,30 @@ import type { ReactNode } from 'react';
 export type Level = 'a2' | 'b1' | 'b2' | 'c1';
 
 /**
- * Шість конструкцій, які застосунок розрізняє наскрізь: теорія, підсвітка, схеми.
+ * Девʼять конструкцій, які застосунок розрізняє наскрізь: теорія, підсвітка,
+ * схеми. Це рівно матриця 3 × 3 — три види на три часи, — і саме тому вони
+ * розмічені двома осями, а не одним списком.
  *
- * Розмічені вони двома осями, а не одним списком, і це не формальність — саме
- * так їх бачить читач. Колір означає ВИД (Simple, Continuous, Perfect), стиль
- * підкреслення означає ЧАС (минулий чи теперішній). Тому синій — це «простий»
- * і в `ps`, і в `prs`, а фіолетовий — «перфект» в обох часах.
+ * Колір означає ВИД (Simple, Continuous, Perfect). Стиль підкреслення означає
+ * ЧАС: минулий — суцільне, теперішній — штрихове, майбутній — подвійне. Тому
+ * синій — це «простий» і в `ps`, і в `prs`, і в `fs`, а фіолетовий — «перфект»
+ * у всіх трьох часах.
  *
  * Практична вигода саме там, де в темі «Теперішні часи» головна пастка:
  * Present Perfect проти Past Simple — це фіолетовий проти синього, і різниця
  * видна ще до того, як читач навів курсор на підпис.
  */
-export const TENSE_KEYS = ['ps', 'pc', 'pp', 'prs', 'prc', 'prp'] as const;
+export const TENSE_KEYS = [
+  'ps',
+  'pc',
+  'pp',
+  'prs',
+  'prc',
+  'prp',
+  'fs',
+  'fc',
+  'fp',
+] as const;
 
 export type TenseKey = (typeof TENSE_KEYS)[number];
 
@@ -34,7 +46,7 @@ export function isTenseKey(value: unknown): value is TenseKey {
 export type Aspect = 'simple' | 'continuous' | 'perfect';
 
 /** Час конструкції — задає стиль підкреслення. */
-export type TenseTime = 'past' | 'present';
+export type TenseTime = 'past' | 'present' | 'future';
 
 export const TENSE_ASPECT: Record<TenseKey, Aspect> = {
   ps: 'simple',
@@ -43,6 +55,9 @@ export const TENSE_ASPECT: Record<TenseKey, Aspect> = {
   prs: 'simple',
   prc: 'continuous',
   prp: 'perfect',
+  fs: 'simple',
+  fc: 'continuous',
+  fp: 'perfect',
 };
 
 export const TENSE_TIME: Record<TenseKey, TenseTime> = {
@@ -52,6 +67,9 @@ export const TENSE_TIME: Record<TenseKey, TenseTime> = {
   prs: 'present',
   prc: 'present',
   prp: 'present',
+  fs: 'future',
+  fc: 'future',
+  fp: 'future',
 };
 
 /**
@@ -65,6 +83,28 @@ export const ASPECT_TEXT: Record<Aspect, string> = {
   simple: 'text-ps',
   continuous: 'text-pc',
   perfect: 'text-pp',
+};
+
+/**
+ * Як конструкція виглядає підсвіченою в тексті. Живе тут, а не в екрані
+ * аналізатора, бо тепер цим користуються двоє: сам аналізатор і картка-легенда
+ * у темі, яка цей код і пояснює. Дві копії розійшлися б рівно тоді, коли
+ * легенда почала б обіцяти не те, що читач бачить.
+ */
+export const TENSE_HIGHLIGHT: Record<TenseKey, string> = {
+  ps: 'text-ps bg-ps-bg border-b-2 border-ps',
+  pc: 'text-pc bg-pc-bg border-b-2 border-pc',
+  pp: 'text-pp bg-pp-bg border-b-2 border-pp',
+  prs: 'text-ps bg-ps-bg border-b-2 border-dashed border-ps',
+  prc: 'text-pc bg-pc-bg border-b-2 border-dashed border-pc',
+  prp: 'text-pp bg-pp-bg border-b-2 border-dashed border-pp',
+  // Майбутні йдуть підкресленням, а не рамкою: `border-style: double` на
+  // рядковому елементі не роздільна — на трьох пікселях браузер малює її
+  // суцільною, і майбутнє ставало б неможливо відрізнити від минулого.
+  // Заміряно на скріншоті, а не припущено.
+  fs: 'text-ps bg-ps-bg underline decoration-double decoration-1 underline-offset-[3px]',
+  fc: 'text-pc bg-pc-bg underline decoration-double decoration-1 underline-offset-[3px]',
+  fp: 'text-pp bg-pp-bg underline decoration-double decoration-1 underline-offset-[3px]',
 };
 
 /** Розділ усередині теми: власна сторінка, рядок у сайдбарі та якір у повному вигляді. */
