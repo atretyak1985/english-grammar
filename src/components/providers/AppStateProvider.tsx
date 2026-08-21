@@ -42,6 +42,10 @@ interface AppStateContextValue {
   resetProgress: (slug: string) => void;
   wordStatus: (word: string) => WordStatus;
   setWordStatus: (word: string, status: WordStatus) => void;
+  /** Прибрати слово з очей: окрема дія, не сходинка драбинки знання. */
+  hideWord: (word: string) => void;
+  /** Повернути приховане слово в «не знаю». */
+  unhideWord: (word: string) => void;
   cycleWordStatus: (word: string) => void;
   note: (word: string) => string;
   setNote: (word: string, text: string) => void;
@@ -148,6 +152,19 @@ export function AppStateProvider({
           ...current,
           words: { ...current.words, [word.toLowerCase()]: status },
         })),
+
+      hideWord: (word) =>
+        update((current) => ({
+          ...current,
+          words: { ...current.words, [word.toLowerCase()]: 'hidden' },
+        })),
+
+      unhideWord: (word) =>
+        update((current) => {
+          const key = word.toLowerCase();
+          if (current.words[key] !== 'hidden') return current;
+          return { ...current, words: { ...current.words, [key]: 'unknown' } };
+        }),
 
       note: (word) => state.notes[word.toLowerCase()] ?? '',
 

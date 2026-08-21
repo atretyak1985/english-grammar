@@ -43,8 +43,11 @@ export function readLocalState(): UserState {
     if (isRecord(parsed.notes)) {
       for (const [word, note] of Object.entries(parsed.notes)) {
         if (typeof note !== 'string') continue;
-        const trimmed = note.trim().slice(0, NOTE_MAX);
-        if (trimmed.length > 0) notes[word.toLowerCase()] = trimmed;
+        // Те саме правило, що в `parseUserState`: задовга нотатка відкидається,
+        // а не обрізається. Дві різні поведінки на клієнті й сервері дали б
+        // нотатку, яка «є» до перезавантаження сторінки й зникає після нього.
+        const text = note.trim();
+        if (text.length > 0 && text.length <= NOTE_MAX) notes[word.toLowerCase()] = text;
       }
     }
 

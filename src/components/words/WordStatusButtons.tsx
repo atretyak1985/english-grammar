@@ -5,15 +5,27 @@ import type { WordStatus } from '@/types/state';
 
 export const STATUS_LABELS: Record<WordStatus, string> = {
   unknown: 'не знаю',
+  hidden: 'приховане',
   learning: 'вчу',
   known: 'знаю',
 };
+
+/**
+ * Драбинка знання — тільки ті статуси, які читач ставить кнопкою в рядку.
+ * `hidden` тут навмисно відсутній: приховування живе окремою дією. Набір кнопок
+ * задає цей явний упорядкований масив, а не ключі мапи підписів — інакше кожен
+ * новий статус у мапі сам домальовував би собі кнопку.
+ */
+export const LADDER_STATUSES: WordStatus[] = ['unknown', 'learning', 'known'];
 
 /** Увімкнений стан кнопки: «не знаю» — червоний, «вчу» — помаранчевий, «знаю» — зелений. */
 export const ACTIVE_TONE: Record<WordStatus, string> = {
   unknown: 'border-no bg-no-bg text-no',
   learning: 'border-pc bg-pc-bg text-pc-dk',
   known: 'border-ok bg-ok-bg text-ok',
+  // Приховане — приглушений тон наявними токенами: власний колір натякав би,
+  // що це ще одна сходинка знання, а це просто «прибрано з очей».
+  hidden: 'border-line bg-hover text-ink-3',
 };
 
 /**
@@ -33,7 +45,7 @@ export function WordStatusButtons({ word }: { word: string }) {
 
   return (
     <div className="flex flex-wrap justify-end gap-1.5">
-      {(Object.keys(STATUS_LABELS) as WordStatus[]).map((status) => (
+      {LADDER_STATUSES.map((status) => (
         <button
           key={status}
           type="button"
