@@ -1,7 +1,8 @@
 import { MODEL, getClaude } from '@/lib/claude';
 import { TENSE_KEYS, isTenseKey, type TenseKey } from '@/types/content';
 
-import { type AnalyzedToken, analyzeText, normalizeWord } from './tenses';
+import { analyzeText, normalizeWord } from './tenses';
+import { wordTokens } from './words';
 
 /**
  * Розбір минулих і теперішніх часів моделлю — другий прохід поверх локальних
@@ -218,20 +219,6 @@ const REPORT_TOOL = {
 };
 
 /**
- * Слова тексту з їхніми номерами в масиві токенів. Пробільні токени сюди не
- * потрапляють: нумерувати їх означало б віддати моделі вдвічі більший список
- * заради індексів, які вона ніколи не назве.
- */
-function words(tokens: AnalyzedToken[]): { index: number; raw: string }[] {
-  const out: { index: number; raw: string }[] = [];
-  for (let i = 0; i < tokens.length; i += 1) {
-    const token = tokens[i];
-    if (token?.word) out.push({ index: i, raw: token.raw.trim() });
-  }
-  return out;
-}
-
-/**
  * Нумерація наскрізна по словах, а не по масиву токенів: індекси токенів ідуть
  * через один (між ними пробіли), і половина цифр у промпті була б платою ні за
  * що. Назад у токени перекладаємо самі — модель про це знати не мусить.
@@ -306,13 +293,13 @@ export function requestParams(text: string) {
     ],
     tools: [REPORT_TOOL],
     tool_choice: { type: 'tool' as const, name: 'report_matches' },
-    messages: [{ role: 'user' as const, content: numbered(words(analyzeText(text).tokens)) }],
+    messages: [{ role: 'user' as const, content: numbered(wordTokens(analyzeText(text).tokens)) }],
   };
 }
 
 /** Слова тексту: порожній текст у модель не відправляємо й грошей на нього не витрачаємо. */
 export function wordsIn(text: string): number {
-  return words(analyzeText(text).tokens).length;
+  return wordTokens(analyzeText(text).tokens).length;
 }
 
 /**
@@ -324,7 +311,7 @@ export function parseMatches(text: string, content: { type: string }[]): Reviewe
   const call = content.find((block) => block.type === 'tool_use');
   if (call === undefined) return [];
 
-  return accept((call as { input?: unknown }).input, words(analyzeText(text).tokens));
+  return accept((call as { input?: unknown }).input, wordTokens(analyzeText(text).tokens));
 }
 
 /**

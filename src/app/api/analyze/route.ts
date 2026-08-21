@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { resolveAccess, consumeWords } from '@/lib/access';
 import { analyze } from '@/lib/analyzer/cache';
 import { CALLS_PER_WINDOW, reserveCall } from '@/lib/analyzer/throttle';
 import { tokenize } from '@/lib/analyzer/tenses';
@@ -15,7 +16,11 @@ import { clientIp } from '@/lib/dictionary/throttle';
  * і клієнт просто лишається з тим, що має. Тому недоступний Claude — це 200 з
  * порожнім уточненням, а не 500: помилки тут немає, є пропущений шар.
  *
- * Сесія не потрібна: аналізатор, як і словник, працює анонімно.
+ * Сесія БІЛЬШЕ НЕ «не потрібна» — платний виклик тепер списує слова з квоти
+ * акаунта (`consumeWords`), а списувати нема з чого, якщо ніхто не увійшов.
+ * Анонімний трафік більше не мусить витрачати спільний ключ Claude без жодного
+ * обліку; гість при цьому не лишається ні з чим — у нього є локальна
+ * підсвітка і вже розібрана бібліотека (`/library`).
  */
 export const runtime = 'nodejs';
 
@@ -34,11 +39,23 @@ interface Body {
   text?: unknown;
 }
 
-function fail(message: string, status: number) {
-  return NextResponse.json({ error: message }, { status });
+function fail(message: string, status: number, extra?: Record<string, unknown>) {
+  return NextResponse.json({ error: message, ...extra }, { status });
 }
 
 export async function POST(request: Request) {
+  // Перша перевірка з усіх: гостю ручку не відкриваємо взагалі, ще до того, як
+  // читати тіло запиту. Без акаунта нема кому списати слова, а мовчки платити
+  // за анонімний трафік зі спільного ключа — саме та поведінка, яку прибираємо.
+  const access = await resolveAccess();
+  if (access.level === 'guest') {
+    return fail(
+      'Уточнення моделлю доступне лише зі входом. Бібліотека вже розібрана і доступна без входу.',
+      401,
+      { reason: 'auth-required' },
+    );
+  }
+
   let payload: unknown;
   try {
     payload = await request.json();
@@ -63,6 +80,18 @@ export async function POST(request: Request) {
   // прохід по всьому документу, результат якого нікуди не піде.
   const words = tokenize(text).filter((token) => token.word !== null).length;
 
+  // Квота перевіряється до платного виклику, а не після: інакше вичерпаний
+  // ліміт дізнавався б про себе постфактум, уже заплативши моделі. Текст під
+  // залишок НЕ обрізаємо — та сама мовчазна обрізка, яку вище вже заборонено
+  // для MAX_CHARS: половина розбору, видана за розбір цілого.
+  if (words > access.remainingWords) {
+    return fail(`Слів цього місяця не залишилось: ${access.remainingWords} з ${access.monthlyWords}.`, 402, {
+      reason: 'quota-exhausted',
+      remainingWords: access.remainingWords,
+      monthlyWords: access.monthlyWords,
+    });
+  }
+
   // Ліміт списується всередині кешу і тільки за платний виклик: інакше
   // гортання вже розібраної книжки впиралося б у стелю, не витративши копійки.
   const batch = await analyze(text, words, { gate: () => reserveCall(clientIp(request)) });
@@ -71,6 +100,14 @@ export async function POST(request: Request) {
       `Забагато нових текстів підряд (більше ${CALLS_PER_WINDOW} за хвилину). Спробуйте за хвилину.`,
       429,
     );
+  }
+
+  // Списуємо рівно за платний виклик: попадання в кеш (SC-6) і невідповідь
+  // моделі — не платіж, і списувати за них означало б брати слова за те, за
+  // що ніхто не платив. `userId` тут не `null` за побудовою (гостя вже
+  // відсічено вище), але тип цього не знає, тож перевіряємо явно, без `!`.
+  if (batch.cache === 'none' && batch.matches !== null && access.userId !== null) {
+    await consumeWords(access.userId, words);
   }
 
   return NextResponse.json({ matches: batch.matches, cache: batch.cache });

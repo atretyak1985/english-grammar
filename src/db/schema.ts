@@ -10,6 +10,8 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { AdapterAccountType } from 'next-auth/adapters';
 
+import type { TenseKey } from '@/types/content';
+
 /* ============================================================
    Таблиці Auth.js — структура задана адаптером, змінювати не можна
    ============================================================ */
@@ -227,3 +229,105 @@ export const analysisBatches = pgTable('analysis_batches', {
   ingestedAt: timestamp('ingested_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+/* ============================================================
+   Публічна бібліотека, тарифи й облік слів — гостьовий доступ і підписки
+   ============================================================ */
+
+/** Оповідання публічної бібліотеки: читається без входу, на відміну від `texts`. */
+export const stories = pgTable('stories', {
+  /** Він же частина URL `/library/<slug>` — людський ключ, не згенерований id. */
+  slug: varchar('slug', { length: 64 }).primaryKey(),
+  title: text('title').notNull(),
+  author: text('author').notNull(),
+  // Як і в `dictionary`: атрибуція лежить поряд із текстом, а не в константі —
+  // оповідання бібліотеки можуть мати різні джерела й ліцензії одночасно.
+  source: varchar('source', { length: 32 }).notNull(),
+  license: varchar('license', { length: 48 }).notNull(),
+  sourceUrl: text('source_url').notNull(),
+  body: text('body').notNull(),
+  words: integer('words').notNull(),
+  /** Готові кількості часів (SC-9) — раховано раз під час засіву, не на льоту. */
+  stats: jsonb('stats').$type<Record<TenseKey, number>>().notNull(),
+  /** Частотність слів, порахована локально `wordFrequency()` під час засіву. */
+  frequency: jsonb('frequency').$type<{ word: string; count: number }[]>().notNull(),
+  sortOrder: integer('sort_order').notNull().default(0),
+  /** sha256 пари «текст + розмітка» — основа ідемпотентності повторного засіву. */
+  artifactHash: varchar('artifact_hash', { length: 64 }).notNull(),
+  /** Довідка, чим саме розмічено, а не критерій пошуку — не частина ключа. */
+  seedModel: varchar('seed_model', { length: 64 }),
+  seededAt: timestamp('seeded_at', { withTimezone: true }),
+});
+
+/**
+ * Розмітка часів по оповіданню, шматками — так само, як розбір користувацьких
+ * текстів шматкується у `analyzer/chunks.ts`.
+ *
+ * PK `(slug, chunkIndex)` СВІДОМО не містить ні моделі, ні версії промпту — на
+ * відміну від `analyses` (SC-2). Причина: гостю API аналізатора закритий, тому
+ * промах кешу тут не має запасного шляху назад до моделі, і зміна
+ * `PROMPT_VERSION` чи `ANTHROPIC_MODEL` тихо знеструмила б усю бібліотеку —
+ * замість зайвого перерахунку кешу читачі побачили б порожню розмітку.
+ */
+export const storyMatches = pgTable(
+  'story_matches',
+  {
+    slug: varchar('slug', { length: 64 })
+      .notNull()
+      .references(() => stories.slug, { onDelete: 'cascade' }),
+    chunkIndex: integer('chunk_index').notNull(),
+    /** Межі шматка в токенах документа — той самий рахунок, що й у `analyses`. */
+    fromToken: integer('from_token').notNull(),
+    toToken: integer('to_token').notNull(),
+    matches: jsonb('matches').$type<{ from: number; to: number; tense: string }[]>().notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.slug, table.chunkIndex] })],
+);
+
+/** Тарифи. Рядки засіваються з `DEFAULT_PLANS` (`src/lib/access/limits.ts`). */
+export const plans = pgTable('plans', {
+  code: varchar('code', { length: 16 }).primaryKey(),
+  title: text('title'),
+  monthlyWords: integer('monthly_words').notNull(),
+  priceCents: integer('price_cents').notNull().default(0),
+  currency: varchar('currency', { length: 3 }).notNull().default('USD'),
+  /** 1/0, не boolean — той самий стиль прапорця, що й `settings.remindersEnabled`. */
+  active: integer('active').notNull().default(1),
+  sortOrder: integer('sort_order').notNull().default(0),
+});
+
+/** Стан підписки: один активний тариф на користувача. */
+export const subscriptions = pgTable('subscriptions', {
+  userId: text('user_id')
+    .primaryKey()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  planCode: varchar('plan_code', { length: 16 }).notNull(),
+  /** active | canceled | past_due */
+  status: varchar('status', { length: 16 }).notNull(),
+  currentPeriodStart: timestamp('current_period_start', { withTimezone: true }).notNull(),
+  currentPeriodEnd: timestamp('current_period_end', { withTimezone: true }).notNull(),
+  /** 'manual' зараз — місце під майбутній платіжний провайдер без міграції. */
+  activatedVia: varchar('activated_via', { length: 16 }).notNull().default('manual'),
+  /** Чим підтверджена ручна активація — щоб розібрати спірний випадок без логів. */
+  note: text('note'),
+});
+
+/**
+ * Облік витрачених слів за місяць. Період рядком `YYYY-MM`, а не датою,
+ * навмисно: місяць — ключ агрегації, і рядок робить `ON CONFLICT` тривіальним
+ * інкрементом (`src/lib/access/index.ts`, `consumeWords`) без попереднього
+ * `SELECT`.
+ */
+export const analysisUsage = pgTable(
+  'analysis_usage',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    period: varchar('period', { length: 7 }).notNull(),
+    words: integer('words').notNull().default(0),
+    calls: integer('calls').notNull().default(0),
+    updatedAt: timestamp('updated_at', { withTimezone: true }),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.period] })],
+);

@@ -1,0 +1,1045 @@
+{
+  "format": 1,
+  "seededBy": "local-rules",
+  "chunks": [
+    {
+      "index": 0,
+      "firstWord": 1,
+      "lastWord": 1501,
+      "matches": [
+        {
+          "word": 7,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 14,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 18,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 39,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 50,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 54,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 69,
+          "length": 3,
+          "tense": "pc"
+        },
+        {
+          "word": 86,
+          "length": 2,
+          "tense": "ps"
+        },
+        {
+          "word": 96,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 129,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 135,
+          "length": 2,
+          "tense": "ps"
+        },
+        {
+          "word": 143,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 157,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 182,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 194,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 209,
+          "length": 2,
+          "tense": "pc"
+        },
+        {
+          "word": 211,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 218,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 223,
+          "length": 2,
+          "tense": "pc"
+        },
+        {
+          "word": 240,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 243,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 248,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 249,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 253,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 260,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 271,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 275,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 284,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 289,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 311,
+          "length": 3,
+          "tense": "pp"
+        },
+        {
+          "word": 321,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 341,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 346,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 365,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 392,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 396,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 446,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 452,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 457,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 463,
+          "length": 2,
+          "tense": "pc"
+        },
+        {
+          "word": 469,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 478,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 483,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 492,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 504,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 509,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 514,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 523,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 531,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 541,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 560,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 570,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 578,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 585,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 601,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 614,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 619,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 629,
+          "length": 2,
+          "tense": "ps"
+        },
+        {
+          "word": 638,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 643,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 650,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 657,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 663,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 683,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 696,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 699,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 711,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 713,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 722,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 730,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 735,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 752,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 758,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 765,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 772,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 780,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 787,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 790,
+          "length": 2,
+          "tense": "pc"
+        },
+        {
+          "word": 798,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 804,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 806,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 814,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 826,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 834,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 862,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 872,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 875,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 882,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 889,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 895,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 902,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 928,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 931,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 946,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 954,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 958,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 967,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 973,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 977,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 983,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 986,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1004,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1005,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1011,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1020,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1037,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1077,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1078,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1082,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1097,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1101,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1109,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1122,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1125,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1139,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1163,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1175,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1178,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1181,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1184,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1192,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1197,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1202,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1208,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1212,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1228,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1229,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1234,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1243,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1246,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1249,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1265,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 1267,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1271,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1283,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1288,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1294,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1305,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1308,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1313,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1331,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 1359,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1363,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1367,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1373,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 1375,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1387,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1391,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1393,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1411,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1423,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1435,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1438,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1455,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1464,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1465,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1467,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1484,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1494,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1499,
+          "length": 1,
+          "tense": "ps"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "firstWord": 1502,
+      "lastWord": 2049,
+      "matches": [
+        {
+          "word": 1505,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1543,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1548,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1557,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1569,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1580,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1620,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 1676,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1684,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 1697,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1706,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1709,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1713,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1717,
+          "length": 3,
+          "tense": "pp"
+        },
+        {
+          "word": 1721,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1733,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1741,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1743,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1745,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1749,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1758,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1780,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1785,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1788,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1792,
+          "length": 2,
+          "tense": "pp"
+        },
+        {
+          "word": 1800,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1814,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1832,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1847,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1869,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1875,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1885,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1887,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1890,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1909,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1924,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1933,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1938,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1947,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1958,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1978,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 1994,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 2015,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 2018,
+          "length": 1,
+          "tense": "ps"
+        },
+        {
+          "word": 2027,
+          "length": 1,
+          "tense": "ps"
+        }
+      ]
+    }
+  ]
+}

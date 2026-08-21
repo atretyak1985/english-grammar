@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { Access } from '@/lib/access';
 import type { AnalysisBatch, AnalyzeOptions } from '@/lib/analyzer/cache';
 import { CALLS_PER_WINDOW, clearWindows } from '@/lib/analyzer/throttle';
 
@@ -8,9 +9,10 @@ import { CALLS_PER_WINDOW, clearWindows } from '@/lib/analyzer/throttle';
  * перетворюється на помилку: екран уже має локальну підсвітку, і 500 замість
  * порожнього уточнення зламав би робочий стан заради шару, який не обовʼязковий.
  */
-const mocks = vi.hoisted(() => ({ analyze: vi.fn() }));
+const mocks = vi.hoisted(() => ({ analyze: vi.fn(), resolveAccess: vi.fn(), consumeWords: vi.fn() }));
 
 vi.mock('@/lib/analyzer/cache', () => ({ analyze: mocks.analyze }));
+vi.mock('@/lib/access', () => ({ resolveAccess: mocks.resolveAccess, consumeWords: mocks.consumeWords }));
 
 const { POST } = await import('./route');
 
@@ -18,6 +20,23 @@ interface Body {
   matches?: { from: number; to: number; tense: string }[] | null;
   cache?: string;
   error?: string;
+  reason?: string;
+  remainingWords?: number;
+  monthlyWords?: number;
+}
+
+/** Акаунт із великим залишком за замовчуванням — щоб наявні кейси не впирались у квоту. */
+function account(overrides: Partial<Access> = {}): Access {
+  return {
+    level: 'free',
+    userId: 'user-1',
+    planCode: 'free',
+    monthlyWords: 1_000_000,
+    usedWords: 0,
+    remainingWords: 1_000_000,
+    period: '2026-08',
+    ...overrides,
+  };
 }
 
 /** Кеш, який щоразу платить: gate питається, розбір повертається. */
@@ -47,7 +66,11 @@ function post(text: unknown, ip = '198.51.100.1'): Promise<Response> {
 beforeEach(() => {
   clearWindows();
   mocks.analyze.mockReset();
+  mocks.resolveAccess.mockReset();
+  mocks.consumeWords.mockReset();
   alwaysMisses();
+  mocks.resolveAccess.mockResolvedValue(account());
+  mocks.consumeWords.mockResolvedValue(undefined);
 });
 
 describe('POST /api/analyze', () => {
@@ -127,5 +150,55 @@ describe('троттлінг', () => {
       const response = await post('той самий текст', ip);
       expect(response.status).toBe(200);
     }
+  });
+});
+
+describe('доступ і квота', () => {
+  it('гість отримує 401 з причиною auth-required, модель не питають', async () => {
+    mocks.resolveAccess.mockResolvedValue(
+      account({ level: 'guest', userId: null, monthlyWords: 0, remainingWords: 0 }),
+    );
+
+    const response = await post('She had finished it');
+    const body = (await response.json()) as Body;
+
+    expect(response.status).toBe(401);
+    expect(body.reason).toBe('auth-required');
+    expect(mocks.analyze).not.toHaveBeenCalled();
+  });
+
+  it('акаунт із залишком: 200 і списання рівно words', async () => {
+    const response = await post('She had finished it');
+
+    expect(response.status).toBe(200);
+    expect(mocks.consumeWords).toHaveBeenCalledWith('user-1', 4);
+  });
+
+  it('попадання в кеш (SC-6): 200 і нуль списання', async () => {
+    mocks.analyze.mockResolvedValue({ matches: [], cache: 'memory', throttled: false } satisfies AnalysisBatch);
+
+    const response = await post('She had finished it');
+
+    expect(response.status).toBe(200);
+    expect(mocks.consumeWords).not.toHaveBeenCalled();
+  });
+
+  it('matches: null — нуль списання', async () => {
+    mocks.analyze.mockResolvedValue({ matches: null, cache: 'none', throttled: false } satisfies AnalysisBatch);
+
+    await post('She had finished it');
+
+    expect(mocks.consumeWords).not.toHaveBeenCalled();
+  });
+
+  it('текст на 500 слів при залишку 100 — 402, модель не питають', async () => {
+    mocks.resolveAccess.mockResolvedValue(account({ remainingWords: 100, monthlyWords: 100 }));
+
+    const response = await post('a '.repeat(500));
+    const body = (await response.json()) as Body;
+
+    expect(response.status).toBe(402);
+    expect(body.reason).toBe('quota-exhausted');
+    expect(mocks.analyze).not.toHaveBeenCalled();
   });
 });

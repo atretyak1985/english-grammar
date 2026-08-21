@@ -16,6 +16,7 @@ const APP_SECTIONS = [
   { href: '/', label: 'Головна', desc: 'Огляд і статистика', icon: '◆' },
   { href: '/account', label: 'Кабінет', desc: 'Прогрес, тексти, налаштування', icon: '☻' },
   { href: '/analyze', label: 'Аналіз тексту', desc: 'Підсвітка часів у вашому тексті', icon: '⌗' },
+  { href: '/library', label: 'Бібліотека', desc: 'Оповідання з готовою підсвіткою', icon: '▤' },
   { href: '/words', label: 'Слова', desc: 'Частотний словник зі статусами', icon: '≡' },
 ] as const;
 
