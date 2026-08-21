@@ -11,14 +11,34 @@ import { ProgressRing } from '@/components/shell/ProgressRing';
 import { LEVEL_COLOR, TOPICS } from '@/data/topics';
 import type { Level } from '@/types/content';
 
+interface AppSection {
+  href: string;
+  label: string;
+  desc: string;
+  icon: string;
+  /**
+   * Показувати лише після входу. Гість, який тисне такий розділ, або летить на
+   * `/login` (`/account`), або впирається в 401 на першому ж розборі
+   * (`/analyze`) — тобто посилання обіцяє те, чого за ним немає. Ховати його
+   * чесніше, ніж вести в тупик.
+   */
+  authOnly?: boolean;
+}
+
 /** Верхня група сайдбара — розділи застосунку (CONCEPT 3.1). */
-const APP_SECTIONS = [
+const APP_SECTIONS: readonly AppSection[] = [
   { href: '/', label: 'Головна', desc: 'Огляд і статистика', icon: '◆' },
-  { href: '/account', label: 'Кабінет', desc: 'Прогрес, тексти, налаштування', icon: '☻' },
-  { href: '/analyze', label: 'Аналіз тексту', desc: 'Підсвітка часів у вашому тексті', icon: '⌗' },
+  { href: '/account', label: 'Кабінет', desc: 'Прогрес, тексти, налаштування', icon: '☻', authOnly: true },
+  {
+    href: '/analyze',
+    label: 'Аналіз тексту',
+    desc: 'Підсвітка часів у вашому тексті',
+    icon: '⌗',
+    authOnly: true,
+  },
   { href: '/library', label: 'Бібліотека', desc: 'Оповідання з готовою підсвіткою', icon: '▤' },
   { href: '/words', label: 'Слова', desc: 'Частотний словник зі статусами', icon: '≡' },
-] as const;
+];
 
 /** Один стиль рядка для обох груп: активний тримається лівою рискою кольору Past Simple. */
 function navRow(active: boolean): string {
@@ -52,7 +72,9 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const known = words.filter((status) => status === 'known').length;
   const learning = words.filter((status) => status === 'learning').length;
 
-  const appSections = APP_SECTIONS.filter((item) => matches(query, item.label, item.desc));
+  const appSections = APP_SECTIONS.filter(
+    (item) => (signedIn || !item.authOnly) && matches(query, item.label, item.desc),
+  );
   const topics = TOPICS.filter((topic) => matches(query, topic.title, topic.desc));
 
   const progressTopic = activeTopic ?? TOPICS.find((topic) => topic.ready);

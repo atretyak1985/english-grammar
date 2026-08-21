@@ -22,7 +22,7 @@ const SCREEN_TITLES: Record<string, string> = {
  */
 export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) {
   const pathname = usePathname();
-  const { readCount, state } = useAppState();
+  const { readCount, signedIn, state } = useAppState();
 
   const [, topicSlug, sectionSlug] = /^\/topics\/([^/]+)(?:\/([^/]+))?/.exec(pathname) ?? [];
   const topic = TOPICS.find((item) => item.slug === topicSlug);
@@ -98,12 +98,19 @@ export function ContentHeader({ onOpenSidebar }: { onOpenSidebar: () => void }) 
         <div className="flex flex-none gap-2">
           {quizHref ? <QuickAction href={quizHref}>Тест</QuickAction> : null}
           {cheatHref ? <QuickAction href={cheatHref}>Шпаргалка</QuickAction> : null}
-          <Link
-            href="/analyze"
-            className="bg-ps rounded-btn border border-transparent px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold text-white hover:brightness-[1.08]"
-          >
-            Аналіз тексту
-          </Link>
+          {/*
+            Гостю аналізатор закритий: `/api/analyze` віддає 401
+            (`resolveAccess`). Тому головна кнопка шапки для нього ховається —
+            інакше найпомітніший заклик до дії на кожній сторінці веде в тупик.
+          */}
+          {signedIn ? (
+            <Link
+              href="/analyze"
+              className="bg-ps rounded-btn border border-transparent px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold text-white hover:brightness-[1.08]"
+            >
+              Аналіз тексту
+            </Link>
+          ) : null}
         </div>
       </div>
     </header>
