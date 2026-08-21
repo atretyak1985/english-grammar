@@ -1,7 +1,7 @@
 import { chunksOf } from '@/lib/analyzer/chunks';
 import { findMatches, tokenize, type Match } from '@/lib/analyzer/tenses';
 import { wordTokens } from '@/lib/analyzer/words';
-import type { TenseKey } from '@/types/content';
+import { isTenseKey, type TenseKey } from '@/types/content';
 
 /**
  * Формат артефакту `matches.json` (CONCEPT 9 / фаза 2): розмітка часів у
@@ -42,8 +42,6 @@ export interface Artifact {
   seedModel?: string;
   chunks: ArtifactChunk[];
 }
-
-const TENSE_KEYS: readonly TenseKey[] = ['ps', 'pc', 'pp'];
 
 /**
  * Мінімальна частка очевидних локальних Past Simple, яку мусить підтвердити
@@ -95,7 +93,7 @@ function parseMatch(raw: unknown, file: string, path: string): ArtifactMatch {
   const word = requireInt(file, child(path, 'word'), raw.word, 1);
   const length = requireInt(file, child(path, 'length'), raw.length, 1);
 
-  if (typeof raw.tense !== 'string' || !TENSE_KEYS.includes(raw.tense as TenseKey)) {
+  if (!isTenseKey(raw.tense)) {
     fail(file, child(path, 'tense'), `невідомий час ${JSON.stringify(raw.tense)}`);
   }
 
@@ -229,7 +227,7 @@ export function validate(text: string, artifact: Artifact, matches: Match[], fil
   // 3. Час не з TenseKey — перевіряємо самі matches, а не артефакт: вони можуть
   // прийти й не з parseArtifact.
   for (const match of matches) {
-    if (!TENSE_KEYS.includes(match.tense)) {
+    if (!isTenseKey(match.tense)) {
       fail(file, '', `невідомий час "${String(match.tense)}" у діапазоні [${match.from}-${match.to}]`);
     }
   }

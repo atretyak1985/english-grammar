@@ -16,7 +16,7 @@ import {
 import { useFittedPage } from '@/lib/analyzer/useFittedPage';
 import { useBoxSize, useFitHeight } from '@/lib/analyzer/useViewport';
 import { PAGE_ONE, useReading } from '@/lib/state/reading';
-import type { TenseKey } from '@/types/content';
+import { TENSE_HIGHLIGHT, type TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
 
 /**
@@ -27,30 +27,58 @@ import type { WordStatus } from '@/types/state';
  * усе решта — вибір тексту, уточнення моделлю, підвал — лишається виклику.
  */
 
-const TENSE_ORDER: TenseKey[] = ['ps', 'pc', 'pp'];
+/**
+ * Порядок перемикачів: минулі, теперішні, майбутні — трійками за часом. Так
+ * вони й подані в темах, тому легенда читається як зміст сайту, а не як
+ * алфавіт, і три рядки пігулок самі показують матрицю 3 × 3.
+ */
+const TENSE_ORDER: TenseKey[] = [
+  'ps',
+  'pc',
+  'pp',
+  'prs',
+  'prc',
+  'prp',
+  'fs',
+  'fc',
+  'fp',
+];
 
 const TENSE_TEXT: Record<TenseKey, string> = {
   ps: 'text-ps',
   pc: 'text-pc',
   pp: 'text-pp',
+  prs: 'text-ps',
+  prc: 'text-pc',
+  prp: 'text-pp',
+  fs: 'text-ps',
+  fc: 'text-pc',
+  fp: 'text-pp',
 };
 
+/** Увімкнений перемикач. Штрих і подвійна рамка — ті самі ознаки часу. */
 const TENSE_ON: Record<TenseKey, string> = {
   ps: 'border-ps bg-ps-bg text-ps-dk',
   pc: 'border-pc bg-pc-bg text-pc-dk',
   pp: 'border-pp bg-pp-bg text-pp-dk',
-};
-
-const TENSE_HIGHLIGHT: Record<TenseKey, string> = {
-  ps: 'text-ps bg-ps-bg',
-  pc: 'text-pc bg-pc-bg',
-  pp: 'text-pp bg-pp-bg',
+  prs: 'border-ps border-dashed bg-ps-bg text-ps-dk',
+  prc: 'border-pc border-dashed bg-pc-bg text-pc-dk',
+  prp: 'border-pp border-dashed bg-pp-bg text-pp-dk',
+  fs: 'border-ps border-double border-[3px] bg-ps-bg text-ps-dk',
+  fc: 'border-pc border-double border-[3px] bg-pc-bg text-pc-dk',
+  fp: 'border-pp border-double border-[3px] bg-pp-bg text-pp-dk',
 };
 
 const TENSE_BAR: Record<TenseKey, string> = {
   ps: 'bg-ps',
   pc: 'bg-pc',
   pp: 'bg-pp',
+  prs: 'bg-ps',
+  prc: 'bg-pc',
+  prp: 'bg-pp',
+  fs: 'bg-ps',
+  fc: 'bg-pc',
+  fp: 'bg-pp',
 };
 
 /** Стилі кнопок-пігулок — потрібні й викликачу (напр. «Джерело» в аналізаторі). */
@@ -111,6 +139,12 @@ export function ReaderCanvas({
     ps: true,
     pc: true,
     pp: true,
+    prs: true,
+    prc: true,
+    prp: true,
+    fs: true,
+    fc: true,
+    fp: true,
     words: true,
   });
 
