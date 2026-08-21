@@ -1,0 +1,971 @@
+{{translation subpage}}
+==English==
+
+===Noun===
+
+====Translations====
+{{trans-top|inevitable passing of events}}
+{{multitrans|data=
+* Abaza: {{t|abq|гӏамта}}, {{t|abq|заман}}
+* Abkhaz: {{t|ab|аамҭа}}
+* Afrikaans: {{t+|af|tyd}}
+* Albanian: {{t+|sq|kohë|f}}
+* Altai:
+*: Northern Altai: {{t|atv|шак}}
+*: Southern Altai: {{t|alt|ӧй}}, {{t|alt|саман}}, {{t|alt|чак}}
+* Ambonese Malay: {{t|abs|oras}}
+* Amharic: {{t|am|ጊዜ}}, {{t|am|ዘመን}}
+* Arabic: {{t+|ar|زَمَان|m}}, {{t+|ar|زَمَن|m}}, {{t+|ar|وَقْت|m}}, {{t+|ar|دَهْر|m}}
+*: Chadian Arabic: {{t|shu|وكت|tr=wakit}}
+*: Egyptian Arabic: {{t|arz|وقت|tr=waʔt|m}}
+*: Gulf Arabic: {{t|afb|وكت|m|tr=wakt}}
+*: Hijazi Arabic: {{t|acw|وَقْت|tr=wagt|m}}, {{t|acw|زَمَان|tr=zamān|m}}
+*: Moroccan Arabic: {{t|ary|وقت|m|tr=waqt}}, {{t|ary|زمان|m|tr=zmān}}
+* Aragonese: {{t|an|tiempo|m}}
+* Aramaic:
+*: Classical Syriac: {{t|syc|ܙܒܢܐ|tr=zaḇnā|c}}
+*: Hebrew script: {{t|arc|זמנא|m|tr=zamnā}}, {{t|arc|זבנא|m|tr=zaḇnā}}
+*: Lishana Deni: {{t|lsd|שאתא|f|tr=šeʾṯa}}
+*: Mandaic: {{t|mid|ࡆࡀࡌࡀࡍ|tr=zaman}}
+* Armenian: {{t+|hy|ժամանակ}}
+* Aromanian: {{t|rup|chiro|m}}
+* Assamese: {{t|as|সময়}}, {{t|as|পৰ}}
+* Asturian: {{t+|ast|tiempu|m}}
+* Avar: {{t|av|гӏуж}}, {{t|av|заман}}, {{t|av|мех}}
+* Awadhi: {{t|awa|समय}}
+* Aymara: {{t+|ay|pacha}}
+* Azerbaijani: {{t+|az|vaxt}}, {{t+|az|zaman}}
+* Baluchi: {{t|bal|وہد|tr=vahd}}
+* Bashkir: {{t|ba|ваҡыт}}, {{t|ba|заман}}
+* Basque: {{t+|eu|denbora}}
+* Belarusian: {{t|be|час|m}}
+* Bengali: {{t+|bn|সময়}}, {{t+|bn|ওয়াক্ত|tr=ōẏakto}}
+* Bhojpuri: {{t|bho|समय}}
+* Bislama: {{t|bi|taem}}
+* Breton: {{t+|br|amzer|f}}
+* Buginese: {{t|bug|wattu}}
+* Bulgarian: {{t+|bg|вре́ме|n}}
+* Burmese: {{t+|my|အချိန်}}
+* Buryat: {{t|bua|саг}}
+* Carpathian Rusyn: {{t|rue|час|m}}
+* Catalan: {{t+|ca|temps|m}}
+* Chechen: {{t|ce|хан}}
+* Cherokee: {{t|chr|ᎠᎵᏱᎵᏒ}}, {{t|chr|ᎠᏟᎢᎵᏒ}}
+* Chichewa: {{t|ny|nthawi|c9|c10}}
+* Chinese:
+*: Cantonese: {{t|yue|時間|tr=si4 gaan3, si4 gaan1}}, {{t|yue|時光|tr=si4 gwong1}}
+*: Dungan: {{t|dng|сыҗе}}
+*: Eastern Min: {{t|cdo|時間|tr=sì-găng}}
+*: Gan: {{t|gan|時間}}
+*: Hakka: {{t|hak|時間|tr=sṳ̀-kiên, sṳ̀-kiân}}
+*: Hokkien: {{t+|nan-hbl|時間|tr=sî-kan}}
+*: Mandarin: {{t+|cmn|時間|tr=shíjiān}}, {{t+|cmn|時光|tr=shíguāng}}
+*: Wu: {{t|wuu|辰光|tr=6zen-kuaon1}}, {{t|wuu|時間}}
+*: Xiang: {{t|hsn|時間}}
+* Chuukese: {{t|chk|fansoun}}
+* Chuvash: {{t|cv|вӑхӑт}}
+* Circassian:
+*: West Circassian: {{t|ady|гъо}}, {{t|ady|уахътэ}}, {{t|ady|лъэхъан}}
+* Comorian:
+*: Maore Comorian: {{t|swb|wakati|c11}}
+* Coptic: {{t|cop|ⲥⲏⲟⲩ|m}}, {{t|cop|ⲭⲣⲟⲛⲟⲥ}}
+* Cornish: {{t|kw|prys|m}}, {{t|kw|termyn|m}}
+* Corsican: {{t+|co|tempu|m}}, {{t+|co|volta|f}}
+* Crimean Tatar: {{t|crh|vaqıt}}
+* Czech: {{t+|cs|čas|m}}
+* Dalmatian: {{t|dlm|tiamp|m}}, {{t|dlm|tianp|m}}
+* Danish: {{t+|da|tid|c}}
+* Dargwa: {{t|dar|замана}}
+* Dhivehi: {{t|dv|ވަގުތު}}
+* Dutch: {{t+|nl|tijd|m}}
+* Emilian: {{t|egl|tänp|m}}
+* Erzya: {{t|myv|шка}}
+* Esperanto: {{t+|eo|tempo}}
+* Estonian: {{t+|et|aeg}}
+* Evenki: {{t|evn|тэру}}
+* Ewe: {{t|ee|ɣeyiɣi|n}}, {{t|ee|gaƒoƒo}}
+* Farefare: {{t|gur|wakatɛ}}
+* Faroese: {{t+|fo|tíð|f}}
+* Fijian: {{t|fj|gauna}}
+* Finnish: {{t+|fi|aika}}
+* French: {{t+|fr|temps|m}}
+*: Middle French: {{t|frm|temps|m}}
+*: Old French: {{t|fro|tans|m}}
+* Frisian:
+*: North Frisian: {{t|frr|tid|f}} {{qualifier|Mooring}}, {{t|frr|tidj|f}} {{qualifier|Föhr-Amrum}}
+*: Saterland Frisian: {{t|stq|Tied|f}}
+*: West Frisian: {{t+|fy|tiid|c}}
+* Friulian: {{t|fur|timp|m}}
+* Gagauz: {{t|gag|vakıt}}, {{t|gag|zaman}}
+* Galician: {{t+|gl|tempo|m}}
+* Ge'ez: {{t|gez|ዘመን}}
+* Georgian: {{t+|ka|დრო}}, {{t+|ka|ჟამი}}, {{t|ka|ხანი}}
+* German: {{t+|de|Zeit|f}}
+*: Alemannic German: {{t|gsw|Zit}}, {{t|gsw|Ziit|f}}
+*: Bavarian: {{t|bar|zeid}}
+*: East Central German: {{t|gmw-ecg|Zeit}} {{q|Erzgebirgisch}}
+* Gothic: {{t|got|𐌼𐌴𐌻|n}}
+* Greek: {{t+|el|χρόνος|m}}, {{t+|el|καιρός|m}}
+*: Ancient Greek: {{t|grc|χρόνος|m}}
+*: Cappadocian Greek: {{t|cpg|ταρός}}
+*: Tsakonian: {{t|tsd|τζαιρέ}}
+* Greenlandic: {{t|kl|piffissaq}}
+* Guarani:
+*: Paraguayan Guarani: {{t+check|gug|ára}}
+* Gujarati: {{t+|gu|સમય|m}}
+* Haitian Creole: {{t|ht|tan}}
+* Hausa: {{t+|ha|lokaci|m}}
+* Hawaiian: {{t|haw|wā}}
+* Hebrew: {{t+|he|זְמָן|m|tr=zman}}
+* Hindi: {{t+|hi|समय|m}}, {{t+|hi|काल|m}}, {{t+|hi|प्रहर|m}}, {{t+|hi|समाँ|m}}, {{t+|hi|युग|m}}, {{t+|hi|क्षण|m}}, {{t+|hi|बेर|m}}, {{t|hi|वक़्त|m}}
+* Hmong:
+*: White Hmong: {{t|mww|sijhawm}}
+* Hungarian: {{t+|hu|idő}}
+* Hunsrik: {{t|hrx|Zeid|f}}
+* Icelandic: {{t+|is|tími|m}} {{qualifier|usually in definite form}}, {{t+|is|tíð|f}}
+* Ido: {{t+|io|tempo}}
+* Igbo: {{t+|ig|elekere}}
+* Indonesian: {{t+|id|waktu}}
+* Ingrian: {{t|izh|aika}}
+* Ingush: {{t|inh|ха}}
+* Interlingua: {{t+|ia|tempore}}
+* Inupiaq: {{t|ik|pivik}}
+* Irish: {{t+|ga|am|m}}
+* Istriot: {{t|ist|tenpo|m}}
+* Italian: {{t+|it|tempo|m}}
+* Japanese: {{t+|ja|時間|tr=じかん, jikan}}
+* Javanese: {{t+|jv|wektu}}, {{t|jv|wayah}}
+*: Old Javanese: {{t|kaw|wayah}}
+* Kalmyk: {{t|xal|цаг}}
+* Kannada: {{t+|kn|ವೇಳೆ}}, {{t+|kn|ಕಾಲ}}
+* Kanuri: {{t|kr|lóktù}}
+* Karachay-Balkar: {{t|krc|заман}}
+* Karakalpak: {{t|kaa|waqıt}}, {{t|kaa|zaman}}
+* Karelian: {{t|krl|aika}}
+* Kashubian: {{t|csb|czas|m}}
+* Kazakh: {{t+|kk|уақыт}}, {{t|kk|шақ}}
+* Khanty:
+*: Northern Khanty: {{tt-check|kca-nor|пора}} {{attention|kca-nor|check that this is Northern Khanty and not some other variety}}
+* Khmer: {{t+|km|កាល}}, {{t+|km|ពេល}}, {{t+|km|វេលា}}
+* Kituba: {{t|ktu|ntangu}}
+* Komi:
+*: Komi-Permyak: {{t|koi|кад}}
+*: Komi-Zyrian: {{t|kpv|кад}}
+* Kongo: {{t|kg|ntangu}}
+* Konkani: {{t|kok|काल|m}}
+* Korean: {{t+|ko|시간(時間)}}
+* Kumyk: {{t|kum|заман}}
+* Kurdish:
+*: Central Kurdish: {{t|ckb|وەخت}}, {{t|ckb|فەلەک}}, {{t+|ckb|کات}}
+*: Northern Kurdish: {{t+|kmr|dem|f}}, {{t+|kmr|wext}}, {{t+|kmr|çax}}
+* Kyrgyz: {{t+|ky|саат}}, {{t+|ky|убакыт}}, {{t+|ky|убакты}}
+* Ladin: {{t|lld|tëmp|m}}, {{t|lld|aurela|f}}
+* Ladino: {{t|lad|tiempo}}
+* Lak: {{t|lbe|чӏун}}, {{t|lbe|замана}}
+* Lao: {{t+|lo|ເວລາ}}, {{t+|lo|ຂະນະ}}
+* Latgalian: {{t|ltg|laiks}}
+* Latin: {{t+|la|tempus}}
+* Latvian: {{t+|lv|laiks|m}}
+* Lezgi: {{t|lez|вахт}}, {{t|lez|чӏав}}, {{t|lez|вяде}}
+* Limburgish: {{t+|li|tied|m}}
+* Lingala: {{t|ln|ntángo|c9|c10}}, {{t|ln|ntangu}}, {{t|ln|ekeke}}
+* Lithuanian: {{t+|lt|laikas|m}}
+* Livonian: {{t|liv|āiga}}
+* Livvi: {{t|olo|aigu}}
+* Low German:
+*: German Low German: {{t|nds-de|Tid}} {{q|Mecklenburgisch-Vorpommersch}}; {{t|nds-de|Tyd}}, {{t+|nds-de|Tied}} {{q|Münsterländisch}}; {{t|nds-de|Tyt}} {{q|Paderbornisch, with <nowiki><y></nowiki> for /ei/}}, {{t|nds-de|Teit}} {{q|Paderbornisch, with <nowiki><ei></nowiki> for /ei/ (and <nowiki><ai></nowiki> for /ai/)}}; {{t|nds-de|Teyt}} {{q|Sauerländisch}}
+* Luxembourgish: {{t|lb|Zäit|f}}
+* Macedonian: {{t|mk|време|n}}
+* Makasar: {{t|mak|wattu}}
+* Malay:
+*: Jawi: {{t|ms|ماس}}, {{t+|ms|کالا}}, {{t+|ms|وقتو}}, {{t+|ms|زمان}}, {{t+|ms|تيمڤوه}}
+*: Rumi: {{t+|ms|masa}}, {{t+|ms|kala}}, {{t+|ms|waktu}}, {{t+|ms|zaman}}, {{t+|ms|tempoh}}
+* Malayalam: {{t+|ml|സമയം}}
+* Maltese: {{t|mt|darba|f}}, {{t|mt|waqt|m}}, {{t+|mt|żmien|m}}
+* Manchu: {{t|mnc|ᡝᡵᡳᠨ}}, {{t|mnc|ᡶᠣᠨ}}
+* Mansi:
+*: Northern Mansi: {{t-needed|mns-nor}}
+* Manx: {{t|gv|traa|m}}
+* Māori: {{t|mi|wā}}
+* Maranao: {{t|mrw|wakto}}
+* Marathi: {{t|mr|काळ|m}}
+* Mari:
+*: Eastern Mari: {{t|mhr|жап}}
+* Marshallese: {{t|mh|iien}}
+* Mazahua:
+*: Central Mazahua: {{t|maz|mezhe}}
+* Megleno-Romanian: {{t|ruq|timp|n}}
+* Mingrelian: {{t|xmf|ჟამი}}
+* Mizo: {{t|lus|hun}}
+* Mòcheno: {{t|mhn|zait|f}}
+* Moksha: {{t|mdf|пинге}}
+* Mongo: {{t|lol|ekeke}}
+* Mongolian:
+*: Cyrillic: {{t+|mn|цаг}}
+*: Mongolian script: {{t|mn|ᠴᠠᠭ}}
+* Muna: {{t|mnb|wakutuu}}
+* Nahuatl: {{t+|nah|cahuitl}}
+* Nanai: {{t|gld|эр|tr=ėr}}, {{t|gld|эрин|tr=ėrin}}
+* Nauruan: {{t|na|edae}}
+* Navajo: {{t|nv|ookił}}
+* Neapolitan: {{t|nap|tiempo|m}}
+* Nenets:
+*: Tundra Nenets: {{t|yrk-tun|ёльць’|tr=yoľś'}}, {{t|yrk-tun|мальӈгана|tr=maľŋana}}
+* Nepali: {{t+|ne|समय}}
+* Nivkh: {{t|niv|ыр}}
+* Nogai: {{t|nog|заман}}
+* Norwegian:
+*: Bokmål: {{t+|nb|tid|m|f}}
+* Occitan: {{t+|oc|temps|m}}, {{t|oc|tèms|m}}
+* Odia: {{t|or|ସମୟ}}
+* Old Church Slavonic:
+*: Cyrillic: {{t|cu|врѣмѧ|n}}, {{t|cu|часъ|m}}
+*: Glagolitic: {{t|cu|ⱍⰰⱄⱏ|m}}
+* Old East Slavic: {{t|orv|веремѧ|n}}, {{t|orv|часъ|m}}
+* Old English: {{t|ang|tīd|f}}
+* Old Norse: {{t|non|tíð|f}}
+* Old Prussian: {{t|prg|kīsman}}
+* Old Turkic: {{t|otk|𐰇𐰓|ts=öd}}
+* Oromo: {{t|om|yeroo}}, {{t|om|wayitii}}
+* Ossetian: {{t|os|рӕстӕг}}
+* Pali: {{t|pi|velā|f}}, {{t|pi|kāla|m}}
+* Pannonian Rusyn: {{t|rsk|час|m}}
+* Papiamentu: {{t|pap|tempu}}
+* Pashto: {{t+|ps|زمان|m|tr=zamãn}}, {{t+|ps|وخت|m|tr=waxt}}
+* Persian:
+*: Dari: {{t|prs|زَمَان}}, {{t|prs|وَقْت}}
+*: Iranian Persian: {{t|fa-ira|زَمان}}, {{t|fa-ira|وَقْت}}, {{t|fa-ira|تایْم}}
+* Pitcairn-Norfolk: {{t|pih|tiem}}
+* Plautdietsch: {{t+|pdt|Tiet|f}}
+* Polabian: {{t|pox|taid|m}}
+* Polish: {{t+|pl|czas|m-in}}
+* Portuguese: {{t+|pt|tempo|m}}
+* Punjabi: {{t|pa|ਸਮਾਂ|m}} {{gloss|Standard}}, {{t|pa|ਟਾਈਮ|m}}, {{t|pa|ਵਕਤ|m}}, {{t|pa|ਵੇਲ਼ਾ|m}}
+* Quechua: {{t+|qu|pacha}}
+* Réunion Creole French: {{t|rcf|tan}}
+* Romanian: {{t+|ro|timp|n}}, {{t+|ro|vreme|f}}
+* Romansh: {{t|rm|temp|m}}, {{t|rm|temps|m}}, {{t|rm|taimp|m}}, {{t|rm|tains|m}}
+* Russian: {{t+|ru|вре́мя|n}}, {{t+|ru|час|m}} {{qualifier|dated or poetic}}
+* Rwanda-Rundi: {{t|rw|igihe|c7|c8}}, {{t|rw|umwanya|c3|c4}}
+* Sami:
+*: Inari Sami: {{t|smn|äigi}}
+*: Kildin Sami: {{t|sjd|а̄ййк}}
+*: Northern Sami: {{t|se|áigi}}
+*: Southern Sami: {{t|sma|aejkie}}
+* Samogitian: {{t|sgs|čiesos}}
+* Sanskrit: {{t+|sa|काल|m}}, {{t+|sa|समय|m}}, {{t+|sa|वेला|f}}
+* Santali: {{t+|sat|ᱚᱠᱛᱚ}}
+* Sardinian: {{t|sc|tempus|m}}
+* Scots: {{t|sco|time}}
+* Scottish Gaelic: {{t|gd|àm|m}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|вре́ме|n}}, {{t|sh|врије́ме|n}}
+*: Latin: {{t+|sh|vréme|n}}, {{t+|sh|vrijéme|n}}
+* Shan: {{t|shn|ၶၢဝ်းယၢမ်း}}
+* Shona: {{t|sn|nguva|c9|c10}}
+* Shor: {{t|cjs|тем|tr=tem}}
+* Sicilian: {{t+|scn|tempu|m}}
+* Sidamo: {{t|sid|yanna}}
+* Sindhi: {{t+|sd|وَقتُ|m|tr=vaqtu}}
+* Sinhalese: {{t|si|කල}}
+* Slovak: {{t+|sk|čas|m}}
+* Slovene: {{t+|sl|čàs|m}}
+* Slovincian: {{t|zlw-slv|czas|m}}
+* Somali: {{t+|so|waqti|m}}, {{t|so|wakhti|m}}
+* Sorbian:
+*: Lower Sorbian: {{t|dsb|cas|m}}
+*: Upper Sorbian: {{t|hsb|čas|m}}
+* Spanish: {{t+|es|tiempo|m}}
+* Swahili: {{t+|sw|wakati|c11|c12}}
+* Swedish: {{t+|sv|tid|c}}
+* Tabasaran: {{t|tab|вахт}}, {{t|tab|чӏив}}, {{t|tab|вяда}}
+* Tachawit: {{t|shy|amedwal}}
+* Tajik: {{t+|tg|замон}}, {{t+|tg|вақт}}
+* Tamil: {{t+|ta|நேரம்}}, {{t+|ta|பொழுது}}, {{t+|ta|காலம்}}, {{t+|ta|வேளை}}
+* Tat: {{t|ttt|вэхд|tr=vehd}}
+* Tatar: {{t+|tt|вакыт}}, {{t+|tt|заман}}
+* Telugu: {{t+|te|సంఘటన}}
+* Thai: {{t+|th|เวลา}}, {{t+|th|กาล|tr=gaan}}
+* Tibetan: {{t|bo|དུས་ཚོད}}
+* Tocharian A: {{t|xto|praṣt}}
+* Tok Pisin: {{t|tpi|taim}}
+* Tswana: {{t|tn|nakô|c9}}
+* Turkish: {{t+|tr|zaman}}, {{t+|tr|vakit}}, {{t+|tr|çağ}} {{q|era}}
+* Turkmen: {{t|tk|wagt}}
+* Tuvan: {{t|tyv|үе}}
+* Udmurt: {{t|udm|дыр}}, {{t|udm|вакыт}}
+* Ukrainian: {{t+|uk|час|m}}
+* Urdu: {{t|ur|وَقْت|m}}, {{t|ur|سَمَے|m}}, {{t|ur|کال|m}}
+* Urum: {{t|uum|вахыт|tr=vahyt}}
+* Uyghur: {{t+|ug|ۋاقىت}}, {{t|ug|زامان}}
+* Uzbek: {{t+|uz|vaqt}}, {{t+|uz|zamon}}
+* Venetan: {{t|vec|tenpo|m}}
+* Veps: {{t|vep|aig}}
+* Vietnamese: {{t+|vi|thời gian}} ({{t+|vi|時間}})
+* Volapük: {{t+|vo|tim}}, {{t+|vo|naed}}
+* Võro: {{t|vro|aig}}
+* Votic: {{t|vot|aikõ}}
+* Walloon: {{t+|wa|tins|m}}
+* Welsh: {{t+|cy|amser|m}}, {{t+|cy|pryd|m}}
+* Wolof: {{t|wo|jamaano}}, {{t+|wo|waxtu}}
+* Xhosa: {{t|xh|ixesha|c5|c6}}
+* Yaghnobi: {{t|yai|вахт}}
+* Yakut: {{t|sah|бириэмэ}}, {{t|sah|кэм}}
+* Yiddish: {{t+|yi|צײַט|f}}
+* Yoruba: {{t|yo|ìgbà}}, {{t|yo|àkókò}}
+* Yucatec Maya: {{t|yua|k’iin}}
+* Zazaki: {{t+|zza|wext}}, {{t|zza|çax}}, {{t+|zza|dem|c}}, {{t+|zza|dor|c}}
+* Zealandic: {{t|zea|tied}}
+* Zhuang: {{t|za|seizgan}}, {{t|za|sizgenh}}
+* Zulu: {{t+|zu|isikhathi|c7|c8}}, {{t|zu|inkathi|c9|c10}}
+* ǃXóõ: {{t|nmn|nàa kòo}}
+{{trans-bottom}}
+
+{{trans-top|quantity of availability in time}}
+* Arabic: {{t+|ar|وَقْت|m}}
+* Armenian: {{t+|hy|ժամանակ}}
+* Bashkir: {{t|ba|ваҡыт}}
+* Bengali: {{t+|bn|সময়}}
+* Bulgarian: {{t+|bg|време|n}}
+* Catalan: {{t+|ca|temps|m}}
+* Chinese:
+*: Cantonese: {{t|yue|時間|tr=si4 gaan3, si4 gaan1}}
+*: Hokkien: {{t+|nan-hbl|時間|tr=sî-kan}}
+*: Mandarin: {{t+|cmn|時間|tr=shíjiān}}
+* Czech: {{t+|cs|čas|m}}
+* Danish: {{t+|da|tid|c}}
+* Dutch: {{t+|nl|tijd}}
+* Emilian: {{t|egl|tänp|m}}
+* Esperanto: {{t+|eo|tempo}}
+* Estonian: {{t+|et|aeg}}
+* Ewe: {{t|ee|ɣeyiɣi|n}}
+* Finnish: {{t+|fi|aika}}
+* French: {{t+|fr|temps|m}}
+* Frisian:
+*: West Frisian: {{t+|fy|tiid}}
+* Galician: {{t+|gl|tempo|m}}
+* Georgian: {{t+|ka|დრო}}
+* German: {{t+|de|Zeit|f}}
+* Greek: {{t+|el|χρόνος|m}}, {{t+|el|ώρα|f}}
+*: Ancient Greek: {{t|grc|χρόνος|m}}
+* Hebrew: {{t+|he|זְמָן|m|tr=zman}}
+* Hindi: {{t+|hi|समय|m}},{{t+|hi|समाँ|m}}, {{t+|hi|युग|m}}, {{t+|hi|काल|m}}
+* Hungarian: {{t+|hu|idő}}
+* Icelandic: {{t+|is|tími|m}}
+* Indonesian: {{t+|id|waktu}}
+* Irish: {{t+|ga|am}}
+* Italian: {{t+|it|tempo|m}}
+* Japanese: {{t+|ja|時間|tr=じかん, jikan}}
+* Khmer: {{t+|km|ពេល}}
+* Korean: {{t+|ko|시간(時間)}}
+* Kurdish:
+*: Central Kurdish: {{t|ckb|وەخت}}
+*: Northern Kurdish: {{t+|kmr|dem|m|f}}, {{t+|kmr|wext|m|f}}
+* Ladino: {{t|lad|tiempo}}
+* Latin: {{t+|la|tempus}}
+* Lithuanian: {{t+|lt|laikas|m}}
+* Macedonian: {{t|mk|време|n}}
+* Malay:
+*: Jawi: {{t|ms|ماس}}, {{t+|ms|کالا}}, {{t+|ms|وقتو}}
+*: Rumi: {{t+|ms|masa}}, {{t+|ms|kala}}, {{t+|ms|waktu}}
+* Malayalam: {{t+|ml|സമയം}}
+* Maltese: {{t|mt|ftit ieħor}}
+* Marathi: {{t|mr|वेळ|f}}
+* Marshallese: {{t|mh|iien}}
+* Mizo: {{t|lus|hun}}
+* Nahuatl: {{t|nah|cāhuitl}}, {{t+|nah|cahuitl}}
+* Norwegian:
+*: Bokmål: {{t+|nb|tid|m|f}}, {{t+|nb|tempo}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|وَقْت}}, {{t|fa-ira|زَمان}}
+* Pipil: {{t|ppl|kawit}}, {{t|ppl|cahuit}}
+* Pitcairn-Norfolk: {{t|pih|tiem}}
+* Polish: {{t+|pl|czas|m-in}}
+* Portuguese: {{t+|pt|tempo|m}}
+* Punjabi: {{t|pa|ਸਮਾਂ|m}}
+* Romanian: {{t+|ro|timp}}
+* Romansh: {{t|rm|peda|f}}, {{t|rm|peada|f}}, {{t|rm|peida|f}}
+* Russian: {{t+|ru|вре́мя|n}}
+* Scottish Gaelic: {{t|gd|àm|m}}
+* Slovene: {{t+|sl|čàs|m}}
+* Sorbian:
+*: Lower Sorbian: {{t|dsb|cas|m}}
+* Spanish: {{t+|es|tiempo|m}}
+* Swahili: {{t+|sw|wakati}}, {{t+|sw|muda}}, {{t+|sw|nafasi}}
+* Tagalog: {{t|tl|tion}}
+* Tamil: {{t+|ta|நேரம்}}
+* Thai: {{t+|th|เวลา}}
+* Turkish: {{t+|tr|vakit}}
+* Ukrainian: {{t+|uk|час|m}}
+* Urdu: {{t|ur|وَقْت|m}}
+* Venetan: {{t|vec|tènp|m}}
+* Vietnamese: {{t+|vi|thời gian}} ({{t+|vi|時間}})
+* Zazaki: {{t+|zza|wext|f}}
+{{trans-bottom}}
+
+{{trans-top|measurement of a quantity of time}}
+* Arabic: {{t+|ar|وَقْت|m}}
+* Armenian: {{t+|hy|ժամանակ}}
+* Bashkir: {{t|ba|ваҡыт}}
+* Belarusian: {{t|be|час|m}}
+* Bengali: {{t+|bn|সময়}}
+* Bulgarian: {{t+|bg|време|n}}
+* Catalan: {{t+|ca|temps|m}}
+* Chinese:
+*: Cantonese: {{t|yue|時間|tr=si4 gaan3, si4 gaan1}}
+*: Hokkien: {{t+|nan-hbl|時間|tr=sî-kan}}
+*: Mandarin: {{t+|cmn|時間|tr=shíjiān}}
+* Czech: {{t+|cs|čas|m}}
+* Dutch: {{t+|nl|tijd}}, {{t+|nl|duur|m}}
+* Emilian: {{t|egl|tänp|m}}
+* Estonian: {{t|et|kestus}}
+* Finnish: {{t+|fi|aika}}
+* French: {{t+|fr|temps|m}}
+* Georgian: {{t+|ka|დრო}}
+* German: {{t+|de|Zeit|f}}
+* Greek: {{t+|el|χρόνος|m}}
+* Gujarati: {{t+|gu|વખત|m}}
+* Hindi: , {{t+|hi|समय|m}}, {{t+|hi|काल|m}}, {{t+|hi|युग|m}}, {{t+|hi|क्षण|m}}, {{t+|hi|पहर|m}}, {{t+|hi|पल|m}}
+* Hungarian: {{t+|hu|időtartam}}
+* Italian: {{t+|it|tempo|m}}
+* Japanese: {{t+|ja|時間|tr=じかん, jikan}}, {{t+|ja|時|tr=じ, ji}}
+* Kazakh: {{t|kk|заман}}
+* Korean: {{t+|ko|시간(時間)}}
+* Kurdish:
+*: Central Kurdish: {{t|ckb|وەخت}}
+*: Northern Kurdish: {{t+|kmr|dem|m|f}}, {{t+|kmr|wext|m|f}}
+* Latin: {{t+|la|tempus}}
+* Lithuanian: {{t+|lt|laikas|m}}
+* Macedonian: {{t|mk|време|n}}
+* Marshallese: {{t|mh|awa}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|زَمان}}
+* Polish: {{t+|pl|czas|m-in}}
+* Portuguese: {{t+|pt|tempo|m}}
+* Romanian: {{t+|ro|timp|m|n}}, {{t+|ro|timpuri|p}}, {{t|ro|timpi|p}}, {{t+|ro|vreme}}
+* Russian: {{t+|ru|вре́мя|n}}
+* Scottish Gaelic: {{t|gd|ùine|f}}
+* Slovak: {{t+|sk|čas|m}}
+* Sorbian:
+*: Lower Sorbian: {{t|dsb|cas|m}}
+* Spanish: {{t+|es|tiempo|m}}
+* Swahili: {{t+|sw|muda}}
+* Tagalog: {{t|tl|tion}}, {{t+|tl|oras}}
+* Tajik: {{t+|tg|замон}}
+* Ukrainian: {{t+|uk|час|m}}
+* Uyghur: {{t|ug|زامان}}
+* Uzbek: {{t+|uz|zamon}}
+* Zazaki: {{t+|zza|zeman}}
+{{trans-bottom}}
+
+{{trans-top-see|time as an infinite whole: eternity, timelessness|eternity}}
+* Catalan: {{t+|ca|eternitat|f}}
+* Latin: {{t|la|aeternitās}}, {{t+|la|aevum}}
+* Tamil: {{t+|ta|காலம்}}
+{{trans-bottom}}
+
+{{trans-top-see|extended period of time, defined or undefined: age, era, etc.|era|epoch}}
+* Arabic: {{t+|ar|عَصْر|m}}, {{t+|ar|إِبَّان|m}}
+* Azerbaijani: {{t|az|zəmanə}}, {{t|az|əyyam}}, {{t+|az|dövr}}
+* Bengali: {{t+|bn|জমানা|tr=zômana}}, {{t+|bn|কাল}}, {{t+|bn|বেলা}}, {{t+|bn|সময়}}
+* Bulgarian: {{t+|bg|време|n}}, {{t+|bg|времена|n-p}}
+* Catalan: {{t+|ca|època|f}}, {{t+|ca|era|f}}, {{t+|ca|temps|m}}
+* Chechen: {{t|ce|хан}}
+* Comorian:
+*: Ngazidja Comorian: {{t|zdj|wakati|c11|c10a}}
+* Czech: {{t|cs|časy|m-p}}
+* Dutch: {{t+|nl|tijdperk}}
+* Egyptian: {{t-egy|rk|h=r:k-hrw}}
+* Finnish: {{t+|fi|aika}}, {{t+|fi|aikakausi}}
+* French: {{t+|fr|époque|f}}, {{t+|fr|ère|f}}
+* Georgian: {{t+|ka|დრო}}, {{t+|ka|ჟამი}}
+* German: {{t+|de|Zeitalter|n}}, {{t+|de|Zeiten|f-p}}
+* Hindi: {{t+|hi|काल|m}}, {{t+|hi|शक|m}}, {{t+|hi|युग|m}}, {{t+|hi|कल्प|m}}
+* Hungarian: {{t+|hu|idő}}, {{t+|hu|kor}}, {{t+|hu|korszak}}
+* Indonesian: {{t+|id|jaman}}
+* Irish: {{t|ga|tráth|m}}
+* Italian: {{t+|it|tempo}}
+* Japanese: {{t+|ja|時代|tr=じだい, jidai}}
+* Korean: {{t+|ko|시대(時代)}}, {{t+|ko|때}}
+* Kurdish:
+*: Northern Kurdish: {{t+|kmr|zeman|m}}, {{t+|kmr|serdem|f}}, {{t+|kmr|dewr|f}}
+* Ladino: {{t|lad|tiempo}}
+* Latin: {{t+|la|aetās}}, {{t+|la|aevum}}, {{t+|la|tempus}}
+* Malay: {{t+|ms|zaman}}
+* Māori: {{t|mi|wā}}
+* Marshallese: {{t|mh|tōre}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|زَمان}}, {{t|fa-ira|دُوْران}}
+* Polish: {{t+|pl|epoka}}, {{t+|pl|czasy}}
+* Portuguese: {{t+|pt|tempo|f}}, {{t+|pt|época|m}}
+* Punic: {{t|xpu|𐤃𐤓|m}}
+* Romanian: {{t+|ro|vreme}}, {{t+|ro|eră|f}}, {{t+|ro|epocă|f}}
+* Russian: {{t+|ru|вре́мя|n}}, {{t+|ru|времена́|n-p}}
+* Scottish Gaelic: {{t|gd|àm|m}}
+* Spanish: {{t+|es|evo|m}}, {{t+|es|tiempo|m}}
+* Swahili: {{t+|sw|umri}}; (''past era'') {{t+|sw|zama}}
+* Tamil: {{t+|ta|ஆண்டு}}, {{t+|ta|காலம்}}
+* Telugu: {{t+|te|కాలం}}, {{t+|te|శకము}}
+* Zazaki: {{t+|zza|çağ}}, {{t+|zza|dor}}, {{t+|zza|zeman}}
+{{trans-bottom}}
+
+{{trans-top-see|interval of one year|year}}
+* Catalan: {{t+|ca|any|m}}
+* Hindi: {{t+|hi|वार्षिक}}
+* Latin: {{t+|la|annus}}
+* Tamil: {{t+|ta|ஆண்டு}}
+{{trans-bottom}}
+
+{{trans-top-see|major division of the year: month, season, etc.|month|season|semester}}
+* Bengali: {{t+|bn|কাল}}
+* Catalan: {{t+|ca|mes|m}} {{gloss|month}} ; {{t+|ca|estació|f}} {{gloss|season}}
+* French: {{t-needed|fr}}
+* Hindi: {{t+|hi|काल|m}}, {{t+|hi|ऋतु|f}}
+* Italian: {{t-needed|it}}
+* Latin: {{t+|la|mēnsis}}, {{t|la|tempestās}}, {{t+|la|tempus}}
+* Portuguese: {{t-needed|pt}}
+* Tamil: {{t+|ta|காலம்}}
+{{trans-bottom}}
+
+{{trans-top-see|interval of one day|day}}
+* Catalan: {{t+|ca|dia|m}}
+* French: {{t-needed|fr}}
+* Italian: {{t-needed|it}}
+* Latin: {{t+|la|diēs}}
+* Portuguese: {{t-needed|pt}}
+{{trans-bottom}}
+
+{{trans-top-see|interval between sunrise and sunset|day}}
+* Catalan: {{t+|ca|dia}}
+* French: {{t-needed|fr}}
+* Italian: {{t-needed|it}}
+* Latin: {{t+|la|lūx}}
+* Portuguese: {{t-needed|pt}}
+{{trans-bottom}}
+
+{{trans-top-see|division of the day: particular moment or hour|hour|moment|schedule}}
+* Arabic: {{t+|ar|حِين|m}}, {{t+|ar|وَقْت|m}}, {{t|ar|أَوَان|m}}
+* Armenian: {{t+|hy|ժամ}}
+* Azerbaijani: {{t+|az|çağ}} {{qualifier|poetic}}, {{t+|az|vaxt}}
+* Bengali: {{t+|bn|বেলা}}, {{t+|bn|সময়}}
+* Breton: {{t+|br|gwezh|f}}
+* Catalan: {{t+|ca|hora|f}} {{gloss|hour}} ; {{t+|ca|moment|m}} {{gloss|moment}}
+* Chechen: {{t|ce|хан}}
+* Chinese:
+*: Cantonese: {{t|yue|時候|tr=si4 hau6}}, {{t|yue|時刻|tr=si4 hak1}}
+*: Mandarin: {{t+|cmn|時候|tr=shíhòu}}, {{t+|cmn|時刻|tr=shíkè}}
+* Czech: {{t+|cs|čas|m}}
+* Dutch: {{t+|nl|tijd|m}}
+* Estonian: {{t|et|hetk}}
+* Finnish: {{t+|fi|aika}}
+* French: {{t+|fr|moment}}, {{t+|fr|heure}}
+* Georgian: {{t|ka|საათი}}
+* German: {{t+|de|Zeit|f}}, {{t+|de|Zeitpunkt|m}}
+* Greek:
+*: Ancient Greek: {{t|grc|καιρός|m}}
+* Hebrew: {{t+|he|עֵת|f|tr=et}}, {{t+|he|זמן|m|tr=zman}}, {{t+|he|שעה|f|tr=shaá}}
+* Hindi: , {{t+|hi|पहर|m}}, {{t+|hi|घंटा|m}}
+* Hungarian: {{t+|hu|idő}}, {{t+|hu|ideje}}
+* Irish: {{t|ga|tráth|m}}
+* Italian: {{t-needed|it}}
+* Japanese: {{t+|ja|時間|tr=じかん, jikan}}, {{t+|ja|時|tr=とき, toki}}
+* Korean: {{t+|ko|시간(時間)}}, {{t+|ko|순간(瞬間)}}, {{t+|ko|시(時)}}, {{t+|ko|때}}
+* Latin: {{t+|la|hōra}}, {{t|la|mōmentum}}
+* Malay:
+*: Jawi: {{t|ms|ماس}}, {{t+|ms|کالا}}, {{t+|ms|وقتو}}
+*: Rumi: {{t+|ms|masa}}, {{t+|ms|kala}}, {{t+|ms|waktu}}
+* Navajo: {{t|nv|naʼalkid}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|وَقْت}}, {{t|fa-ira|مُوْقِع}}, {{t|fa-ira|هِنْگام}}, {{t|fa-ira|اِوان}}
+* Polish: {{t+|pl|pora|f}}
+* Portuguese: {{t+|pt|hora|f-p}}
+* Russian: {{t+|ru|вре́мя|n}}, {{t+|ru|час|m}} {{qualifier|archaic, poetic}}
+* Scottish Gaelic: {{t|gd|àm|m}}
+* Spanish: {{t+|es|hora|f}}, {{t+|es|tiempo|m}}, {{t+|es|data|f}}
+* Swedish: {{t+|sv|dags}}
+* Tamil: {{t+|ta|நேரம்}}
+* Tocharian B: {{t|txb|lyakur}}
+* Welsh: {{t|cy|tymp|m}}
+{{trans-bottom}}
+
+{{trans-top-see|time of day, as indicated by a clock, etc|hour|time of day}}
+* Afrikaans: {{t+|af|tyd}}
+* American Sign Language: {{t|ase|X@BackWrist-PalmDown Contact Contact}}
+* Armenian: {{t+|hy|ժամ}}
+* Asturian: {{t+|ast|hora|f}}
+* Azerbaijani: {{t+|az|vaxt}}, {{t+|az|çağ}} {{qualifier|poetic}}
+* Bashkir: {{t|ba|ваҡыт}}, {{t|ba|сәғәт}}
+* Bengali: {{t+|bn|সময়}}, {{t+|bn|বেলা}}
+* Breton: {{t+|br|eur|f}}
+* Bulgarian: {{t+|bg|час|m}}
+* Catalan: {{t+|ca|hora|f}}
+* Chinese:
+*: Dungan: {{t|dng|сыху}}, {{t|dng|сыхур}}, {{t|dng|сахат}}
+*: Hokkien: {{t+|nan-hbl|時陣|tr=sî-chūn}}
+*: Mandarin: {{t+|cmn|時候|tr=shíhòu}}, {{t+|cmn|時刻|tr=shíkè}}, {{t|cmn|一天時間|tr=yītiān shíjiān}}
+* Comorian:
+*: Ngazidja Comorian: {{t|zdj|saya}}, {{t|zdj|sa}}
+* Czech: {{t+|cs|čas|m}}
+* Danish: {{t|da|klokken}}
+* Esperanto: {{t+|eo|horo}}
+* Estonian: {{t+|et|kell}}
+* Ewe: {{t|ee|gaƒoƒo|n}}
+* Finnish: {{t+|fi|aika}}, {{t+|fi|kellonaika}}, {{t+|fi|kello}}
+* French: {{t+|fr|heure|f}}, {{t|fr|heure du jour|f}}
+* Frisian:
+*: West Frisian: {{t+|fy|tiid}}
+* Galician: {{t+|gl|hora|f}}
+* Georgian: {{t+|ka|დრო}}
+* German: {{t+|de|Uhrzeit|f}}, {{t+|de|Zeit|f}}
+* Greek: {{t+|el|ώρα|f}}
+* Hebrew: {{t+|he|שָׁעָה|f|tr=sha'á}}, {{t+|he|זמן|tr=zman}}
+* Hindi: {{t+|hi|काल|m}}, {{t+|hi|समय|m}}, {{t+|hi|पहर|m}}
+* Hungarian: {{t+|hu|idő}}, {{t+|hu|óra}}
+* Icelandic: {{t+|is|tími|m}}
+* Irish: {{t+|ga|uair|f}}
+*: Old Irish: {{t|sga|úar|f}}
+* Italian: {{t+|it|ora|f}}
+* Japanese: {{t+|ja|時間|tr=じかん, jikan}}, {{t+|ja|時刻|tr=じこく, jikoku}}
+* Korean: {{t+|ko|시간(時間)}}, {{t+|ko|시각(時刻)}}, {{t+|ko|때}}
+* Kurdish:
+*: Central Kurdish: {{t+|ckb|کات}}, {{t|ckb|سەعات}}, {{t+|ckb|دەم}}
+*: Northern Kurdish: {{t+|kmr|dem}}, {{t+|kmr|wext}}, {{t+|kmr|zeman}}
+* Latin: {{t+|la|hōra}}
+* Latvian: {{t+|lv|laiks|m}}
+* Macedonian: {{t|mk|време|n}}, {{t+|mk|час|m}}, {{t|mk|саат|m}}
+* Malay:
+*: Jawi: {{t|ms|ماس}}, {{t+|ms|کالا}}, {{t+|ms|وقتو}}
+*: Rumi: {{t+|ms|masa}}, {{t+|ms|kala}}, {{t+|ms|waktu}}
+* Malayalam: {{t+|ml|സമയം}}
+* Maltese: {{t|mt|ħin}}
+* Māori: {{t+|mi|tāima}}
+* Mauritian Creole: {{t|mfe|ler}}
+* Mizo: {{t|lus|dár}}
+* Navajo: {{t|nv|naʼalkid}}, {{t|nv|ookił}}
+* Norwegian:
+*: Bokmål: {{t+|nb|klokkeslett|n|n-p}}, {{t|nb|tidspunkt|n}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|ساعَت}}
+* Pitcairn-Norfolk: {{t|pih|tiem}}
+* Polish: {{t+|pl|czas|m-in}}, {{t+|pl|godzina|f}}
+* Portuguese: {{t+|pt|horas|f}}
+* Punjabi: {{t|pa|ਵਕ਼ਤ|tr=vak਼at}}
+* Romanian: {{t+|ro|ceas|m}}, {{t+|ro|oră|f}}, {{t|ro|ora zilei|f}}
+* Romansh: {{t|rm|ura|f}}, {{t|rm|oura|f}}
+* Russian: {{t+|ru|вре́мя|n}}, {{t|ru|вре́мя су́ток|n}}, {{t+|ru|час|m}} {{qualifier|archaic, poetic}}
+* Sami:
+*: Northern Sami: {{t|se|diibmu}}
+* Scottish Gaelic: {{t|gd|uair|f}}
+* Slovene: {{t+|sl|úra|f}}
+* Sotho: {{t|st|nako}}
+* Spanish: {{t+|es|hora|f}}
+* Swahili: {{t+|sw|saa}}
+* Swedish: {{t+|sv|tid|c}}, {{t+|sv|tidpunkt|c}}
+* Tamil: {{t+|ta|மணி}}
+* Telugu: {{t+|te|సమయం}}
+* Tok Pisin: {{t|tpi|taim}}
+* Turkish: {{t+|tr|saat}}, {{t|tr|sögen}}
+* Ukrainian: {{t+|uk|час|m}}, {{t+|uk|годи́на|f}}
+* Zazaki: {{t|zza|sehat}}
+{{trans-bottom}}
+
+{{trans-top-see|measurement under some system of the time of day or moment in time|schedule}}
+* Armenian: {{t+|hy|ժամ}}
+* Bulgarian: {{t+|bg|време|n}}
+* Catalan: {{t+|ca|hora|f}}
+* Czech: {{t+|cs|čas|m}}
+* Dutch: {{t+|nl|tijd|m}}
+* Finnish: {{t+|fi|aika}}
+* French: {{t-needed|fr}}
+* German: {{t+|de|Zeit|f}}
+* Hindi: {{t+|hi|पहर|m}}
+* Italian: {{t-needed|it}}
+* Korean: {{t+|ko|시각(時刻)}}, {{t+|ko|때}}
+* Macedonian: {{t|mk|време|n}}
+* Malay:
+*: Jawi: {{t|ms|ماس}}, {{t+|ms|کالا}}, {{t+|ms|وقتو}}
+*: Rumi: {{t+|ms|masa}}, {{t+|ms|kala}}, {{t+|ms|waktu}}
+* Navajo: {{t|nv|naʼalkid}}
+* Norwegian:
+*: Bokmål: {{t+|nb|tid|m|f}}
+*: Nynorsk: {{t|nn|tid|f}}
+* Portuguese: {{t+|pt|horário|m}}
+* Romanian: {{t+|ro|vreme}}, {{t+|ro|timp|n}}
+* Russian: {{t+|ru|вре́мя|n}}
+* Spanish: {{t+|es|hora|f}}, {{t+|es|tiempo|m}}
+* Tagalog: {{t|tl|tion}}
+* Tamil: {{t+|ta|நேரம்}}
+* Ukrainian: {{t+|uk|час|m}}
+{{trans-bottom}}
+
+{{trans-top|numerical indication of a particular moment in time}}
+* Armenian: {{t+|hy|ժամ}}
+* Bashkir: {{t|ba|ваҡыт}}
+* Bulgarian: {{t-needed|bg}}
+* Catalan: {{t+|ca|hora|f}}
+* Chinese:
+*: Cantonese: {{t|yue|時候|tr=si4 hau6}}
+*: Hokkien: {{t+|nan-hbl|時陣|tr=sî-chūn}}
+*: Mandarin: {{t+|cmn|時候|tr=shíhòu}}
+* Czech: {{t+|cs|čas|m}}
+* Dutch: {{t+|nl|tijdstip|n}}
+* Finnish: {{t+|fi|aika}}
+* German: {{t+|de|Zeit|f}}
+* Hindi: , {{t|hi|बजे}}
+* Hungarian: {{t+|hu|időpont}}
+* Irish: {{t+|ga|uair|f}}
+*: Old Irish: {{t|sga|úar|f}}
+* Korean: {{t+|ko|시각(時刻)}}
+* Malay:
+*: Jawi: {{t|ms|ماس}}, {{t+|ms|کالا}}, {{t+|ms|وقتو}}
+*: Rumi: {{t+|ms|masa}}, {{t+|ms|kala}}, {{t+|ms|waktu}}
+* Navajo: {{t|nv|naʼalkid}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|ساعَت}}
+* Polish: {{t+|pl|godzina|f}}
+* Portuguese: {{t+|pt|horário|m}}
+* Russian: {{t+|ru|вре́мя|n}}
+* Scottish Gaelic: {{t|gd|uair|f}}
+* Spanish: {{t+|es|hora|f}}
+* Ukrainian: {{t+|uk|годи́на|f}}, {{t+|uk|час|m}}
+{{trans-bottom}}
+
+{{trans-top|instance or occurrence}}
+* Albanian: {{t+|sq|herë|f}}
+* Arabic: {{t+|ar|مَرَّة|f}}
+*: Moroccan Arabic: {{t|ary|مرة|f|tr=marra}}, {{t|ary|خطرة|f|tr=ḵaṭra}}, {{t|ary|دقة|f|tr=daqqa}}
+* Armenian: {{t+|hy|անգամ}}
+* Aromanian: {{t|rup|oarã|f}}
+* Asturian: {{t|ast|vez|f}}, {{t|ast|vegada|f}}
+* Azerbaijani: {{t+|az|dəfə}}, {{t|az|kərə}}, {{t+|az|səfər}}, {{t|az|dönüm}} {{q|dialectal}}
+* Bashkir: {{t|ba|тапҡыр}}, {{t|ba|мәртәбә}}, {{t|ba|рәт}}
+* Belarusian: {{t|be|раз|m}}
+* Bengali: {{t+|bn|বার}}
+* Bhojpuri: {{t|bho|हाली}}
+* Bulgarian: {{t+|bg|път|m}}
+* Burmese: {{t+|my|ကြိမ်}}
+* Catalan: {{t+|ca|vegada|f}}, {{t+|ca|cop|m}}, {{t+|ca|ocasió|f}}
+* Chinese:
+*: Cantonese: {{t|yue|次|tr=ci3}}
+*: Gan: {{t-needed|gan}}
+*: Hakka: {{t|hak|擺|tr=pái}}
+*: Hokkien: {{t+|nan-hbl|擺|tr=pái}}
+*: Mandarin: {{t+|cmn|次|tr=cì}}, {{t+|cmn|度|tr=dù}}, {{t+|cmn|遍|tr=biàn}}
+*: Wu: {{t-needed|wuu}}
+*: Xiang: {{t-needed|hsn}}
+* Comorian:
+*: Maore Comorian: {{t|swb|safari|c5}}
+* Czech: {{qualifier|uses various adverbs}}, {{t|cs|krát}}
+* Danish: {{t+|da|gang|c}}
+* Dutch: {{t+|nl|keer|m}}, {{t+|nl|maal|m}}
+* Egyptian: {{t-egy|zp|h=z:p*zp}}
+* Esperanto: {{t+|eo|fojo}}
+* Estonian: {{t+|et|kord}}
+* Faroese: {{t|fo|ferð|f}}
+* Finnish: {{t+|fi|kerta}}
+* French: {{t+|fr|fois|f}}
+*: Old French: {{t|fro|fois|f}}
+*: Old French: {{t|fro|feiz|f}}
+* Galician: {{t+|gl|vez|f}}
+* Georgian: {{t+|ka|დრო}}, {{t|ka|ჯერ}}
+* German: {{t+|de|Mal|n}}
+* Greek: {{t+|el|φορά|f}}
+* Hebrew: {{t+|he|פעם|f|tr=pá-am}}
+* Hindi: {{t+|hi|बार|f}}
+* Hungarian: {{t+|hu|alkalom}}
+* Icelandic: {{t+|is|sinn|n}}, {{t+|is|skipti|n}}
+* Irish: {{t+|ga|uair|f}}
+*: Old Irish: {{t|sga|úar|f}}
+* Italian: {{t+|it|volta|f}}
+* Japanese: {{t+|ja|回|tr=かい, kai}}, {{t+|ja|次|tr=じ, ji}}, {{t+|ja|度|tr=ど, do}}
+* Khmer: {{t+|km|ជើង}}, {{t+|km|ដង}}
+* Kituba: {{t|ktu|mbala}}
+* Korean: {{t+|ko|회(回)}}, {{t+|ko|번(番)}}, {{t+|ko|차(次)}}
+* Kurdish:
+*: Central Kurdish: {{t+|ckb|کات}}, {{t+|ckb|جار}}
+*: Northern Kurdish: {{t+|kmr|car|f}}
+* Lao: {{t+|lo|ຄັ້ງ}}
+* Latin: {{t|la|ēventus}}, {{t|la|versātiō}}, {{t+|la|vicis}}
+* Latvian: {{t-needed|lv}}
+* Lingala: {{t|ln|mbala}}
+* Lithuanian: {{t|lt|kartas|m}}
+* Macedonian: {{t+|mk|пат|m}}
+* Malayalam: {{t+|ml|തവണ}}, {{t|ml|പ്രാവശ്യം}}
+* Marshallese: {{t|mh|alen}}, {{t|mh|kattōn}}
+* Mauritian Creole: {{t|mfe|fwa}}
+* Mizo: {{t|lus|ṭum}}, {{t|lus|vawi}}
+* Mongolian:
+*: Cyrillic: {{t+|mn|удаа}}
+* Norwegian:
+*: Bokmål: {{t+|nb|tid}}, {{t+|nb|gang|m}}
+*: Nynorsk: {{t|nn|gong|m}}
+* Occitan: {{t+|oc|vegada|f}}, {{t+|oc|còp|m}}
+* Old English: {{t|ang|sīþ}}
+* Old Norse: {{t|non|sinn}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|ساعَت}}, {{t|fa-ira|دَفْعِه}}, {{t|fa-ira|مَرْتَبِه}}
+*: Middle Persian: {{t|pal|𐭡𐭠𐭫𐭩|ts=bâr}}
+* Plautdietsch: {{t|pdt|Rekjs|f}}
+* Polish: {{t+|pl|raz|m-in}}
+* Portuguese: {{t+|pt|vez|f}}
+* Romani: {{t|rom|dată}}
+* Romanian: {{t+|ro|dată|f}}, {{t+|ro|oară|f}}
+* Russian: {{t+|ru|раз|m}}
+* Sami:
+*: Northern Sami: {{t|se|geardi}}
+* Scottish Gaelic: {{t|gd|uair|f}}, {{t|gd|turas|m}}
+* Serbo-Croatian: {{t+|sh|put|m}}, {{t|sh|пут|m}}
+* Slovak: {{t|sk|krát|m}}
+* Slovene: {{t|sl|krat|m}}
+* Somali: {{t|so|kol}}, {{t+|so|mar}}
+* Spanish: {{t+|es|vez|f}}, {{t+|es|tanda|f}}
+* Swahili: {{t+|sw|mara}}
+* Swedish: {{t+|sv|gång|c}}
+* Tamil: {{t+|ta|முறை}}, {{t+|ta|தடவை}}
+* Telugu: {{t+|te|సారి}}
+* Thai: {{t+|th|ครั้ง}}
+* Turkish: {{t+|tr|kere}}, {{t+|tr|defa}}, {{t+|tr|kez}}, {{t+|tr|sefer}}
+*: Ottoman Turkish: {{t|ota|سفر|tr=sifr}}
+* Ukrainian: {{t+|uk|раз|m}}
+* Urdu: {{t|ur|بار|f|tr=bār}}, {{t|ur|دفعہ|f|tr=daf'a}}, {{t|ur|مرتبہ|m|tr=martabā}}
+* Venetan: {{t+|vec|òlta|f}}
+* Vietnamese: {{t+|vi|lần}}
+* Zazaki: {{t|zza|qefle|c}}, {{t+|zza|fın|f}}, {{t+|zza|rey}}
+* Zhuang: {{t-needed|za}}
+{{trans-bottom}}
+
+{{trans-top|ratio of comparison}}
+* Bashkir: {{t|ba|тапҡыр}}, {{t|ba|мәртәбә}}
+* Bengali: {{t|bn|-গুন}}
+* Bulgarian: {{t+|bg|път|m}}
+* Catalan: {{t+|ca|vegades|f-p}}, {{t+|ca|per}}
+* Dutch: {{t+|nl|keer|m}}
+* Finnish: {{t+|fi|kerta}}
+* French: {{t+|fr|fois|f|f-p}}
+* Georgian: {{t|ka|-ჯერ}}
+* German: {{t+|de|mal}}
+* Hebrew: {{t+|he|פִּי|tr=pi}}
+* Hindi: {{t+|hi|गुणा|m}}
+* Hungarian: {{t+|hu|-szor}}, {{t+|hu|-szer}}, {{t+|hu|-ször}}
+* Italian: {{t+|it|volta|f}}
+* Persian:
+*: Iranian Persian: {{t+|fa-ira|بار}}
+* Polish: {{t+|pl|raz|s}}, {{t+|pl|razy|p}}
+* Portuguese: {{t+|pt|vez|f}}
+* Romanian: {{t+|ro|dată|f}}, {{t+|ro|oară|f}}
+* Russian: {{t+|ru|раз|m}}, {{t+|ru|крат|m}}
+* Spanish: {{t+|es|veces}}, {{t+|es|por}}
+* Swedish: {{t+|sv|gång|c}}
+* Tamil: {{t+|ta|மடங்கு}}
+{{trans-bottom}}
+
+{{trans-top-see|a personal experience|experience|moment}}
+* Bulgarian: {{t+|bg|време|n}}
+* Catalan: {{t+|ca|estona|f}}, {{t+|ca|moments|m-p}}
+* Czech: {{t+|cs|čas|m}}
+* Finnish: ''not used; use the adjective in partitive singular''
+* French: {{t+check|fr|époque|f}}
+* Hindi: {{t+|hi|अनुभव|m}}
+* Italian: {{t+|it|tempo|m}}
+* Japanese: {{t+|ja|時間|tr=じかん, jikan}}, {{t+|ja|時|tr=とき, toki}}, {{t+|ja|ひととき|tr=hitotoki}}
+* Korean: {{t+|ko|경험(經驗)}}
+* Portuguese: {{t+|pt|tempo|m}}
+* Russian: {{t+|ru|вре́мя|n}}
+* Scottish Gaelic: {{t|gd|àm|m}}
+* Spanish: {{t|es|pasarlo}} {{q|verb}}
+* Telugu: {{t+|te|అనుభవము}}
+{{trans-bottom}}
+
+{{trans-top-see|youth or young adulthood|adolescence|epoch}}
+* Bengali: {{t+|bn|জমানা}}
+* Catalan: {{t+|ca|temps|m-p}}, {{t+|ca|època|f}}
+* Czech: {{t|cs|časy|m-p}}
+* Dutch: {{t+|nl|tijd|m}}
+* Finnish: {{t+|fi|nuoruus}}
+* French: {{t-needed|fr}}
+* German: {{t+|de|Zeit|f}}
+* Hindi: {{t+|hi|यौवन|m}}
+* Hungarian: {{t+|hu|idő}}
+* Italian: {{t-needed|it}}
+* Japanese: {{t+|ja|時期|tr=じき, jiki}}
+* Latin: {{t+|la|adulēscentia}}
+* Persian:
+*: Iranian Persian: {{t|fa-ira|زَمان}}
+* Portuguese: {{t+|pt|época|f}}
+* Russian: {{t+|ru|вре́мя|n}}, {{t+|ru|времена́|n-p}}
+* Scottish Gaelic: {{t|gd|àm|m}}
+* Tamil: {{t+|ta|இளமை}}
+* Telugu: {{t+|te|యౌవనము}}
+{{trans-bottom}}
+
+{{trans-top|slang: serving of a prison sentence}}
+* Bulgarian: {{t-needed|bg}}
+* Catalan: {{t+|ca|pena|f}}
+* Danish: {{t|da|afsoningstid}}
+* Estonian: {{t+|et|vangistus}}
+* Finnish: {{t+|fi|kakku}}
+* French: {{t+|fr|peine|f}}
+* Greek: {{t+|el|ποινή|f}}
+* Icelandic: {{t|is|afplánunartími|m}}
+* Italian: {{t+|it|pena|f}}
+* Macedonian: {{t|mk|рок|m}}
+* Maltese: {{t|mt|pina|f}}
+* Norwegian:
+*: Bokmål: {{t|nb|soningstid|m|f}}, {{t|nb|tid inne}}
+* Portuguese: {{t+|pt|pena|f}}
+* Russian: {{t+|ru|срок|m}}
+* Spanish: {{t+|es|pena|f}}
+* Ukrainian: {{t+|uk|строк|m}}, {{t+|uk|термін|m}}
+* Zazaki: {{t|zza|pawıtış}}
+{{trans-bottom}}
+
+{{trans-top|person's experiences or biography}} 
+* Bulgarian: {{t+|bg|време|n}}
+* Catalan: {{t+|ca|temps|m}}
+* Finnish: {{t+|fi|aika}}
+* French: {{t-needed|fr}}
+* German: {{t+|de|Zeit|f}}
+* Italian: {{t-needed|it}}
+* Portuguese: {{t+check|pt|hora|f}}
+* Russian: {{t+|ru|вре́мя|n}}
+* Spanish: {{t-needed|es}}
+* Telugu: {{t+|te|జీవితచరిత్ర}}
+}}<!-- close {{multitrans}} -->
+{{trans-bottom}}
+
+{{checktrans-top}}
+* Amuzgo:
+*: Guerrero Amuzgo: {{t-check|amu|bio}}
+* Breton: {{t+check|br|gwech|f}}
+* Bulgarian: {{t+check|bg|вре́ме|n}}, {{t+check|bg|час|m}}
+* Chechen: {{t-check|ce|хан}}
+* Danish: {{t-check|da|tidspunkt|n}}
+* Dutch: {{t+check|nl|keer|m}}
+* Esperanto: {{t+check|eo|fojo}}
+* Georgian: {{t+check|ka|დრო}}
+* Guarani:
+*: Paraguayan Guarani: {{t+check|gug|ára}}
+* Hungarian: {{t+check|hu|idő}}
+* Icelandic: {{t+check|is|tími|m}}
+* Ido: {{t+check|io|tempo}}, {{t+check|io|kloko}}, {{t+check|io|okaziono}}
+* Indonesian: {{t+check|id|waktu}}
+* Interlingua: {{t+check|ia|tempore}}
+* Kurdish:
+*: Northern Kurdish: {{t+check|kmr|car|f}}, {{t+check|kmr|kere|f}}, {{t+check|kmr|defa|f}}, {{t+check|kmr|neql|f}}, {{t+check|kmr|dem}}, {{t+check|kmr|wext}}, {{t+check|kmr|zeman}}
+* Kyrgyz: {{t+check|ky|саат}}
+* Latin: {{t+check|la|tempus|n}}
+* Latvian: {{t-check|lv|reize|f}}, {{t+check|lv|laiks|m}}
+* Malayalam: {{t+check|ml|സമയം}}
+* Maltese: {{t-check|mt|darba}}
+* Norwegian:
+*: Bokmål: {{t+check|nb|gang|m}}, {{t-check|nb|tidspunkt|n}}
+* Old English: {{t-check|ang|mǣl}}
+* Romanian: {{t+check|ro|timp|n}}, {{t+check|ro|vreme|f}}
+* Serbo-Croatian: {{t+check|sh|put}}
+* Swedish: {{t+check|sv|tid|c}}, {{t+check|sv|gång|c}}
+* Tatar: {{t+check|tt|тур}}
+* Telugu: {{t+check|te|సమయం}}
+* Thai: {{t+check|th|เวลา}}, {{t+check|th|ครั้ง}}
+* Ukrainian: {{t+check|uk|час|m}}
+* Volapük: {{t+check|vo|tim}}, {{t+check|vo|tüp}}
+{{trans-bottom}}
