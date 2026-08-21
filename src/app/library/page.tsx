@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { TENSE_LABELS } from '@/lib/analyzer/tenses';
 import { listStories } from '@/lib/library/server';
+import { TENSE_KEYS, type TenseKey } from '@/types/content';
 
 export const metadata: Metadata = {
   title: 'Бібліотека',
@@ -10,8 +11,15 @@ export const metadata: Metadata = {
     'Оповідання з готовою підсвіткою минулих часів — читайте без входу, розбір уже зроблено.',
 };
 
-/** Три часи, якими розмічена бібліотека (CONCEPT 9): підсвітка тут лише минула. */
-const LIBRARY_TENSES = ['ps', 'pc', 'pp'] as const;
+/**
+ * Показуємо лише ті конструкції, які в оповіданні справді є. Раніше тут стояв
+ * жорсткий список із трьох минулих часів — правильний для бібліотеки, засіяної
+ * минулою розміткою, і мовчки неповний для будь-якої іншої. Тепер картка
+ * описує те, що в оповіданні, а не те, що передбачав засів.
+ */
+function presentTenses(stats: Record<TenseKey, number>): TenseKey[] {
+  return TENSE_KEYS.filter((tense) => (stats[tense] ?? 0) > 0);
+}
 
 /**
  * Список оповідань. Нічого не рахується на клієнті: назва, автор, обсяг і
@@ -51,7 +59,7 @@ export default async function LibraryPage() {
                 {story.author} · {story.words} слів
               </div>
               <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12.5px] font-bold">
-                {LIBRARY_TENSES.map((tense) => (
+                {presentTenses(story.stats).map((tense) => (
                   <span key={tense} className="text-ink-3">
                     {TENSE_LABELS[tense]} <span className="opacity-70">{story.stats[tense]}</span>
                   </span>
