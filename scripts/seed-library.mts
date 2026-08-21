@@ -26,7 +26,7 @@ import { wordFrequency } from '../src/lib/analyzer/vocabulary.ts';
 import { wordTokens } from '../src/lib/analyzer/words.ts';
 import * as schema from '../src/db/schema.ts';
 import { type Artifact, parseArtifact, toTokenMatches, validate } from '../src/lib/library/artifact.ts';
-import type { TenseKey } from '../src/types/content.ts';
+import { TENSE_KEYS, type TenseKey } from '../src/types/content.ts';
 
 type Db = NodePgDatabase<typeof schema>;
 
@@ -136,9 +136,21 @@ function loadAllStories(): LoadedStory[] {
   return entries.map((entry) => loadStory(entry.name));
 }
 
-/** `stories.stats`: лише кількості (SC-9), без прикладів — вони живуть лише в UI підсвітки. */
+/**
+ * `stories.stats`: лише кількості (SC-9), без прикладів — вони живуть лише в UI
+ * підсвітки.
+ *
+ * Числа збираються обходом `TENSE_KEYS`, а не переліком ключів вручну. Раніше
+ * тут стояв літерал на `ps`/`pc`/`pp`, і це був тихий баг: тип обіцяв усі
+ * конструкції, а віддавав три, тому оповідання, засіяне теперішніми чи
+ * майбутніми часами, втратило б їхні кількості без жодної помилки. Компілятор
+ * цього не ловив, бо `scripts/*.mts` не потрапляли в `include` tsconfig.
+ */
 function tenseCounts(stats: Record<TenseKey, { count: number }>): Record<TenseKey, number> {
-  return { ps: stats.ps.count, pc: stats.pc.count, pp: stats.pp.count };
+  return Object.fromEntries(TENSE_KEYS.map((key) => [key, stats[key].count])) as Record<
+    TenseKey,
+    number
+  >;
 }
 
 /**
