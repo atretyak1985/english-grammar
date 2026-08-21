@@ -52,10 +52,17 @@ interface Options {
 
 const USAGE = `Внести книжку в бібліотеку.
 
+Переноси рядків працюють у прямому виклику, бо зворотний слеш тут поза лапками:
+
   npm run import-book -- --in <файл|URL> --slug <slug> \\
     --title "Назва" --author "Автор" \\
     --source "Project Gutenberg" --license "public domain" \\
     --source-url "https://..." [--sort-order 1] [--review]
+
+Через make ARGS доводиться писати ОДНИМ рядком: усередині лапок зворотний слеш
+рядка не переносить, а лишається в значенні, і Make виконує тільки перший рядок.
+
+  make import-book ARGS='--in <файл|URL> --slug <slug> --title "Назва" --author "Автор" --source "Project Gutenberg" --license "public domain" --source-url "https://..."'
 
   --in          PDF, .txt або http(s) URL. Шапку й підвал Project Gutenberg
                 скрипт зрізає сам.
@@ -68,15 +75,37 @@ function parseArgs(argv: string[]): Options {
   const raw = new Map<string, string>();
   let useReview = false;
 
-  for (let i = 0; i < argv.length; i += 1) {
-    const arg = argv[i];
+  /**
+   * Аргументи нормалізуються ДО розбору: обрізаються з боків, а порожні
+   * відкидаються. Це не косметика, а конкретний випадок — `make import-book
+   * ARGS='…'` із перенесенням рядка всередині лапок. Зворотний слеш там не
+   * переносить рядок, а лишається в значенні, тому Make виконує лише перший
+   * рядок і в argv прилітає аргумент з одних пробілів. Розбирати його як
+   * введення означало б звинувачувати людину в тому, що зробила оболонка.
+   */
+  const args: string[] = [];
+  for (const item of argv) {
+    const trimmed = item.trim();
+    if (trimmed === '') continue;
+    if (trimmed === '\\') {
+      throw new Error(
+        "У аргументах лишився зворотний слеш. Усередині ARGS='…' він не переносить рядок, а " +
+          'потрапляє в значення — через це Make виконує лише перший рядок. Запишіть ARGS одним ' +
+          'рядком або викличте `npm run import-book -- …` напряму.',
+      );
+    }
+    args.push(trimmed);
+  }
+
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
     if (arg === undefined) continue;
     if (arg === '--review') {
       useReview = true;
       continue;
     }
     if (!arg.startsWith('--')) throw new Error(`Незрозумілий аргумент "${arg}".\n\n${USAGE}`);
-    const value = argv[i + 1];
+    const value = args[i + 1];
     if (value === undefined || value.startsWith('--')) {
       throw new Error(`Аргумент ${arg} без значення.\n\n${USAGE}`);
     }

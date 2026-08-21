@@ -102,11 +102,22 @@ make db-seed
 
 ### Як додати книжку
 
+Прямий виклик — переноси рядків тут працюють, бо зворотний слеш поза лапками:
+
 ```bash
-make import-book ARGS='--in book.pdf --slug my-book \
+npm run import-book -- --in book.pdf --slug my-book \
   --title "Назва" --author "Автор" \
   --source "Project Gutenberg" --license "public domain" \
-  --source-url "https://..." --sort-order 2'
+  --source-url "https://..." --sort-order 2
+npm run db:seed
+```
+
+Через `make` те саме доводиться писати **одним рядком**. Усередині `ARGS='…'`
+зворотний слеш рядка не переносить, а лишається в значенні: Make тоді виконує
+лише перший рядок, і решта аргументів гине.
+
+```bash
+make import-book ARGS='--in book.pdf --slug my-book --title "Назва" --author "Автор" --source "Project Gutenberg" --license "public domain" --source-url "https://..." --sort-order 2'
 make db-seed
 ```
 
