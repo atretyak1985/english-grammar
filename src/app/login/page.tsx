@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { availableProviders, currentSession, isAuthConfigured, signIn } from '@/lib/auth';
+import { safeNextPath } from '@/lib/auth/next-path';
 
 export const metadata: Metadata = {
   title: 'Вхід',
@@ -14,10 +15,20 @@ export const metadata: Metadata = {
  * вмикає синхронізацію. При першому вході локальний стан зливається з акаунтом.
  *
  * Екран накриває оболонку цілком: у момент входу сайдбар і шапка не потрібні.
+ *
+ * `?next=` — куди повернутися після входу (наприклад, `/login?next=/account`
+ * зі сторінки кабінету для гостя). Значення завжди проходить `safeNextPath`:
+ * без цього зовнішній `?next=` став би відкритим редіректом.
  */
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string | string[] }>;
+}) {
+  const nextPath = safeNextPath((await searchParams).next);
+
   const session = await currentSession();
-  if (session?.user) redirect('/account');
+  if (session?.user) redirect(nextPath);
 
   const providers = availableProviders();
 
@@ -97,6 +108,9 @@ export default async function LoginPage() {
                 placeholder="you@example.com"
                 className="border-line bg-surface text-ink rounded-input w-full border px-[13px] py-[11px] text-[14.5px] leading-[normal] outline-none"
               />
+              {/* Auth.js бере `redirectTo` прямо з полів форми (FormData), тому саме
+                  тут, а не в самому виклику `signIn`, передається куди повертати. */}
+              <input type="hidden" name="redirectTo" value={nextPath} />
               {/* Місце під помилку зарезервоване, щоб кнопка не стрибала */}
               <div className="text-no mt-[5px] min-h-[18px] text-[12.5px]" />
               <button
@@ -120,7 +134,7 @@ export default async function LoginPage() {
             <form
               action={async () => {
                 'use server';
-                await signIn('google', { redirectTo: '/account' });
+                await signIn('google', { redirectTo: nextPath });
               }}
             >
               <button
