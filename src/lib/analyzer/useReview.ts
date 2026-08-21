@@ -24,6 +24,42 @@ function keyOf(chunk: { start: number; end: number }): string {
   return `${chunk.start}:${chunk.end}`;
 }
 
+/**
+ * Тіло 401/402 у `ReviewBlock`. Рядок бази тут ні до чого — це чуже тіло
+ * відповіді, тому перевіряється так само прискіпливо, як розмітка від моделі:
+ * невідома чи неповна форма означає «причини нема», а не вигадану причину.
+ */
+function toBlock(body: {
+  reason?: unknown;
+  remainingWords?: unknown;
+  monthlyWords?: unknown;
+}): ReviewBlock {
+  if (body.reason === 'auth-required') return { reason: 'auth-required' };
+  if (
+    body.reason === 'quota-exhausted' &&
+    typeof body.remainingWords === 'number' &&
+    typeof body.monthlyWords === 'number'
+  ) {
+    return { reason: 'quota-exhausted', remainingWords: body.remainingWords, monthlyWords: body.monthlyWords };
+  }
+  return null;
+}
+
+/**
+ * Причина, з якої уточнення моделлю недоступне. `null` — усе гаразд або
+ * причини поки нема (запит ще в польоті чи взагалі не пробували).
+ *
+ *   - `auth-required` — сервер відповів 401: ручка аналізатора закрита для
+ *     гостя (`resolveAccess()` на сервері).
+ *   - `quota-exhausted` — 402: слова цього місяця вичерпано; сервер називає
+ *     і залишок, і місячний ліміт, щоб плашка показала точні цифри, а не
+ *     загальне «квота скінчилась».
+ */
+export type ReviewBlock =
+  | null
+  | { reason: 'auth-required' }
+  | { reason: 'quota-exhausted'; remainingWords: number; monthlyWords: number };
+
 export interface ReviewState {
   /** Збіги від моделі; індекси вже переведені в номери токенів документа. */
   matches: Match[];
@@ -32,6 +68,8 @@ export interface ReviewState {
   /** Скільки слів документа вже розібрано і скільки їх усього. */
   words: number;
   totalWords: number;
+  /** Причина, з якої модель недоступна саме зараз — деградація, не помилка. */
+  block: ReviewBlock;
 }
 
 /**
@@ -69,6 +107,11 @@ export function useReview(
 ): ReviewState {
   const [store, setStore] = useState<Store>({ text, byChunk: new Map() });
 
+  // Причина недоступності — гість або вичерпана квота. Раз виставлена, вона
+  // не мине від повтору (сервер вирішує це по акаунту, не по тексту), тому
+  // обидва ефекти нижче перевіряють її й припиняють ходити на сервер.
+  const [block, setBlock] = useState<ReviewBlock>(null);
+
   const chunks = useMemo(() => chunksOf(tokens), [tokens]);
 
   /** Кладе розмітку шматків у накопичувач, не чіпаючи вже відомого. */
@@ -84,6 +127,7 @@ export function useReview(
   // Батч на весь документ: одна відповідь несе розмітку всіх готових шматків.
   useEffect(() => {
     if (text.trim().length === 0) return;
+    if (block !== null) return;
     const abort = new AbortController();
 
     void (async () => {
@@ -100,6 +144,13 @@ export function useReview(
             body: JSON.stringify({ text }),
             signal: abort.signal,
           });
+
+          // 401/402 — не помилка мережі, а причина: гість або вичерпана квота.
+          // Ані цей текст, ані наступний батч цього повтору не мине.
+          if (response.status === 401 || response.status === 402) {
+            setBlock(toBlock(await response.json()));
+            return;
+          }
           if (!response.ok) return;
 
           const body = (await response.json()) as {
@@ -122,7 +173,7 @@ export function useReview(
     })();
 
     return () => abort.abort();
-  }, [text]);
+  }, [text, block]);
 
   const fresh = store.text === text;
 
@@ -145,6 +196,7 @@ export function useReview(
 
   useEffect(() => {
     if (next === undefined) return;
+    if (block !== null) return;
     const abort = new AbortController();
 
     void (async () => {
@@ -155,6 +207,13 @@ export function useReview(
           body: JSON.stringify({ text: chunkText(tokens, next) }),
           signal: abort.signal,
         });
+
+        // 401/402 — причина, не збій: гість або вичерпана квота. Запам'ятали
+        // й спинились — ні цей шматок, ні наступні тут більше не питають.
+        if (response.status === 401 || response.status === 402) {
+          setBlock(toBlock(await response.json()));
+          return;
+        }
         // 413, 429 чи 500 — привід лишити цей шматок на локальній розмітці, а
         // не повторювати запит: жодна з причин не минеться від повтору, а 429
         // від нього ще й подовжиться.
@@ -181,7 +240,7 @@ export function useReview(
     })();
 
     return () => abort.abort();
-  }, [next, tokens, text]);
+  }, [next, tokens, text, block]);
 
   return useMemo(() => {
     const matches: Match[] = [];
@@ -198,6 +257,12 @@ export function useReview(
       }
     }
 
-    return { matches, ranges, words, totalWords: chunks.reduce((sum, c) => sum + c.words, 0) };
-  }, [store, fresh, chunks]);
+    return {
+      matches,
+      ranges,
+      words,
+      totalWords: chunks.reduce((sum, c) => sum + c.words, 0),
+      block,
+    };
+  }, [store, fresh, chunks, block]);
 }

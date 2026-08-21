@@ -14,7 +14,7 @@ PG_DB        := english_grammar
 
 .DEFAULT_GOAL := help
 .PHONY: help install dev build start check typecheck lint test \
-        db db-stop db-logs db-shell db-push db-studio db-reset clean
+        db db-stop db-logs db-shell db-push db-seed db-studio db-reset grant-plan clean
 
 help: ## Показати цю довідку
 	@echo 'Граматика англійської — команди:'
@@ -87,8 +87,14 @@ db-shell: db ## Відкрити psql
 db-push: db ## Накотити схему з src/db/schema.ts
 	npm run db:push -- --force
 
+db-seed: db ## Засіяти бібліотеку й тарифи з артефактів репозиторію
+	npm run db:seed
+
 db-studio: db ## Drizzle Studio у браузері
 	npm run db:studio
+
+grant-plan: db ## Активувати тариф вручну: make grant-plan EMAIL=... PLAN=basic MONTHS=1
+	EMAIL='$(EMAIL)' PLAN='$(PLAN)' MONTHS='$(MONTHS)' npm run grant-plan
 
 db-reset: ## Знести базу разом з даними і накотити схему заново (потрібно FORCE=1)
 	@if [ "$(FORCE)" != "1" ]; then \
@@ -98,6 +104,7 @@ db-reset: ## Знести базу разом з даними і накотит�
 	fi
 	-docker rm -f $(PG_CONTAINER)
 	@$(MAKE) --no-print-directory db-push
+	@$(MAKE) --no-print-directory db-seed
 
 # --- Прибирання ---------------------------------------------------------------
 
