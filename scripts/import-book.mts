@@ -17,7 +17,7 @@
  * Шляхи імпортів ВІДНОСНІ, з розширенням `.ts`, — як і в `seed-library.mts`:
  * файл виконує `tsx` поза Next.js, і alias `@/` для нього не діє.
  */
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { chunksOf, chunkText, type Chunk } from '../src/lib/analyzer/chunks.ts';
@@ -184,6 +184,21 @@ function stripGutenberg(text: string): string {
   return text.slice(from, to).trim();
 }
 
+/**
+ * Найчастіша помилка тут — не зламаний файл, а заповнювач із документації,
+ * скопійований дослівно: `--in book.pdf`. Сире `ENOENT: no such file` у такому
+ * разі не бреше, але й не допомагає, тому шлях перевіряється до читання, а
+ * повідомлення називає прапорець і нагадує про заповнювач.
+ */
+function requireFile(spec: string): void {
+  if (existsSync(spec)) return;
+
+  const hint = ['book.pdf', 'book.txt', 'story.txt'].includes(spec)
+    ? ' Це заповнювач із README — підставте справжній шлях або URL.'
+    : '';
+  throw new Error(`--in ${spec}: файла немає.${hint}`);
+}
+
 async function readInput(spec: string): Promise<string> {
   if (/^https?:\/\//.test(spec)) {
     const response = await fetch(spec);
@@ -191,6 +206,8 @@ async function readInput(spec: string): Promise<string> {
     console.log(`завантажено ${spec}`);
     return normalizeExtractedText(await response.text());
   }
+
+  requireFile(spec);
   if (spec.toLowerCase().endsWith('.pdf')) return readPdf(spec);
   return normalizeExtractedText(readFileSync(spec, 'utf8'));
 }
