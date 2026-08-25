@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { IBM_Plex_Mono, Manrope } from 'next/font/google';
+import { IBM_Plex_Mono, Manrope, Nunito } from 'next/font/google';
 
 import '@/app/globals.css';
 
@@ -30,9 +30,18 @@ export const viewport: Viewport = {
 };
 
 /**
- * Шрифти макета. Manrope несе весь інтерфейс, IBM Plex Mono — формули й код.
- * Кириличний набір обовʼязковий: інтерфейс українською.
+ * Шрифти макета. Nunito несе текст, Manrope лишається дисплейним
+ * накресленням — логотип, заголовки, назви карток, — а IBM Plex Mono
+ * формули й код. Кириличний набір обовʼязковий: інтерфейс українською.
+ * Курсив не підключаємо: макет його оголошує, але ніде не вживає.
  */
+const nunito = Nunito({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-nunito',
+  display: 'swap',
+});
+
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
   weight: ['400', '500', '600', '700', '800'],
@@ -53,7 +62,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="uk"
-      className={`${manrope.variable} ${plexMono.variable}`}
+      className={`${nunito.variable} ${manrope.variable} ${plexMono.variable}`}
       suppressHydrationWarning
     >
       <head>

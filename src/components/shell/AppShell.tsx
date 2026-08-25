@@ -4,15 +4,19 @@ import { usePathname } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 
 import { ContentHeader } from '@/components/shell/ContentHeader';
+import { DecorShapes } from '@/components/shell/DecorShapes';
 import { Sidebar } from '@/components/shell/Sidebar';
 
 /**
  * Оболонка застосунку: сайдбар завжди на екрані, контент перемикається без
  * перезавантаження — тому стан і смужка прогресу не блимають (CONCEPT 2).
- * На широких екранах це grid 296px + решта, на вузьких сайдбар стає шухлядою.
+ * На широких екранах це grid 292px + решта, на вузьких сайдбар стає шухлядою.
+ * Згорнутий сайдбар — 84px, самі значки: колонка тем на вузькому моніторі
+ * коштує дорожче, ніж підписи розділів.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const [shownFor, setShownFor] = useState(pathname);
 
@@ -24,10 +28,21 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="bg-bg grid min-h-screen lg:grid-cols-[var(--spacing-sidebar)_minmax(0,1fr)]">
+    <div
+      className="bg-bg relative grid min-h-screen lg:grid-cols-[var(--sidebar-w)_minmax(0,1fr)]"
+      style={
+        {
+          '--sidebar-w': collapsed
+            ? 'var(--spacing-sidebar-mini)'
+            : 'var(--spacing-sidebar)',
+        } as React.CSSProperties
+      }
+    >
+      <DecorShapes />
+
       {/* Постійний сайдбар на широких екранах */}
       <aside className="sticky top-0 hidden h-screen self-start lg:block">
-        <Sidebar />
+        <Sidebar collapsed={collapsed} onToggleCollapsed={() => setCollapsed((it) => !it)} />
       </aside>
 
       {/* Шухляда на вузьких */}
@@ -44,7 +59,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </>
       ) : null}
 
-      <main className="min-w-0">
+      <main className="relative min-w-0">
         <ContentHeader onOpenSidebar={() => setOpen(true)} />
         {children}
         <footer className="border-line text-ink-3 border-t text-[13.5px]">
