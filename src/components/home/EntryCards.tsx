@@ -1,21 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo } from 'react';
+import type { ReactNode } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { READY_TOPICS } from '@/data/topics';
-import { wordFrequency } from '@/lib/analyzer/vocabulary';
-import { useTexts } from '@/lib/state/texts';
 
-/** Картки входу: «Продовжити», «Аналіз тексту», «Слова», «Бібліотека» (CONCEPT 2). */
+/** Картки входу: «Продовжити», «Аналізатор», «Тренування», «Мій словник». */
 export function EntryCards() {
   const { state, readCount, isSectionRead } = useAppState();
-  const { texts } = useTexts();
 
   const continueTopic =
     READY_TOPICS.find((topic) => topic.slug === state.lastTopic) ?? READY_TOPICS[0];
-  const read = continueTopic ? readCount(continueTopic.slug) : 0;
   const sections = continueTopic?.sections ?? [];
 
   // Саме перший непрочитаний, а не наступний за номером: розділи тепер окремі
@@ -24,52 +20,52 @@ export function EntryCards() {
     ? (sections.find((section) => !isSectionRead(continueTopic.slug, section.id)) ??
       sections[sections.length - 1])
     : undefined;
-  const continueLabel =
-    read > 0
-      ? `Прочитано ${read} з ${sections.length} розділів — далі: ${next?.title ?? ''}`
-      : 'Ще не починали — почніть з розділу 1';
 
-  const corpusSize = useMemo(
-    () => wordFrequency(texts.map((text) => text.body).join('\n')).length,
-    [texts],
-  );
-  const known = Object.values(state.words).filter((status) => status === 'known').length;
+  const statuses = Object.values(state.words);
+  const learning = statuses.filter((status) => status === 'learning').length;
+  const inDictionary = statuses.filter((status) => status !== 'unknown').length;
+
+  const read = continueTopic ? readCount(continueTopic.slug) : 0;
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
+    <div className="mt-[22px] grid grid-cols-[repeat(auto-fit,minmax(235px,1fr))] gap-4">
       {continueTopic ? (
         <EntryCard
           href={`/topics/${continueTopic.slug}`}
-          kicker="Продовжити"
-          kickerClass="text-ps"
-          accent="border-l-ps"
-          title={continueTopic.title}
-          desc={continueLabel}
+          glyph="▸"
+          chip="bg-ps-bg text-ps-tx"
+          title="Продовжити тему"
+          desc={
+            read > 0
+              ? `${continueTopic.title} · далі: ${next?.short ?? next?.title ?? ''}`
+              : `${continueTopic.title} · почніть з розділу 1`
+          }
         />
       ) : null}
       <EntryCard
         href="/analyze"
-        kicker="Новий інструмент"
-        kickerClass="text-pc"
-        accent="border-l-pc"
-        title="Аналіз тексту"
-        desc="Вставте статтю, PDF або скан — часи підсвітяться в тексті."
+        glyph="Aa"
+        chip="bg-green-bg text-green-tx"
+        title="Аналізатор"
+        desc="Ваш текст або бібліотека з готовою підсвіткою."
+      />
+      {/*
+        Тренування ще немає як маршруту, тому картка не веде нікуди й не
+        вдає, ніби веде. Число зліва при цьому справжнє — саме стільки слів
+        чекатиме на гру, коли вона зʼявиться.
+      */}
+      <EntryCard
+        glyph="⚡"
+        chip="bg-yellow-bg text-yellow-tx"
+        title="Тренування"
+        desc={`${learning} слів чекає на гру з Lens.`}
       />
       <EntryCard
         href="/words"
-        kicker="Новий інструмент"
-        kickerClass="text-pp"
-        accent="border-l-pp"
-        title="Слова за частотою"
-        desc={`${corpusSize} слів з ваших текстів · ${known} позначено «знаю»`}
-      />
-      <EntryCard
-        href="/library"
-        kicker="Бібліотека"
-        kickerClass="text-ok"
-        accent="border-l-ok"
-        title="Оповідання з готовою підсвіткою"
-        desc="Розбір уже готовий — читайте без входу, без очікування."
+        glyph="✎"
+        chip="bg-pp-bg text-pp-tx"
+        title="Мій словник"
+        desc={`${inDictionary} слів зі статусами «вчу» і «знаю».`}
       />
     </div>
   );
@@ -77,29 +73,38 @@ export function EntryCards() {
 
 function EntryCard({
   href,
-  kicker,
-  kickerClass,
-  accent,
+  glyph,
+  chip,
   title,
   desc,
 }: {
-  href: string;
-  kicker: string;
-  kickerClass: string;
-  accent: string;
+  href?: string;
+  glyph: ReactNode;
+  chip: string;
   title: string;
   desc: string;
 }) {
-  return (
-    <Link
-      href={href}
-      className={`bg-surface border-line rounded-card shadow-card block border border-l-[3px] px-[22px] py-5 text-left leading-[normal] text-inherit transition hover:-translate-y-[2px] ${accent}`}
-    >
-      <div className={`text-[11px] font-extrabold tracking-[1.1px] uppercase ${kickerClass}`}>
-        {kicker}
+  const body = (
+    <>
+      <div
+        className={`font-display rounded-tile mb-3 flex h-11 w-11 items-center justify-center text-[19px] font-extrabold ${chip}`}
+        aria-hidden
+      >
+        {glyph}
       </div>
-      <div className="mt-[7px] mb-1 text-[18px] font-extrabold tracking-[-0.3px]">{title}</div>
-      <div className="text-ink-2 text-[14px]">{desc}</div>
+      <div className="font-display text-[17px] font-extrabold">{title}</div>
+      <div className="text-ink-2 mt-1 text-[13px] font-semibold">{desc}</div>
+    </>
+  );
+
+  const shell =
+    'block border-line bg-card rounded-card-lg shadow-card border px-[22px] py-5 text-left text-inherit';
+
+  return href ? (
+    <Link href={href} className={`${shell} transition-transform hover:-translate-y-[5px]`}>
+      {body}
     </Link>
+  ) : (
+    <div className={`${shell} cursor-default`}>{body}</div>
   );
 }
