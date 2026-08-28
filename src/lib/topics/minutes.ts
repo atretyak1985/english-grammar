@@ -1,5 +1,4 @@
 import MINUTES from '@/content/topics/minutes.json';
-import type { TopicMeta, TopicSection } from '@/types/content';
 
 /**
  * Тривалість розділів теми.
@@ -17,18 +16,4 @@ const TABLE = MINUTES as Record<string, Record<string, number> | undefined>;
 
 export function sectionMinutes(topicSlug: string, sectionSlug: string): number | null {
   return TABLE[topicSlug]?.[sectionSlug] ?? null;
-}
-
-/**
- * Скільки лишилось: сума нечитаних розділів. `isRead` приходить ззовні,
- * бо статус прочитаного живе в стані клієнта, а таблиця — у збірці.
- */
-export function remainingMinutes(
-  topic: TopicMeta,
-  isRead: (section: TopicSection) => boolean,
-): number {
-  return topic.sections.reduce((sum, section) => {
-    if (isRead(section)) return sum;
-    return sum + (sectionMinutes(topic.slug, section.slug) ?? 0);
-  }, 0);
 }

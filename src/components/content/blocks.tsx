@@ -491,21 +491,41 @@ export function BRow({ form, children }: { form: ReactNode; children?: ReactNode
 
 /* ---------- шпаргалка ---------- */
 
+/**
+ * Шпаргалка — те, що фотографують і потім дивляться з телефона.
+ *
+ * Поверхня паперова, а не чорна. Чорне тло тут коштувало найдорожче саме
+ * тому, що це найщільніший текст у темі: три кольори часів, задані для
+ * світлого паперу, лягали на майже чорне з контрастом, на якому назви
+ * часів переставали читатися — а вони в шпаргалці головні.
+ */
 export function Cheat({ title, children }: { title: ReactNode; children?: ReactNode }) {
   return (
-    <div className="bg-deep text-deep-ink rounded-card my-5 px-[26px] py-6">
-      <h3 className="mt-0 mb-2 text-[17px] font-extrabold tracking-[0.6px] text-white">{title}</h3>
+    <div className="bg-bg border-line rounded-note my-5 border px-[26px] py-6">
+      <h3 className="text-ink-3 mt-0 mb-2 font-mono text-[10.5px] font-bold tracking-[1.2px] uppercase">
+        {title}
+      </h3>
       {children}
     </div>
   );
 }
 
+/* Ті самі три родини, що й заливка часів. На папері беруться чорнильні
+   відтінки (-tx), а не самі кольори: назва часу тут — заголовок рядка, і
+   вона мусить читатися як текст, а не світитися. */
 const CHEAT_LABEL: Record<Aspect, string> = {
-  simple: 'text-[#7dd3fc]',
-  continuous: 'text-[#fcd34d]',
-  perfect: 'text-[#c4b5fd]',
+  simple: 'text-ps-tx',
+  continuous: 'text-pc-tx',
+  perfect: 'text-pp-tx',
 };
 
+/**
+ * Рядок шпаргалки: назва часу над його довідкою.
+ *
+ * Назва стоїть саме над, а не збоку: колонка тексту вузька, і фіксовані
+ * 180px під підпис лишали половину рядка порожньою рівно там, де довідка
+ * найщільніша.
+ */
 export function CheatRow({
   label,
   t,
@@ -516,11 +536,15 @@ export function CheatRow({
   children?: ReactNode;
 }) {
   return (
-    <div className="border-deep-line grid grid-cols-1 items-start gap-3.5 border-b py-3 last:border-b-0 sm:grid-cols-[180px_1fr]">
-      <div className={`text-[13px] font-extrabold ${t ? CHEAT_LABEL[TENSE_ASPECT[t]] : 'text-[#94a3b8]'}`}>
+    <div className="border-line border-b py-3 last:border-b-0">
+      <div
+        className={`mb-1.5 text-[13px] font-extrabold ${
+          t ? CHEAT_LABEL[TENSE_ASPECT[t]] : 'text-ink-3'
+        }`}
+      >
         {label}
       </div>
-      <div className="text-deep-ink text-[14.5px]">{children}</div>
+      <div className="text-ink-body text-[14.5px] leading-[1.65]">{children}</div>
     </div>
   );
 }
@@ -528,7 +552,7 @@ export function CheatRow({
 /** Код у шпаргалці — на темному тлі потрібен свій відтінок. */
 export function CheatCode({ children }: { children?: ReactNode }) {
   return (
-    <code className="bg-deep-2 rounded-[5px] px-[7px] py-[2px] font-mono text-[13px]">
+    <code className="bg-panel border-line rounded-[5px] border px-[7px] py-[2px] font-mono text-[13px]">
       {children}
     </code>
   );

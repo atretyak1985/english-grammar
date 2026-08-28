@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { TopicAside } from '@/components/topic/TopicAside';
 import { TopicContents } from '@/components/topic/TopicContents';
 import { TopicShell } from '@/components/topic/TopicShell';
 import { TopicSidebar } from '@/components/topic/TopicSidebar';
@@ -38,10 +37,14 @@ export async function generateMetadata({
  * власним запитом у пошуку), а тут — обіцянка теми й картки розділів.
  *
  * Макета в цієї сторінки концепція не малює: вона виведена зі сторінки
- * розділу (2b) — той самий каркас і ті самі колонки, лише посередині
- * замість тексту стоять картки розділів. Темного герой-блока більше немає:
- * на паперовій основі він читався як чужа плита, а обіцянку теми несе
- * заголовок.
+ * розділу (2b) — той самий каркас, лише посередині замість тексту стоять
+ * картки розділів. Темного герой-блока більше немає: на паперовій основі
+ * він читався як чужа плита, а обіцянку теми несе заголовок.
+ *
+ * Колонки з контекстом тут немає навмисно, хоч на сторінці розділу вона й
+ * стоїть: прогрес, пастка й рядок Alex не змінюються всередині теми, тому
+ * на вході вони лише повторювали б те, що людина побачить за секунду —
+ * коштом ширини самих карток розділів, заради яких на цю сторінку й ідуть.
  */
 export default async function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -49,10 +52,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   if (!topic || !topic.ready || !hasContent(slug)) notFound();
 
   return (
-    <TopicShell
-      contents={<TopicSidebar topic={topic} />}
-      aside={<TopicAside topic={topic} />}
-    >
+    <TopicShell contents={<TopicSidebar topic={topic} />}>
       <TopicVisit topicSlug={topic.slug} />
 
       <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">

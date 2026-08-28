@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { IDLE_TONE, ROW_BUTTON } from '@/components/words/WordStatusButtons';
 import { isMeaningfulWord } from '@/data/stopwords';
-import { paginate } from '@/lib/analyzer/pages';
+import { estimatePageCount, paginate } from '@/lib/analyzer/pages';
 import { UNKNOWN_LIMIT, pickUnknown } from '@/lib/analyzer/vocabulary';
 import {
   TENSE_LABELS,
@@ -225,12 +225,16 @@ export function ReaderCanvas({
   }, [anchor, trail, docKey, pageEnd, tokens.length, setPosition]);
 
   /**
-   * Номер сторінки — скільки вже перегорнули; оцінка кількості — з фактичного
-   * розміру сторінки. Межі рухомі, тому в підписі стоїть «~».
+   * Номер сторінки — скільки вже перегорнули; оцінка кількості — за середнім
+   * розміром прочитаних сторінок. Межі рухомі, тому в підписі стоїть «~».
    */
   const pageNumber = trail.length + 1;
-  const pageSize = Math.max(1, pageEnd - anchor);
-  const pageEstimate = Math.max(pageNumber, Math.ceil(tokens.length / pageSize));
+  const pageEstimate = estimatePageCount({
+    totalTokens: tokens.length,
+    pageNumber,
+    anchor,
+    pageEnd,
+  });
 
   const goBack = useCallback(() => {
     if (anchor === 0) return;
@@ -389,7 +393,7 @@ export function ReaderCanvas({
               </div>
             </div>
 
-            {tokens.length > pageSize ? (
+            {pageEstimate > 1 ? (
               <div className="border-line bg-surface-2 flex items-center justify-between gap-3 border-t px-[22px] py-3">
                 <button
                   type="button"
