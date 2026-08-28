@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { SectionNav } from '@/components/topic/SectionNav';
+import { TopicAside } from '@/components/topic/TopicAside';
+import { TopicShell } from '@/components/topic/TopicShell';
+import { TopicSidebar } from '@/components/topic/TopicSidebar';
 import { TopicVisit } from '@/components/topic/TopicVisit';
 import { SECTION_CONTENT, sectionLoader } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
@@ -42,7 +44,9 @@ export async function generateMetadata({
 
 /**
  * Один розділ теми — окрема сторінка з власним URL, щоб її можна було знайти
- * в пошуку й переслати посиланням. Наскрізне читання тримає SectionNav.
+ * в пошуку й переслати посиланням. Перехід між розділами тримає зміст
+ * ліворуч: він показує і сусідні розділи, і все інше в темі, тому окрема
+ * пара «попередній / наступний» під текстом більше нічого не додавала.
  */
 export default async function SectionPage({
   params,
@@ -56,10 +60,14 @@ export default async function SectionPage({
   const { default: Content } = await found.load();
 
   return (
-    <div className="mx-auto min-w-0 max-w-content px-[30px] pt-[30px] pb-[70px]">
+    <TopicShell
+      contents={<TopicSidebar topic={found.topic} current={found.section} />}
+      aside={<TopicAside topic={found.topic} />}
+    >
       <TopicVisit topicSlug={found.topic.slug} sectionId={found.section.id} />
-      <Content />
-      <SectionNav topic={found.topic} current={found.section} />
-    </div>
+      <article className="bg-panel border-line rounded-panel border px-[42px] py-9">
+        <Content />
+      </article>
+    </TopicShell>
   );
 }

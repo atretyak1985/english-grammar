@@ -1,11 +1,16 @@
 import type { ReactNode } from 'react';
 
-import { H2, TenseHead } from '@/components/content/blocks';
+import { H2, SectionKicker } from '@/components/content/blocks';
 import type { TenseKey } from '@/types/content';
 
 /**
  * Розділ теми. На своїй сторінці він єдиний, а у вигляді «все одним полотном»
  * лишається якорем — тому id зберігається.
+ *
+ * Номер розділу пішов із заголовка в кікер над ним: у заголовку він
+ * конкурував із назвою за перший погляд, хоча відповідає на інше питання —
+ * не «про що це», а «де я в темі». Колір кікера бере час розділу там, де
+ * розділ присвячений одному часу.
  */
 export function Section({
   id,
@@ -17,15 +22,14 @@ export function Section({
   id: string;
   n: number;
   title: string;
-  /** Якщо розділ присвячений одному часу — біля заголовка з'явиться кольорова точка */
+  /** Якщо розділ присвячений одному часу — кікер бере його колір */
   tense?: TenseKey;
   children?: ReactNode;
 }) {
-  const heading = `${n}. ${title}`;
-
   return (
-    <section id={id} className="scroll-mt-[78px] pt-[26px] pb-3.5">
-      {tense ? <TenseHead t={tense}>{heading}</TenseHead> : <H2>{heading}</H2>}
+    <section id={id} className="scroll-mt-[96px] pt-[26px] pb-3.5">
+      <SectionKicker tense={tense}>Розділ {n}</SectionKicker>
+      <H2>{title}</H2>
       {children}
     </section>
   );

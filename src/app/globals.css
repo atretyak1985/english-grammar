@@ -36,6 +36,10 @@
   --ink: #262420;
   --ink-2: #5f5b52;
   --ink-3: #6b665d;
+  /* Довге читання: на абзац у 60 знаків повне чорнило б'є в очі, тому
+     текст правил трохи легший за заголовки над ним. Це не --ink-2:
+     той приглушує другорядне, а цей несе основний текст. */
+  --ink-body: #3d3a33;
   /* Підписи капітеллю: світліші за --ink-3, бо несуть менше ваги */
   --label: #8a857a;
   --line: #e7e2d8;
@@ -147,6 +151,7 @@
   --ink: #f4f1ea;
   --ink-2: #c9c4b8;
   --ink-3: #a8a29a;
+  --ink-body: #ddd8cf;
   --label: #928d84;
   --line: #3a372f;
   --line-strong: #4a463d;
@@ -223,6 +228,7 @@
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
+  --color-ink-body: var(--ink-body);
   --color-label: var(--label);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);

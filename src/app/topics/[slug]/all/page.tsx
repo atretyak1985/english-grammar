@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { hasContent, sectionLoader } from '@/content/topics';
+import { TopicShell } from '@/components/topic/TopicShell';
+import { TopicSidebar } from '@/components/topic/TopicSidebar';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
 
 export function generateStaticParams() {
@@ -44,23 +46,23 @@ export default async function TopicAllPage({ params }: { params: Promise<{ slug:
   );
 
   return (
-    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
-      <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
-        <h1 className="mt-0 mb-0 text-[27px] font-extrabold tracking-[-0.5px]">
+    <TopicShell contents={<TopicSidebar topic={topic} />}>
+      <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">
+        <h1 className="font-serif m-0 text-[32px] leading-[1.1] font-extrabold tracking-[-0.5px]">
           {topic.title} — усе одним полотном
         </h1>
         <Link
           href={`/topics/${topic.slug}`}
-          className="border-line text-ink-2 rounded-btn hover:text-ink hover:border-ink-3 border px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold"
+          className="border-line-ctrl text-ink rounded-btn flex-none border-[1.5px] px-4 py-2.5 text-[13px] font-bold"
         >
           До змісту теми
         </Link>
       </div>
-      <div className="min-w-0">
+      <article className="bg-panel border-line rounded-panel border px-[42px] py-9">
         {sections.filter((entry) => entry !== null).map(({ slug: id, Content }) => (
           <Content key={id} />
         ))}
-      </div>
-    </div>
+      </article>
+    </TopicShell>
   );
 }
