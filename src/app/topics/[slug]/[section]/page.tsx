@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { TopicAside } from '@/components/topic/TopicAside';
 import { TopicShell } from '@/components/topic/TopicShell';
 import { TopicSidebar } from '@/components/topic/TopicSidebar';
 import { TopicVisit } from '@/components/topic/TopicVisit';
@@ -47,6 +46,11 @@ export async function generateMetadata({
  * в пошуку й переслати посиланням. Перехід між розділами тримає зміст
  * ліворуч: він показує і сусідні розділи, і все інше в темі, тому окрема
  * пара «попередній / наступний» під текстом більше нічого не додавала.
+ *
+ * Правої колонки, яку малює макет 2b, тут немає: прогрес теми показував
+ * відвідане замість вивченого, а пастка й рядок Alex не змінювалися від
+ * розділу до розділу — три однакові картки на кожній сторінці теми лише
+ * звужували колонку самого тексту.
  */
 export default async function SectionPage({
   params,
@@ -60,10 +64,7 @@ export default async function SectionPage({
   const { default: Content } = await found.load();
 
   return (
-    <TopicShell
-      contents={<TopicSidebar topic={found.topic} current={found.section} />}
-      aside={<TopicAside topic={found.topic} />}
-    >
+    <TopicShell contents={<TopicSidebar topic={found.topic} current={found.section} />}>
       <TopicVisit topicSlug={found.topic.slug} sectionId={found.section.id} />
       <article className="bg-panel border-line rounded-panel border px-[42px] py-9">
         <Content />

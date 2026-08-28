@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
+import { WordPopover } from '@/components/analyzer/WordPopover';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { IDLE_TONE, ROW_BUTTON } from '@/components/words/WordStatusButtons';
 import { isMeaningfulWord } from '@/data/stopwords';
@@ -146,7 +147,12 @@ export function ReaderCanvas({
     words: true,
   });
 
-  const { state, wordStatus, setWordStatus, cycleWordStatus } = useAppState();
+  const { state, wordStatus, setWordStatus } = useAppState();
+
+  // Відкрите слово і прямокутник, біля якого стоїть картка. Прямокутник
+  // знімається в момент кліку: після нього сторінка вже не рухається, а
+  // тримати посилання на сам вузол означало б пережити його перерендер.
+  const [openWord, setOpenWord] = useState<{ word: string; anchor: DOMRect } | null>(null);
   const { positions, setPosition } = useReading();
 
   // Токени рахуються один раз і живлять усе, що не залежить від розбору:
@@ -234,6 +240,10 @@ export function ReaderCanvas({
     pageNumber,
     anchor,
     pageEnd,
+    // На першій сторінці історії ще немає, тому дільник беремо з розрахункової
+    // пагінації: вона бачить увесь текст, а перша сторінка книжки часто
+    // коротка — титул, зміст, ілюстрація.
+    fallbackAverage: pages.length > 0 ? tokens.length / pages.length : undefined,
   });
 
   const goBack = useCallback(() => {
@@ -371,20 +381,43 @@ export function ReaderCanvas({
                   const tense = token.tense && layers[token.tense] ? token.tense : null;
                   const meaningful = isMeaningfulWord(token.word);
 
-                  const className = tense
-                    ? `${TENSE_HIGHLIGHT[tense]} rounded-[5px] px-[3px] py-px font-bold`
-                    : layers.words && meaningful && status === 'unknown'
-                      ? 'decoration-ink-3 cursor-pointer underline decoration-dotted decoration-2 underline-offset-4'
-                      : layers.words && meaningful && status === 'learning'
-                        ? 'bg-pc-bg cursor-pointer rounded'
-                        : '';
+                  /*
+                    Два канали малюються разом, а не замість одного одного:
+                    заливка каже, який це час, лінія під нею — що ви з цим
+                    словом робите. Раніше час перекривав статус, і слово в
+                    підсвіченій конструкції втрачало позначку саме там, де
+                    воно найцікавіше — усередині правила, яке вивчають.
+                    Жовте тло «вчу» при цьому поступається заливці часу:
+                    два тла на одному слові не складаються.
+                  */
+                  const fill = tense
+                    ? `${TENSE_HIGHLIGHT[tense]} rounded-mark px-[5px] py-[2px] font-bold`
+                    : '';
+                  const lexis =
+                    layers.words && meaningful
+                      ? status === 'unknown'
+                        ? 'word-unknown'
+                        : status === 'learning'
+                          ? tense
+                            ? 'border-yellow cursor-pointer border-b-[3px]'
+                            : 'word-learning'
+                          : 'word-known'
+                      : '';
 
                   return (
                     <span
                       key={index}
                       title={tense ? TENSE_LABELS[tense] : token.word}
-                      onClick={() => cycleWordStatus(token.word ?? '')}
-                      className={className}
+                      onClick={
+                        meaningful
+                          ? (event) =>
+                              setOpenWord({
+                                word: token.word ?? '',
+                                anchor: event.currentTarget.getBoundingClientRect(),
+                              })
+                          : undefined
+                      }
+                      className={`${fill} ${lexis}`.trim()}
                     >
                       {token.raw}
                     </span>
@@ -526,6 +559,13 @@ export function ReaderCanvas({
       </div>
 
       {footer}
+      {openWord ? (
+        <WordPopover
+          word={openWord.word}
+          anchor={openWord.anchor}
+          onClose={() => setOpenWord(null)}
+        />
+      ) : null}
     </>
   );
 }

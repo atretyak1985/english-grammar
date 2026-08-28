@@ -80,14 +80,18 @@ export function paginate(tokens: AnalyzedToken[], target = PAGE_CHARS): TextPage
  * (початок поточної сторінки), а не її кінець: anchor уже усталений, тоді як
  * кінець ще шукає бісекція, і підпис не смикався б під час гортання.
  *
- * На першій сторінці історії ще немає — там дільником лишається її власний
- * розмір, і це єдине місце, де оцінка може ворухнутися після заміру.
+ * На першій сторінці історії ще немає, і її власний розмір дільником не
+ * годиться: титульний аркуш книжки тримає кілька рядків, і оцінка з нього
+ * виходила «1 з ~748». Тому там береться `fallbackAverage` — середній розмір
+ * сторінки з розрахункової пагінації (`paginate`), яка бачить увесь текст
+ * одразу. Це єдине місце, де оцінка може ворухнутися після заміру.
  */
 export function estimatePageCount({
   totalTokens,
   pageNumber,
   anchor,
   pageEnd,
+  fallbackAverage,
 }: {
   totalTokens: number;
   /** Номер поточної сторінки, з одиниці */
@@ -96,8 +100,41 @@ export function estimatePageCount({
   anchor: number;
   /** Індекс за останнім токеном поточної сторінки */
   pageEnd: number;
+  /** Середній розмір сторінки за розрахунком по всьому тексту — для першої сторінки */
+  fallbackAverage?: number;
 }): number {
-  const average = pageNumber > 1 ? anchor / (pageNumber - 1) : pageEnd - anchor;
+  const average = divisor({ pageNumber, anchor, pageEnd, fallbackAverage });
   const estimate = Math.ceil(totalTokens / Math.max(1, average));
   return Math.max(pageNumber, estimate);
+}
+
+/**
+ * Скільки прочитаних сторінок «важить» розрахункова пагінація.
+ *
+ * Самого середнього по прочитаному замало на початку книжки: перша сторінка
+ * часто титул або зміст — кілька рядків замість повної сторінки, — і на
+ * другій вона одна становить усе середнє. Тому розрахункова пагінація
+ * входить у середнє як кілька уявних сторінок: на початку вона й тримає
+ * оцінку, а з кожною прочитаною важить дедалі менше й до середини книжки
+ * не значить нічого.
+ */
+const PRIOR_PAGES = 2;
+
+function divisor({
+  pageNumber,
+  anchor,
+  pageEnd,
+  fallbackAverage,
+}: {
+  pageNumber: number;
+  anchor: number;
+  pageEnd: number;
+  fallbackAverage?: number;
+}): number {
+  // Без розрахункового середнього спиратися нема на що, крім побаченого.
+  if (fallbackAverage === undefined) {
+    return pageNumber > 1 ? anchor / (pageNumber - 1) : pageEnd - anchor;
+  }
+  const readPages = pageNumber - 1;
+  return (anchor + fallbackAverage * PRIOR_PAGES) / (readPages + PRIOR_PAGES);
 }
