@@ -1,159 +1,214 @@
 @import 'tailwindcss';
 
 /* Темна тема перемикається класом на <html>, а не тільки медіазапитом —
-   бо в сайдбарі є ручний перемикач (CONCEPT 6). */
+   бо перемикач стоїть в інтерфейсі, а не лишається на волю системи. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================
-   Колірна система. Один набір семантичних змінних, дві теми.
-   Мʼятова родина (--acc / --green) несе бренд, а три кольори
-   конструкцій лишаються за своїми іменами: --ps простий,
-   --pc тривалий, --pp перфект.
+   Колірна система, напрям «Читальня».
+   Тепла паперова основа, чорнило замість сірого, один глибокий
+   зелений як акцент. Тон дорослої книжки, а не гри.
    ------------------------------------------------------------
-   Імена --surface*, --hover, --ok*, --no*, --deep*, --hero*
-   лишилися з попередньої палітри. Вони живі: на них тримаються
-   екрани, яких ця робота не торкається. Тому їх не видалено, а
-   переспрямовано в нову родину — видалення імені тихо зламало б
-   ті екрани, а не цей.
+   Дві родини навмисно розділені й не змішуються:
+     · ГРАМАТИКА — заливка (--ps простий, --pc тривалий, --pp перфект)
+     · ЛЕКСИКА  — підкреслення (--lex-line, --yellow)
+   Різні візуальні канали не конкурують навіть на одному слові:
+   заливка й підкреслення співіснують, і саме тому статус слова
+   лишається читабельним усередині підсвіченого часу.
+   ------------------------------------------------------------
+   Імена --surface*, --hover, --ok*, --no*, --deep*, --hero*,
+   --coral*, --acc2 лишилися з мʼятової палітри. Вони живі: на них
+   тримаються екрани, яких цей прохід не торкається. Тому їх не
+   видалено, а переспрямовано в паперову родину — видалення імені
+   тихо зламало б ті екрани, а не цей.
    ============================================================ */
 :root {
-  --bg: #f6faf7;
-  /* panel — сайдбар; card — картки. У світлій темі це те саме біле,
-     у темній різні поверхні, тому токени окремі. */
+  --bg: #f8f5ef;
+  /* panel — панелі й шапка; card — картки. У світлій темі це те саме
+     біле, у темній різні поверхні, тому токени лишаються окремі. */
   --panel: #ffffff;
   --card: #ffffff;
-  --tint: #eef5f0;
+  --tint: #e3f1ec;
   --surface: var(--card);
   --surface-2: var(--tint);
   --surface-3: var(--tint);
-  --hover: var(--tint);
-  --ink: #1f2b26;
-  --ink-2: #5b6b62;
-  --ink-3: #94a49b;
-  --line: #e4ece6;
-  --line-strong: #c9dcd1;
+  --hover: #f4faf7;
+  --ink: #262420;
+  --ink-2: #5f5b52;
+  --ink-3: #6b665d;
+  /* Підписи капітеллю: світліші за --ink-3, бо несуть менше ваги */
+  --label: #8a857a;
+  --line: #e7e2d8;
+  --line-strong: #dcd9d0;
+  /* Рамка вторинної кнопки — темніша за рамку картки: контрол мусить
+     читатись як контрол, а не як межа поверхні */
+  --line-ctrl: #d5cfc2;
+  /* Жолоб смужки прогресу */
+  --track: #efece4;
 
-  --acc: #12b981;
-  --acc2: #14b8a6;
+  --acc: #0d7a63;
+  --acc2: #0a5f4d;
 
-  --green: #12b981;
-  --green-dk: #0d9668;
-  --green-bg: #d9f4e6;
-  --green-tx: #136c44;
+  --green: #0d7a63;
+  --green-dk: #0a5f4d;
+  --green-bg: #e3f1ec;
+  --green-tx: #0a5f4d;
+  /* Світліша зелена поверхня — «правильно» в парних картках */
+  --green-bg-2: #e7f3ec;
+  --green-line: #dcefe5;
 
-  --yellow: #ffd93d;
-  --yellow-dk: #e0b512;
-  --yellow-bg: #fff5cc;
+  /* Жовтий — лінза в логотипі й канал «вчу». Це колір інструмента,
+     а не стану: у пастках і застереженнях він теж акцент. */
+  --yellow: #e8b90f;
+  --yellow-dk: #c99f0b;
+  --yellow-bg: #fdf3c9;
   --yellow-tx: #7a5d00;
 
-  --coral: #ff6b6b;
-  --coral-dk: #d94f4f;
-  --coral-bg: #ffe3e3;
-  --coral-tx: #a02c2c;
+  /* Теплий червоний — «так кажуть українці», помилка */
+  --coral: #c2362b;
+  --coral-dk: #a02c22;
+  --coral-bg: #fbe9e6;
+  --coral-tx: #c2362b;
 
-  --ps: #38b6e8;
-  --ps-bg: #dff3fc;
-  --ps-tx: #0e6e99;
-  --ps-dk: #1f8fc0;
-  /* Рамки конструкцій макет не задає: він обводить чипи самим кольором.
-     Значення виведене — колір, змішаний з поверхнею, щоб рамка читалась
-     як рамка, а не як заливка. */
-  --ps-line: #b3e3f6;
+  /* Лексика: підкреслення. «не знаю» — пунктир, «вчу» — жовтий,
+     «знаю» — без позначки взагалі. */
+  --lex-line: #b3ada1;
 
-  --pc: #f5a623;
-  --pc-bg: #fdefd2;
-  --pc-tx: #8a5900;
-  --pc-dk: #cc8a1a;
-  --pc-line: #fbddab;
+  /* Граматика: заливка. Три часи — три родини, кожна тримає
+     поверхню (-bg), чорнило (-tx) і крапку чипа (сам токен). */
+  --ps: #2b72c8;
+  --ps-bg: #e4eefc;
+  --ps-tx: #1d4f8f;
+  --ps-dk: #1d4f8f;
+  /* Рамки заливок макет не задає: він обводить чипи самою заливкою.
+     Значення виведене — колір, змішаний з поверхнею, щоб рамка
+     читалась як рамка, а не як другий шар заливки. */
+  --ps-line: #c3d8f4;
 
-  --pp: #9d7bf2;
-  --pp-bg: #ece5fd;
+  --pc: #c97f16;
+  --pc-bg: #fbeed7;
+  --pc-tx: #8a5406;
+  --pc-dk: #8a5406;
+  --pc-line: #f0dcb4;
+
+  --pp: #7c5cd6;
+  --pp-bg: #ece6fa;
   --pp-tx: #5636b8;
-  --pp-dk: #7e5cd6;
-  --pp-line: #dacdfa;
+  --pp-dk: #5636b8;
+  --pp-line: #d8cdf3;
 
-  /* «правильно» — зелена родина макета, «помилка» — коралова */
+  /* «правильно» — зелена родина, «помилка» — тепла червона */
   --ok: var(--green);
-  --ok-bg: var(--green-bg);
-  --ok-line: #a5e4cf;
+  --ok-bg: var(--green-bg-2);
+  --ok-line: var(--green-line);
 
   --no: var(--coral);
   --no-bg: var(--coral-bg);
-  --no-line: #ffc7c7;
+  --no-line: #f2d6d1;
 
-  /* темні поверхні (формула, шпаргалка) — однакові в обох темах */
-  --deep: #101d17;
-  --deep-2: #17271f;
-  --deep-line: #2e463a;
-  --deep-ink: #e9f7ee;
-  --deep-ink-2: #a9cbb7;
+  /* Темні поверхні (пастка, формула, шпаргалка) — однакові в обох
+     темах: це чорнило на папері, а не інверсія теми. */
+  --deep: #262420;
+  --deep-2: #1d1c18;
+  --deep-line: #3a372f;
+  --deep-ink: #f4f1ea;
+  --deep-ink-2: #b3ada1;
 
-  /* герой попередньої версії. Головна його більше не використовує, але
-     інші екрани — так, тому імена лишаються, значення переїхали в мʼяту. */
-  --hero-1: #101d17;
-  --hero-2: #17271f;
-  --hero-3: #1b2d24;
-  --hero-kicker: #34d399;
-  --hero-lede: #a9cbb7;
-  --hero-label: #7d9c8a;
+  /* Герой мʼятової версії. Головна його більше не використовує, але
+     інші екрани — так, тому імена лишаються, значення переїхали в
+     чорнильну родину. */
+  --hero-1: #262420;
+  --hero-2: #1d1c18;
+  --hero-3: #3a372f;
+  --hero-kicker: var(--yellow);
+  --hero-lede: #d8d4ca;
+  --hero-label: #b3ada1;
 
-  --shadow: 0 10px 30px rgb(60 64 120 / 0.1);
-  /* Прозорість декоративних плям фону */
-  --shape-op: 0.5;
+  /* Дві теплі тіні, без «світіння»: рівень картки й рівень панелі. */
+  --shadow: 0 12px 32px rgb(38 36 32 / 0.08);
+  --shadow-2: 0 20px 50px rgb(38 36 32 / 0.12);
+  /* Тінь основної кнопки — зелена, бо лягає на папір під зеленим тілом */
+  --shadow-acc: 0 6px 16px rgb(13 122 99 / 0.3);
 }
 
+/* ============================================================
+   Темна тема. Макет задає рівно два значення — bg #1d1c18 і
+   surface #26241f — і вимогу «ті самі ролі, перерахований
+   контраст». Решта виведена від них: паперова основа лишається
+   теплою, акцент світлішає до ≥4.5:1 на темному, канали підсвітки
+   тримають ті самі три родини приглушеними поверхнями.
+   ============================================================ */
 .dark {
-  --bg: #101d17;
-  --panel: #17271f;
-  --card: #1b2d24;
-  --tint: #24382d;
-  --ink: #e9f7ee;
-  --ink-2: #a9cbb7;
-  --ink-3: #7d9c8a;
-  --line: #2e463a;
-  --line-strong: #3c5a4b;
+  --bg: #1d1c18;
+  --panel: #26241f;
+  --card: #26241f;
+  --tint: #12281f;
+  --hover: #2e2b25;
+  --ink: #f4f1ea;
+  --ink-2: #c9c4b8;
+  --ink-3: #a8a29a;
+  --label: #928d84;
+  --line: #3a372f;
+  --line-strong: #4a463d;
+  --line-ctrl: #4a463d;
+  --track: #35322b;
 
-  --acc: #34d399;
-  --acc2: #2dd4bf;
+  --acc: #7ddbc3;
+  --acc2: #a8ead9;
 
-  --green: #37d18c;
-  --green-dk: #1d9b62;
-  --green-bg: #1e4636;
-  --green-tx: #8ee9bf;
+  --green: #7ddbc3;
+  --green-dk: #a8ead9;
+  --green-bg: #12281f;
+  --green-tx: #a8ead9;
+  --green-bg-2: #163024;
+  --green-line: #2a4f3f;
 
-  --yellow: #ffd93d;
-  --yellow-dk: #c9a20f;
-  --yellow-bg: #453a10;
-  --yellow-tx: #ffe789;
+  --yellow: #ffd42e;
+  --yellow-dk: #e8b90f;
+  --yellow-bg: #3d3416;
+  --yellow-tx: #ffe483;
 
-  --coral: #ff7b7b;
-  --coral-dk: #d94f4f;
-  --coral-bg: #4a2323;
-  --coral-tx: #ffb3b3;
+  --coral: #f08d80;
+  --coral-dk: #c2362b;
+  --coral-bg: #451c1c;
+  --coral-tx: #f5b3aa;
 
-  --ps: #4cc9f0;
-  --ps-bg: #123a4a;
-  --ps-tx: #9fe2f8;
-  --ps-dk: #2ba5cc;
-  --ps-line: #2e6871;
+  --lex-line: #7a746a;
 
-  --pc: #ffb648;
-  --pc-bg: #4a3712;
-  --pc-tx: #ffd591;
-  --pc-dk: #cc8a1a;
-  --pc-line: #716132;
+  --ps: #a5d8ff;
+  --ps-bg: #1c3345;
+  --ps-tx: #a5d8ff;
+  --ps-dk: #c8e6ff;
+  --ps-line: #35566e;
 
-  --pp: #b295ff;
-  --pp-bg: #332452;
-  --pp-tx: #d4c4ff;
-  --pp-dk: #7e5cd6;
-  --pp-line: #545577;
+  --pc: #f0b968;
+  --pc-bg: #4a2c12;
+  --pc-tx: #f7d29a;
+  --pc-dk: #ffd9a3;
+  --pc-line: #7a4d24;
 
-  --ok-line: #266b4c;
-  --no-line: #714b45;
+  --pp: #bda6f5;
+  --pp-bg: #2e2450;
+  --pp-tx: #d6c8fb;
+  --pp-dk: #e0d6ff;
+  --pp-line: #4d3f77;
 
-  --shadow: 0 12px 30px rgb(0 0 0 / 0.45);
-  --shape-op: 0.18;
+  --no-line: #6e3535;
+
+  /* Чорнильна поверхня мусить лишитися глибшою за папір, інакше блок
+     губить свою роль «це інше». На світлому він темніший за картки —
+     тут мусить бути темнішим за тло, а не зливатися з ним. */
+  --deep: #14120f;
+  --deep-2: #0d0c0a;
+  --deep-line: #2b2823;
+
+  --hero-kicker: #ffd42e;
+  --hero-lede: #d8d4ca;
+  --hero-label: #b3ada1;
+
+  --shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+  --shadow-2: 0 20px 50px rgb(0 0 0 / 0.55);
+  --shadow-acc: 0 6px 16px rgb(0 0 0 / 0.4);
 }
 
 @theme inline {
@@ -168,8 +223,11 @@
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
+  --color-label: var(--label);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
+  --color-line-ctrl: var(--line-ctrl);
+  --color-track: var(--track);
 
   --color-acc: var(--acc);
   --color-acc2: var(--acc2);
@@ -177,6 +235,8 @@
   --color-green: var(--green);
   --color-green-dk: var(--green-dk);
   --color-green-bg: var(--green-bg);
+  --color-green-bg-2: var(--green-bg-2);
+  --color-green-line: var(--green-line);
   --color-green-tx: var(--green-tx);
 
   --color-yellow: var(--yellow);
@@ -188,6 +248,8 @@
   --color-coral-dk: var(--coral-dk);
   --color-coral-bg: var(--coral-bg);
   --color-coral-tx: var(--coral-tx);
+
+  --color-lex-line: var(--lex-line);
 
   --color-ps: var(--ps);
   --color-ps-bg: var(--ps-bg);
@@ -228,43 +290,64 @@
   --color-hero-lede: var(--hero-lede);
   --color-hero-label: var(--hero-label);
 
-  /* Nunito несе текст, Manrope лишається виключно дисплейним накресленням:
-     логотип, заголовки, назви карток. Дві гарнітури — це вимога макета, а
-     не оздоба: підміна однієї другою зсуває метрики кожного рядка. */
-  --font-sans: var(--font-nunito), -apple-system, 'system-ui', 'Segoe UI', sans-serif;
-  --font-display: var(--font-manrope), -apple-system, 'system-ui', 'Segoe UI', sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, Menlo, monospace;
+  /* ----------------------------------------------------------
+     Три гарнітури, три різні роботи. Підміна однієї другою зсуває
+     метрики кожного рядка, тому жодна з них не взаємозамінна:
+       · Literata — серифна: читання й заголовки. Це те, що робить
+         екран книжкою, а не інтерфейсом.
+       · Onest — інтерфейс: кнопки, підписи, навігація.
+       · JetBrains Mono — капітельні мітки й код.
+     --font-display лишається іменем для заголовків і тепер веде в
+     Literata: екрани поза цим проходом успадковують серифні
+     заголовки разом з палітрою.
+     ---------------------------------------------------------- */
+  --font-serif: var(--font-literata), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-onest), -apple-system, 'system-ui', 'Segoe UI', sans-serif;
+  --font-display: var(--font-literata), Georgia, 'Times New Roman', serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, Menlo, monospace;
 
-  /* Радіуси макета. Перші пʼять — з попередньої версії, на них тримаються
-     екрани поза цією роботою. Решта — округлення нової оболонки. */
+  /* ----------------------------------------------------------
+     Радіуси. Шкала напряму — 8 (контрол) · 12 (картка) ·
+     16 (панель) · 999 (чип). Імена мʼятової версії лишилися й
+     переспрямовані в цю шкалу, тому екрани поза проходом теряють
+     надмірну округлість разом зі зміною палітри, а не окремим
+     заходом. Значення поза шкалою (20 рамка, 14 картка низу,
+     10 кнопка, 6 обкладинка, 4 заливка) стоять там, де їх задає
+     макет, — округлення до кроку шкали було б втратою макета.
+     ---------------------------------------------------------- */
   --radius-badge: 6px;
-  --radius-btn: 9px;
-  --radius-input: 10px;
-  --radius-panel: 12px;
-  --radius-card: 14px;
-  --radius-chip: 12px;
-  --radius-ctrl: 14px;
-  --radius-tile: 16px;
-  --radius-nav: 18px;
-  --radius-note: 22px;
-  --radius-card-lg: 24px;
-  --radius-panel-lg: 28px;
-  --radius-hero: 32px;
+  --radius-btn: 10px;
+  --radius-input: 8px;
+  --radius-ctrl: 8px;
+  --radius-chip: 999px;
+  --radius-note: 12px;
+  --radius-card: 12px;
+  --radius-tile: 12px;
+  --radius-nav: 10px;
+  --radius-panel: 16px;
+  --radius-card-lg: 16px;
+  --radius-panel-lg: 16px;
+  --radius-hero: 20px;
   --radius-pill: 999px;
+  /* Заливка часу в тексті: 4px — рівно стільки, щоб прямокутник
+     не читався як кнопка */
+  --radius-mark: 4px;
 
   --shadow-card: var(--shadow);
+  --shadow-panel: var(--shadow-2);
+  --shadow-acc: var(--shadow-acc);
 
-  --spacing-sidebar: 292px;
-  --spacing-sidebar-mini: 84px;
+  /* Висота топбара. Стоїть токеном, бо на неї спирається
+     scroll-margin розділів: інакше липка шапка накриває заголовок,
+     до якого щойно проскролили. */
+  --spacing-topbar: 64px;
 
-  /* Стеля ширини контенту — одна ручка на всі екрани. До 1440 не спрацьовує
-     (там колонка вужча), тому геометрія макета лишається недоторканою, а на
-     широких моніторах контент не тулиться до сайдбара. */
-  --container-content: 1600px;
-  /* Ширина екрана оболонки: 1140 контенту плюс 36 поля з кожного боку.
-     Стеля стоїть на зовнішній коробці, тому в неї закладені й поля —
-     інакше на 1440 колонка вийшла б на 8px вужчою, ніж заміряно. */
-  --container-shell: 1212px;
+  /* Ширина екрана: 1280 рамки макета, поля 36 з кожного боку вже
+     всередині. Стеля стоїть на зовнішній коробці — інакше на
+     широкому моніторі колонка вийшла б на 72px ширшою, ніж
+     заміряно. */
+  --container-shell: 1280px;
+  --container-content: 1280px;
 }
 
 @layer base {
@@ -276,92 +359,53 @@
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.66;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
-  /* Скрол до розділу з відступом під липку шапку (CONCEPT 3.1) */
+  /* Скрол до розділу з відступом під липкий топбар */
   [id] {
-    scroll-margin-top: 78px;
+    scroll-margin-top: calc(var(--spacing-topbar) + 14px);
   }
   svg {
     max-width: 100%;
     height: auto;
   }
+  /* Дотик і фокус: мінімум 44px несуть самі контроли, кільце —
+     спільне, 2px акцентом, бо це єдиний сигнал для клавіатури. */
+  :focus-visible {
+    outline: 2px solid var(--acc);
+    outline-offset: 2px;
+  }
   ::selection {
-    background: var(--green-bg);
-    color: var(--green-tx);
+    background: var(--yellow-bg);
+    color: var(--ink);
   }
 }
 
 /* ============================================================
-   Рух. Плями фону й маскот дихають — без цього оболонка виглядає
-   надрукованою. Тривалості й траєкторії взяті з макета один в один:
-   інакше стан спокою кадру не збігається з тим, що заміряно.
+   Рух. Тільки як фідбек дії, 150–250ms ease-out. Жодного
+   постійного дихання: на паперовій основі воно читається як
+   дефект друку, а не як життя.
    ============================================================ */
-@keyframes gl-bob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-7px);
-  }
-}
-@keyframes gl-float {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate(18px, -24px) rotate(12deg);
-  }
-}
-@keyframes gl-float2 {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate(-20px, 18px) rotate(-10deg);
-  }
-}
-@keyframes gl-drift {
-  0% {
-    transform: translateX(-4vw) translateY(0);
-  }
-  50% {
-    transform: translateX(2vw) translateY(-3vh);
-  }
-  100% {
-    transform: translateX(-4vw) translateY(0);
-  }
-}
-@keyframes gl-wiggle {
-  0%,
-  100% {
-    transform: rotate(-4deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
-}
-@keyframes gl-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.06);
-  }
-}
 @keyframes gl-pop {
   from {
     opacity: 0;
-    transform: translateY(14px) scale(0.97);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -372,14 +416,27 @@
   }
 }
 
-/* Статуси слів в аналізованому тексті (CONCEPT 5.2) */
+/* ============================================================
+   Канал лексики — підкреслення. Заливка часу лишається за
+   граматикою, тому статус слова ніколи не сперечається з часом,
+   у який слово потрапило: одне малює тло, друге — лінію під ним.
+   ============================================================ */
+
+/* «не знаю» — пунктир: помітно, але не тягне око з рядка */
 @utility word-unknown {
-  text-decoration: underline dotted var(--ink-3);
-  text-underline-offset: 3px;
+  border-bottom: 2px dotted var(--lex-line);
   cursor: pointer;
 }
+
+/* «вчу» — жовтий маркер: єдиний стан, який видно з відстані */
 @utility word-learning {
-  background: var(--pc-bg);
-  border-bottom: 2px solid var(--pc);
+  border-bottom: 3px solid var(--yellow);
+  background: var(--yellow-bg);
+  cursor: pointer;
+}
+
+/* «знаю» — без позначки взагалі. Утиліта існує, щоб клік лишався
+   клікабельним і слово не втрачало курсор разом з підсвіткою. */
+@utility word-known {
   cursor: pointer;
 }

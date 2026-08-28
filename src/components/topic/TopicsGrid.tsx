@@ -19,7 +19,7 @@ export function TopicsGrid() {
         const body = (
           <>
             <div className="flex items-start justify-between gap-2.5">
-              <h3 className="font-display m-0 text-[17px] leading-[1.2] font-extrabold">
+              <h3 className="font-serif m-0 text-[17px] leading-[1.2] font-extrabold">
                 {topic.title}
               </h3>
               <span

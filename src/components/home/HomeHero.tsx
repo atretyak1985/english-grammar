@@ -3,88 +3,90 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { READY_TOPICS } from '@/data/topics';
+import { useAppState } from '@/components/providers/AppStateProvider';
 
 /**
- * Герой головної: обіцянка, дві дії і маскот.
+ * Герой головної: обіцянка, дві дії і рядок від Alex.
  *
- * «Тренування» ще не існує як маршрут, тому це кнопка, а не посилання —
- * вона нічого не обіцяє, поки нікуди не веде. Привітання Alex теж без
- * джерела: лічильника XP у застосунку немає, і рядок стоїть рівно такий,
- * як у макеті.
+ * Обіцянка стоїть перша й одна, бо саме її людина мусить зрозуміти за
+ * п'ять секунд — «граматику видно в тексті, який ви читаєте», а не
+ * «ще один застосунок з правилами». Тому демонстрація живого тексту
+ * лежить праворуч від цього блоку, а не під ним: обіцянку й доказ
+ * видно одночасно.
  */
 export function HomeHero() {
-  const topic = READY_TOPICS[0];
+  const { state, signedIn, ready } = useAppState();
+
+  const learning = Object.values(state.words).filter((status) => status === 'learning').length;
+
+  // Гостю аналізатор віддає 401, тому «Свій текст» веде його у вхід із
+  // поверненням, а не в тупик.
+  const ownTextHref = signedIn ? '/analyze' : '/login?next=%2Fanalyze';
 
   return (
-    <section className="border-line bg-card rounded-hero shadow-card relative overflow-hidden border px-11 pt-10 pb-9">
-      {/* Плями всередині картки — той самий шар, що й за оболонкою, лише ближче */}
-      <div
-        aria-hidden
-        className="bg-tint absolute -top-[60px] -right-[30px] h-[260px] w-[260px] rounded-full"
-        style={{ animation: 'gl-float 10s ease-in-out infinite' }}
-      />
-      <div
-        aria-hidden
-        className="bg-tint absolute -bottom-20 right-[200px] h-[180px] w-[180px] rounded-[40px]"
-        style={{ transform: 'rotate(16deg)', animation: 'gl-float2 12s ease-in-out infinite' }}
-      />
-      <svg
-        aria-hidden
-        className="absolute top-[30px] right-[330px]"
-        style={{ animation: 'gl-wiggle 5s ease-in-out infinite' }}
-        width="30"
-        height="30"
-        viewBox="0 0 24 24"
-        fill="var(--yellow)"
-      >
-        <path d="M12 2l2.6 6.6L21 11l-6.4 2.4L12 20l-2.6-6.6L3 11l6.4-2.4z" />
-      </svg>
-
-      <div className="relative grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] items-center gap-6">
-        <div>
-          <span className="bg-tint text-acc rounded-pill inline-flex px-3.5 py-[5px] text-[11px] font-extrabold tracking-[0.08em] uppercase">
-            Пояснення українською · приклади англійською
-          </span>
-          <h1 className="font-display mt-4 mb-2.5 text-[clamp(28px,3.4vw,44px)] leading-[1.1] font-extrabold [overflow-wrap:anywhere]">
-            Граматика англійської без зубріння
-          </h1>
-          <p className="text-ink-2 m-0 mb-[22px] max-w-[520px] text-[16px] font-semibold">
-            Читайте справжні тексти з підсвіткою часів, збирайте слова і тренуйте їх у міні-іграх
-            разом з Alex the Linguist.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href={topic ? `/topics/${topic.slug}` : '/library'}
-              className="bg-green font-display rounded-nav px-[26px] py-[13px] text-[16px] leading-[normal] font-extrabold text-white shadow-[0_8px_18px_rgb(18_185_129_/_0.4)] transition-transform active:translate-y-1"
-            >
-              Почати читати
-            </Link>
-            <button
-              type="button"
-              disabled
-              title="Тренування зʼявиться згодом"
-              className="border-line text-ink-2 font-display rounded-nav cursor-default border bg-transparent px-[26px] py-[13px] text-[16px] leading-[normal] font-extrabold"
-            >
-              Тренування
-            </button>
-          </div>
-        </div>
-
-        <div className="relative" style={{ animation: 'gl-bob 4s ease-in-out infinite' }}>
-          <div className="bg-tint text-acc absolute -top-3.5 -left-[30px] rounded-[18px_18px_18px_4px] px-3.5 py-[9px] text-[13px] font-extrabold shadow-[0_6px_14px_rgb(0_0_0_/_0.12)]">
-            Привіт! Я Alex · сьогодні 20 XP, так тримати!
-          </div>
-          <Image
-            src="/alex-full.png"
-            alt="Alex the Linguist"
-            width={370}
-            height={530}
-            priority
-            className="block h-auto w-[230px] [filter:drop-shadow(0_16px_18px_rgb(20_60_40_/_0.28))]"
-          />
-        </div>
+    <div>
+      <div className="text-green-tx font-mono text-[11px] font-bold tracking-[1.5px] uppercase">
+        Пояснення українською · тексти англійською
       </div>
-    </section>
+
+      <h1 className="font-serif mt-3.5 mb-3 text-[42px] leading-[1.08] font-extrabold tracking-[-0.5px] [text-wrap:balance]">
+        Граматика видно просто в тексті, який ви читаєте
+      </h1>
+
+      <p className="text-ink-2 m-0 mb-[22px] text-[16px] leading-[1.6] [text-wrap:pretty]">
+        Відкрийте оповідання чи вставте свою статтю — GrammaLens підсвітить часи, збере незнайомі
+        слова й пояснить правила українською.
+      </p>
+
+      <div className="flex flex-wrap gap-3">
+        <Link
+          href="/library"
+          className="bg-acc shadow-acc rounded-btn px-6 py-[13px] text-[15.5px] leading-[normal] font-bold text-white"
+        >
+          Почати читати
+        </Link>
+        <Link
+          href={ownTextHref}
+          className="border-line-ctrl text-ink rounded-btn border-[1.5px] px-6 py-[13px] text-[15.5px] leading-[normal] font-bold"
+        >
+          + Свій текст
+        </Link>
+      </div>
+
+      <AlexLine learning={learning} ready={ready} />
+    </div>
+  );
+}
+
+/**
+ * Рядок Alex. Число тут справжнє — стільки слів справді лежить у
+ * статусі «вчу», — і саме тому воно варте того місця, яке займає.
+ * Поки стан не прочитано з localStorage, показуємо не нуль, а правило:
+ * нуль, що за мить перескакує на 12, читається як помилка.
+ */
+function AlexLine({ learning, ready }: { learning: number; ready: boolean }) {
+  const bubble = 'bg-panel border-line rounded-[12px_12px_12px_3px] border px-3 py-[7px]';
+  const text = 'text-ink-2 text-[12.5px] font-semibold';
+
+  return (
+    <div className="mt-5 flex items-center gap-2.5">
+      <Image
+        src="/alex-cutout.png"
+        alt="Alex the Linguist"
+        width={315}
+        height={365}
+        priority
+        className="h-auto w-11 flex-none"
+      />
+      {ready && learning > 0 ? (
+        <Link href="/words" className={`${bubble} ${text}`}>
+          У вас <b className="text-ink">{learning} слів</b> у статусі «вчу» — повторимо?
+        </Link>
+      ) : (
+        <span className={`${bubble} ${text}`}>
+          Клікніть слово в тексті — і воно потрапить у ваш словник.
+        </span>
+      )}
+    </div>
   );
 }
