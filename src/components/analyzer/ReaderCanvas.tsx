@@ -366,6 +366,7 @@ export function ReaderCanvas({
           >
             <div
               ref={proseRef}
+              data-page-end={pageEnd}
               onMouseUp={onSelect}
               className="font-serif text-ink max-w-[64ch] text-[19px] leading-[1.95] whitespace-pre-wrap"
             >
