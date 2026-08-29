@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { LADDER_STATUSES, STATUS_LABELS } from '@/components/words/statuses';
@@ -50,7 +50,7 @@ export function WordsScreen() {
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
   const [shown, setShown] = useState(PAGE_SIZE);
-  /** Розкрита картка рівно одна: інакше сторінка тягла б 50 повних статей. */
+  /** Відкрита стаття рівно одна — у модалці: інакше сторінка тягла б 50 повних статей. */
   const [openWord, setOpenWord] = useState<string | null>(null);
 
   const dictionary = useMemo(
@@ -164,8 +164,7 @@ export function WordsScreen() {
               definition={brief.get(word)?.definition ?? null}
               status={wordStatus(word)}
               onPick={(status) => setWordStatus(word, status)}
-              open={openWord === word}
-              onToggle={() => setOpenWord(openWord === word ? null : word)}
+              onOpen={() => setOpenWord(word)}
             />
           ))}
 
@@ -178,6 +177,16 @@ export function WordsScreen() {
           ) : null}
         </div>
       )}
+
+      {openWord !== null ? (
+        <WordDialog
+          word={openWord}
+          ipa={brief.get(openWord)?.ipa ?? null}
+          status={wordStatus(openWord)}
+          onPick={(status) => setWordStatus(openWord, status)}
+          onClose={() => setOpenWord(null)}
+        />
+      ) : null}
 
       {rows.length > visible.length ? (
         <button
@@ -207,16 +216,14 @@ function WordCard({
   definition,
   status,
   onPick,
-  open,
-  onToggle,
+  onOpen,
 }: {
   word: string;
   ipa: string | null;
   definition: string | null;
   status: WordStatus;
   onPick: (status: WordStatus) => void;
-  open: boolean;
-  onToggle: () => void;
+  onOpen: () => void;
 }) {
   return (
     <div
@@ -224,41 +231,7 @@ function WordCard({
         status === 'known' ? 'opacity-[0.62]' : ''
       }`}
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <div className="flex min-w-0 items-baseline gap-3">
-          <span
-            className={`font-serif text-[20px] font-extrabold ${
-              status === 'learning'
-                ? 'bg-yellow-bg border-yellow border-b-[3px] px-1'
-                : status === 'known'
-                  ? 'text-ink-3'
-                  : ''
-            }`}
-          >
-            {word}
-          </span>
-          {ipa ? (
-            <span className="text-ink-3 font-mono text-[12px]">/{ipa}/</span>
-          ) : null}
-        </div>
-
-        <div className={CONTROL}>
-          {LADDER_STATUSES.map((option, index) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => onPick(option)}
-              aria-pressed={status === option}
-              className={`cursor-pointer px-4 py-2.5 text-[12.5px] leading-[normal] font-bold ${
-                index > 0 ? 'border-line-ctrl border-l-[1.5px]' : ''
-              } ${TONE[option][status === option ? 'on' : 'off']}`}
-            >
-              {STATUS_LABELS[option]}
-              {status === option && option === 'known' ? ' ✓' : null}
-            </button>
-          ))}
-        </div>
-      </div>
+      <WordHeader word={word} ipa={ipa} status={status} onPick={onPick} />
 
       {/*
         Порожньо тут означає рівно одне: означення немає. Це рідкість —
@@ -272,18 +245,123 @@ function WordCard({
 
       <button
         type="button"
-        onClick={onToggle}
-        aria-expanded={open}
+        onClick={onOpen}
+        aria-haspopup="dialog"
         className="text-ink-3 hover:text-ink mt-2 cursor-pointer text-[12.5px] font-bold"
       >
-        {open ? 'Згорнути' : 'Стаття, вимова й нотатка'}
+        Стаття, вимова й нотатка
       </button>
+    </div>
+  );
+}
 
-      {open ? (
-        <div className="mt-2.5">
+/**
+ * Слово, транскрипція і драбинка знання — один рядок, спільний для картки в
+ * списку й для шапки модалки: у модалці статус мусить бути під рукою, бо саме
+ * після прочитаної статті людина вирішує «знаю» чи «ще вчу».
+ */
+function WordHeader({
+  word,
+  ipa,
+  status,
+  onPick,
+}: {
+  word: string;
+  ipa: string | null;
+  status: WordStatus;
+  onPick: (status: WordStatus) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-baseline justify-between gap-3">
+      <div className="flex min-w-0 items-baseline gap-3">
+        <span
+          className={`font-serif text-[20px] font-extrabold ${
+            status === 'learning'
+              ? 'bg-yellow-bg border-yellow border-b-[3px] px-1'
+              : status === 'known'
+                ? 'text-ink-3'
+                : ''
+          }`}
+        >
+          {word}
+        </span>
+        {ipa ? <span className="text-ink-3 font-mono text-[12px]">/{ipa}/</span> : null}
+      </div>
+
+      <div className={CONTROL}>
+        {LADDER_STATUSES.map((option, index) => (
+          <button
+            key={option}
+            type="button"
+            onClick={() => onPick(option)}
+            aria-pressed={status === option}
+            className={`cursor-pointer px-4 py-2.5 text-[12.5px] leading-[normal] font-bold ${
+              index > 0 ? 'border-line-ctrl border-l-[1.5px]' : ''
+            } ${TONE[option][status === option ? 'on' : 'off']}`}
+          >
+            {STATUS_LABELS[option]}
+            {status === option && option === 'known' ? ' ✓' : null}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Стаття, вимова й нотатка — у модалці, а не під карткою. Розкрита картка
+ * розсувала сітку і зсувала сусідні; модалка лишає список на місці, а
+ * повернення в нього — один Esc або клік поза вікном.
+ */
+function WordDialog({
+  word,
+  ipa,
+  status,
+  onPick,
+  onClose,
+}: {
+  word: string;
+  ipa: string | null;
+  status: WordStatus;
+  onPick: (status: WordStatus) => void;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[150] flex items-center justify-center p-6">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden />
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Стаття: ${word}`}
+        className="bg-panel border-line rounded-panel shadow-panel relative flex max-h-full w-full max-w-[640px] flex-col overflow-hidden border"
+      >
+        <div className="border-line flex items-start gap-3 border-b px-6 py-4">
+          <div className="min-w-0 flex-1">
+            <WordHeader word={word} ipa={ipa} status={status} onPick={onPick} />
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Закрити"
+            className="border-line-ctrl text-ink-3 hover:text-ink rounded-pill flex-none cursor-pointer border-[1.5px] px-[11px] py-[5px] text-[12px] leading-[normal] font-bold"
+          >
+            ✕ Esc
+          </button>
+        </div>
+
+        <div className="min-h-0 overflow-y-auto px-6 py-5">
           <WordDetails word={word} />
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }
@@ -316,7 +394,7 @@ function WordDetails({ word }: { word: string }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const mp3 = transcodedMp3Url(entry?.audioUrl ?? null);
-  const rest = entry ? entry.definitions.slice(1) : [];
+  const [first, ...rest] = entry ? entry.definitions : [];
 
   return (
     <div className={PANEL}>
@@ -325,6 +403,10 @@ function WordDetails({ word }: { word: string }) {
 
       {entry ? (
         <>
+          {/* Основне означення тут повторюється з картки: модалка закриває її собою */}
+          {first !== undefined ? (
+            <div className="text-ink mb-2 text-[15px] leading-[1.55]">{first}</div>
+          ) : null}
           {rest.length > 0 ? (
             <details>
               <summary className="text-acc cursor-pointer text-[12.5px] leading-[normal] font-bold">
