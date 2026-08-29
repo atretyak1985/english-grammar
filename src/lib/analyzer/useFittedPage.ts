@@ -69,10 +69,27 @@ export function useFittedPage({
 
       setSearch((current) => {
         const state = current.key === key ? current : fresh();
-        if (state.steps >= MAX_STEPS) return state;
 
         const fill = filled / available;
         const overflowing = fill > 1;
+
+        /*
+          Кроки вичерпано. Зупинятися можна лише на тому, що ВМІЩАЄТЬСЯ:
+          інакше остання межа лишається переповненою, і нижній рядок сторінки
+          обрізаний назавжди — повторний замір сам себе не виправить, бо
+          пошук уже вважає, що зробив своє.
+
+          Тому на вичерпаних кроках ще й відступаємо, по токену за замір,
+          доки не влізе. Це лінійно й повільніше за бісекцію, зате `end`
+          строго спадає, отже колись зупиниться — а зупиниться воно рівно
+          на межі, яку видно цілою.
+        */
+        if (state.steps >= MAX_STEPS) {
+          if (!overflowing) return state;
+          const next = Math.max(start + 1, state.end - 1);
+          if (next === state.end) return state;
+          return { ...state, end: next, overflows: state.end };
+        }
 
         const fits = overflowing ? state.fits : Math.max(state.fits, state.end);
         const overflows = overflowing

@@ -87,69 +87,88 @@ export function HighlightLayers({
             <span className="text-label text-[11.5px]">радимо 1 тему за раз</span>
           </div>
 
-          <div className="bg-bg mx-1.5 mb-1.5 rounded-[10px] p-1">
-            <div className="flex items-center gap-2.5 px-2.5 py-[9px]">
-              <span
-                className="bg-acc flex h-[18px] w-[18px] items-center justify-center rounded-[5px] text-[11px] font-extrabold text-white"
-                aria-hidden
+          {/*
+            Порядок тем нерухомий, і активна не спливає нагору. Спершу вона
+            спливала — і список переставлявся під рукою рівно в мить кліку:
+            тема, яку щойно обрали, опинялася не там, куди дивилися. Рядки
+            й так виглядають як чекбокси, тож і поводитись мусять як
+            чекбокси: три на місці, один позначений.
+          */}
+          {LAYER_TOPICS.map((item) => {
+            const isActive = item.id === topic;
+
+            return (
+              <div
+                key={item.id}
+                className={isActive ? 'bg-bg mx-1.5 mb-1.5 rounded-[10px] p-1' : ''}
               >
-                ✓
-              </span>
-              <span className="flex-1 text-[13.5px] font-extrabold">{active.label}</span>
-              <span className="text-label text-[11.5px]">активна тема</span>
-            </div>
-
-            <div className="flex flex-col gap-0.5 pr-2.5 pb-2 pl-[38px]">
-              {active.tenses.map((tense) => {
-                const enabled = rules[tense];
-                return (
-                  <button
-                    key={tense}
-                    type="button"
-                    onClick={() => onToggleRule(tense)}
-                    aria-pressed={enabled}
-                    className={`flex cursor-pointer items-center gap-[9px] text-left text-[12.5px] font-semibold ${
-                      enabled ? '' : 'text-label'
+                <button
+                  type="button"
+                  onClick={() => onPickTopic(item.id)}
+                  aria-pressed={isActive}
+                  disabled={isActive}
+                  className={`flex w-full items-center gap-2.5 rounded-[10px] text-left ${
+                    isActive
+                      ? 'cursor-default px-2.5 py-[9px]'
+                      : 'text-ink-2 hover:bg-hover cursor-pointer px-4 py-[9px]'
+                  }`}
+                >
+                  <span
+                    className={`flex h-[18px] w-[18px] flex-none items-center justify-center rounded-[5px] text-[11px] font-extrabold ${
+                      isActive
+                        ? 'bg-acc text-white'
+                        : 'border-lex-line box-border border-[1.5px]'
                     }`}
+                    aria-hidden
                   >
-                    <span
-                      className={`h-3.5 w-3.5 flex-none rounded-[4px] ${
-                        enabled
-                          ? SWATCH[TENSE_ASPECT[tense]]
-                          : 'border-lex-line box-border border-[1.5px]'
-                      }`}
-                      aria-hidden
-                    />
-                    {TENSE_LABELS[tense]}
-                    <span className={`ml-auto ${enabled ? 'text-label' : ''}`}>
-                      {pageCount(tense)} · {enabled ? 'увімк' : 'вимк'}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                    {isActive ? '✓' : ''}
+                  </span>
+                  <span
+                    className={`flex-1 text-[13.5px] ${isActive ? 'font-extrabold' : 'font-semibold'}`}
+                  >
+                    {item.label}
+                  </span>
+                  <span className="text-label text-[11.5px]">
+                    {isActive
+                      ? 'активна тема'
+                      : `${item.tenses.reduce((sum, tense) => sum + textCount(tense), 0)} збігів`}
+                  </span>
+                </button>
 
-          {LAYER_TOPICS.filter((item) => item.id !== topic).map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => {
-                onPickTopic(item.id);
-                setOpen(false);
-              }}
-              className="text-ink-2 hover:bg-hover flex w-full cursor-pointer items-center gap-2.5 rounded-[10px] px-4 py-[9px] text-left"
-            >
-              <span
-                className="border-lex-line box-border h-[18px] w-[18px] flex-none rounded-[5px] border-[1.5px]"
-                aria-hidden
-              />
-              <span className="flex-1 text-[13.5px] font-semibold">{item.label}</span>
-              <span className="text-label text-[11.5px]">
-                {item.tenses.reduce((sum, tense) => sum + textCount(tense), 0)} збігів
-              </span>
-            </button>
-          ))}
+                {isActive ? (
+                  <div className="flex flex-col gap-0.5 pr-2.5 pb-2 pl-[38px]">
+                    {item.tenses.map((tense) => {
+                      const enabled = rules[tense];
+                      return (
+                        <button
+                          key={tense}
+                          type="button"
+                          onClick={() => onToggleRule(tense)}
+                          aria-pressed={enabled}
+                          className={`flex cursor-pointer items-center gap-[9px] text-left text-[12.5px] font-semibold ${
+                            enabled ? '' : 'text-label'
+                          }`}
+                        >
+                          <span
+                            className={`h-3.5 w-3.5 flex-none rounded-[4px] ${
+                              enabled
+                                ? SWATCH[TENSE_ASPECT[tense]]
+                                : 'border-lex-line box-border border-[1.5px]'
+                            }`}
+                            aria-hidden
+                          />
+                          {TENSE_LABELS[tense]}
+                          <span className={`ml-auto ${enabled ? 'text-label' : ''}`}>
+                            {pageCount(tense)} · {enabled ? 'увімк' : 'вимк'}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
 
           <p className="bg-tint text-green-tx m-1.5 rounded-[10px] px-3 py-2.5 text-[12px] leading-[1.5]">
             Кольори завжди належать активній темі — дві теми одночасно не підсвічуються, щоб
