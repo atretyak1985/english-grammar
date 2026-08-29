@@ -148,3 +148,20 @@ export async function loadStory(slug: string): Promise<LoadedStory | null> {
     return null;
   }
 }
+
+/**
+ * Назви й тіла всіх оповідань — для пошуку прикладів ужитку слова. Без бази
+ * чи на помилці — порожньо, як і решта функцій тут: картка слова тоді просто
+ * лишається без прикладу.
+ */
+export async function listStoryBodies(): Promise<{ title: string; body: string }[]> {
+  const db = getDb();
+  if (db === null) return [];
+
+  try {
+    return await db.select({ title: schema.stories.title, body: schema.stories.body }).from(schema.stories);
+  } catch (error) {
+    console.warn('listStoryBodies: запит до бази не вдався', error);
+    return [];
+  }
+}

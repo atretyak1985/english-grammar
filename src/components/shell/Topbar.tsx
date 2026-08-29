@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { useAppState } from '@/components/providers/AppStateProvider';
+import { daysLabel, streakDays } from '@/lib/drills/streak';
+
 /**
  * Топбар напряму «Читальня»: логотип, п'ять розділів, серія й аватар.
  *
@@ -15,35 +18,32 @@ import { usePathname } from 'next/navigation';
 
 interface NavItem {
   label: string;
-  /** null — розділу ще немає як маршруту, тому пункт нікуди не веде */
-  href: string | null;
+  href: string;
   /** Чи цей пункт активний на такому шляху */
-  active?: (pathname: string) => boolean;
+  active: (pathname: string) => boolean;
 }
 
 /*
   «Читання» — це головна: вона і є входом у текст, а не окремий екран
-  над ним. «Тренування» стоїть у рядку, бо макет його малює, але
-  маршруту під ним ще немає — тому пункт не вдає посилання.
+  над ним.
 */
 const NAV: NavItem[] = [
   { label: 'Читання', href: '/', active: (path) => path === '/' },
   { label: 'Бібліотека', href: '/library', active: (path) => path.startsWith('/library') },
   { label: 'Словник', href: '/words', active: (path) => path.startsWith('/words') },
-  { label: 'Тренування', href: null },
+  { label: 'Тренування', href: '/train', active: (path) => path.startsWith('/train') },
   { label: 'Теми', href: '/topics', active: (path) => path.startsWith('/topics') },
 ];
 
-/*
-  Серія днів. Лічильника занять у застосунку немає — ні таблиці, ні
-  провайдера, — тому число стоїть рівно те, що в макеті, і нічого не
-  обіцяє понад те, що видно. Щойно з'явиться лічильник, сюди прийде
-  він, а не новий компонент.
-*/
-const STREAK_DAYS = 4;
-
 export function Topbar({ signedIn, initial }: { signedIn: boolean; initial: string | null }) {
   const pathname = usePathname();
+  const { state, ready } = useAppState();
+
+  /*
+    Серія днів рахується зі спроб вправ — тих самих, що бачить тренування.
+    До гідратації спроб ще немає, і нуль тут чесніший за число з макета.
+  */
+  const streak = ready ? streakDays(state.attempts) : 0;
 
   return (
     <header className="bg-panel border-line sticky top-0 z-50 border-b">
@@ -64,12 +64,13 @@ export function Topbar({ signedIn, initial }: { signedIn: boolean; initial: stri
         <div className="ml-auto flex flex-none items-center gap-3.5">
           {signedIn ? (
             <>
-              <span
+              <Link
+                href="/train"
                 className="text-pc flex items-center gap-1.5 text-[13.5px] font-bold"
-                title={`Серія: ${STREAK_DAYS} дні поспіль`}
+                title={`Серія тренувань: ${daysLabel(streak)} поспіль`}
               >
-                <span aria-hidden>🔥</span> {STREAK_DAYS} дні
-              </span>
+                <span aria-hidden>🔥</span> {daysLabel(streak)}
+              </Link>
               <Link
                 href="/account"
                 aria-label="Кабінет"
@@ -98,18 +99,6 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
   const shape = `relative rounded-pill px-4 py-2 leading-[normal] before:absolute before:inset-0 before:-my-[5px] before:content-[''] ${
     active ? 'bg-tint text-green-tx font-bold' : ''
   }`;
-
-  if (item.href === null) {
-    return (
-      <span
-        className={`${shape} text-ink-3 cursor-default`}
-        title="Тренування з'явиться згодом"
-        aria-disabled
-      >
-        {item.label}
-      </span>
-    );
-  }
 
   return (
     <Link

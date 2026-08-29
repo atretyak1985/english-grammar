@@ -89,19 +89,25 @@ export function WordsScreen() {
 
   return (
     <div className="mx-auto w-full max-w-shell px-9 py-9">
-      <div className="mb-[22px]">
-        <h1 className="font-serif m-0 mb-1.5 text-[32px] font-extrabold tracking-[-0.5px]">
-          Мій словник
-        </h1>
-        {/*
-          Головна кнопка макета — «Тренувати N слів» — тут відсутня: маршруту
-          тренування ще немає, а великий зелений заклик, що нікуди не веде,
-          обіцяє більше, ніж уся сторінка може дати.
-        */}
-        <div className="text-ink-2 text-[14px]">
-          {ready ? dictionary.length : 0} слів · <b className="text-yellow-tx">{learning} вчу</b> ·{' '}
-          {known} знаю
+      <div className="mb-[22px] flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-serif m-0 mb-1.5 text-[32px] font-extrabold tracking-[-0.5px]">
+            Мій словник
+          </h1>
+          <div className="text-ink-2 text-[14px]">
+            {ready ? dictionary.length : 0} слів · <b className="text-yellow-tx">{learning} вчу</b> ·{' '}
+            {known} знаю
+          </div>
         </div>
+        {/* Кнопка є лише тоді, коли є що тренувати: заклик без карток за ним — порожня обіцянка */}
+        {ready && learning > 0 ? (
+          <Link
+            href="/train"
+            className="bg-acc rounded-btn px-5 py-[11px] text-[14px] leading-[normal] font-bold text-white"
+          >
+            Тренувати {learning} слів
+          </Link>
+        ) : null}
       </div>
 
       <div className="mb-5 flex flex-wrap items-center gap-2">
