@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { audioMimeType, transcodedMp3Url } from '@/lib/dictionary/audio';
 import { useFullEntry } from '@/lib/dictionary/client';
-import { LADDER_STATUSES, STATUS_LABELS } from '@/components/words/WordStatusButtons';
+import { LADDER_STATUSES, STATUS_LABELS } from '@/components/words/statuses';
 import type { WordStatus } from '@/types/state';
 
 /**
