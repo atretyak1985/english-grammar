@@ -84,6 +84,25 @@ export function useFittedPage({
         // Готово: або сторінка достатньо повна, або межа знайдена з точністю
         // до одного токена — тоді лишаємо найбільший варіант, що вміщався.
         if (!overflowing && fill >= GOOD_FILL) return { ...state, fits, overflows };
+
+        /*
+          Межу вже знайдено, але поточний замір переливається — отже, знайдена
+          вона на іншій геометрії. Так буває щоразу, коли дозавантажується
+          серифний шрифт: підстановний вужчий і нижчий, сторінка на ньому
+          вміщалась, а на справжньому вже ні.
+
+          Без цієї гілки пошук вважав межу знайденою і завмирав на
+          переповненому стані — останній рядок сторінки лишався обрізаним
+          назавжди, бо повторний замір сам себе не виправляв. Відступаємо на
+          токен і шукаємо заново: `end` при цьому строго спадає, тому
+          зациклитись тут ніяк.
+        */
+        if (overflowing && overflows > 0 && overflows - fits <= 1) {
+          const next = Math.max(start + 1, state.end - 1);
+          if (next === state.end) return { ...state, fits, overflows };
+          return { key, end: next, fits: start + 1, overflows: state.end, steps: 0 };
+        }
+
         if (overflows > 0 && overflows - fits <= 1) {
           if (state.end !== fits) {
             return { ...state, end: fits, fits, overflows, steps: state.steps + 1 };

@@ -48,34 +48,26 @@ export function StoryReader({
   const stats = useMemo(() => statsOf(tokens, matches), [tokens, matches]);
 
   return (
-    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-6">
-      <h1 className="mt-0 mb-1 text-[32px] font-extrabold tracking-[-0.8px]">{title}</h1>
-      <div className="text-ink-3 mb-5 text-[14px] font-semibold">{author}</div>
-
-      <ReaderCanvas
-        text={body}
-        docKey={docKey}
-        matches={matches}
-        stats={stats}
-        // У бібліотеці розібрано 100% тексту: підпис «пораховано по
-        // прочитаному» тут був би брехнею, тому coverage не передається взагалі.
-        coverage={null}
-        frequency={frequency}
-        footer={
-          <div className="text-ink-3 mt-4 text-[11.5px] leading-[normal]">
-            {author} ·{' '}
-            <a
-              href={sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              {source}
-            </a>{' '}
-            · {license}
-          </div>
-        }
-      />
-    </div>
+    <ReaderCanvas
+      text={body}
+      docKey={docKey}
+      matches={matches}
+      stats={stats}
+      title={title}
+      meta={author}
+      // У бібліотеці розібрано 100% тексту: підпис «пораховано по
+      // прочитаному» тут був би брехнею, тому coverage не передається взагалі.
+      coverage={null}
+      frequency={frequency}
+      footer={
+        <div className="text-ink-3 text-[11.5px] leading-[1.5]">
+          {author} ·{' '}
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">
+            {source}
+          </a>{' '}
+          · {license}
+        </div>
+      }
+    />
   );
 }
