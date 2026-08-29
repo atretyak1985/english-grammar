@@ -1,0 +1,25 @@
+By Friday we will have shipped the release, and the team will be celebrating while I am still fixing the last bug. I'll call you when the build finishes; it won't take long. We shall see what the client says. She is going to resign next month, but right now she is going to the office. I am going to work on the migration tonight. They are not going to like it. It will have been running for a year by then. The report will be ready tomorrow, and the results will be published on Monday. I was going to call you, but the meeting ran over. We'd finished before they'd even started. Shall we begin?
+
+=== збіги ===
+# Штучний текст із майбутніми часами й going to.
+# «am going to work» — work буває іменником, тому сумнів; «are not going to like» — like у wink прийменник, прийнято як дієслово.
+fp	will have shipped
+fc	will be celebrating
+prc	am still fixing
+fs	i'll call
+prs	finishes
+fs	won't take
+fs	shall see
+prs	says
+fs	is going to resign
+prc	is going
+fs?	am going to work
+fs?	are not going to like
+fp	will have been running
+fs	will be
+fs	will be published
+pc	was going to call
+ps	ran
+pp?	we'd finished
+pp?	they'd even started
+fs	shall we begin
