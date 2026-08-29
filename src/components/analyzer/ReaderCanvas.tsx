@@ -6,7 +6,7 @@ import { HighlightLayers } from '@/components/analyzer/HighlightLayers';
 import { WordPopover } from '@/components/analyzer/WordPopover';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { isMeaningfulWord } from '@/data/stopwords';
-import { busiestTopic, layerTopic, type LayerTopicId } from '@/lib/analyzer/layers';
+import { LAYER_TOPICS, busiestTopic, layerTopic, type LayerTopicId } from '@/lib/analyzer/layers';
 import { estimatePageCount, paginate } from '@/lib/analyzer/pages';
 import { UNKNOWN_LIMIT, pickRareOnPage } from '@/lib/analyzer/vocabulary';
 import {
@@ -216,16 +216,13 @@ export function ReaderCanvas({
   }, [anchor, trail, docKey, pages, setPosition]);
 
   const pageNumber = trail.length + 1;
-  const pageEstimate = estimatePageCount({
-    totalTokens: tokens.length,
-    pageNumber,
-    anchor,
-    pageEnd,
-    // На першій сторінці історії ще немає, тому дільник беремо з розрахункової
-    // пагінації: вона бачить увесь текст, а перша сторінка книжки часто
-    // коротка — титул, зміст, ілюстрація.
-    fallbackAverage: pages.length > 0 ? tokens.length / pages.length : undefined,
-  });
+  // Слід відвіданих початків плюс поточний — з нього знімається справжня
+  // місткість сторінки, якою й калібрується розрахунок.
+  const pageStarts = useMemo(() => [...trail, anchor], [trail, anchor]);
+  const pageEstimate = useMemo(
+    () => estimatePageCount({ tokens, pageStarts }),
+    [tokens, pageStarts],
+  );
 
   // Стрілки гортають сторінки — але не тоді, коли курсор у полі введення.
   useEffect(() => {
@@ -260,6 +257,22 @@ export function ReaderCanvas({
   const suggested = useMemo(() => new Set(unknownHere.map((entry) => entry.word)), [unknownHere]);
 
   const maxPageCount = Math.max(...active.tenses.map((tense) => pageCounts[tense]), 1);
+
+  /*
+    Активної теми на сторінці може не бути зовсім: Alice — оповідь у минулому
+    часі, і на будь-якій її сторінці «майбутніх» рівно нуль. Порожня колонка
+    цифр разом із текстом без жодної підсвітки читається як «підсвітка
+    зламалась», а не як «тут цього часу немає», — тому кажемо це словами й
+    одразу даємо кнопку на ту тему, яка на цій сторінці справді є.
+  */
+  const activeOnPage = active.tenses.reduce((sum, tense) => sum + pageCounts[tense], 0);
+  const suggestion = LAYER_TOPICS.filter((item) => item.id !== topic)
+    .map((item) => ({
+      topic: item,
+      count: item.tenses.reduce((sum, tense) => sum + pageCounts[tense], 0),
+    }))
+    .sort((a, b) => b.count - a.count)
+    .find((item) => item.count > 0);
 
   /**
    * Виділення слова відкриває ту саму картку, що й клік.
@@ -456,6 +469,23 @@ export function ReaderCanvas({
                 </div>
               ))}
             </div>
+
+            {activeOnPage === 0 ? (
+              <div className="border-line text-ink-2 mt-3.5 border-t border-dashed pt-3 text-[12.5px] leading-[1.55]">
+                На цій сторінці таких часів немає.{' '}
+                {suggestion ? (
+                  <button
+                    type="button"
+                    onClick={() => setTopic(suggestion.topic.id)}
+                    className="text-acc cursor-pointer font-bold underline"
+                  >
+                    Показати «{suggestion.topic.label}» ({suggestion.count})
+                  </button>
+                ) : (
+                  'Тут узагалі немає розібраних конструкцій.'
+                )}
+              </div>
+            ) : null}
 
             {/* Числа стосуються розібраної частини, і мовчати про це не можна:
                 на книжці розібрано кілька відсотків, і «Past Simple 12» без
