@@ -223,13 +223,15 @@ export function useReview(
         if (!Array.isArray(body.matches)) return;
 
         // Модель нумерує токени ВСЕРЕДИНІ шматка; документ починається раніше.
+        // Поля поза координатами (rule, uncertain) їдуть як є — їх читає
+        // картка слова, і зрізати їх тут означало б лишити її без пояснення.
         remember(text, [
           {
             key: keyOf(next),
             matches: body.matches.map((match) => ({
+              ...match,
               from: match.from + next.start,
               to: match.to + next.start,
-              tense: match.tense,
             })),
           },
         ]);

@@ -25,7 +25,9 @@ describe('модуль граматики — лише сервер', () => {
     for (const file of sourceFiles(SRC)) {
       const source = fs.readFileSync(file, 'utf8');
       if (!/^\s*['"]use client['"]/m.test(source)) continue;
-      if (/@\/lib\/grammar|wink-nlp|wink-eng-lite-web-model/.test(source)) offenders.push(file);
+      // `cards.ts` — виняток навмисно: це легкий словник правил для картки
+      // слова, без імпортів рантайму (є власний тест у cards.test.ts).
+      if (/@\/lib\/grammar(?!\/cards)|wink-nlp|wink-eng-lite-web-model/.test(source)) offenders.push(file);
     }
     expect(offenders).toEqual([]);
   });

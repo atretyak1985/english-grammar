@@ -230,6 +230,15 @@ export interface AnalyzedToken {
   startsMatch: boolean;
   /** Останній токен конструкції */
   endsMatch: boolean;
+  /**
+   * Правило двигуна, яким пояснюється конструкція, — ключ у `RULE_CARDS`
+   * (`lib/grammar/cards.ts`). Немає в збігів локальних правил: вони знають
+   * лише час, тому картка слова показує пояснення тільки там, де розмітка
+   * прийшла з двигуна (бібліотека, `/api/analyze`).
+   */
+  rule?: string;
+  /** Межа конструкції хитка і модель її не перевіряла. */
+  uncertain?: boolean;
 }
 
 export interface TenseStat {
@@ -325,6 +334,10 @@ export interface Match {
   from: number;
   to: number;
   tense: TenseKey;
+  /** Правило двигуна (`lib/grammar/rules.ts`); локальні правила його не мають. */
+  rule?: string;
+  /** Межа хитка й моделлю не перевірена — прапорець двигуна. */
+  uncertain?: boolean;
 }
 
 /**
@@ -592,7 +605,12 @@ export function applyMatches(tokens: AnalyzedToken[], matches: Match[]): Analysi
   for (const match of matches) {
     for (let i = match.from; i <= match.to; i += 1) {
       const token = tokens[i];
-      if (token) token.tense = match.tense;
+      if (!token) continue;
+      token.tense = match.tense;
+      // Правило й хиткість — на кожному токені конструкції: картка слова
+      // відкривається з БУДЬ-ЯКОГО її слова, а не лише з першого.
+      if (match.rule !== undefined) token.rule = match.rule;
+      if (match.uncertain === true) token.uncertain = true;
     }
     const startToken = tokens[match.from];
     const endToken = tokens[match.to];
