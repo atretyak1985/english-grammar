@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { HighlightLayers } from '@/components/analyzer/HighlightLayers';
 import { WordPopover } from '@/components/analyzer/WordPopover';
 import { useAppState } from '@/components/providers/AppStateProvider';
+import { STATUS_LABELS } from '@/components/words/statuses';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { LAYER_TOPICS, busiestTopic, layerTopic, type LayerTopicId } from '@/lib/analyzer/layers';
 import { estimatePageCount, paginate } from '@/lib/analyzer/pages';
@@ -20,6 +21,7 @@ import { useFittedPage } from '@/lib/analyzer/useFittedPage';
 import { useFitHeight } from '@/lib/analyzer/useViewport';
 import { PAGE_ONE, useReading } from '@/lib/state/reading';
 import { TENSE_HIGHLIGHT, TENSE_KEYS, type TenseKey } from '@/types/content';
+import type { WordStatus } from '@/types/state';
 
 /**
  * Полотно читалки: тулбар шарів, підсвічений текст і бічна колонка —
@@ -62,6 +64,53 @@ const TENSE_BAR: Record<TenseKey, string> = {
 export const PILL =
   'cursor-pointer rounded-pill border-[1.5px] px-4 py-2 text-[13px] leading-[normal] font-bold';
 export const PILL_OFF = 'border-line-ctrl text-ink-2 bg-panel';
+
+/** Три статуси, які читач може підсвітити в тексті; «приховане» шару не має. */
+type WordLayer = 'unknown' | 'learning' | 'known';
+const WORD_LAYERS: WordLayer[] = ['unknown', 'learning', 'known'];
+
+const WORD_LAYER_TITLE: Record<WordLayer, string> = {
+  unknown: 'Слова без статусу',
+  learning: 'Слова, які вчите',
+  known: 'Слова, які знаєте',
+};
+
+/** Увімкнена пігулка одягнена так само, як слово в тексті під цим шаром. */
+const WORD_LAYER_ON: Record<WordLayer, string> = {
+  unknown: 'bg-track border-lex-line text-ink',
+  learning: 'bg-yellow-bg border-yellow text-yellow-tx',
+  known: 'bg-green-bg-2 border-green-line text-green-tx',
+};
+
+/**
+ * Клас лексичного каналу для слова. Два канали малюються разом: заливка
+ * часу каже, який це час, лінія під нею — що ви з цим словом робите. Тому на
+ * слові всередині підсвіченої конструкції статус лишає тільки лінію: два тла
+ * на одному слові не складаються.
+ *
+ * Слово без статусу при вимкненому шарі «не знаю» несе лише пунктир-підказку,
+ * і лише коли воно з рідкісних на сторінці — інакше підказкою був би весь абзац.
+ */
+function lexisClass(
+  status: WordStatus,
+  inTense: boolean,
+  layers: Record<WordLayer, boolean>,
+  hinted: boolean,
+): string {
+  switch (status) {
+    case 'learning':
+      if (!layers.learning) return '';
+      return inTense ? 'border-yellow border-b-[3px]' : 'word-learning';
+    case 'known':
+      if (!layers.known) return '';
+      return inTense ? 'border-green-line border-b-2' : 'word-known';
+    case 'unknown':
+      if (layers.unknown) return inTense ? 'border-lex-line border-b-2 border-dotted' : 'word-unknown';
+      return hinted ? 'word-hint' : '';
+    default:
+      return '';
+  }
+}
 
 const SIDE_CARD = 'bg-panel border-line rounded-tile border px-5 py-[18px]';
 const SIDE_LABEL = 'text-ink-3 font-mono text-[10.5px] font-bold tracking-[1.2px] uppercase';
@@ -194,7 +243,18 @@ export function ReaderCanvas({
   const [rules, setRules] = useState<Record<TenseKey, boolean>>(() =>
     Object.fromEntries(TENSE_KEYS.map((key) => [key, true])) as Record<TenseKey, boolean>,
   );
-  const [showWords, setShowWords] = useState(true);
+  /*
+    Шар лексики — три перемикачі за статусом слова, а не один «Слова».
+    «Вчу» увімкнено одразу: це те, заради чого слово позначали. «Не знаю»
+    й «знаю» вимкнені, бо заливка КОЖНОГО непозначеного слова — це майже
+    весь абзац; її вмикають навмисно, щоб побачити обсяг незнайомого або
+    скільки вже вивчено.
+  */
+  const [wordLayers, setWordLayers] = useState<Record<WordLayer, boolean>>({
+    unknown: false,
+    learning: true,
+    known: false,
+  });
 
   const active = layerTopic(topic);
 
@@ -255,6 +315,20 @@ export function ReaderCanvas({
     підказка переставала бути підказкою.
   */
   const suggested = useMemo(() => new Set(unknownHere.map((entry) => entry.word)), [unknownHere]);
+
+  /** Різних змістовних слів кожного статусу на цій сторінці — числа на перемикачах шару. */
+  const wordCounts = useMemo(() => {
+    const seen = new Set<string>();
+    const counts: Record<WordLayer, number> = { unknown: 0, learning: 0, known: 0 };
+    for (const token of visible) {
+      if (!token.word || seen.has(token.word) || !isMeaningfulWord(token.word)) continue;
+      seen.add(token.word);
+      const status = state.words[token.word] ?? 'unknown';
+      if (status === 'hidden') continue;
+      counts[status] += 1;
+    }
+    return counts;
+  }, [visible, state.words]);
 
   const maxPageCount = Math.max(...active.tenses.map((tense) => pageCounts[tense]), 1);
 
@@ -327,18 +401,22 @@ export function ReaderCanvas({
               textCount={(tense) => stats[tense].count}
             />
 
-            <button
-              type="button"
-              onClick={() => setShowWords((it) => !it)}
-              aria-pressed={showWords}
-              className={`rounded-pill cursor-pointer border-[1.5px] px-[15px] py-2 text-[13px] font-bold ${
-                showWords
-                  ? 'bg-yellow-bg border-yellow text-yellow-tx'
-                  : 'bg-panel border-line-ctrl text-label line-through'
-              }`}
-            >
-              Слова · {unknownHere.length}
-            </button>
+            <div className="flex items-center gap-1.5" role="group" aria-label="Підсвітка слів">
+              {WORD_LAYERS.map((layer) => (
+                <button
+                  key={layer}
+                  type="button"
+                  onClick={() => setWordLayers((current) => ({ ...current, [layer]: !current[layer] }))}
+                  aria-pressed={wordLayers[layer]}
+                  title={`${WORD_LAYER_TITLE[layer]} — на цій сторінці ${wordCounts[layer]}`}
+                  className={`rounded-pill cursor-pointer border-[1.5px] px-[13px] py-2 text-[13px] font-bold ${
+                    wordLayers[layer] ? WORD_LAYER_ON[layer] : 'bg-panel border-line-ctrl text-label line-through'
+                  }`}
+                >
+                  {STATUS_LABELS[layer]} · {wordCounts[layer]}
+                </button>
+              ))}
+            </div>
 
             {toolbarExtra ? (
               <>
@@ -392,16 +470,9 @@ export function ReaderCanvas({
                 const fill = tense
                   ? `${TENSE_HIGHLIGHT[tense]} rounded-mark px-[5px] py-[2px]`
                   : '';
-                const lexis =
-                  showWords && meaningful
-                    ? status === 'learning'
-                      ? tense
-                        ? 'border-yellow border-b-[3px]'
-                        : 'word-learning'
-                      : status === 'unknown' && suggested.has(token.word)
-                        ? 'word-unknown'
-                        : ''
-                    : '';
+                const lexis = meaningful
+                  ? lexisClass(status, tense !== null, wordLayers, suggested.has(token.word))
+                  : '';
 
                 return (
                   <span
@@ -423,7 +494,7 @@ export function ReaderCanvas({
           </div>
 
           {pageEstimate > 1 ? (
-            <div className="border-track mt-[18px] flex max-w-[64ch] items-center justify-between border-t pt-[18px]">
+            <div className="border-track mt-[18px] flex items-center justify-between border-t pt-[18px]">
               <button
                 type="button"
                 onClick={goBack}
@@ -451,7 +522,7 @@ export function ReaderCanvas({
 
         <div className="flex min-w-0 flex-col gap-4">
           <div className={SIDE_CARD}>
-            <div className={SIDE_LABEL}>Шар «{active.label}» · ця сторінка</div>
+            <div className={SIDE_LABEL}>{active.label}</div>
             <div className="mt-3 flex flex-col gap-2.5">
               {active.tenses.map((tense) => (
                 <div key={tense}>

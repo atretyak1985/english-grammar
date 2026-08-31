@@ -6,20 +6,29 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { LADDER_STATUSES, STATUS_LABELS } from '@/components/words/statuses';
 import { audioMimeType, transcodedMp3Url } from '@/lib/dictionary/audio';
+import { isMeaningfulWord } from '@/data/stopwords';
+import { wordFrequency } from '@/lib/analyzer/vocabulary';
 import { useDictionary, useFullEntry } from '@/lib/dictionary/client';
+import type { StoryFrequency } from '@/lib/library/server';
 import { NOTE_MAX } from '@/lib/state/storage';
+import { useTexts } from '@/lib/state/texts';
 import type { WordStatus } from '@/types/state';
 
-/** «Не знаю» тут фільтром не буває: таких слів у словнику немає за визначенням. */
-type Filter = 'all' | 'learning' | 'known';
+/**
+ * «Усі» — це весь словник, тобто позначене. «Не знаю» стоїть окремо і в
+ * «усі» не входить: це не словник, а його передпокій — слова з ваших текстів,
+ * які ще без статусу, від найчастіших.
+ */
+type Filter = 'all' | 'learning' | 'known' | 'unknown';
 
 const FILTER_LABELS: Record<Filter, string> = {
   all: 'Усі',
   learning: 'Вчу',
   known: 'Знаю',
+  unknown: 'Не знаю',
 };
 
-const FILTERS: Filter[] = ['all', 'learning', 'known'];
+const FILTERS: Filter[] = ['all', 'learning', 'known', 'unknown'];
 
 /** Слово потрапляє у словник, щойно користувач позначив його одним із цих статусів. */
 const IN_DICTIONARY: WordStatus[] = ['learning', 'known'];
@@ -45,8 +54,9 @@ const PANEL_LABEL =
  * стискалося до нечитабельного, або їхало вбік. Картка складається сама, а
  * головне — тримає приклад ужитку, заради якого слово й запам'ятовується.
  */
-export function WordsScreen() {
+export function WordsScreen({ corpus }: { corpus: StoryFrequency[] }) {
   const { state, wordStatus, setWordStatus, ready } = useAppState();
+  const { texts } = useTexts();
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
   const [shown, setShown] = useState(PAGE_SIZE);
@@ -58,13 +68,34 @@ export function WordsScreen() {
     [state.words],
   );
 
+  /*
+    Слова без статусу — з усіх текстів, що є: оповідання бібліотеки та
+    збережені тут тексти, разом за частотою. Приховані сюди не потрапляють:
+    їх читач прибрав з очей навмисно.
+  */
+  const unknown = useMemo(() => {
+    const counts = new Map<string, number>();
+    const add = (list: { word: string; count: number }[]) => {
+      for (const { word, count } of list) {
+        if (!isMeaningfulWord(word) || state.words[word] !== undefined) continue;
+        counts.set(word, (counts.get(word) ?? 0) + count);
+      }
+    };
+    for (const story of corpus) add(story.frequency);
+    for (const text of texts) add(wordFrequency(text.body));
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [corpus, texts, state.words]);
+
   const rows = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return dictionary
-      .filter(([, status]) => filter === 'all' || status === filter)
-      .filter(([word]) => needle === '' || word.includes(needle))
-      .sort((a, b) => a[0].localeCompare(b[0]));
-  }, [dictionary, filter, query]);
+    const source: [string, WordStatus][] =
+      filter === 'unknown'
+        ? unknown.map(([word]) => [word, 'unknown'])
+        : dictionary.filter(([, status]) => filter === 'all' || status === filter);
+    const found = source.filter(([word]) => needle === '' || word.includes(needle));
+    // Незнайомі лишаються за частотою — це і є порядок, у якому їх варто брати
+    return filter === 'unknown' ? found : found.sort((a, b) => a[0].localeCompare(b[0]));
+  }, [dictionary, unknown, filter, query]);
 
   const visible = useMemo(() => rows.slice(0, shown), [rows, shown]);
 
@@ -79,6 +110,7 @@ export function WordsScreen() {
     all: dictionary.length,
     learning,
     known,
+    unknown: unknown.length,
   };
 
   const changeFilter = (option: Filter) => {
@@ -143,7 +175,7 @@ export function WordsScreen() {
         </label>
       </div>
 
-      {ready && dictionary.length === 0 ? (
+      {ready && dictionary.length === 0 && filter !== 'unknown' ? (
         <div className="bg-panel border-line rounded-panel border px-[26px] py-[26px]">
           <b>Словник поки порожній.</b>
           <p className="text-ink-2 mt-2 mb-0 text-[15px] leading-[1.6]">
@@ -152,6 +184,20 @@ export function WordsScreen() {
               читання
             </Link>{' '}
             і натисніть на незнайомому слові «вчу» або «знаю» — воно з&apos;явиться тут.
+            {unknown.length > 0 ? (
+              <>
+                {' '}
+                Або почніть з фільтра{' '}
+                <button
+                  type="button"
+                  onClick={() => changeFilter('unknown')}
+                  className="text-acc cursor-pointer font-bold"
+                >
+                  «Не знаю» · {unknown.length}
+                </button>
+                : це слова з ваших текстів без позначки.
+              </>
+            ) : null}
           </p>
         </div>
       ) : (
@@ -170,9 +216,11 @@ export function WordsScreen() {
 
           {visible.length === 0 ? (
             <div className="text-ink-3 text-[14px]">
-              {query.trim() === ''
-                ? 'За цим фільтром слів немає.'
-                : `Нічого не знайшлося на «${query.trim()}».`}
+              {query.trim() !== ''
+                ? `Нічого не знайшлося на «${query.trim()}».`
+                : filter === 'unknown'
+                  ? 'Слів без статусу не лишилось — або текстів ще немає.'
+                  : 'За цим фільтром слів немає.'}
             </div>
           ) : null}
         </div>

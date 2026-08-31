@@ -165,3 +165,35 @@ export async function listStoryBodies(): Promise<{ title: string; body: string }
     return [];
   }
 }
+
+export interface StoryFrequency {
+  slug: string;
+  title: string;
+  frequency: { word: string; count: number }[];
+}
+
+/**
+ * Частотні списки оповідань без тіл — для фільтра «не знаю» в словнику:
+ * слова, які трапляються в бібліотеці, але ще не мають статусу. Тіла сюди
+ * не тягнемо: словнику потрібні лише слова з кількостями, а це на порядок
+ * менше за книжку. `connection()` — з тієї ж причини, що в `listStories`.
+ */
+export async function listStoryFrequencies(): Promise<StoryFrequency[]> {
+  await connection();
+
+  const db = getDb();
+  if (db === null) return [];
+
+  try {
+    return await db
+      .select({
+        slug: schema.stories.slug,
+        title: schema.stories.title,
+        frequency: schema.stories.frequency,
+      })
+      .from(schema.stories);
+  } catch (error) {
+    console.warn('listStoryFrequencies: запит до бази не вдався', error);
+    return [];
+  }
+}
