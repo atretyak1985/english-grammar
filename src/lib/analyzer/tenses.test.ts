@@ -26,17 +26,13 @@ function matches(text: string) {
 
 describe('findMatches — теперішні часи', () => {
   it('have + V3 → Present Perfect одним проміжком', () => {
-    expect(matches('We have finished the migration.')).toEqual([
-      { from: 2, to: 4, tense: 'prp' },
-    ]);
+    expect(matches('We have finished the migration.')).toEqual([{ from: 2, to: 4, tense: 'prp' }]);
   });
 
   it('has been + V-ing → той самий Present Perfect, що й простий перфект', () => {
     // Perfect Continuous складено в `prp` навмисно: тема подає обидві форми
     // одним розділом, і підсвітка не має розказувати іншу історію.
-    expect(matches('She has been working since six.')).toEqual([
-      { from: 2, to: 6, tense: 'prp' },
-    ]);
+    expect(matches('She has been working since six.')).toEqual([{ from: 2, to: 6, tense: 'prp' }]);
   });
 
   it('have been без -ing — це звичайний перфект, а не Perfect Continuous', () => {
@@ -75,9 +71,7 @@ describe('findMatches — скорочення, приклеєні до підм
   });
 
   it("'re + V-ing → Present Continuous", () => {
-    expect(matches("They're waiting for the build.")).toEqual([
-      { from: 0, to: 2, tense: 'prc' },
-    ]);
+    expect(matches("They're waiting for the build.")).toEqual([{ from: 0, to: 2, tense: 'prc' }]);
   });
 
   it("'d не розбирається навмисно: за ним і had, і would", () => {
@@ -121,7 +115,9 @@ describe('findMatches — майбутні часи', () => {
   });
 
   it('shall — той самий Future Simple, а не окремий час', () => {
-    expect(matches('Shall we start?')).toEqual([{ from: 0, to: 2, tense: 'fs' }]);
+    // Питання з інверсією: підмет «we» стоїть між shall і start, і проміжок
+    // тягнеться через нього до дієслова.
+    expect(matches('Shall we start?')).toEqual([{ from: 0, to: 4, tense: 'fs' }]);
   });
 
   it('will be + прикметник — Future Simple дієслова be, а не Continuous', () => {
@@ -138,23 +134,17 @@ describe('findMatches — майбутні часи', () => {
     // Найважливіший тест блоку. Якби правило «will + слово» перевірялося раніше,
     // «will have finished» дало б Future Simple на «will have» і окремо
     // підсвічене «finished» як Past Simple по закінченню -ed.
-    expect(matches('We will have finished by then.')).toEqual([
-      { from: 2, to: 6, tense: 'fp' },
-    ]);
+    expect(matches('We will have finished by then.')).toEqual([{ from: 2, to: 6, tense: 'fp' }]);
   });
 });
 
 describe('findMatches — межа між минулим і теперішнім', () => {
   it('had + V3 лишається Past Perfect, а не стає теперішнім', () => {
-    expect(matches('We had finished the migration.')).toEqual([
-      { from: 2, to: 4, tense: 'pp' },
-    ]);
+    expect(matches('We had finished the migration.')).toEqual([{ from: 2, to: 4, tense: 'pp' }]);
   });
 
   it('was + V-ing лишається Past Continuous', () => {
-    expect(matches('I was reviewing the pull request.')).toEqual([
-      { from: 2, to: 4, tense: 'pc' },
-    ]);
+    expect(matches('I was reviewing the pull request.')).toEqual([{ from: 2, to: 4, tense: 'pc' }]);
   });
 
   it('форма, що є і V2, і V3, не позначається двічі після have', () => {
@@ -165,6 +155,101 @@ describe('findMatches — межа між минулим і теперішнім
 
   it('те саме дієслово без have — звичайний Past Simple', () => {
     expect(matches('I sent the invoice.')).toEqual([{ from: 2, to: 2, tense: 'ps' }]);
+  });
+});
+
+describe('findMatches — іменники на -ing після was/were', () => {
+  // Головна пастка тексту «Аліси»: «There was nothing so very remarkable» —
+  // шаблон «was + …ing» бачив у nothing дієприкметник і малював Past Continuous.
+  it('was nothing → Past Simple на самому was, а не Past Continuous', () => {
+    expect(matches('There was nothing here.')).toEqual([{ from: 2, to: 2, tense: 'ps' }]);
+  });
+
+  it('was something → теж Past Simple на was', () => {
+    expect(matches('There was something odd.')).toEqual([{ from: 2, to: 2, tense: 'ps' }]);
+  });
+
+  it('King — іменник, а не V-ing: підсвічується лише said', () => {
+    expect(matches('the King said nothing.')).toEqual([{ from: 4, to: 4, tense: 'ps' }]);
+  });
+
+  it('коротка основа не робить слово дієприкметником, крім справжніх being/doing/going', () => {
+    expect(matches('It was a ring.')).toEqual([{ from: 2, to: 2, tense: 'ps' }]);
+    expect(matches('She was doing it.')).toEqual([{ from: 2, to: 4, tense: 'pc' }]);
+    expect(matches('He was using it.')).toEqual([{ from: 2, to: 4, tense: 'pc' }]);
+  });
+});
+
+describe('findMatches — інверсія в питаннях і після nor', () => {
+  it('did + займенник + дієслово → один проміжок Past Simple', () => {
+    expect(matches('Did you see it?')).toEqual([{ from: 0, to: 4, tense: 'ps' }]);
+  });
+
+  it('did + власна назва + дієслово → один проміжок Past Simple', () => {
+    expect(matches('nor did Alice think it strange.')).toEqual([{ from: 2, to: 6, tense: 'ps' }]);
+  });
+
+  it('had + займенник + V3 → один проміжок Past Perfect', () => {
+    expect(matches('Had you tested it?')).toEqual([{ from: 0, to: 4, tense: 'pp' }]);
+  });
+
+  it('was + займенник + V-ing → Past Continuous через підмет', () => {
+    expect(matches('Was she reading?')).toEqual([{ from: 0, to: 4, tense: 'pc' }]);
+  });
+
+  it('was + займенник без V-ing → Past Simple на самому was', () => {
+    expect(matches('Was she late?')).toEqual([{ from: 0, to: 0, tense: 'ps' }]);
+  });
+
+  it('have + займенник + V3 → Present Perfect через підмет', () => {
+    expect(matches('Have you seen it?')).toEqual([{ from: 0, to: 4, tense: 'prp' }]);
+  });
+
+  it('will + займенник + дієслово → Future Simple через підмет', () => {
+    expect(matches('Will you come?')).toEqual([{ from: 0, to: 4, tense: 'fs' }]);
+  });
+
+  it('do + займенник + дієслово → Present Simple через підмет', () => {
+    expect(matches('Do you deploy on Fridays?')).toEqual([{ from: 0, to: 4, tense: 'prs' }]);
+  });
+
+  it('is + займенник + V-ing → Present Continuous через підмет', () => {
+    expect(matches('Is it raining?')).toEqual([{ from: 0, to: 4, tense: 'prc' }]);
+  });
+
+  it('самостійне did після займенника не тягнеться до прийменника', () => {
+    // «I did it for you» — тут did смислове, і проміжок мусить лишитися на
+    // одному слові, а не дотягнутися до «for».
+    expect(matches('I did it for you.')).toEqual([{ from: 2, to: 2, tense: 'ps' }]);
+  });
+
+  it('самостійне had після займенника не стає перфектом', () => {
+    // Раніше «had it» позначалось Past Perfect. Проміжок не тягнеться до «it»:
+    // після had без V3 перфекта немає, а саме had — звичайний Past Simple
+    // (have є в повній таблиці неправильних дієслів двигуна).
+    expect(matches('She had it in her pocket.')).toEqual([{ from: 2, to: 2, tense: 'ps' }]);
+  });
+
+  it('проміжок не переходить через межу речення', () => {
+    // «did.» закінчує речення — наступне «Then» не має стати його підметом.
+    expect(matches('Yes, I did. Then we left.')).toEqual([
+      { from: 4, to: 4, tense: 'ps' },
+      { from: 10, to: 10, tense: 'ps' },
+    ]);
+  });
+});
+
+describe('findMatches — кілька прислівників між допоміжним і смисловим', () => {
+  it('had never before seen → один проміжок Past Perfect', () => {
+    expect(matches('She had never before seen it.')).toEqual([{ from: 2, to: 8, tense: 'pp' }]);
+  });
+
+  it('had quite forgotten → один проміжок Past Perfect', () => {
+    expect(matches('I had quite forgotten.')).toEqual([{ from: 2, to: 6, tense: 'pp' }]);
+  });
+
+  it('заперечення not лишається всередині проміжку', () => {
+    expect(matches('We had not seen it.')).toEqual([{ from: 2, to: 6, tense: 'pp' }]);
   });
 });
 

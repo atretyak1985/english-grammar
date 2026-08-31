@@ -6,15 +6,9 @@ import { TimelinePastSimple } from '../diagrams';
 
 ### 2.1 Форма — повна таблиця
 
-<Formula
-  lines={[
-    { sign: '+', body: <>I / you / he / she / it / we / they <K>+ V2</K></>, comment: 'worked, went, built — 2-га форма' },
-    { sign: '−', body: <>Підмет <Neg>+ did not (didn&apos;t) + V1</Neg></>, comment: "didn't work, didn't go — 1-ша форма!" },
-    { sign: '?', body: <><Q>Did</Q> + підмет <Q>+ V1</Q> … ?</>, comment: 'Did you deploy? — НЕ «Did you deployed?»' },
-    { sign: '?', body: <>Wh- + <Q>did</Q> + підмет <Q>+ V1</Q> … ?</>, comment: 'Where did you go? What did he say?' },
-  ]}
-  note="Короткі відповіді: Yes, I did. / No, I didn't."
-/>
+{/* Рядки формули живуть у lib/grammar/cards.ts — тому самому джерелі, що й
+    картка слова в читалці: теорія і підсвітка не можуть розійтися. */}
+<FormulaOf tense="ps" />
 
 #### Дієслово to be — окремий випадок, без did
 

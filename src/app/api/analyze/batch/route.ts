@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 import { resolveAccess, consumeWords } from '@/lib/access';
 import { batchState } from '@/lib/analyzer/batch';
 import { reserveCall } from '@/lib/analyzer/throttle';
-import { tokenize } from '@/lib/analyzer/tenses';
 import { clientIp } from '@/lib/dictionary/throttle';
 
 /**
@@ -16,7 +15,8 @@ import { clientIp } from '@/lib/dictionary/throttle';
  *
  * Відповідь ніколи не є умовою роботи екрана: читалка живе на локальній
  * розмітці й синхронному розборі поточної сторінки, а батч лише прибирає
- * очікування наперед.
+ * очікування наперед. Моделі в батчі йдуть ЛИШЕ спірні речення — певні шматки
+ * двигун кешує вже при створенні, безкоштовно.
  */
 export const runtime = 'nodejs';
 
@@ -33,11 +33,11 @@ function fail(message: string, status: number, extra?: Record<string, unknown>) 
 
 export async function POST(request: Request) {
   // Той самий гвард, що й у синхронної ручки, і з тієї самої причини: без
-  // акаунта нема кому списати слова за батч, який може коштувати як ціла книжка.
+  // акаунта нема кому списати слова за уточнення моделлю.
   const access = await resolveAccess();
   if (access.level === 'guest') {
     return fail(
-      'Уточнення моделлю доступне лише зі входом. Бібліотека вже розібрана і доступна без входу.',
+      'Розбір тексту доступний лише зі входом. Бібліотека вже розібрана і доступна без входу.',
       401,
       { reason: 'auth-required' },
     );
@@ -59,27 +59,19 @@ export async function POST(request: Request) {
     return fail(`Документ завеликий: ${text.length} символів проти ${MAX_CHARS}.`, 413);
   }
 
-  // Квота перевіряється по ВСЬОМУ документу до створення батча: батч на 300
-  // сторінок або вкладається в залишок цілком, або не створюється взагалі —
-  // часткового батча на «скільки влізло» тут нема, як і обрізки тексту вище.
-  const words = tokenize(text).filter((token) => token.word !== null).length;
-  if (words > access.remainingWords) {
-    return fail(`Слів цього місяця не залишилось: ${access.remainingWords} з ${access.monthlyWords}.`, 402, {
-      reason: 'quota-exhausted',
-      remainingWords: access.remainingWords,
-      monthlyWords: access.monthlyWords,
-    });
-  }
-
   try {
-    const state = await batchState(text, { gate: () => reserveCall(clientIp(request)) });
+    // Квота перевіряється в ціні батча — словах спірних речень, а не всього
+    // документа, — і рівно перед його створенням: або уточнення вкладається в
+    // залишок цілком, або батча не буде. Часткового батча на «скільки влізло»
+    // тут нема, а розмітку двигуна читач отримує в будь-якому разі.
+    const state = await batchState(text, {
+      gate: (modelWords) => modelWords <= access.remainingWords && reserveCall(clientIp(request)),
+    });
 
     // Рахунок виникає рівно в момент СТВОРЕННЯ батча (`state.created`), а не
-    // при кожному опитуванні: `status: 'pending'` повертає і щойно створений
-    // батч, і вже наявний, який просто ще не готовий, — списувати за другий
-    // випадок означало б платити повторно за той самий документ.
-    if (state.created === true && access.userId !== null) {
-      await consumeWords(access.userId, words);
+    // при кожному опитуванні, і рівно на слова, надіслані моделі.
+    if (state.created === true && state.billedWords !== undefined && access.userId !== null) {
+      await consumeWords(access.userId, state.billedWords);
     }
 
     return NextResponse.json(state);

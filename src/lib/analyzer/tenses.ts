@@ -31,9 +31,11 @@ import type { TenseKey } from '@/types/content';
  * — `'s` перед `-ing` після справжнього присвійного («the team's working
  *   style») дасть хибний Present Continuous — розрізнити їх без розбору
  *   речення неможливо;
- * — у питаннях підмет стоїть між допоміжним і смисловим дієсловом, тому
- *   «did you see» і «do you deploy» позначаться проміжком по підмет: час
- *   названий правильно, межі — приблизно;
+ * — у питаннях підмет стоїть між допоміжним і смисловим дієсловом. Якщо це
+ *   займенник («did you see») або слово з великої літери («did Alice think»),
+ *   проміжок тягнеться через підмет до самого дієслова; складніший підмет
+ *   («did the new engineer see») лишається за межею — там локальний шар не
+ *   бачить, де закінчується підмет і починається дієслово;
  * — **Present Simple без допоміжного локально не видно взагалі.** «We deploy
  *   on Fridays» — це чиста основа дієслова, а «it scales» відрізняється від
  *   іменника в множині лише за контекстом. Тому цей час знаходить майже
@@ -54,17 +56,130 @@ import type { TenseKey } from '@/types/content';
  * й безкоштовно, а розбір моделлю приходить поверх нього і має остаточне слово.
  */
 
-/** Прислівники, які носії ставлять між допоміжним і смисловим дієсловом. */
+/**
+ * Прислівники (і заперечна частка), які носії ставлять між допоміжним і
+ * смисловим дієсловом. Їх може бути кілька поспіль — «had never before seen»,
+ * «had quite forgotten» — тому `nextWordIndex` пропускає до трьох.
+ */
 const INNER_ADVERBS = new Set([
+  'almost',
   'already',
   'always',
+  'before',
   'constantly',
   'ever',
   'forever',
   'just',
+  'long',
   'never',
+  'not',
+  'once',
   'only',
+  'quite',
+  'since',
   'still',
+]);
+
+/** Скільки прислівників поспіль допускається між допоміжним і смисловим. */
+const MAX_INNER_ADVERBS = 3;
+
+/**
+ * Іменники й займенники на -ing, які шаблон «was + …ing» приймав за дієприкметник:
+ * «There was nothing» — це Past Simple дієслова be, а не Past Continuous.
+ */
+const ING_NOUNS = new Set([
+  'anything',
+  'building',
+  'ceiling',
+  'during',
+  'evening',
+  'everything',
+  'feeling',
+  'king',
+  'meaning',
+  'morning',
+  'nothing',
+  'ring',
+  'something',
+  'spring',
+  'string',
+  'thing',
+  'wing',
+]);
+
+/**
+ * Справжні V-ing, у яких після зняття -ing лишається лише дві літери: основа
+ * коротка сама («be», «do», «go») або втратила кінцеве -e («use», «die»). Без
+ * цього списку правило «коротка основа — не дієслово» відкинуло б «was doing».
+ */
+const SHORT_STEM_ING_VERBS = new Set([
+  'aging',
+  'axing',
+  'being',
+  'doing',
+  'dying',
+  'eying',
+  'going',
+  'icing',
+  'lying',
+  'owing',
+  'suing',
+  'tying',
+  'using',
+  'vying',
+]);
+
+/**
+ * Підмет, що при інверсії стає між допоміжним і смисловим дієсловом: «Did you
+ * see», «Was she reading», «nor did Alice think». Власна назва впізнається за
+ * великою літерою — усередині речення вона стоїть тільки в імен.
+ */
+const SUBJECT_PRONOUNS = new Set(['i', 'you', 'he', 'she', 'it', 'we', 'they', 'there']);
+
+/**
+ * Слова, які після інвертованого підмета точно не є смисловим дієсловом:
+ * «I did it for you», «she had it in her pocket» — тут did і had самостійні, і
+ * без цього списку проміжок дотягнувся б до прийменника.
+ */
+const NOT_A_VERB_AFTER_SUBJECT = new Set([
+  'about',
+  'again',
+  'all',
+  'and',
+  'at',
+  'but',
+  'by',
+  'down',
+  'every',
+  'for',
+  'from',
+  'here',
+  'herself',
+  'himself',
+  'in',
+  'itself',
+  'myself',
+  'of',
+  'off',
+  'on',
+  'or',
+  'ourselves',
+  'out',
+  'over',
+  'so',
+  'that',
+  'then',
+  'there',
+  'these',
+  'themselves',
+  'this',
+  'those',
+  'to',
+  'too',
+  'up',
+  'well',
+  'with',
+  'yourself',
 ]);
 
 /** Після had тут стоїть присвійне «мав», а не допоміжне: «I had a laptop». */
@@ -115,6 +230,15 @@ export interface AnalyzedToken {
   startsMatch: boolean;
   /** Останній токен конструкції */
   endsMatch: boolean;
+  /**
+   * Правило двигуна, яким пояснюється конструкція, — ключ у `RULE_CARDS`
+   * (`lib/grammar/cards.ts`). Немає в збігів локальних правил: вони знають
+   * лише час, тому картка слова показує пояснення тільки там, де розмітка
+   * прийшла з двигуна (бібліотека, `/api/analyze`).
+   */
+  rule?: string;
+  /** Межа конструкції хитка і модель її не перевіряла. */
+  uncertain?: boolean;
 }
 
 export interface TenseStat {
@@ -153,7 +277,20 @@ export function normalizeWord(raw: string): string | null {
 }
 
 function isIngForm(word: string | null): boolean {
-  return word !== null && word.length > 4 && word.endsWith('ing');
+  if (word === null || !word.endsWith('ing') || ING_NOUNS.has(word)) return false;
+  const stem = word.length - 3;
+  if (stem >= 3) return true;
+  return stem === 2 && SHORT_STEM_ING_VERBS.has(word);
+}
+
+/** Токен закінчує речення — далі шукати смислове дієслово вже немає сенсу. */
+function endsSentence(raw: string): boolean {
+  return /[.!?;:]["'’”)\]]*$/.test(raw);
+}
+
+/** Слово починається з великої літери — усередині речення це власна назва. */
+function isCapitalized(raw: string): boolean {
+  return /^[^a-zA-Z]*[A-Z]/.test(raw);
 }
 
 function isEdForm(word: string | null): boolean {
@@ -197,24 +334,63 @@ export interface Match {
   from: number;
   to: number;
   tense: TenseKey;
+  /** Правило двигуна (`lib/grammar/rules.ts`); локальні правила його не мають. */
+  rule?: string;
+  /** Межа хитка й моделлю не перевірена — прапорець двигуна. */
+  uncertain?: boolean;
 }
 
 /**
- * Індекс наступного значущого слова після позиції `from`, з можливим
- * прислівником між допоміжним і смисловим дієсловом.
+ * Індекс наступного значущого слова після позиції `from`, з можливими
+ * прислівниками (до `MAX_INNER_ADVERBS` поспіль) між допоміжним і смисловим
+ * дієсловом. Через межу речення не переходить: «Yes, I did. Then we left» не
+ * має склеїти `did` з наступним реченням.
  */
 function nextWordIndex(tokens: AnalyzedToken[], from: number): number | null {
-  let seenAdverb = false;
+  if (endsSentence(tokens[from]?.raw ?? '')) return null;
+  let adverbs = 0;
   for (let i = from + 1; i < tokens.length; i += 1) {
-    const word = tokens[i]?.word;
-    if (!word) continue;
-    if (!seenAdverb && (INNER_ADVERBS.has(word) || word.endsWith('ly'))) {
-      seenAdverb = true;
+    const token = tokens[i];
+    if (!token?.word) continue;
+    if (
+      adverbs < MAX_INNER_ADVERBS &&
+      (INNER_ADVERBS.has(token.word) || token.word.endsWith('ly'))
+    ) {
+      if (endsSentence(token.raw)) return null;
+      adverbs += 1;
       continue;
     }
     return i;
   }
   return null;
+}
+
+/**
+ * Інверсія: якщо одразу за допоміжним стоїть займенник-підмет або слово з
+ * великої літери, повертає індекс цього підмета — смислове дієслово тоді треба
+ * шукати вже після нього. Інакше повертає саме `i`: підмета між ними немає.
+ */
+function verbAnchor(tokens: AnalyzedToken[], i: number): number {
+  if (endsSentence(tokens[i]?.raw ?? '')) return i;
+  for (let j = i + 1; j < tokens.length; j += 1) {
+    const token = tokens[j];
+    if (!token?.word) continue;
+    return SUBJECT_PRONOUNS.has(token.word) || isCapitalized(token.raw) ? j : i;
+  }
+  return i;
+}
+
+/**
+ * Слово після інвертованого підмета, яке може бути смисловим дієсловом. Вужче
+ * за `isVerbCandidate`: без підмета між ними «did + слово» майже завжди
+ * конструкція, а «did it …» часто самостійне («I did it for you»).
+ */
+function isVerbAfterSubject(word: string | null): boolean {
+  return (
+    isVerbCandidate(word) &&
+    !DETERMINERS.has(word ?? '') &&
+    !NOT_A_VERB_AFTER_SUBJECT.has(word ?? '')
+  );
 }
 
 /**
@@ -241,8 +417,12 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
     if (!word) continue;
 
     // 1. was/were + …ing → Past Continuous
+    //
+    // «Was she reading?» — підмет між ними, і проміжок тягнеться через нього.
+    // Без -ing далі («There was nothing», «Was she late?») правило мовчить, і
+    // самотнє was дожене правило 12 як Past Simple дієслова be.
     if (WAS_WERE.has(word)) {
-      const next = nextWordIndex(tokens, i);
+      const next = nextWordIndex(tokens, verbAnchor(tokens, i));
       if (next !== null && isIngForm(tokens[next]?.word ?? null)) {
         matches.push({ from: i, to: next, tense: 'pc' });
         i = next;
@@ -251,10 +431,19 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
     }
 
     // 2. had/hadn't + слово → Past Perfect
+    //
+    // При інверсії («Had you tested», «Had he known») після підмета мусить бути
+    // саме третя форма: «she had it in her pocket» — це самостійне had, і воно
+    // лишається Past Simple за правилом 12.
     if (HAD.has(word)) {
-      const next = nextWordIndex(tokens, i);
+      const anchor = verbAnchor(tokens, i);
+      const next = nextWordIndex(tokens, anchor);
       const nextWord = next === null ? null : (tokens[next]?.word ?? null);
-      if (next !== null && isVerbCandidate(nextWord) && !DETERMINERS.has(nextWord ?? '')) {
+      const isPerfect =
+        anchor === i
+          ? isVerbCandidate(nextWord) && !DETERMINERS.has(nextWord ?? '')
+          : isV3Form(nextWord) && !DETERMINERS.has(nextWord ?? '');
+      if (next !== null && isPerfect) {
         matches.push({ from: i, to: next, tense: 'pp' });
         i = next;
         continue;
@@ -262,9 +451,14 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
     }
 
     // 3. did/didn't + слово → Past Simple
+    //
+    // «Did you see», «nor did Alice think» — проміжок через підмет до дієслова.
     if (DID.has(word)) {
-      const next = nextWordIndex(tokens, i);
-      if (next !== null && isVerbCandidate(tokens[next]?.word ?? null)) {
+      const anchor = verbAnchor(tokens, i);
+      const next = nextWordIndex(tokens, anchor);
+      const nextWord = next === null ? null : (tokens[next]?.word ?? null);
+      const isVerb = anchor === i ? isVerbCandidate(nextWord) : isVerbAfterSubject(nextWord);
+      if (next !== null && isVerb) {
         matches.push({ from: i, to: next, tense: 'ps' });
         i = next;
         continue;
@@ -279,7 +473,10 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
     // розділом, і підсвітка не має розказувати іншу історію.
     const asHave = HAVE.has(word) || contraction(word) === 'have';
     if (asHave || contraction(word) === 'either') {
-      const next = nextWordIndex(tokens, i);
+      // Інверсія («Have you seen») — лише для повного слова: скорочення вже
+      // приклеєне до свого підмета.
+      const anchor = HAVE.has(word) ? verbAnchor(tokens, i) : i;
+      const next = nextWordIndex(tokens, anchor);
       const nextWord = next === null ? null : (tokens[next]?.word ?? null);
 
       // have been working — дивимось на слово ЗА `been`
@@ -305,7 +502,8 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
 
     // 6. am / is / are / 'm / 're / 's + …ing → Present Continuous
     if (BE_PRESENT.has(word) || contraction(word) === 'be' || contraction(word) === 'either') {
-      const next = nextWordIndex(tokens, i);
+      const anchor = BE_PRESENT.has(word) ? verbAnchor(tokens, i) : i;
+      const next = nextWordIndex(tokens, anchor);
       if (next !== null && isIngForm(tokens[next]?.word ?? null)) {
         matches.push({ from: i, to: next, tense: 'prc' });
         i = next;
@@ -315,8 +513,11 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
 
     // 7. do / does / don't / doesn't + слово → Present Simple
     if (DO_PRESENT.has(word)) {
-      const next = nextWordIndex(tokens, i);
-      if (next !== null && isVerbCandidate(tokens[next]?.word ?? null)) {
+      const anchor = verbAnchor(tokens, i);
+      const next = nextWordIndex(tokens, anchor);
+      const nextWord = next === null ? null : (tokens[next]?.word ?? null);
+      const isVerb = anchor === i ? isVerbCandidate(nextWord) : isVerbAfterSubject(nextWord);
+      if (next !== null && isVerb) {
         matches.push({ from: i, to: next, tense: 'prs' });
         i = next;
         continue;
@@ -330,7 +531,8 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
     // «will + слово», інакше конструкція розпалася б на Future Simple плюс
     // окремо підсвічене дієслово.
     if (WILL.has(word) || contraction(word) === 'will') {
-      const next = nextWordIndex(tokens, i);
+      const anchor = WILL.has(word) ? verbAnchor(tokens, i) : i;
+      const next = nextWordIndex(tokens, anchor);
       const nextWord = next === null ? null : (tokens[next]?.word ?? null);
 
       if (next !== null) {
@@ -370,7 +572,7 @@ export function findMatches(tokens: AnalyzedToken[]): Match[] {
         // will deploy · will be fine · will have lunch — усе це Future Simple.
         // Проміжок тягнеться до наступного слова, бо саме зв'язку «will + V»
         // читач і має побачити цілою.
-        if (isVerbCandidate(nextWord)) {
+        if (anchor === i ? isVerbCandidate(nextWord) : isVerbAfterSubject(nextWord)) {
           matches.push({ from: i, to: next, tense: 'fs' });
           i = next;
           continue;
@@ -403,7 +605,12 @@ export function applyMatches(tokens: AnalyzedToken[], matches: Match[]): Analysi
   for (const match of matches) {
     for (let i = match.from; i <= match.to; i += 1) {
       const token = tokens[i];
-      if (token) token.tense = match.tense;
+      if (!token) continue;
+      token.tense = match.tense;
+      // Правило й хиткість — на кожному токені конструкції: картка слова
+      // відкривається з БУДЬ-ЯКОГО її слова, а не лише з першого.
+      if (match.rule !== undefined) token.rule = match.rule;
+      if (match.uncertain === true) token.uncertain = true;
     }
     const startToken = tokens[match.from];
     const endToken = tokens[match.to];

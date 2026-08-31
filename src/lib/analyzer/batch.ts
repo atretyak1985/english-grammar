@@ -1,18 +1,26 @@
 import { eq, inArray } from 'drizzle-orm';
 
 import { getDb, schema } from '@/db';
-import { MODEL, getClaude } from '@/lib/claude';
+import { getClaude } from '@/lib/claude';
+import { analyzeGrammar, type GrammarMatch } from '@/lib/grammar';
+import {
+  type RefinePlan,
+  applyVerdicts,
+  planPieces,
+  verdictFor,
+} from '@/lib/grammar/refine';
 
-import { fromRow, hashOf } from './cache';
+import { type AnalyzedMatch, fromRow, hashOf, saveAnalysis, toStored } from './cache';
 import { type Chunk, chunkText, chunksOf } from './chunks';
-import { PROMPT_VERSION, type ReviewedMatch, parseMatches, requestParams, wordsIn } from './review';
+import { parseMatches, requestParams, wordsIn } from './review';
 import { tokenize } from './tenses';
 
 /**
- * Розбір цілої книжки через Batch API. Вигода тут подвійна, і знижка — менша
- * її половина. Batch удвічі дешевший за синхронний виклик, але головне те, що
- * поки читач дійде до тексту, розібрано вже все: жодна сторінка не чекає, а
- * статистика рахується по всьому документу, а не по прочитаному.
+ * Розбір цілої книжки наперед. Двигун розмічає кожен шматок одразу й
+ * безкоштовно; у Batch API йдуть ЛИШЕ речення з хиткими збігами — те саме
+ * уточнення, що робить синхронна ручка, тільки вдвічі дешевше і на весь
+ * документ заздалегідь. Шматки, де хитких збігів немає, лягають у кеш прямо
+ * при створенні батча, без жодного виклику моделі.
  *
  * Батч асинхронний, а ручка Next.js живе рівно стільки, скільки запит: чекати
  * всередині неї не можна, фонового воркера немає. Тому результат ЗАБИРАЄТЬСЯ
@@ -44,18 +52,18 @@ export const MAX_BATCH_CHUNKS = 80;
 export type BatchStatus =
   /** Батча немає й не буде: текст закороткий, немає ключа або немає бази. */
   | 'skipped'
-  /** Батч у роботі — розбір буде, але не зараз. */
+  /** Батч у роботі — уточнення буде, але не зараз. */
   | 'pending'
   /** Результати вже в `analyses`: сторінки братимуться з кешу. */
   | 'ready';
 
 export interface BatchOptions {
   /**
-   * Питається лише перед СТВОРЕННЯМ батча. Опитування готового батча ліміту не
-   * витрачає: воно нічого не коштує, і карати за нього того, хто просто читає,
-   * нема за що.
+   * Питається лише перед СТВОРЕННЯМ батча і отримує його ціну — слова спірних
+   * речень, які підуть моделі. Опитування готового батча ліміту не витрачає:
+   * воно нічого не коштує, і карати за нього того, хто просто читає, нема за що.
    */
-  gate?: () => boolean;
+  gate?: (modelWords: number) => boolean;
 }
 
 export interface BatchState {
@@ -69,7 +77,7 @@ export interface BatchState {
    * означала б сімдесят запитів заради того, що лежить в одній таблиці, і
    * статистика по всьому документу залишалася б недосяжною до кінця читання.
    */
-  chunks: { start: number; end: number; matches: ReviewedMatch[] }[];
+  chunks: { start: number; end: number; matches: AnalyzedMatch[] }[];
   /**
    * `true` рівно тоді, коли ЦЕЙ виклик сам створив батч (`client.messages.
    * batches.create` справді відбувся). Відсутнє в усіх інших випадках, включно
@@ -78,16 +86,35 @@ export interface BatchState {
    * рахунок не визначити, а за цим полем можна.
    */
   created?: boolean;
+  /** Слова, надіслані моделі створеним батчем, — рівно стільки списує квота. */
+  billedWords?: number;
 }
 
-/** `custom_id` обмежений довжиною, тому в ньому порядковий номер, а не хеш. */
-function idOf(order: number): string {
-  return `c${order}`;
+/**
+ * `custom_id` обмежений довжиною, тому в ньому номер шматка й номер спірного
+ * проміжку в ньому, а не хеші.
+ */
+function idOf(chunkOrder: number, pieceOrder: number): string {
+  return `c${chunkOrder}p${pieceOrder}`;
 }
 
-function orderOf(customId: string): number | null {
-  const order = Number.parseInt(customId.slice(1), 10);
-  return Number.isInteger(order) && order >= 0 ? order : null;
+function ordersOf(customId: string): { chunk: number; piece: number } | null {
+  const parsed = /^c(\d+)p(\d+)$/.exec(customId);
+  if (parsed === null) return null;
+  const chunk = Number.parseInt(parsed[1] ?? '', 10);
+  const piece = Number.parseInt(parsed[2] ?? '', 10);
+  if (!Number.isInteger(chunk) || !Number.isInteger(piece)) return null;
+  return { chunk, piece };
+}
+
+/**
+ * Розмітка шматка двигуном разом із планом уточнення. І створення батча, і
+ * забирання результатів мусять бачити ті самі проміжки — двигун
+ * детермінований, тому перерахунок дає їх байт у байт.
+ */
+function chunkPlan(chunkOwnText: string): { matches: GrammarMatch[]; plan: RefinePlan } {
+  const engine = analyzeGrammar(chunkOwnText);
+  return { matches: engine.matches, plan: planPieces(chunkOwnText, engine.matches) };
 }
 
 /**
@@ -153,9 +180,9 @@ async function collect(text: string, status: BatchStatus): Promise<BatchState> {
       start: chunk.start,
       end: chunk.end,
       matches: found.map((match) => ({
+        ...match,
         from: match.from + chunk.start,
         to: match.to + chunk.start,
-        tense: match.tense,
       })),
     });
   }
@@ -164,14 +191,15 @@ async function collect(text: string, status: BatchStatus): Promise<BatchState> {
 }
 
 /**
- * Створює батч на все, що лишилося нерозібраним. Повертає стан: `pending`, якщо
- * батч пішов у роботу, `ready`, якщо виявилося, що розбирати нічого.
+ * Створює батч на спірні речення всього, що лишилося нерозібраним; певні
+ * шматки лягають у кеш одразу. Повертає стан: `pending`, якщо батч пішов у
+ * роботу, `ready`, якщо виявилося, що моделі розбирати нічого.
  */
 async function submit(
   docHash: string,
   text: string,
   chunks: Chunk[],
-  gate: (() => boolean) | undefined,
+  gate: ((modelWords: number) => boolean) | undefined,
 ): Promise<BatchState> {
   const client = getClaude();
   const db = getDb();
@@ -185,25 +213,49 @@ async function submit(
   for (let order = 0; order < SYNC_CHUNKS; order += 1) todo.delete(order);
   if (todo.size === 0) return await collect(text, 'ready');
 
-  const eligible = [...todo]
-    .sort((a, b) => a - b)
-    .filter((order) => wordsIn(texts[order] ?? '') > 0);
+  // Двигун проходить кожен нерозібраний шматок уже тут: шматки без хитких
+  // збігів — готовий результат, він кешується одразу й моделі не вартий.
+  const uncertainOrders: number[] = [];
+  const plans = new Map<number, RefinePlan>();
+  for (const order of [...todo].sort((a, b) => a - b)) {
+    const own = texts[order];
+    const hash = hashes[order];
+    if (own === undefined || hash === undefined || wordsIn(own) === 0) continue;
+
+    const { matches, plan } = chunkPlan(own);
+    if (plan.words === 0) {
+      await saveAnalysis(hash, toStored(matches), wordsIn(own));
+      continue;
+    }
+    plans.set(order, plan);
+    uncertainOrders.push(order);
+  }
+  if (uncertainOrders.length === 0) return await collect(text, 'ready');
 
   // Відрізане називаємо вголос: мовчазне обмеження читалося б як «розібрано
   // все», хоча хвіст книжки лишився синхронному шляху.
-  const taken = eligible.slice(0, MAX_BATCH_CHUNKS);
-  if (taken.length < eligible.length) {
-    console.info(`batch: беремо ${taken.length} шматків з ${eligible.length}, решта — синхронно`);
+  const taken = uncertainOrders.slice(0, MAX_BATCH_CHUNKS);
+  if (taken.length < uncertainOrders.length) {
+    console.info(`batch: беремо ${taken.length} шматків з ${uncertainOrders.length}, решта — синхронно`);
   }
 
-  const requests = taken.map((order) => ({
-    custom_id: idOf(order),
-    params: requestParams(texts[order] ?? ''),
-  }));
+  const requests = taken.flatMap((order) => {
+    const plan = plans.get(order);
+    if (plan === undefined) return [];
+    return plan.pieces.map((piece, pieceOrder) => ({
+      custom_id: idOf(order, pieceOrder),
+      params: requestParams(chunkText(plan.tokens, piece)),
+    }));
+  });
   if (requests.length === 0) return await collect(text, 'ready');
 
-  // Дозвіл питаємо в останню мить — коли вже відомо, що витрата справді буде.
-  if (gate !== undefined && !gate()) return { status: 'skipped', ready: 0, total: chunks.length, chunks: [] };
+  // Дозвіл питаємо в останню мить і в ціні уточнення: скільки слів у спірних
+  // реченнях, стільки й важить рішення. Відмова не скасовує вже закешовану
+  // роботу двигуна — зникає лише батч.
+  const modelWords = taken.reduce((sum, order) => sum + (plans.get(order)?.words ?? 0), 0);
+  if (gate !== undefined && !gate(modelWords)) {
+    return await collect(text, 'skipped');
+  }
 
   const batch = await client.messages.batches.create({ requests });
 
@@ -213,16 +265,18 @@ async function submit(
     // Два вкладки з тією самою книжкою — звичайна річ; виграє той, хто перший.
     .onConflictDoNothing();
 
-  console.info(`batch: ${batch.id}, шматків ${requests.length} з ${chunks.length}`);
+  console.info(
+    `batch: ${batch.id}, шматків ${taken.length} з ${chunks.length}, спірних речень на ${modelWords} слів`,
+  );
   // `created: true` лягає лише тут: це єдине місце, де `batches.create`
   // справді пішов у мережу, тобто рахунок за документ уже виставлено.
-  return { ...(await collect(text, 'pending')), created: true };
+  return { ...(await collect(text, 'pending')), created: true, billedWords: modelWords };
 }
 
 /**
- * Переносить готові результати в `analyses`. Помилка на окремому шматку не
- * зупиняє решту: половина розібраної книжки корисніша за нуль, а непережований
- * шматок просто дістанеться синхронному шляху.
+ * Переносить готові вердикти в `analyses`: розмітка шматка двигуном зливається
+ * з відповідями моделі на його спірні речення. Помилка на окремому проміжку не
+ * зупиняє решту: неуточнений збіг лишається хитким, а не зникає.
  */
 async function ingest(row: typeof schema.analysisBatches.$inferSelect): Promise<number> {
   const client = getClaude();
@@ -232,31 +286,54 @@ async function ingest(row: typeof schema.analysisBatches.$inferSelect): Promise<
   const tokens = tokenize(row.docText);
   const texts = chunksOf(tokens).map((chunk) => chunkText(tokens, chunk));
 
-  let saved = 0;
+  // Вердикти групуються по шматках: рядок кешу — це ШМАТОК, і писати його
+  // можна лише зібравши всі відповіді по його проміжках.
+  const verdictsByChunk = new Map<number, Map<number, unknown>>();
+
   for await (const result of await client.messages.batches.results(row.batchId)) {
     if (result.result.type !== 'succeeded') continue;
 
-    const order = orderOf(result.custom_id);
-    const own = order === null ? undefined : texts[order];
-    const hash = order === null ? undefined : row.chunkHashes[order];
+    const orders = ordersOf(result.custom_id);
+    if (orders === null) continue;
+
+    const own = texts[orders.chunk];
+    const hash = row.chunkHashes[orders.chunk];
+    // Хеш зі збереженого списку мусить збігтися з хешем перерахованого шматка:
+    // якщо ні, текст, нарізка або версія правил змінилися між створенням батча
+    // і забиранням, і класти цю розмітку в кеш означало б підсвітити не ті слова.
+    if (own === undefined || hash === undefined || hashOf(own) !== hash) continue;
+
+    const byPiece = verdictsByChunk.get(orders.chunk) ?? new Map<number, unknown>();
+    byPiece.set(orders.piece, result.result.message.content);
+    verdictsByChunk.set(orders.chunk, byPiece);
+  }
+
+  let saved = 0;
+  for (const [order, byPiece] of verdictsByChunk) {
+    const own = texts[order];
+    const hash = row.chunkHashes[order];
     if (own === undefined || hash === undefined) continue;
 
-    // Хеш зі збереженого списку мусить збігтися з хешем перерахованого шматка:
-    // якщо ні, текст або нарізка змінилися між створенням батча і забиранням,
-    // і класти цю розмітку в кеш означало б підсвітити не ті слова.
-    if (hashOf(own) !== hash) continue;
-
     try {
-      await db
-        .insert(schema.analyses)
-        .values({
-          hash,
-          matches: parseMatches(own, result.result.message.content),
-          model: MODEL,
-          promptVersion: PROMPT_VERSION,
-          words: wordsIn(own),
-        })
-        .onConflictDoNothing();
+      // Той самий детермінований перерахунок, що й при створенні: двигун і
+      // план проміжків збігаються з тими, з яких батч будувався.
+      const { matches, plan } = chunkPlan(own);
+      const refined = new Map<GrammarMatch, GrammarMatch | null>();
+
+      for (const [pieceOrder, piece] of plan.pieces.entries()) {
+        const content = byPiece.get(pieceOrder);
+        if (content === undefined) continue;
+
+        const pieceText = chunkText(plan.tokens, piece);
+        const reviewed = parseMatches(pieceText, content as { type: string }[]);
+        for (const match of matches) {
+          if (match.uncertain !== true) continue;
+          if (match.from < piece.start || match.to > piece.end) continue;
+          refined.set(match, verdictFor(match, piece.start, reviewed).match);
+        }
+      }
+
+      await saveAnalysis(hash, toStored(applyVerdicts(matches, refined)), wordsIn(own));
       saved += 1;
     } catch (error) {
       console.warn('analyzer batch: шматок не записався', error);

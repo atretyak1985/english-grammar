@@ -20,11 +20,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
-import { chunksOf, chunkText, type Chunk } from '../src/lib/analyzer/chunks.ts';
-import { findMatches, tokenize, type AnalyzedToken, type Match } from '../src/lib/analyzer/tenses.ts';
+import { chunksOf, type Chunk } from '../src/lib/analyzer/chunks.ts';
+import { tokenize, type AnalyzedToken } from '../src/lib/analyzer/tenses.ts';
 import { wordTokens } from '../src/lib/analyzer/words.ts';
-import { review } from '../src/lib/analyzer/review.ts';
 import { normalizeExtractedText } from '../src/lib/extract/types.ts';
+import { analyzeGrammar, type GrammarMatch } from '../src/lib/grammar/index.ts';
+import { refineUncertain } from '../src/lib/grammar/refine.ts';
 import {
   ARTIFACT_FORMAT,
   parseArtifact,
@@ -46,7 +47,7 @@ interface Options {
   license: string;
   sourceUrl: string;
   sortOrder: number;
-  /** Уточнити розмітку моделлю замість локальних правил. */
+  /** Уточнити моделлю хиткі збіги двигуна (`uncertain`) — не всю розмітку. */
   useReview: boolean;
 }
 
@@ -65,10 +66,10 @@ const USAGE = `Внести книжку в бібліотеку.
   make import-book ARGS='--in <файл|URL> --slug <slug> --title "Назва" --author "Автор" --source "Project Gutenberg" --license "public domain" --source-url "https://..."'
 
   --in          PDF, .txt або http(s) URL. Шапку й підвал Project Gutenberg
-                скрипт зрізає сам.
-  --review      розмітити моделлю (потрібен ANTHROPIC_API_KEY, платний виклик
-                на кожен шматок). Типово — локальні правила, безкоштовно й
-                без мережі.
+                скрипт зрізає сам, підкреслення-курсив (_so_) — теж.
+  --review      уточнити моделлю хиткі збіги двигуна (потрібен ANTHROPIC_API_KEY,
+                платний виклик на шматки з хиткими збігами). Типово — лише
+                двигун, безкоштовно й без мережі.
 `;
 
 function parseArgs(argv: string[]): Options {
@@ -185,6 +186,18 @@ function stripGutenberg(text: string): string {
 }
 
 /**
+ * Підкреслення-курсив Project Gutenberg (`_so_ hot`) прибирається при читанні,
+ * до нарізки й нумерації: для читача це шум, а для двигуна — зіпсовані слова
+ * («_i_» замість «I»). Слів це не зсуває: підкреслення клеїться до слова, а не
+ * стоїть окремим токеном.
+ */
+function stripUnderscores(text: string): string {
+  if (!text.includes('_')) return text;
+  console.log('прибрано підкреслення-курсив');
+  return text.replace(/_/g, '');
+}
+
+/**
  * Найчастіша помилка тут — не зламаний файл, а заповнювач із документації,
  * скопійований дослівно: `--in book.pdf`. Сире `ENOENT: no such file` у такому
  * разі не бреше, але й не допомагає, тому шлях перевіряється до читання, а
@@ -213,47 +226,6 @@ async function readInput(spec: string): Promise<string> {
 }
 
 /**
- * Розмітка моделлю, шматок за шматком. Індекси, які повертає `review`, —
- * відносні до тексту шматка, тому додається `chunk.start`: текст шматка
- * склеєний з тих самих токенів (`chunkText`), і його `tokenize` дає ту саму
- * послідовність, тому зсув — просте додавання, а не пошук відповідності.
- *
- * Шматок, на якому модель не відповіла, НЕ лишається порожнім: у нього
- * підставляються локальні правила. Порожній шматок посеред книжки виглядав би
- * як сторінка без жодного дієслова — тихіша й гірша поломка, ніж трохи грубіша
- * розмітка.
- */
-async function markupByReview(tokens: AnalyzedToken[], chunks: Chunk[]): Promise<Match[]> {
-  const all: Match[] = [];
-
-  for (const [index, chunk] of chunks.entries()) {
-    const text = chunkText(tokens, chunk);
-    const result = await review(text);
-
-    if (result === null) {
-      const local = findMatches(tokens).filter(
-        (match) => match.from >= chunk.start && match.to <= chunk.end,
-      );
-      console.warn(
-        `шматок ${index + 1}/${chunks.length}: модель не відповіла — лишаються локальні правила (${local.length} збігів)`,
-      );
-      all.push(...local);
-      continue;
-    }
-
-    for (const match of result.matches) {
-      all.push({ from: match.from + chunk.start, to: match.to + chunk.start, tense: match.tense });
-    }
-    console.log(
-      `шматок ${index + 1}/${chunks.length}: ${result.matches.length} збігів, ` +
-        `${result.usage.input} вх. / ${result.usage.output} вих. токенів`,
-    );
-  }
-
-  return all.sort((a, b) => a.from - b.from);
-}
-
-/**
  * Індекси токенів → номери слів з 1, наскрізно, згруповані по шматках. Це
  * зворотний бік `toTokenMatches`, і рахується він тією самою таблицею
  * `wordTokens` — інакше два переклади між тими самими координатами розійшлися б,
@@ -265,7 +237,7 @@ async function markupByReview(tokens: AnalyzedToken[], chunks: Chunk[]): Promise
  * би молча. Трапитись це може лише на жорсткому розрізі `CHUNK_MAX_WORDS`
  * посеред речення.
  */
-function toArtifactChunks(tokens: AnalyzedToken[], chunks: Chunk[], matches: Match[]): ArtifactChunk[] {
+function toArtifactChunks(tokens: AnalyzedToken[], chunks: Chunk[], matches: GrammarMatch[]): ArtifactChunk[] {
   const words = wordTokens(tokens);
   const wordNumber = new Map<number, number>(words.map((word, i) => [word.index, i + 1]));
 
@@ -291,7 +263,7 @@ function toArtifactChunks(tokens: AnalyzedToken[], chunks: Chunk[], matches: Mat
         continue;
       }
 
-      inChunk.push({ word, length: last - word + 1, tense: match.tense });
+      inChunk.push({ word, length: last - word + 1, tense: match.tense, rule: match.ruleId });
     }
 
     return { index, firstWord, lastWord, matches: inChunk };
@@ -309,7 +281,7 @@ function countByTense(chunks: ArtifactChunk[]): Record<string, number> {
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
 
-  const text = stripGutenberg(await readInput(options.input));
+  const text = stripUnderscores(stripGutenberg(await readInput(options.input)));
   if (text.length === 0) throw new Error(`${options.input}: після нормалізації текст порожній.`);
 
   const tokens = tokenize(text);
@@ -317,14 +289,28 @@ async function main(): Promise<void> {
   const words = wordTokens(tokens).length;
   console.log(`${words} слів, ${chunks.length} шматків`);
 
-  const matches = options.useReview
-    ? await markupByReview(tokens, chunks)
-    : findMatches(tokens);
+  // Розмітку завжди дає двигун; модель (--review) лише уточнює хиткі збіги.
+  const analysis = analyzeGrammar(text);
+  const uncertainCount = analysis.matches.filter((match) => match.uncertain).length;
+  console.log(`двигун: ${analysis.matches.length} збігів, з них хитких ${uncertainCount}`);
+
+  let matches = analysis.matches;
+  let refinedByModel = false;
+  if (options.useReview) {
+    const refinement = await refineUncertain(text, matches, (line) => console.log(line));
+    matches = refinement.matches;
+    refinedByModel = refinement.usage !== null;
+    console.log(
+      `уточнення: переглянуто ${refinement.checked}, підтверджено ${refinement.confirmed}, ` +
+        `змінено час ${refinement.retensed}, прибрано ${refinement.dropped}`,
+    );
+  }
 
   const artifact: Artifact = {
     format: ARTIFACT_FORMAT,
-    seededBy: options.useReview ? 'claude-cli' : 'local-rules',
-    ...(options.useReview && process.env.ANTHROPIC_MODEL
+    seededBy: 'grammar-engine',
+    rulesVersion: analysis.rulesVersion,
+    ...(refinedByModel && process.env.ANTHROPIC_MODEL
       ? { seedModel: process.env.ANTHROPIC_MODEL }
       : {}),
     chunks: toArtifactChunks(tokens, chunks, matches),
