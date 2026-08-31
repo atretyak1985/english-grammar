@@ -204,6 +204,10 @@ async function main(): Promise<void> {
   let matchesAgreed = 0;
   let skipsTaken = 0;
   let skipsAgreed = 0;
+  // Незгода незгоді не рівня: «суддя каже інший час» — суперечність, а «суддя
+  // не бачить збігу» найчастіше межа повноти самого судді. Рахуємо окремо.
+  let retensed = 0;
+  let unseen = 0;
 
   for (const chunk of shuffled(chunks, rng)) {
     if (matchesTaken >= options.matchQuota && skipsTaken >= options.skipQuota) break;
@@ -221,6 +225,19 @@ async function main(): Promise<void> {
     if (sampleMatches.length === 0 && sampleSkips.length === 0) continue;
 
     const judged = await judge(piece);
+
+    // Суддя, що побачив у шматку на дві сотні конструкцій одну-дві, не суддя:
+    // його відповідь обвалилась (обрив виводу чи відмова інструмента). Такий
+    // шматок НЕ судиться — зарахувати його означало б записати всі збіги в
+    // незгоду, а всі пропуски в згоду, тобто зіпсувати обидва числа разом.
+    if (judged.length < engine.matches.length * 0.2) {
+      console.log(
+        `  шматок [${chunk.start}-${chunk.end}]: суддя побачив ${judged.length} з ` +
+          `${engine.matches.length} — відповідь обвалилась, шматок пропущено`,
+      );
+      continue;
+    }
+
     console.log(
       `  шматок [${chunk.start}-${chunk.end}]: двигун ${engine.matches.length} збігів / ` +
         `${engine.skipped.length} пропусків, суддя ${judged.length}; ` +
@@ -232,6 +249,10 @@ async function main(): Promise<void> {
       matchesTaken += 1;
       if (agreed) matchesAgreed += 1;
       const verdict = judged.find((j) => overlaps(j, match));
+      if (!agreed) {
+        if (verdict === undefined) unseen += 1;
+        else retensed += 1;
+      }
       const note = verdict === undefined ? 'суддя не бачить збігу' : `суддя каже ${verdict.tense}`;
       score(match.ruleId, agreed, `${snippet(pieceTokens, match)} — двигун ${match.tense}, ${note}`);
     }
@@ -258,6 +279,7 @@ async function main(): Promise<void> {
   const agreed = matchesAgreed + skipsAgreed;
   console.log('\n=== підсумок ===');
   console.log(`  збіги:    ${matchesAgreed}/${matchesTaken} (${Math.round((matchesAgreed / Math.max(1, matchesTaken)) * 100)}%)`);
+  console.log(`    незгода: інший час ${retensed}, суддя не бачить ${unseen}`);
   console.log(`  пропуски: ${skipsAgreed}/${skipsTaken} (${Math.round((skipsAgreed / Math.max(1, skipsTaken)) * 100)}%)`);
   console.log(`  разом:    ${agreed}/${total} (${Math.round((agreed / Math.max(1, total)) * 100)}%)`);
 }
