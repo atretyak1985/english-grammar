@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 
+import { TENSE_FORMULAS } from '@/lib/grammar/cards';
 import { ASPECT_TEXT, TENSE_ASPECT, type Aspect, type TenseKey } from '@/types/content';
 
 /* ============================================================
@@ -248,6 +249,34 @@ export function Formula({ lines, note }: { lines: readonly FormulaLine[]; note?:
       {note ? <div className="text-label mt-3 italic">{note}</div> : null}
     </div>
   );
+}
+
+/**
+ * Формула часу з даних двигуна (`lib/grammar/cards.ts`) — те саме джерело, що
+ * й картка слова в читалці, тому теорія і підсвітка не можуть розійтися за
+ * побудовою. Рендерить рівно ту саму розмітку, що `<Formula>` з ручними
+ * рядками: ролі шматків — це K / Neg / Q.
+ */
+export function FormulaOf({ tense }: { tense: TenseKey }) {
+  const formula = TENSE_FORMULAS[tense];
+  if (!formula) return null;
+
+  const roled: Record<'key' | 'neg' | 'q', typeof K> = { key: K, neg: Neg, q: Q };
+  const lines: FormulaLine[] = formula.lines.map((line) => ({
+    ...(line.sign !== undefined ? { sign: line.sign } : {}),
+    body: (
+      <>
+        {line.parts.map((part, index) => {
+          if (typeof part === 'string') return <Fragment key={index}>{part}</Fragment>;
+          const Role = roled[part.role];
+          return <Role key={index}>{part.text}</Role>;
+        })}
+      </>
+    ),
+    ...(line.comment !== undefined ? { comment: line.comment } : {}),
+  }));
+
+  return <Formula lines={lines} {...(formula.note !== undefined ? { note: formula.note } : {})} />;
 }
 
 /** Ключова частина формули. */

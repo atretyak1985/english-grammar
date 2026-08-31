@@ -256,6 +256,12 @@ export const stories = pgTable('stories', {
   artifactHash: varchar('artifact_hash', { length: 64 }).notNull(),
   /** Довідка, чим саме розмічено, а не критерій пошуку — не частина ключа. */
   seedModel: varchar('seed_model', { length: 64 }),
+  /**
+   * Версія правил двигуна (`RULES_VERSION`), якою розмічено книжку, — щоб у
+   * проді було видно, чи бібліотека відстала від коду. NULL — розмітка не від
+   * двигуна ('claude-cli').
+   */
+  rulesVersion: integer('rules_version'),
   seededAt: timestamp('seeded_at', { withTimezone: true }),
 });
 

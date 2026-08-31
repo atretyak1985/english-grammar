@@ -40,7 +40,7 @@ export interface LoadedStory {
 /** Один рядок `story_matches` — рівно ті поля, що потрібні для зведення. */
 interface StoryMatchRow {
   chunkIndex: number;
-  matches: { from: number; to: number; tense: string }[];
+  matches: { from: number; to: number; tense: string; rule?: string }[];
 }
 
 /**

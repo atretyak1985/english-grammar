@@ -5,9 +5,10 @@ import type { AnalysisBatch, AnalyzeOptions } from '@/lib/analyzer/cache';
 import { CALLS_PER_WINDOW, clearWindows } from '@/lib/analyzer/throttle';
 
 /**
- * Ручка без кешу і без мережі. Головне тут — що недоступний Claude НЕ
- * перетворюється на помилку: екран уже має локальну підсвітку, і 500 замість
- * порожнього уточнення зламав би робочий стан заради шару, який не обовʼязковий.
+ * Ручка без кешу і без мережі. Головне тут — що розмітка Є ЗАВЖДИ: двигун
+ * детермінований і безкоштовний, а недоступна модель означає лише, що хиткі
+ * збіги лишаються з прапорцем `uncertain`, — і що квота списується за слова,
+ * які СПРАВДІ пішли моделі, а не за весь текст.
  */
 const mocks = vi.hoisted(() => ({ analyze: vi.fn(), resolveAccess: vi.fn(), consumeWords: vi.fn() }));
 
@@ -17,13 +18,19 @@ vi.mock('@/lib/access', () => ({ resolveAccess: mocks.resolveAccess, consumeWord
 const { POST } = await import('./route');
 
 interface Body {
-  matches?: { from: number; to: number; tense: string }[] | null;
+  matches?: { from: number; to: number; tense: string; rule?: string; uncertain?: boolean }[];
   cache?: string;
   error?: string;
   reason?: string;
-  remainingWords?: number;
-  monthlyWords?: number;
 }
+
+/** Розмітка двигуна: хиткий збіг ще не перевірено, правило на місці. */
+const DRAFT = [{ from: 0, to: 0, tense: 'ps' as const, rule: 'ps.v2', uncertain: true as const }];
+/** Та сама розмітка після моделі: межа вирішена, прапорець знято. */
+const REFINED = [{ from: 0, to: 0, tense: 'ps' as const, rule: 'ps.v2' }];
+
+/** Ціна уточнення в словах, яку кеш називає gate. */
+const MODEL_WORDS = 3;
 
 /** Акаунт із великим залишком за замовчуванням — щоб наявні кейси не впирались у квоту. */
 function account(overrides: Partial<Access> = {}): Access {
@@ -39,16 +46,19 @@ function account(overrides: Partial<Access> = {}): Access {
   };
 }
 
-/** Кеш, який щоразу платить: gate питається, розбір повертається. */
+/**
+ * Кеш, який щоразу платить: gate питається в ціні уточнення; відмова повертає
+ * двигунову розмітку без списання — рівно як справжній `analyze`.
+ */
 function alwaysMisses(): void {
   mocks.analyze.mockImplementation((_text: string, _words: number, options: AnalyzeOptions = {}) => {
-    if (options.gate !== undefined && !options.gate()) {
-      return Promise.resolve({ matches: null, cache: 'none', throttled: true } satisfies AnalysisBatch);
+    if (options.gate !== undefined && !options.gate(MODEL_WORDS)) {
+      return Promise.resolve({ matches: DRAFT, cache: 'none', modelWords: 0 } satisfies AnalysisBatch);
     }
     return Promise.resolve({
-      matches: [{ from: 0, to: 0, tense: 'ps' as const }],
+      matches: REFINED,
       cache: 'none',
-      throttled: false,
+      modelWords: MODEL_WORDS,
     } satisfies AnalysisBatch);
   });
 }
@@ -74,20 +84,22 @@ beforeEach(() => {
 });
 
 describe('POST /api/analyze', () => {
-  it('віддає збіги як номери токенів', async () => {
+  it('віддає збіги як номери токенів, з правилом двигуна', async () => {
     const body = (await (await post('She had finished it')).json()) as Body;
 
-    expect(body.matches).toEqual([{ from: 0, to: 0, tense: 'ps' }]);
+    expect(body.matches).toEqual(REFINED);
   });
 
-  it('без ключа Claude — 200 і порожнє уточнення, а не 500', async () => {
-    mocks.analyze.mockResolvedValue({ matches: null, cache: 'none', throttled: false } satisfies AnalysisBatch);
+  it('без ключа Claude — 200 і повна розмітка двигуна, а не порожнеча', async () => {
+    // Без ключа кеш повертає двигунову розмітку: хиткий збіг лишається хитким.
+    mocks.analyze.mockResolvedValue({ matches: DRAFT, cache: 'none', modelWords: 0 } satisfies AnalysisBatch);
 
     const response = await post('She had finished it');
     const body = (await response.json()) as Body;
 
     expect(response.status).toBe(200);
-    expect(body.matches).toBeNull();
+    expect(body.matches).toEqual(DRAFT);
+    expect(mocks.consumeWords).not.toHaveBeenCalled();
   });
 
   it('задовгий текст відхиляється, а не обрізається мовчки', async () => {
@@ -128,22 +140,26 @@ describe('POST /api/analyze', () => {
 });
 
 describe('троттлінг', () => {
-  it(`${CALLS_PER_WINDOW + 1}-й платний виклик з тієї самої адреси дає 429`, async () => {
+  it(`${CALLS_PER_WINDOW + 1}-й платний виклик з тієї самої адреси — 200 з двигуном, без моделі`, async () => {
     const ip = '198.51.100.20';
     for (let index = 0; index < CALLS_PER_WINDOW; index += 1) {
       const response = await post(`text number ${index}`, ip);
       expect(response.status).toBe(200);
     }
+    mocks.consumeWords.mockClear();
 
+    // Ліміт вичерпано, але це не 429: розмітка двигуна — повний результат,
+    // зникає лише платне уточнення, тому й списання немає.
     const response = await post('one text too many', ip);
     const body = (await response.json()) as Body;
 
-    expect(response.status).toBe(429);
-    expect(body.error).toContain('за хвилину');
+    expect(response.status).toBe(200);
+    expect(body.matches).toEqual(DRAFT);
+    expect(mocks.consumeWords).not.toHaveBeenCalled();
   });
 
   it('попадання в кеш ліміт не витрачає', async () => {
-    mocks.analyze.mockResolvedValue({ matches: [], cache: 'memory', throttled: false } satisfies AnalysisBatch);
+    mocks.analyze.mockResolvedValue({ matches: REFINED, cache: 'memory', modelWords: 0 } satisfies AnalysisBatch);
     const ip = '198.51.100.21';
 
     for (let index = 0; index < CALLS_PER_WINDOW + 5; index += 1) {
@@ -154,7 +170,7 @@ describe('троттлінг', () => {
 });
 
 describe('доступ і квота', () => {
-  it('гість отримує 401 з причиною auth-required, модель не питають', async () => {
+  it('гість отримує 401 з причиною auth-required, розбір не запускається', async () => {
     mocks.resolveAccess.mockResolvedValue(
       account({ level: 'guest', userId: null, monthlyWords: 0, remainingWords: 0 }),
     );
@@ -167,15 +183,16 @@ describe('доступ і квота', () => {
     expect(mocks.analyze).not.toHaveBeenCalled();
   });
 
-  it('акаунт із залишком: 200 і списання рівно words', async () => {
+  it('списуються слова, надіслані моделі, а не слова тексту', async () => {
     const response = await post('She had finished it');
 
     expect(response.status).toBe(200);
-    expect(mocks.consumeWords).toHaveBeenCalledWith('user-1', 4);
+    // Слів у тексті 4, але моделі пішло MODEL_WORDS — списання саме за них.
+    expect(mocks.consumeWords).toHaveBeenCalledWith('user-1', MODEL_WORDS);
   });
 
-  it('попадання в кеш (SC-6): 200 і нуль списання', async () => {
-    mocks.analyze.mockResolvedValue({ matches: [], cache: 'memory', throttled: false } satisfies AnalysisBatch);
+  it('попадання в кеш: 200 і нуль списання', async () => {
+    mocks.analyze.mockResolvedValue({ matches: REFINED, cache: 'memory', modelWords: 0 } satisfies AnalysisBatch);
 
     const response = await post('She had finished it');
 
@@ -183,22 +200,25 @@ describe('доступ і квота', () => {
     expect(mocks.consumeWords).not.toHaveBeenCalled();
   });
 
-  it('matches: null — нуль списання', async () => {
-    mocks.analyze.mockResolvedValue({ matches: null, cache: 'none', throttled: false } satisfies AnalysisBatch);
+  it('залишок менший за ціну уточнення — 200 з двигуном, без моделі й списання', async () => {
+    mocks.resolveAccess.mockResolvedValue(account({ remainingWords: MODEL_WORDS - 1, monthlyWords: 100 }));
 
-    await post('She had finished it');
-
-    expect(mocks.consumeWords).not.toHaveBeenCalled();
-  });
-
-  it('текст на 500 слів при залишку 100 — 402, модель не питають', async () => {
-    mocks.resolveAccess.mockResolvedValue(account({ remainingWords: 100, monthlyWords: 100 }));
-
-    const response = await post('a '.repeat(500));
+    const response = await post('She had finished it');
     const body = (await response.json()) as Body;
 
-    expect(response.status).toBe(402);
-    expect(body.reason).toBe('quota-exhausted');
-    expect(mocks.analyze).not.toHaveBeenCalled();
+    expect(response.status).toBe(200);
+    expect(body.matches).toEqual(DRAFT);
+    expect(mocks.consumeWords).not.toHaveBeenCalled();
+  });
+
+  it('залишку рівно вистачає — уточнення відбувається', async () => {
+    mocks.resolveAccess.mockResolvedValue(account({ remainingWords: MODEL_WORDS, monthlyWords: 100 }));
+
+    const response = await post('She had finished it');
+    const body = (await response.json()) as Body;
+
+    expect(response.status).toBe(200);
+    expect(body.matches).toEqual(REFINED);
+    expect(mocks.consumeWords).toHaveBeenCalledWith('user-1', MODEL_WORDS);
   });
 });

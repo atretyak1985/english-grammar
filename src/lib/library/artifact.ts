@@ -1,6 +1,9 @@
+import { V2_ONLY } from '@/data/irregular-verbs';
 import { chunksOf } from '@/lib/analyzer/chunks';
-import { findMatches, tokenize, type Match } from '@/lib/analyzer/tenses';
+import { tokenize, type Match } from '@/lib/analyzer/tenses';
 import { wordTokens } from '@/lib/analyzer/words';
+import { analyzeGrammar } from '@/lib/grammar';
+import { RULES_VERSION } from '@/lib/grammar/rules';
 import { isTenseKey, type TenseKey } from '@/types/content';
 
 /**
@@ -11,8 +14,13 @@ import { isTenseKey, type TenseKey } from '@/types/content';
  * токенів, яких у файлі ніде не видно.
  */
 
-/** Єдина підтримувана версія формату. Зміна формату — це нове число, не патч. */
-export const ARTIFACT_FORMAT = 1;
+/**
+ * Єдина підтримувана версія формату. Зміна формату — це нове число, не патч.
+ * Формат 2 (фаза 2 двигуна): артефакт знає версію правил (`rulesVersion`) і
+ * правило кожного збігу (`rule`). Формат 1 не приймається: обидві книжки
+ * бібліотеки перегенеровано двигуном разом із цією зміною.
+ */
+export const ARTIFACT_FORMAT = 2;
 
 /** Один збіг у координатах слів: перше слово конструкції і скільки слів вона займає. */
 export interface ArtifactMatch {
@@ -21,6 +29,8 @@ export interface ArtifactMatch {
   /** Скільки слів у конструкції, завжди >= 1. */
   length: number;
   tense: TenseKey;
+  /** Правило двигуна, яке дало збіг ('pp.had-v3', 'ps.v2' …) — довідка, не критерій. */
+  rule?: string;
 }
 
 /** Один шматок артефакту — межі й розмітка всередині нього. */
@@ -35,23 +45,30 @@ export interface ArtifactChunk {
 }
 
 export interface Artifact {
-  format: 1;
-  /** Хто розмітив: 'claude-cli' для засіву моделлю, 'local-rules' для смоук-прикладу. */
+  format: 2;
+  /** Хто розмітив: 'grammar-engine' для розмітки двигуном, 'claude-cli' для ручної через CLI. */
   seededBy: string;
-  /** Модель, якщо розмітка від Claude CLI; для локальних правил не заповнюється. */
+  /** Модель, якщо розмітку уточнювала (або робила) модель; для чистого двигуна не заповнюється. */
   seedModel?: string;
+  /**
+   * Версія правил двигуна (`RULES_VERSION`), якими розмічено. Обовʼязкова для
+   * `seededBy: 'grammar-engine'` і мусить дорівнювати поточній — застарілу
+   * розмітку засів відкидає з вимогою перегенерувати. Для 'claude-cli' відсутня:
+   * ручна розмітка від версії правил не залежить.
+   */
+  rulesVersion?: number;
   chunks: ArtifactChunk[];
 }
 
 /**
- * Мінімальна частка очевидних локальних Past Simple, яку мусить підтвердити
- * артефакт (`validate`, перевірка 5). Нижче цього порога розбіжність майже
- * завжди означає зсув нумерації слів на весь текст, а не іншу думку моделі:
- * реальні розходження трапляються на межових конструкціях («had lunch» проти
- * «had finished»), а не на формах, які тут рахуються, — вони очевидні за
- * побудовою `findMatches`.
+ * Мінімальна частка очевидних Past Simple двигуна, яку мусить підтвердити
+ * артефакт (`validate`, перевірка 5). «Очевидні» — збіги правила `ps.v2` на
+ * формах з `V2_ONLY` («went», «came», «saw»): такі слова бувають ЛИШЕ минулим
+ * часом, тут нема ні омографів, ні межових конструкцій. Поріг 0.9, а не 0.6,
+ * бо порівнюються два детерміновані джерела — розбіжність нижче порога майже
+ * напевно означає зсув нумерації слів на весь текст.
  */
-export const MIN_LOCAL_OVERLAP = 0.6;
+export const MIN_LOCAL_OVERLAP = 0.9;
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -88,7 +105,7 @@ function requireInt(file: string, path: string, value: unknown, min: number): nu
 
 function parseMatch(raw: unknown, file: string, path: string): ArtifactMatch {
   if (!isPlainObject(raw)) fail(file, path, 'збіг мусить бути обʼєктом');
-  checkKeys(file, path, raw, ['word', 'length', 'tense']);
+  checkKeys(file, path, raw, ['word', 'length', 'tense', 'rule']);
 
   const word = requireInt(file, child(path, 'word'), raw.word, 1);
   const length = requireInt(file, child(path, 'length'), raw.length, 1);
@@ -97,7 +114,16 @@ function parseMatch(raw: unknown, file: string, path: string): ArtifactMatch {
     fail(file, child(path, 'tense'), `невідомий час ${JSON.stringify(raw.tense)}`);
   }
 
-  return { word, length, tense: raw.tense as TenseKey };
+  if (raw.rule !== undefined && (typeof raw.rule !== 'string' || raw.rule.length === 0)) {
+    fail(file, child(path, 'rule'), 'мусить бути непорожнім рядком, якщо задане');
+  }
+
+  return {
+    word,
+    length,
+    tense: raw.tense as TenseKey,
+    ...(raw.rule !== undefined ? { rule: raw.rule as string } : {}),
+  };
 }
 
 function parseChunk(raw: unknown, file: string, path: string): ArtifactChunk {
@@ -129,10 +155,15 @@ function parseChunk(raw: unknown, file: string, path: string): ArtifactChunk {
  */
 export function parseArtifact(raw: unknown, file: string): Artifact {
   if (!isPlainObject(raw)) fail(file, '', 'артефакт мусить бути обʼєктом');
-  checkKeys(file, '', raw, ['format', 'seededBy', 'seedModel', 'chunks']);
+  checkKeys(file, '', raw, ['format', 'seededBy', 'seedModel', 'rulesVersion', 'chunks']);
 
   if (raw.format !== ARTIFACT_FORMAT) {
-    fail(file, 'format', `очікується ${ARTIFACT_FORMAT}, отримано ${JSON.stringify(raw.format)}`);
+    fail(
+      file,
+      'format',
+      `очікується ${ARTIFACT_FORMAT}, отримано ${JSON.stringify(raw.format)}` +
+        (raw.format === 1 ? ' — формат 1 не приймається, перегенеруйте `make import-book`' : ''),
+    );
   }
 
   if (typeof raw.seededBy !== 'string' || raw.seededBy.length === 0) {
@@ -143,6 +174,26 @@ export function parseArtifact(raw: unknown, file: string): Artifact {
     fail(file, 'seedModel', 'мусить бути рядком, якщо задане');
   }
 
+  const rulesVersion =
+    raw.rulesVersion === undefined ? undefined : requireInt(file, 'rulesVersion', raw.rulesVersion, 1);
+
+  // Розмітка двигуном без версії правил або зі старою версією не приймається:
+  // зміна правил робить старі збіги неспівставними, і тиха згода тут означала б
+  // бібліотеку, розмічену різними правилами одночасно (SC-8).
+  if (raw.seededBy === 'grammar-engine') {
+    if (rulesVersion === undefined) {
+      fail(file, 'rulesVersion', "обовʼязкове поле для seededBy: 'grammar-engine'");
+    }
+    if (rulesVersion !== RULES_VERSION) {
+      fail(
+        file,
+        'rulesVersion',
+        `артефакт розмічено правилами v${rulesVersion}, код — v${RULES_VERSION}: ` +
+          'перегенеруйте `make import-book`',
+      );
+    }
+  }
+
   if (!Array.isArray(raw.chunks)) fail(file, 'chunks', 'відсутнє обовʼязкове поле-масив');
   const chunks = raw.chunks.map((item, i) => parseChunk(item, file, at('chunks', i)));
 
@@ -150,6 +201,7 @@ export function parseArtifact(raw: unknown, file: string): Artifact {
     format: ARTIFACT_FORMAT,
     seededBy: raw.seededBy,
     ...(raw.seedModel !== undefined ? { seedModel: raw.seedModel } : {}),
+    ...(rulesVersion !== undefined ? { rulesVersion } : {}),
     chunks,
   };
 }
@@ -261,21 +313,25 @@ export function validate(text: string, artifact: Artifact, matches: Match[], fil
     }
   }
 
-  // 5. Перетин з локальними правилами нижче порога — майже завжди зсув нумерації.
-  const localPastSimple = findMatches(tokens).filter((match) => match.tense === 'ps');
-  if (localPastSimple.length > 0) {
-    const confirmed = localPastSimple.filter((local) =>
+  // 5. Перетин з очевидними Past Simple двигуна нижче порога — майже завжди
+  // зсув нумерації. «Очевидні» — `ps.v2` на формах з `V2_ONLY`: слова, які
+  // бувають лише минулим часом («went», «saw»), тут двигун помилитися не може.
+  const obviousPastSimple = analyzeGrammar(text).matches.filter(
+    (match) => match.ruleId === 'ps.v2' && V2_ONLY.has(tokens[match.from]?.word ?? ''),
+  );
+  if (obviousPastSimple.length > 0) {
+    const confirmed = obviousPastSimple.filter((local) =>
       matches.some((candidate) => rangesOverlap(local, candidate)),
     ).length;
-    const overlap = confirmed / localPastSimple.length;
+    const overlap = confirmed / obviousPastSimple.length;
 
     if (overlap < MIN_LOCAL_OVERLAP) {
       fail(
         file,
         '',
-        `підтверджено лише ${confirmed}/${localPastSimple.length} очевидних Past Simple ` +
+        `підтверджено лише ${confirmed}/${obviousPastSimple.length} очевидних Past Simple ` +
           `(${Math.round(overlap * 100)}%) — нижче порога ${Math.round(MIN_LOCAL_OVERLAP * 100)}%, ` +
-          'це майже завжди зсув нумерації слів, а не інша думка моделі',
+          'це майже завжди зсув нумерації слів, а не інша думка про межову конструкцію',
       );
     }
   }
