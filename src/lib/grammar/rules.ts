@@ -310,7 +310,7 @@ export const RULES: readonly GrammarRule[] = [
     section: 'present-simple',
     pattern: [BE_PRESENT],
     example: "is this New Zealand · that's very like a mouse",
-    uncertain: (chain) => chain[0]?.lower === "'s",
+    note: "«'s» без дієслова далі — завжди is: прочитання has вимагає V3 після себе, а це вже правило prp.'s-v3.",
   },
   {
     id: 'ps.had-lexical',

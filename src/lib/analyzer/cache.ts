@@ -3,20 +3,24 @@ import { createHash } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 
 import { getDb, schema } from '@/db';
+import { RULES_VERSION, analyzeGrammar, type GrammarMatch } from '@/lib/grammar';
+import { planPieces, refineUncertain } from '@/lib/grammar/refine';
 import { MODEL } from '@/lib/claude';
-import { isTenseKey } from '@/types/content';
+import { isTenseKey, type TenseKey } from '@/types/content';
 
-import { PROMPT_VERSION, type ReviewedMatch, review } from './review';
+import { PROMPT_VERSION } from './review';
 
 /**
- * Кеш розбору тексту моделлю: памʼять процесу → Postgres → Claude. Той самий
- * порядок і та сама поблажливість, що у словнику (`dictionary/cache.ts`):
- * кожен шар необовʼязковий, а його відмова знімає оптимізацію, але не зриває
- * запит (CONCEPT 8.1).
+ * Розбір тексту: двигун одразу, модель — лише для спірного. Двигун
+ * (`lib/grammar`) дає повну детерміновану розмітку за мілісекунди й без
+ * мережі; модель викликається тільки на речення з хиткими збігами
+ * (`refineUncertain`). Тому «без ключа» — це вже не деградація, а повний
+ * результат, просто без уточнення хитких меж.
  *
- * Різниця з словником одна, зате принципова: тут промах коштує грошей. Тому
- * додано злиття однакових запитів у польоті — дві людини, що відкрили той
- * самий текст одночасно, дають один виклик API, а не два.
+ * Кеш памʼять → Postgres → Claude лишається, але зберігає ЗЛИТУ розмітку
+ * (двигун + вердикти моделі) і має сенс лише там, де модель справді
+ * викликалась: чистий двигун швидший за читання з бази, і класти його
+ * результат у кеш означало б заморозити розмітку без жодної економії.
  */
 
 /** Стеля памʼяті процесу: розбори більші за словникові статті, тому їх менше. */
@@ -24,39 +28,68 @@ export const MEMORY_LIMIT = 200;
 
 export type CacheOrigin = 'memory' | 'db' | 'none';
 
+/**
+ * Збіг у кеші й у відповіді ручки: координати `tokenize`, час, правило
+ * двигуна і прапорець хиткої межі, якщо модель її не перевіряла. Назва поля
+ * `rule` — та сама, що в артефактах бібліотеки (`library/artifact.ts`), бо
+ * клієнт читає обидва джерела одними очима.
+ */
+export interface AnalyzedMatch {
+  from: number;
+  to: number;
+  tense: TenseKey;
+  rule?: string;
+  uncertain?: true;
+}
+
 export interface AnalysisBatch {
-  /** `null` — розбору немає: ключа немає, або модель не відповіла. */
-  matches: ReviewedMatch[] | null;
+  /** Повна розмітка тексту: двигун + уточнення моделі, якщо воно відбулося. */
+  matches: AnalyzedMatch[];
   cache: CacheOrigin;
-  /** `true` — платного виклику не робили, бо `gate` не дозволив. */
-  throttled: boolean;
+  /** Слова, надіслані моделі ПЛАТНИМ викликом, — рівно стільки списує квота. */
+  modelWords: number;
 }
 
 export interface AnalyzeOptions {
   /**
-   * Питається лише перед платним викликом. Так троттлінг лишається у ручці й
-   * не тягне знання про HTTP та адреси сюди, а попадання в кеш не витрачають
-   * ліміт — за них ніхто не платив.
+   * Питається лише перед платним викликом і отримує його ціну в словах —
+   * реченнях з хиткими збігами, а не в словах усього тексту. Відмова не
+   * скасовує розбір: двигунова розмітка повертається повністю, зникає лише
+   * уточнення моделлю.
    */
-  gate?: () => boolean;
+  gate?: (modelWords: number) => boolean;
 }
 
 /** LRU на Map: порядок вставляння дає «найдавніше використаний» безкоштовно. */
-const memory = new Map<string, ReviewedMatch[]>();
+const memory = new Map<string, AnalyzedMatch[]>();
 
-/** Запити в польоті: ключ той самий хеш, значення — спільна обіцянка. */
-const inflight = new Map<string, Promise<ReviewedMatch[] | null>>();
+/** Запити в польоті: ключ той самий хеш, значення — спільна обіцянка уточнення. */
+const inflight = new Map<string, Promise<AnalyzedMatch[] | null>>();
 
 /**
- * Ключ кешу. Модель і версія промпту входять у хеш, а не лежать поруч: інакше
- * зміна промпту не інвалідувала б жодного рядка, і застосунок місяцями віддавав
- * би розмітку за правилами, яких у коді вже немає.
+ * Ключ кешу. Модель, версія промпту і ВЕРСІЯ ПРАВИЛ двигуна входять у хеш, а
+ * не лежать поруч: зміна будь-чого з трьох робить старі рядки неспівставними,
+ * і без версій у ключі застосунок місяцями віддавав би розмітку за правилами,
+ * яких у коді вже немає.
  */
 export function hashOf(text: string): string {
-  return createHash('sha256').update(`${MODEL}\n${PROMPT_VERSION}\n${text}`).digest('hex');
+  return createHash('sha256')
+    .update(`${MODEL}\n${PROMPT_VERSION}\n${RULES_VERSION}\n${text}`)
+    .digest('hex');
 }
 
-function memoryGet(hash: string): ReviewedMatch[] | undefined {
+/** Збіги двигуна у форму кешу й відповіді: `ruleId` стає `rule`, як в артефактах. */
+export function toStored(matches: readonly GrammarMatch[]): AnalyzedMatch[] {
+  return matches.map((match) => ({
+    from: match.from,
+    to: match.to,
+    tense: match.tense,
+    rule: match.ruleId,
+    ...(match.uncertain === true ? { uncertain: true as const } : {}),
+  }));
+}
+
+function memoryGet(hash: string): AnalyzedMatch[] | undefined {
   const found = memory.get(hash);
   if (found === undefined) return undefined;
 
@@ -65,7 +98,7 @@ function memoryGet(hash: string): ReviewedMatch[] | undefined {
   return found;
 }
 
-function memorySet(hash: string, matches: ReviewedMatch[]): void {
+function memorySet(hash: string, matches: AnalyzedMatch[]): void {
   memory.delete(hash);
   memory.set(hash, matches);
   while (memory.size > MEMORY_LIMIT) {
@@ -87,21 +120,33 @@ export function clearMemoryCache(): void {
  * батч читав кеш тими самими очима: дві різні перевірки того самого рядка
  * рано чи пізно розійшлися б.
  */
-export function fromRow(raw: unknown): ReviewedMatch[] | undefined {
+export function fromRow(raw: unknown): AnalyzedMatch[] | undefined {
   if (!Array.isArray(raw)) return undefined;
 
-  const out: ReviewedMatch[] = [];
+  const out: AnalyzedMatch[] = [];
   for (const item of raw) {
     if (typeof item !== 'object' || item === null) return undefined;
-    const { from, to, tense } = item as { from?: unknown; to?: unknown; tense?: unknown };
+    const { from, to, tense, rule, uncertain } = item as {
+      from?: unknown;
+      to?: unknown;
+      tense?: unknown;
+      rule?: unknown;
+      uncertain?: unknown;
+    };
     if (!Number.isInteger(from) || !Number.isInteger(to)) return undefined;
     if (!isTenseKey(tense)) return undefined;
-    out.push({ from: from as number, to: to as number, tense });
+    out.push({
+      from: from as number,
+      to: to as number,
+      tense,
+      ...(typeof rule === 'string' && rule.length > 0 ? { rule } : {}),
+      ...(uncertain === true ? { uncertain: true as const } : {}),
+    });
   }
   return out;
 }
 
-async function readDb(hash: string): Promise<ReviewedMatch[] | undefined> {
+async function readDb(hash: string): Promise<AnalyzedMatch[] | undefined> {
   const db = getDb();
   if (db === null) return undefined;
 
@@ -116,7 +161,14 @@ async function readDb(hash: string): Promise<ReviewedMatch[] | undefined> {
   }
 }
 
-async function writeDb(hash: string, matches: ReviewedMatch[], words: number): Promise<void> {
+/**
+ * Пише злиту розмітку в спільний кеш. Експортується для батча: він отримує
+ * вердикти моделі поза цим модулем, але класти їх мусить у ту саму таблицю
+ * тим самим рядком, інакше синхронний шлях не впізнає його роботи.
+ */
+export async function saveAnalysis(hash: string, matches: AnalyzedMatch[], words: number): Promise<void> {
+  memorySet(hash, matches);
+
   const db = getDb();
   if (db === null) return;
 
@@ -124,8 +176,8 @@ async function writeDb(hash: string, matches: ReviewedMatch[], words: number): P
     await db
       .insert(schema.analyses)
       .values({ hash, matches, model: MODEL, promptVersion: PROMPT_VERSION, words })
-      // Той самий хеш означає той самий текст, ту саму модель і той самий
-      // промпт — переписувати нема чого, гонку двох запитів просто гасимо.
+      // Той самий хеш означає той самий текст, ті самі версії правил і
+      // промпту — переписувати нема чого, гонку двох запитів просто гасимо.
       .onConflictDoNothing();
   } catch (error) {
     console.warn('analyzer cache: запис у базу не вдався', error);
@@ -133,9 +185,10 @@ async function writeDb(hash: string, matches: ReviewedMatch[], words: number): P
 }
 
 /**
- * Головний вхід: три шари в порядку памʼять → Postgres → Claude. `matches:
- * null` означає «розбору немає» — без ключа, або модель не відповіла; викликач
- * у цьому разі лишається на локальних правилах.
+ * Головний вхід. Порядок: памʼять → Postgres → двигун (+ модель для хиткого).
+ * Розмітка Є ЗАВЖДИ — двигун не потребує ні ключа, ні мережі; кеш і модель
+ * лише уточнюють хиткі межі. Кешується РІВНО той результат, за який платили:
+ * без платного виклику і кешувати нічого — двигун перерахує швидше.
  */
 export async function analyze(
   text: string,
@@ -145,48 +198,64 @@ export async function analyze(
   const hash = hashOf(text);
 
   const cached = memoryGet(hash);
-  if (cached !== undefined) return { matches: cached, cache: 'memory', throttled: false };
+  if (cached !== undefined) return { matches: cached, cache: 'memory', modelWords: 0 };
 
   const stored = await readDb(hash);
   if (stored !== undefined) {
     memorySet(hash, stored);
-    return { matches: stored, cache: 'db', throttled: false };
+    return { matches: stored, cache: 'db', modelWords: 0 };
   }
+
+  const engine = analyzeGrammar(text);
+  const draft = toStored(engine.matches);
 
   // Другий запит на той самий текст чекає на перший, а не платить удруге — і
-  // ліміту не витрачає, бо платного виклику тут теж не буде.
+  // квоти не витрачає, бо платного виклику тут теж не буде. Якщо перший
+  // повернувся ні з чим, другий віддає власний двигуновий результат.
   const running = inflight.get(hash);
-  if (running !== undefined) return { matches: await running, cache: 'none', throttled: false };
-
-  if (options.gate !== undefined && !options.gate()) {
-    return { matches: null, cache: 'none', throttled: true };
+  if (running !== undefined) {
+    const shared = await running;
+    return { matches: shared ?? draft, cache: 'none', modelWords: 0 };
   }
 
-  const task = (async (): Promise<ReviewedMatch[] | null> => {
-    let result;
+  const plan = planPieces(text, engine.matches);
+  if (plan.words === 0) return { matches: draft, cache: 'none', modelWords: 0 };
+
+  if (options.gate !== undefined && !options.gate(plan.words)) {
+    return { matches: draft, cache: 'none', modelWords: 0 };
+  }
+
+  let billed = 0;
+  const task = (async (): Promise<AnalyzedMatch[] | null> => {
+    let refinement;
     try {
-      result = await review(text);
+      refinement = await refineUncertain(text, engine.matches, undefined, plan);
     } catch (error) {
       // Відмова моделі — не результат: кешувати її означало б закріпити
       // хвилину без мережі чи вичерпаний ліміт на весь час життя тексту.
       console.warn('analyzer cache: модель не відповіла', error);
       return null;
     }
-    if (result === null) return null;
+    // Модель недоступна (немає ключа): уточнення не було, платити й кешувати нічого.
+    if (refinement.usage === null) return null;
 
-    memorySet(hash, result.matches);
-    await writeDb(hash, result.matches, words);
+    // Списуємо за фактом: проміжок, на якому модель не відповіла, не коштував нічого.
+    billed = refinement.words;
+    const merged = toStored(refinement.matches);
+    await saveAnalysis(hash, merged, words);
     console.info(
-      `analyze: ${words} слів, ${result.matches.length} збігів, токени ` +
-        `${result.usage.input}/${result.usage.output}, ` +
-        `кеш −${result.usage.cacheRead} +${result.usage.cacheWrite}`,
+      `analyze: ${words} слів, моделі ${refinement.words}, перевірено ${refinement.checked} хитких ` +
+        `(підтверджено ${refinement.confirmed}, змінено ${refinement.retensed}, знято ${refinement.dropped}), ` +
+        `токени ${refinement.usage.input}/${refinement.usage.output}`,
     );
-    return result.matches;
+    return merged;
   })();
 
   inflight.set(hash, task);
   try {
-    return { matches: await task, cache: 'none', throttled: false };
+    const merged = await task;
+    if (merged === null) return { matches: draft, cache: 'none', modelWords: 0 };
+    return { matches: merged, cache: 'none', modelWords: billed };
   } finally {
     inflight.delete(hash);
   }

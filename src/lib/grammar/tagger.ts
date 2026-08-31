@@ -1,4 +1,4 @@
-import winkNLP, { type ItemToken, type ItsFunction, type WinkMethods } from 'wink-nlp';
+import winkNLP, { type ItemSentence, type ItemToken, type ItsFunction, type WinkMethods } from 'wink-nlp';
 import englishModel from 'wink-eng-lite-web-model';
 
 import { tokenize } from '@/lib/analyzer/tenses';
@@ -91,6 +91,81 @@ function splitGlued(word: TaggedWord): TaggedWord[] {
     { ...word, text: word.text.slice(0, head.length), lower: head, lemma: head },
     { token: word.token, text: word.text.slice(head.length), lower: suffix, lemma, pos: 'AUX' },
   ];
+}
+
+/** Межі речення в номерах токенів `tokenize(text)`; обидві межі — слова. */
+export interface SentenceSpan {
+  start: number;
+  end: number;
+}
+
+/**
+ * Речення тексту як проміжки токенів `tokenize`. Потрібно уточненню моделлю
+ * (`refine.ts`): щоб не платити за весь текст, модель бачить лише речення з
+ * хиткими збігами, а вирізати речення можна тільки знаючи його межі в тій
+ * самій нумерації, що й збіги. Вирівнювання — те саме, що в `tag`: символьні
+ * зсуви wink-токенів проти зсувів токенів `tokenize`.
+ */
+export function sentenceSpans(text: string): SentenceSpan[] {
+  const prepared = text.replace(/_/g, ' ');
+
+  const tokens = tokenize(text);
+  const ends: number[] = [];
+  let offset = 0;
+  for (const token of tokens) {
+    offset += token.raw.length;
+    ends.push(offset);
+  }
+
+  const engine = nlp();
+  const its = engine.its;
+  const doc = engine.readDoc(prepared);
+
+  // Номер нашого токена для кожного wink-токена, у порядку обходу. Пробільні
+  // wink-токени (якщо трапляться) позначаються null — зсув вони рухають, а
+  // слова не несуть.
+  const owner: (number | null)[] = [];
+  let position = 0;
+  let tokenIndex = 0;
+
+  doc.tokens().each((item: ItemToken) => {
+    const spaces = read(item, its.precedingSpaces);
+    const value = read(item, its.value);
+    position += spaces.length;
+    const start = position;
+    position += value.length;
+
+    if (/^\s*$/.test(value)) {
+      owner.push(null);
+      return;
+    }
+
+    while (tokenIndex < ends.length && start >= (ends[tokenIndex] ?? Infinity)) tokenIndex += 1;
+    owner.push(tokenIndex);
+  });
+
+  const spans: SentenceSpan[] = [];
+  doc.sentences().each((sentence: ItemSentence) => {
+    // `its.span` віддає межі речення в номерах wink-токенів документа.
+    const range = sentence.out(its.span as unknown as ItsFunction<number[]>) as unknown as number[];
+    const [begin, finish] = range;
+    if (begin === undefined || finish === undefined) return;
+
+    // Межі мусять бути СЛОВАМИ `tokenize`: текст проміжку збирається злиттям
+    // токенів від першого, і пробіл чи самотнє тире на краю зсунули б нумерацію.
+    let first: number | null = null;
+    let last: number | null = null;
+    for (let i = begin; i <= finish && i < owner.length; i += 1) {
+      const index = owner[i];
+      if (index === null || index === undefined) continue;
+      if (tokens[index]?.word == null) continue;
+      if (first === null) first = index;
+      last = index;
+    }
+    if (first !== null && last !== null) spans.push({ start: first, end: last });
+  });
+
+  return spans;
 }
 
 export function tag(text: string): TaggedWord[] {

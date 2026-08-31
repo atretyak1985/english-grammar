@@ -36,8 +36,21 @@ type Db = NonNullable<ReturnType<typeof DbModule.getDb>>;
 type BatchRow = typeof analysisBatches.$inferSelect;
 type AnalysisRow = typeof analyses.$inferInsert;
 
-/** Текст на `chunks` шматків: речення різні, інакше шматки збіглися б хешами. */
+/**
+ * Текст на кілька шматків: речення різні, інакше шматки збіглися б хешами.
+ * У кожному реченні є «'d gone» — хиткий збіг (`pp.'d-v3`), без якого шматок
+ * не потребує моделі й у батч не потрапляє взагалі.
+ */
 function book(sentences: number): string {
+  return Array.from(
+    { length: sentences },
+    (_, index) =>
+      `The engineer number ${index} had finished report ${index}, and she'd gone home before it started.`,
+  ).join(' ');
+}
+
+/** Той самий обсяг, але БЕЗ жодного хиткого збігу: моделі тут нема чого робити. */
+function certainBook(sentences: number): string {
   return Array.from(
     { length: sentences },
     (_, index) => `The engineer number ${index} had finished report ${index} before it started.`,
@@ -45,7 +58,12 @@ function book(sentences: number): string {
 }
 
 /** Достатньо довгий документ — щоб батч узагалі мав сенс. */
-const LONG = book(1400);
+const LONG = book(600);
+
+/** Чи належить запит батча шматкові з цим номером. */
+function ofChunk(customId: string, order: number): boolean {
+  return customId.startsWith(`c${order}p`);
+}
 
 interface Behaviour {
   /** Хеші, які вже лежать у кеші `analyses`. */
@@ -151,9 +169,9 @@ describe('створення батча', () => {
     const requests = mocks.create.mock.calls[0]?.[0]?.requests as { custom_id: string }[];
     const ids = requests.map((request) => request.custom_id);
 
-    expect(ids).not.toContain('c0');
-    expect(ids).not.toContain('c1');
-    expect(ids).toContain(`c${SYNC_CHUNKS}`);
+    expect(ids.some((id) => ofChunk(id, 0))).toBe(false);
+    expect(ids.some((id) => ofChunk(id, 1))).toBe(false);
+    expect(ids.some((id) => ofChunk(id, SYNC_CHUNKS))).toBe(true);
   });
 
   it('уже розібраний шматок удруге не оплачується', async () => {
@@ -165,7 +183,26 @@ describe('створення батча', () => {
     await batchState(LONG);
 
     const requests = mocks.create.mock.calls[0]?.[0]?.requests as { custom_id: string }[];
-    expect(requests.map((request) => request.custom_id)).not.toContain(`c${SYNC_CHUNKS}`);
+    expect(requests.some((request) => ofChunk(request.custom_id, SYNC_CHUNKS))).toBe(false);
+  });
+
+  it('шматок без хитких збігів кешується одразу і в батч не йде', async () => {
+    const certain = certainBook(600);
+    const written: AnalysisRow[] = [];
+    mocks.getDb.mockReturnValue(fakeDb({ written }));
+
+    const state = await batchState(certain);
+
+    // Двигун упорався сам: моделі нема чого уточнювати, батч не створюється,
+    // а всі шматки поза синхронними лягли в кеш прямо тут, безкоштовно.
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(state.status).toBe('ready');
+    const chunkCount = chunksOf(tokenize(certain)).length;
+    expect(written.length).toBe(chunkCount - SYNC_CHUNKS);
+    // І розмітка в цих рядках справжня, з правилом двигуна.
+    const first = written[0]?.matches as { tense: string; rule?: string }[];
+    expect(first.length).toBeGreaterThan(0);
+    expect(first.every((match) => typeof match.rule === 'string')).toBe(true);
   });
 
   it('без ключа батча не буває, і помилки теж', async () => {
@@ -176,11 +213,23 @@ describe('створення батча', () => {
     expect(state.status).toBe('skipped');
   });
 
-  it('gate не пускає — батч не створюється', async () => {
-    const state = await batchState(LONG, { gate: () => false });
+  it('gate не пускає — батч не створюється, а ціна названа в словах спірних речень', async () => {
+    const prices: number[] = [];
+    const state = await batchState(LONG, {
+      gate: (modelWords) => {
+        prices.push(modelWords);
+        return false;
+      },
+    });
 
     expect(state.status).toBe('skipped');
     expect(mocks.create).not.toHaveBeenCalled();
+    // Ціна — слова спірних речень узятих шматків, а не всього документа:
+    // принаймні синхронні шматки в неї не входять ніколи.
+    const totalWords = tokenize(LONG).filter((token) => token.word !== null).length;
+    expect(prices).toHaveLength(1);
+    expect(prices[0]).toBeGreaterThan(0);
+    expect(prices[0]).toBeLessThan(totalWords);
   });
 });
 
@@ -215,7 +264,7 @@ describe('забирання результатів', () => {
     const written: AnalysisRow[] = [];
     mocks.getDb.mockReturnValue(fakeDb({ batch: pending(), written }));
     mocks.retrieve.mockResolvedValue({ processing_status: 'ended' });
-    resultsAre([succeeded(`c${SYNC_CHUNKS}`, [{ from: 0, to: 0, tense: 'ps' }])]);
+    resultsAre([succeeded(`c${SYNC_CHUNKS}p0`, [{ from: 0, to: 0, tense: 'ps' }])]);
 
     await batchState(LONG);
 
@@ -227,7 +276,7 @@ describe('забирання результатів', () => {
     const written: AnalysisRow[] = [];
     mocks.getDb.mockReturnValue(fakeDb({ batch: pending(), written }));
     mocks.retrieve.mockResolvedValue({ processing_status: 'ended' });
-    resultsAre([succeeded('c9999', [{ from: 0, to: 0, tense: 'ps' }]), succeeded('хтозна', [])]);
+    resultsAre([succeeded('c9999p0', [{ from: 0, to: 0, tense: 'ps' }]), succeeded('хтозна', [])]);
 
     await batchState(LONG);
 
@@ -240,7 +289,7 @@ describe('забирання результатів', () => {
     const stale = pending({ chunkHashes: hashes.map(() => 'x'.repeat(64)) });
     mocks.getDb.mockReturnValue(fakeDb({ batch: stale, written }));
     mocks.retrieve.mockResolvedValue({ processing_status: 'ended' });
-    resultsAre([succeeded(`c${SYNC_CHUNKS}`, [{ from: 0, to: 0, tense: 'ps' }])]);
+    resultsAre([succeeded(`c${SYNC_CHUNKS}p0`, [{ from: 0, to: 0, tense: 'ps' }])]);
 
     await batchState(LONG);
 
@@ -252,8 +301,8 @@ describe('забирання результатів', () => {
     mocks.getDb.mockReturnValue(fakeDb({ batch: pending(), written }));
     mocks.retrieve.mockResolvedValue({ processing_status: 'ended' });
     resultsAre([
-      { custom_id: `c${SYNC_CHUNKS}`, result: { type: 'errored', error: { type: 'api_error' } } },
-      succeeded(`c${SYNC_CHUNKS + 1}`, [{ from: 0, to: 0, tense: 'ps' }]),
+      { custom_id: `c${SYNC_CHUNKS}p0`, result: { type: 'errored', error: { type: 'api_error' } } },
+      succeeded(`c${SYNC_CHUNKS + 1}p0`, [{ from: 0, to: 0, tense: 'ps' }]),
     ]);
 
     await batchState(LONG);

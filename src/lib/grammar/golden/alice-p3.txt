@@ -10,7 +10,7 @@ Down, down, down. There was nothing else to do, so Alice soon began talking agai
 # «put» у «which way she put it» — омограф основи й V2, тому під сумнівом.
 ps	was
 ps	was
-prs?	that's
+prs	that's
 prs	wonder
 prp	i've got
 ps	had
@@ -48,7 +48,7 @@ prs	wish
 ps	were
 prs	are
 prs	i'm
-prs?	that's
+prs	that's
 prs	know
 prs	do cats eat
 prs	wonder
