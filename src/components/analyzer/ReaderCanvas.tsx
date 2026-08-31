@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { HighlightLayers } from '@/components/analyzer/HighlightLayers';
-import { WordPopover } from '@/components/analyzer/WordPopover';
+import { WordPopover, type WordGrammar } from '@/components/analyzer/WordPopover';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { STATUS_LABELS } from '@/components/words/statuses';
 import { isMeaningfulWord } from '@/data/stopwords';
@@ -160,7 +160,12 @@ export function ReaderCanvas({
   const { state, wordStatus, cycleWordStatus } = useAppState();
   const { positions, setPosition } = useReading();
 
-  const [openWord, setOpenWord] = useState<{ word: string; anchor: DOMRect } | null>(null);
+  const [openWord, setOpenWord] = useState<{
+    word: string;
+    anchor: DOMRect;
+    /** Конструкція під клікнутим словом — для рядка «чому це такий час». */
+    grammar?: WordGrammar | null;
+  } | null>(null);
 
   // Токени рахуються один раз і живлять усе, що не залежить від розбору:
   // пагінацію й межі сторінок.
@@ -482,6 +487,16 @@ export function ReaderCanvas({
                       setOpenWord({
                         word: token.word ?? '',
                         anchor: event.currentTarget.getBoundingClientRect(),
+                        // Конструкція береться з токена, а не з видимого шару:
+                        // пояснення «чому це Past Perfect» доречне й тоді,
+                        // коли підсвітку цього часу зараз вимкнено.
+                        grammar: token.tense
+                          ? {
+                              tense: token.tense,
+                              ...(token.rule !== undefined ? { rule: token.rule } : {}),
+                              ...(token.uncertain === true ? { uncertain: true } : {}),
+                            }
+                          : null,
                       })
                     }
                     className={`cursor-pointer ${fill} ${lexis}`.trim()}
@@ -613,6 +628,7 @@ export function ReaderCanvas({
         <WordPopover
           word={openWord.word}
           anchor={openWord.anchor}
+          grammar={openWord.grammar}
           onClose={() => setOpenWord(null)}
         />
       ) : null}

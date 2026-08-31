@@ -1,11 +1,15 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
+import { LADDER_STATUSES, STATUS_LABELS } from '@/components/words/statuses';
+import { TENSE_LABELS } from '@/lib/analyzer/tenses';
 import { audioMimeType, transcodedMp3Url } from '@/lib/dictionary/audio';
 import { useFullEntry } from '@/lib/dictionary/client';
-import { LADDER_STATUSES, STATUS_LABELS } from '@/components/words/statuses';
+import { RULE_CARDS, theoryHref } from '@/lib/grammar/cards';
+import type { TenseKey } from '@/types/content';
 import type { WordStatus } from '@/types/state';
 
 /**
@@ -29,14 +33,29 @@ const WIDTH = 280;
 /** Відступ від слова, щоб картка не накривала саме слово. */
 const GAP = 10;
 
+/**
+ * Конструкція, у якій стоїть клікнуте слово. `rule` — ключ у `RULE_CARDS`
+ * (є лише в розмітки двигуна: бібліотека і `/api/analyze`; локальні правила
+ * знають тільки час). `uncertain` — двигун вважає межу хиткою, і модель її
+ * ще не підтвердила.
+ */
+export interface WordGrammar {
+  tense: TenseKey;
+  rule?: string;
+  uncertain?: boolean;
+}
+
 export function WordPopover({
   word,
   anchor,
+  grammar,
   onClose,
 }: {
   word: string;
   /** Прямокутник слова у координатах вікна */
   anchor: DOMRect;
+  /** Конструкція під словом, якщо слово підсвічене часом. */
+  grammar?: WordGrammar | null;
   onClose: () => void;
 }) {
   const { wordStatus, setWordStatus } = useAppState();
@@ -115,6 +134,8 @@ export function WordPopover({
           : (entry?.definitions[0] ?? 'У Вікісловнику немає статті про це слово.')}
       </div>
 
+      {grammar ? <GrammarRow grammar={grammar} /> : null}
+
       <div className="mt-3 flex gap-1.5">
         {LADDER_STATUSES.map((option) => (
           <StatusButton
@@ -131,6 +152,41 @@ export function WordPopover({
           {mp3 !== null ? <source src={mp3} type="audio/mpeg" /> : null}
           <source src={entry.audioUrl} type={audioMimeType(entry.audioUrl)} />
         </audio>
+      ) : null}
+    </div>
+  );
+}
+
+/**
+ * Чому слово підсвічене: назва часу, формула правила двигуна й дорога в
+ * теорію. Це відповідь двигуна, а не здогад: кожен збіг несе `rule`, і рядок
+ * «Past Perfect · had + V3» береться з тих самих `RULE_CARDS`, з яких
+ * рендеряться формули в розділах тем. Розмітка локальних правил правила не
+ * має — тоді показуємо лише назву часу, без формули й посилання.
+ */
+function GrammarRow({ grammar }: { grammar: WordGrammar }) {
+  const card = grammar.rule !== undefined ? RULE_CARDS[grammar.rule] : undefined;
+
+  return (
+    <div className="border-deep-line mt-3 border-t pt-2.5">
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="min-w-0">
+          <b>{TENSE_LABELS[grammar.tense]}</b>
+          {card ? <span className="text-deep-ink-2"> · {card.formula}</span> : null}
+        </span>
+        {card ? (
+          <Link
+            href={theoryHref(card)}
+            className="text-deep-ink-2 flex-none text-[12px] underline underline-offset-2 hover:text-deep-ink"
+          >
+            Теорія →
+          </Link>
+        ) : null}
+      </div>
+      {grammar.uncertain === true ? (
+        <div className="text-deep-ink-2 mt-1 text-[12px] italic">
+          Межа конструкції хитка — модель її ще не підтверджувала.
+        </div>
       ) : null}
     </div>
   );
