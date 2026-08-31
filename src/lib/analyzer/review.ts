@@ -110,7 +110,10 @@ export interface Review {
  * коштують дешевше, ніж їхня відсутність, і водночас знімають найчастіші
  * помилки розмітки.
  */
-const SYSTEM = `You mark verb constructions in English text for a language-learning reader — a Ukrainian speaker studying the past, present and future tenses.
+// Експортовано для аудиту точності (`scripts/grammar-audit.mts`): суддею там
+// мусить бути РІВНО той промпт, що й у бойовому розборі, інакше аудит міряв
+// би згоду з кимось іншим.
+export const SYSTEM = `You mark verb constructions in English text for a language-learning reader — a Ukrainian speaker studying the past, present and future tenses.
 
 The text arrives as numbered word tokens in the form <index>:<word>. Punctuation stays attached to the word it belongs to. You return the indices, never the words.
 
