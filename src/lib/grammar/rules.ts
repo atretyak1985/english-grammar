@@ -20,9 +20,11 @@ import type { VerbGroup } from './verb-groups';
  * Номер набору правил. Входить у результат: зміна правил робить старі збіги
  * неспівставними. Рахуються й зміни збирання груп (`verb-groups.ts`), якщо
  * вони міняють вихід: 2 — відновлення дієслова після голого підмета
- * («they all crowded») сильніше за стоп-лист прикметників.
+ * («they all crowded») сильніше за стоп-лист прикметників; 3 — незмінюване
+ * дієслово (wet, hurt) з теґом прикметника не відновлюється поза позицією
+ * після підмета («As wet as ever», «The ground was wet» — стан, не дія).
  */
-export const RULES_VERSION = 2;
+export const RULES_VERSION = 3;
 
 export type RuleTopic = 'past-tenses' | 'present-tenses' | 'future-tenses';
 
