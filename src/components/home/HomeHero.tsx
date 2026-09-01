@@ -19,9 +19,9 @@ export function HomeHero() {
 
   const learning = Object.values(state.words).filter((status) => status === 'learning').length;
 
-  // Гостю аналізатор віддає 401, тому «Свій текст» веде його у вхід із
+  // Гостю уточнення моделлю віддає 401, тому «Свій текст» веде його у вхід із
   // поверненням, а не в тупик.
-  const ownTextHref = signedIn ? '/analyze' : '/login?next=%2Fanalyze';
+  const ownTextHref = signedIn ? '/analyze/new' : '/login?next=%2Fanalyze%2Fnew';
 
   return (
     <div>
@@ -40,7 +40,7 @@ export function HomeHero() {
 
       <div className="flex flex-wrap gap-3">
         <Link
-          href="/library"
+          href="/reading"
           className="bg-acc shadow-acc rounded-btn px-6 py-[13px] text-[15.5px] leading-[normal] font-bold text-white"
         >
           Почати читати
