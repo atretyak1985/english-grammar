@@ -22,9 +22,11 @@ import type { VerbGroup } from './verb-groups';
  * вони міняють вихід: 2 — відновлення дієслова після голого підмета
  * («they all crowded») сильніше за стоп-лист прикметників; 3 — незмінюване
  * дієслово (wet, hurt) з теґом прикметника не відновлюється поза позицією
- * після підмета («As wet as ever», «The ground was wet» — стан, не дія).
+ * після підмета («As wet as ever», «The ground was wet» — стан, не дія);
+ * 4 — V-ing з теґом іменника після be відновлюється у тривалий час
+ * («I'm opening out»), окрім -ing-іменників (morning, nothing).
  */
-export const RULES_VERSION = 3;
+export const RULES_VERSION = 4;
 
 export type RuleTopic = 'past-tenses' | 'present-tenses' | 'future-tenses';
 

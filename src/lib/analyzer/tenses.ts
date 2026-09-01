@@ -276,7 +276,10 @@ export function normalizeWord(raw: string): string | null {
   return /[a-z]/.test(word) ? word : null;
 }
 
-function isIngForm(word: string | null): boolean {
+// Експортовано для двигуна (`lib/grammar/verb-groups.ts`): відновлення
+// V-ing після be мусить відсіювати ті самі -ing-іменники, що й локальні
+// правила, — дві різні межі дали б різну розмітку того самого тексту.
+export function isIngForm(word: string | null): boolean {
   if (word === null || !word.endsWith('ing') || ING_NOUNS.has(word)) return false;
   const stem = word.length - 3;
   if (stem >= 3) return true;
