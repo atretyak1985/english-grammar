@@ -1,7 +1,7 @@
 {
   "format": 2,
   "seededBy": "grammar-engine",
-  "rulesVersion": 1,
+  "rulesVersion": 2,
   "chunks": [
     {
       "index": 0,
@@ -3870,6 +3870,12 @@
           "rule": "prs.v1"
         },
         {
+          "word": 4840,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
           "word": 4853,
           "length": 1,
           "tense": "ps",
@@ -4050,6 +4056,12 @@
           "rule": "prs.be-lexical"
         },
         {
+          "word": 5046,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
           "word": 5054,
           "length": 2,
           "tense": "prp",
@@ -4207,6 +4219,12 @@
         },
         {
           "word": 5247,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 5253,
           "length": 1,
           "tense": "ps",
           "rule": "ps.v2"
@@ -15716,6 +15734,12 @@
           "rule": "ps.v2"
         },
         {
+          "word": 17972,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
           "word": 17976,
           "length": 1,
           "tense": "ps",
@@ -21427,6 +21451,12 @@
         },
         {
           "word": 24210,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 24221,
           "length": 1,
           "tense": "ps",
           "rule": "ps.v2"
