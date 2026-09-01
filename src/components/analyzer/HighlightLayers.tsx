@@ -30,10 +30,12 @@ export function HighlightLayers({
   pageCount,
   textCount,
 }: {
-  topic: LayerTopicId;
+  /** Активна тема; `null` — підсвітку знято зовсім. */
+  topic: LayerTopicId | null;
   /** Чи ввімкнене правило; ключі — конструкції активної теми */
   rules: Record<TenseKey, boolean>;
-  onPickTopic: (id: LayerTopicId) => void;
+  /** `null` — читач зняв галочку з активної теми: жодної підсвітки. */
+  onPickTopic: (id: LayerTopicId | null) => void;
   onToggleRule: (tense: TenseKey) => void;
   /** Скільки разів конструкція трапилась на цій сторінці */
   pageCount: (tense: TenseKey) => number;
@@ -59,8 +61,8 @@ export function HighlightLayers({
     };
   }, [open]);
 
-  const active = layerTopic(topic);
-  const on = active.tenses.filter((tense) => rules[tense]).length;
+  const active = topic === null ? null : layerTopic(topic);
+  const on = active === null ? 0 : active.tenses.filter((tense) => rules[tense]).length;
 
   return (
     <div ref={boxRef} className="relative">
@@ -71,10 +73,12 @@ export function HighlightLayers({
         className="bg-bg border-ink rounded-pill flex cursor-pointer items-center gap-2 border-[1.5px] px-4 py-2 text-[13px] font-bold"
       >
         <LayersIcon />
-        Підсвітка: {active.label}{' '}
-        <span className="text-label font-semibold">
-          · {on} з {active.tenses.length} правил
-        </span>
+        Підсвітка: {active === null ? 'вимкнено' : active.label}{' '}
+        {active === null ? null : (
+          <span className="text-label font-semibold">
+            · {on} з {active.tenses.length} правил
+          </span>
+        )}
         <span aria-hidden>▾</span>
       </button>
 
@@ -91,8 +95,8 @@ export function HighlightLayers({
             Порядок тем нерухомий, і активна не спливає нагору. Спершу вона
             спливала — і список переставлявся під рукою рівно в мить кліку:
             тема, яку щойно обрали, опинялася не там, куди дивилися. Рядки
-            й так виглядають як чекбокси, тож і поводитись мусять як
-            чекбокси: три на місці, один позначений.
+            виглядають як чекбокси і поводяться як чекбокси: клік по
+            позначеній темі знімає галочку — і підсвітку разом із нею.
           */}
           {LAYER_TOPICS.map((item) => {
             const isActive = item.id === topic;
@@ -104,13 +108,11 @@ export function HighlightLayers({
               >
                 <button
                   type="button"
-                  onClick={() => onPickTopic(item.id)}
+                  onClick={() => onPickTopic(isActive ? null : item.id)}
                   aria-pressed={isActive}
-                  disabled={isActive}
-                  className={`flex w-full items-center gap-2.5 rounded-[10px] text-left ${
-                    isActive
-                      ? 'cursor-default px-2.5 py-[9px]'
-                      : 'text-ink-2 hover:bg-hover cursor-pointer px-4 py-[9px]'
+                  title={isActive ? 'Зняти підсвітку' : undefined}
+                  className={`flex w-full cursor-pointer items-center gap-2.5 rounded-[10px] text-left ${
+                    isActive ? 'px-2.5 py-[9px]' : 'text-ink-2 hover:bg-hover px-4 py-[9px]'
                   }`}
                 >
                   <span
