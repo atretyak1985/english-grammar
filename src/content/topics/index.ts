@@ -91,6 +91,7 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     history: () => import('@/content/topics/sentence-structure/sections/history.mdx'),
     cheatsheet: () => import('@/content/topics/sentence-structure/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/sentence-structure/sections/plan.mdx'),
+  },
   articles: {
     idea: () => import('@/content/topics/articles/sections/idea.mdx'),
     'a-an': () => import('@/content/topics/articles/sections/a-an.mdx'),
