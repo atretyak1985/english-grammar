@@ -1,5 +1,6 @@
 import { meta as articles } from '@/content/topics/articles/meta';
 import { meta as conditionals } from '@/content/topics/conditionals/meta';
+import { meta as modals } from '@/content/topics/modals/meta';
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
 import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
@@ -25,13 +26,8 @@ export const TOPICS: readonly TopicMeta[] = [
   sentenceStructure,
   articles,
   conditionals,
+  modals,
 
-  planned({
-    slug: 'modals',
-    title: 'Модальні дієслова',
-    desc: 'can / could / may / must / should / have to. Ввічливість, ймовірність, обовʼязок.',
-    level: 'b1',
-  }),
   planned({
     slug: 'phrasal-verbs',
     title: 'Фразові дієслова',

@@ -1,0 +1,58 @@
+<Section id="stories" n={10} title="Три тексти з повним розбором">
+
+<Lede>Правила дають розуміння, а звʼязний текст — відчуття. В окремих реченнях модальні здаються словничком; у тексті видно їхню справжню роботу — вони весь час перемикають тон: попросив, порадив, пообіцяв, здогадався. Спочатку прочитайте англійською, потім звірте переклад, і лише потім дивіться розбір.</Lede>
+
+### Текст 1 — інцидент у робочому чаті
+
+<Story translation="Народ, прод лежить. Це не може бути через учорашній реліз — ми відкотили його ще ввечері. Можливо, справа в базі: диск міг переповнитися. Хтось може глянути в моніторинг? Оля, чи не могла б ти перевірити логи? Так, диск. Треба було поставити алерт на 80% — дарма не поставили. Гаразд: я почищу старі бекапи, а надалі нам доведеться налаштувати автоочищення. І запамʼятайте: ніхто не має права вручну видаляти файли на проді без тікета.">
+  Guys, production is down. It <b>can’t be</b> yesterday’s release — we rolled it back in the evening. It <b>might be</b> the database: the disk <b>could have filled</b> up. <b>Can</b> anyone check the monitoring? Olia, <b>could you</b> take a look at the logs? Yes, it’s the disk. We <b>should have set</b> an alert at 80% — too bad we didn’t. OK: I<b>’ll clean</b> up the old backups, and from now on we<b>’ll have to</b> set up auto-cleanup. And remember: nobody <b>may delete</b> files on production manually without a ticket.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>can’t be</b> — «точно ні»</>}>Поверх ймовірності: докази проти (реліз відкочено). Не «не дозволено», а «не може такого бути».</BRow>
+  <BRow form={<><b>might be, could have filled</b> — версії</>}>Обережні здогади: might be про теперішнє, could have + V3 — про те, що вже могло статися.</BRow>
+  <BRow form={<><b>Can anyone… / Could you…</b> — драбина прохань</>}>До всіх — нейтральне can, до конкретної людини — мʼякше could: просите про послугу.</BRow>
+  <BRow form={<><b>should have set</b> — ретроспектива</>}>Слід було, а не зробили — головна конструкція розборів інцидентів.</BRow>
+  <BRow form={<><b>I’ll clean up</b> — рішення</>}>will волі: «беруся». Рішення ухвалене в момент мовлення.</BRow>
+  <BRow form={<><b>we’ll have to</b> — майбутній обовʼязок</>}>У must майбутнього немає — його роботу виконує will have to.</BRow>
+  <BRow form={<><b>nobody may delete</b> — формальна заборона</>}>may у ролі писаного правила: так формулюють регламенти.</BRow>
+</Breakdown>
+
+### Текст 2 — лист про нові правила офісу
+
+<Story translation="Привіт усім! Кілька оновлень щодо офісу. З понеділка всі відвідувачі повинні реєструватися на рецепції — це вимога орендодавця, тут нічого не вдієш. Бейджі носити не обовʼязково, але на поверхах 3–4 без бейджа не можна: там клієнтська зона. Паркуватися можна за будівлею; біля входу залишати машину заборонено — евакуюють. Якщо плануєте великі зустрічі, варто бронювати переговорку заздалегідь: у середу їх може не бути вільних. І дрібниця: кавоварка знову вередує — якщо не вмикається, спробуйте потримати кнопку три секунди.">
+  Hi all! A few office updates. From Monday, all visitors <b>must sign in</b> at reception — it’s the landlord’s requirement, so we <b>can’t do</b> anything about it. You <b>don’t have to</b> wear your badge, but you <b>can’t enter</b> floors 3–4 without one: that’s the client area. You <b>can park</b> behind the building; you <b>mustn’t leave</b> your car by the entrance — it <b>will be towed</b>. If you’re planning big meetings, you <b>should book</b> a room in advance: there <b>might not be</b> any free ones on Wednesdays. And a small thing: the coffee machine is acting up again — if it <b>won’t start</b>, try holding the button for three seconds.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>must sign in</b> — писане правило</>}>Вимога з документа — законна територія must. Поруч чесне пояснення джерела тиску: вимога орендодавця.</BRow>
+  <BRow form={<><b>don’t have to wear</b> проти <b>can’t enter / mustn’t leave</b></>}>Головна пара теми в дії: «не обовʼязково» — і поруч дві заборони. Побутова — can’t, жорстка з наслідками — mustn’t.</BRow>
+  <BRow form={<><b>can park</b> — дозвіл</>}>Дозвіл у побуті дає can. May park написав би юрист.</BRow>
+  <BRow form={<><b>should book</b> — порада</>}>Мʼякий тиск: розумно зробити, але змушувати ніхто не буде.</BRow>
+  <BRow form={<><b>might not be</b> — «можливо, не буде»</>}>Ймовірність із запереченням: не «точно не буде» (can’t), а чесний ризик.</BRow>
+  <BRow form={<><b>won’t start</b> — відмова речі</>}>Кавоварка «відмовляється» вмикатися: won’t для заїлих механізмів.</BRow>
+</Breakdown>
+
+### Текст 3 — вечірня розмова вдома
+
+<Story translation="— Дзвонили в двері. Хто це може бути о десятій вечора? — Це, мабуть, курʼєр: я замовила навушники, їх мали привезти сьогодні. Хоча ні — курʼєр мав би спершу подзвонити на телефон. — Може, сусід? Він казав, що, можливо, зайде по дриль. — Точно, він. Слухай, а треба було просто лишити дриль під дверима. — Не переживай, я відчиню. І нам справді варто нарешті полагодити дзвінок: він щодругий раз не спрацьовує.">
+  — Someone rang the doorbell. Who <b>can</b> it <b>be</b> at 10 p.m.? — It <b>must be</b> the courier: I ordered headphones, they <b>were supposed to</b> arrive today. Wait, no — the courier <b>would have called</b> my phone first. — <b>Could</b> it <b>be</b> the neighbour? He said he <b>might drop by</b> for the drill. — Right, that’s him. You know, we <b>should have just left</b> the drill outside the door. — Don’t worry, I<b>’ll get</b> it. And we really <b>should fix</b> the doorbell — it <b>won’t ring</b> half the time.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>Who can it be? / Could it be…?</b> — здогади-питання</>}>Питальна форма поверху ймовірності: перебираємо версії вголос.</BRow>
+  <BRow form={<><b>must be</b> — впевнена версія</>}>Є доказ (замовлення на сьогодні) → «мабуть, точно курʼєр».</BRow>
+  <BRow form={<><b>would have called</b> — логіка нездійсненого</>}>«Якби це був курʼєр, він би подзвонив» — заперечення версії через would have + V3.</BRow>
+  <BRow form={<><b>might drop by</b> — чужий план-можливість</>}>Сусід сам сказав «можливо, зайду» — переказ через might.</BRow>
+  <BRow form={<><b>should have left</b> — запізніла ідея</>}>Слід було зробити — тепер уже пізно. Побутовий жаль без драм.</BRow>
+  <BRow form={<><b>I’ll get it</b> — беруся</>}>Миттєве рішення: класичний will волі. «Я відчиню» у момент дзвінка — завжди I’ll, не I will get заплановане.</BRow>
+  <BRow form={<><b>should fix, won’t ring</b> — порада собі і впертий дзвінок</>}>should — «давно варто», won’t — дзвінок «відмовляється» працювати.</BRow>
+</Breakdown>
+
+<Note variant="tip" title="Що з цим робити далі">
+  Візьміть текст 1 і перепишіть його <b>про свій справжній останній інцидент чи аврал</b>: що сталося, які були версії, що слід було зробити інакше, хто що пообіцяв. Вісім-десять речень — і постарайтеся вжити хоча б пʼять різних модальних.
+
+  Це найдорожча вправа теми: модальні стають своїми лише тоді, коли ви простежили за ними у власній історії, а не в чужій.
+</Note>
+
+</Section>
