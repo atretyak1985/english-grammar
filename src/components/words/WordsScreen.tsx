@@ -1,52 +1,66 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useAppState } from '@/components/providers/AppStateProvider';
-import { WordStatusButtons } from '@/components/words/WordStatusButtons';
+import { LADDER_STATUSES, STATUS_LABELS } from '@/components/words/statuses';
 import { audioMimeType, transcodedMp3Url } from '@/lib/dictionary/audio';
+import { isMeaningfulWord } from '@/data/stopwords';
+import { wordFrequency } from '@/lib/analyzer/vocabulary';
 import { useDictionary, useFullEntry } from '@/lib/dictionary/client';
+import type { StoryFrequency } from '@/lib/library/server';
 import { NOTE_MAX } from '@/lib/state/storage';
+import { useTexts } from '@/lib/state/texts';
 import type { WordStatus } from '@/types/state';
 
-/** «Не знаю» тут фільтром не буває: таких слів у словнику немає за визначенням. */
-type Filter = 'all' | 'learning' | 'known';
+/**
+ * «Усі» — це весь словник, тобто позначене. «Не знаю» стоїть окремо і в
+ * «усі» не входить: це не словник, а його передпокій — слова з ваших текстів,
+ * які ще без статусу, від найчастіших.
+ */
+type Filter = 'all' | 'learning' | 'known' | 'unknown';
 
 const FILTER_LABELS: Record<Filter, string> = {
   all: 'Усі',
   learning: 'Вчу',
   known: 'Знаю',
+  unknown: 'Не знаю',
 };
 
-const FILTERS: Filter[] = ['all', 'learning', 'known'];
+const FILTERS: Filter[] = ['all', 'learning', 'known', 'unknown'];
 
 /** Слово потрапляє у словник, щойно користувач позначив його одним із цих статусів. */
 const IN_DICTIONARY: WordStatus[] = ['learning', 'known'];
 
 /**
- * Скільки рядків показувати за раз. Це не косметика: батч-ручка словника бере
- * рівно 50 слів за запит, тому сторінка на 50 рядків — це один зовнішній запит.
+ * Скільки карток показувати за раз. Це не косметика: батч-ручка словника бере
+ * рівно 50 слів за запит, тому сторінка на 50 карток — це один зовнішній запит.
  */
 const PAGE_SIZE = 50;
 
-/** Сітка таблиці: слово, транскрипція, означення, статуси, розкривач. */
-const ROW_GRID =
-  'grid grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1.7fr)_210px_34px] gap-2.5';
-
-const PANEL = 'bg-surface-2 rounded-panel px-4 py-3';
-const PANEL_LABEL = 'text-ink-3 mb-1.5 text-[10.5px] leading-[normal] font-extrabold tracking-[1.1px] uppercase';
+const CONTROL = 'border-line-ctrl rounded-btn flex flex-none overflow-hidden border-[1.5px]';
+const PANEL = 'bg-bg border-line rounded-note border px-4 py-3';
+const PANEL_LABEL =
+  'text-ink-3 mb-1.5 font-mono text-[10.5px] leading-[normal] font-bold tracking-[1.2px] uppercase';
 
 /**
  * Мій словник: слова, які користувач позначив «вчу» або «знаю» (CONCEPT 5).
- * Джерело рядків — саме стан користувача, а не корпус текстів: у словнику має
+ * Джерело карток — саме стан користувача, а не корпус текстів: у словнику має
  * бути те, що людина свідомо взяла вчити, а не все, що трапилося в статті.
+ *
+ * Картки замість таблиці — не оздоба. У таблиці слово, транскрипція, означення
+ * і чотири контроли ділили один рядок, тому на вужчому екрані все це або
+ * стискалося до нечитабельного, або їхало вбік. Картка складається сама, а
+ * головне — тримає приклад ужитку, заради якого слово й запам'ятовується.
  */
-export function WordsScreen() {
-  const { state, wordStatus, ready } = useAppState();
+export function WordsScreen({ corpus }: { corpus: StoryFrequency[] }) {
+  const { state, wordStatus, setWordStatus, ready } = useAppState();
+  const { texts } = useTexts();
   const [filter, setFilter] = useState<Filter>('all');
+  const [query, setQuery] = useState('');
   const [shown, setShown] = useState(PAGE_SIZE);
-  /** Розкритий рядок рівно один: інакше сторінка тягла б 50 повних статей. */
+  /** Відкрита стаття рівно одна — у модалці: інакше сторінка тягла б 50 повних статей. */
   const [openWord, setOpenWord] = useState<string | null>(null);
 
   const dictionary = useMemo(
@@ -54,22 +68,50 @@ export function WordsScreen() {
     [state.words],
   );
 
-  const rows = useMemo(
-    () =>
-      dictionary
-        .filter(([, status]) => filter === 'all' || status === filter)
-        .sort((a, b) => a[0].localeCompare(b[0])),
-    [dictionary, filter],
-  );
+  /*
+    Слова без статусу — з усіх текстів, що є: оповідання бібліотеки та
+    збережені тут тексти, разом за частотою. Приховані сюди не потрапляють:
+    їх читач прибрав з очей навмисно.
+  */
+  const unknown = useMemo(() => {
+    const counts = new Map<string, number>();
+    const add = (list: { word: string; count: number }[]) => {
+      for (const { word, count } of list) {
+        if (!isMeaningfulWord(word) || state.words[word] !== undefined) continue;
+        counts.set(word, (counts.get(word) ?? 0) + count);
+      }
+    };
+    for (const story of corpus) add(story.frequency);
+    for (const text of texts) add(wordFrequency(text.body));
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [corpus, texts, state.words]);
+
+  const rows = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    const source: [string, WordStatus][] =
+      filter === 'unknown'
+        ? unknown.map(([word]) => [word, 'unknown'])
+        : dictionary.filter(([, status]) => filter === 'all' || status === filter);
+    const found = source.filter(([word]) => needle === '' || word.includes(needle));
+    // Незнайомі лишаються за частотою — це і є порядок, у якому їх варто брати
+    return filter === 'unknown' ? found : found.sort((a, b) => a[0].localeCompare(b[0]));
+  }, [dictionary, unknown, filter, query]);
 
   const visible = useMemo(() => rows.slice(0, shown), [rows, shown]);
 
-  // Статті питаються ТІЛЬКИ для показаних рядків: словник на 500 слів одним
-  // батчем ручка не приймає, та й дані для схованих рядків нікому не потрібні.
+  // Статті питаються ТІЛЬКИ для показаних карток: словник на 500 слів одним
+  // батчем ручка не приймає, та й дані для схованих карток нікому не потрібні.
   const { brief } = useDictionary(useMemo(() => visible.map(([word]) => word), [visible]));
 
   const learning = dictionary.filter(([, status]) => status === 'learning').length;
   const known = dictionary.length - learning;
+
+  const counts: Record<Filter, number> = {
+    all: dictionary.length,
+    learning,
+    known,
+    unknown: unknown.length,
+  };
 
   const changeFilter = (option: Filter) => {
     setFilter(option);
@@ -78,125 +120,127 @@ export function WordsScreen() {
   };
 
   return (
-    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
-      <h1 className="mt-0 mb-2 text-[32px] font-extrabold tracking-[-0.8px]">Мій словник</h1>
-      <p className="text-ink-2 mt-0 mb-[22px] max-w-[760px] text-[16.5px]">
-        Тут те, що ви самі позначили «вчу» або «знаю» в аналізаторі. Для кожного слова —
-        транскрипція й англійське означення; розкрийте рядок, щоб побачити повну статтю,
-        приклади, вимову й лишити власну нотатку.
-      </p>
-
-      <div className="mb-5 flex flex-wrap gap-3.5">
-        <Tile value={ready ? dictionary.length : 0} label="у словнику" accent="border-l-ps" />
-        <Tile value={ready ? learning : 0} label="вчу зараз" accent="border-l-pc" />
-        <Tile value={ready ? known : 0} label="позначено «знаю»" accent="border-l-ok" />
+    <div className="mx-auto w-full max-w-shell px-9 py-9">
+      <div className="mb-[22px] flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-serif m-0 mb-1.5 text-[32px] font-extrabold tracking-[-0.5px]">
+            Мій словник
+          </h1>
+          <div className="text-ink-2 text-[14px]">
+            {ready ? dictionary.length : 0} слів · <b className="text-yellow-tx">{learning} вчу</b> ·{' '}
+            {known} знаю
+          </div>
+        </div>
+        {/* Кнопка є лише тоді, коли є що тренувати: заклик без карток за ним — порожня обіцянка */}
+        {ready && learning > 0 ? (
+          <Link
+            href="/train"
+            className="bg-acc rounded-btn px-5 py-[11px] text-[14px] leading-[normal] font-bold text-white"
+          >
+            Тренувати {learning} слів
+          </Link>
+        ) : null}
       </div>
 
-      <div className="mb-3.5 flex flex-wrap gap-[7px]">
+      <div className="mb-5 flex flex-wrap items-center gap-2">
         {FILTERS.map((option) => (
           <button
             key={option}
             type="button"
             onClick={() => changeFilter(option)}
-            className={`rounded-btn cursor-pointer border px-[13px] py-1.5 text-[12.5px] leading-[normal] font-bold ${
+            aria-pressed={filter === option}
+            className={`rounded-pill cursor-pointer px-5 py-[11px] text-[13.5px] leading-[normal] font-bold ${
               filter === option
-                ? 'border-ps bg-ps-bg text-ps-dk'
-                : 'border-line text-ink-2 bg-transparent'
+                ? 'bg-deep text-deep-ink'
+                : 'bg-panel border-line-ctrl text-ink-2 border-[1.5px]'
             }`}
           >
-            {FILTER_LABELS[option]}
+            {FILTER_LABELS[option]} · {ready ? counts[option] : 0}
           </button>
         ))}
+
+        <label className="bg-panel border-line-ctrl rounded-pill ml-auto flex min-w-[220px] items-center gap-2 border-[1.5px] px-[18px] py-[11px]">
+          <span aria-hidden>🔍</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setShown(PAGE_SIZE);
+            }}
+            placeholder="Пошук у словнику…"
+            aria-label="Пошук у словнику"
+            className="text-ink placeholder:text-label w-full min-w-0 bg-transparent text-[13.5px] outline-none"
+          />
+        </label>
       </div>
 
-      {ready && dictionary.length === 0 ? (
-        <div className="bg-surface border-line rounded-card shadow-card border px-[26px] py-[26px]">
+      {ready && dictionary.length === 0 && filter !== 'unknown' ? (
+        <div className="bg-panel border-line rounded-panel border px-[26px] py-[26px]">
           <b>Словник поки порожній.</b>
-          <p className="text-ink-2 mt-2 mb-0 text-[15px]">
-            Слова сюди приходять не з збережених текстів, а з ваших позначок. Відкрийте{' '}
-            <Link href="/analyze" className="text-ps-dk font-semibold">
-              Аналіз тексту
-            </Link>
-            , натисніть на незнайомому слові «вчу» або «знаю» — і воно з&apos;явиться в цьому
-            списку.
+          <p className="text-ink-2 mt-2 mb-0 text-[15px] leading-[1.6]">
+            Слова сюди приходять не зі збережених текстів, а з ваших позначок. Відкрийте{' '}
+            <Link href="/library" className="text-acc font-bold">
+              читання
+            </Link>{' '}
+            і натисніть на незнайомому слові «вчу» або «знаю» — воно з&apos;явиться тут.
+            {unknown.length > 0 ? (
+              <>
+                {' '}
+                Або почніть з фільтра{' '}
+                <button
+                  type="button"
+                  onClick={() => changeFilter('unknown')}
+                  className="text-acc cursor-pointer font-bold"
+                >
+                  «Не знаю» · {unknown.length}
+                </button>
+                : це слова з ваших текстів без позначки.
+              </>
+            ) : null}
           </p>
         </div>
       ) : (
-        <div className="bg-surface border-line rounded-card shadow-card overflow-hidden border">
-          <div
-            className={`${ROW_GRID} bg-surface-2 border-line text-ink-2 border-b px-4 py-2.5 text-[11.5px] leading-[normal] font-extrabold tracking-[0.7px] uppercase`}
-          >
-            <div className="min-w-0 truncate">Слово</div>
-            <div className="min-w-0 truncate">Транскрипція</div>
-            <div className="min-w-0 truncate">Означення</div>
-            <div>Статус</div>
-            <div />
-          </div>
-
-          {visible.map(([word]) => {
-            const entry = brief.get(word);
-            const open = openWord === word;
-
-            return (
-              <div key={word} className="border-line border-b last:border-b-0">
-                <div className={`${ROW_GRID} items-center px-4 py-[11px] text-[14.5px]`}>
-                  <div className="min-w-0 overflow-hidden">
-                    <span
-                      className={`inline-block max-w-full truncate align-bottom font-semibold ${
-                        wordStatus(word) === 'known' ? 'text-ink-3' : 'bg-pc-bg text-pc-dk rounded px-1'
-                      }`}
-                    >
-                      {word}
-                    </span>
-                  </div>
-                  <div className="text-ink-2 min-w-0 truncate font-mono text-[13.5px]">
-                    {entry?.ipa ? `/${entry.ipa}/` : <span className="text-ink-3">—</span>}
-                  </div>
-                  {/*
-                    Порожньо тут означає рівно одне: означення немає. Рядок
-                    показує англійське означення зі статті. Це рідкість —
-                    заміряно 98–100% придатних означень на всіх трьох частотних
-                    смугах, а всі промахи — британські написання, які резолвер
-                    доводить до леми. Спінера в рядку немає навмисно: 50 рядків,
-                    що блимають, читати неможливо.
-                  */}
-                  <div className="text-ink-2 min-w-0 truncate">
-                    {entry?.definition ?? <span className="text-ink-3">—</span>}
-                  </div>
-                  <WordStatusButtons word={word} />
-                  <button
-                    type="button"
-                    onClick={() => setOpenWord(open ? null : word)}
-                    aria-expanded={open}
-                    aria-label={open ? `Згорнути статтю: ${word}` : `Розкрити статтю: ${word}`}
-                    className={`border-line text-ink-2 h-[26px] w-[26px] cursor-pointer rounded-[7px] border bg-transparent text-[12px] leading-[normal] ${
-                      open ? 'bg-surface-2' : ''
-                    }`}
-                  >
-                    {open ? '⌃' : '⌄'}
-                  </button>
-                </div>
-
-                {open ? (
-                  <div className="px-4 pb-3">
-                    <WordDetails word={word} />
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
+        <div className="grid gap-3.5 lg:grid-cols-2">
+          {visible.map(([word]) => (
+            <WordCard
+              key={word}
+              word={word}
+              ipa={brief.get(word)?.ipa ?? null}
+              definition={brief.get(word)?.definition ?? null}
+              status={wordStatus(word)}
+              onPick={(status) => setWordStatus(word, status)}
+              onOpen={() => setOpenWord(word)}
+            />
+          ))}
 
           {visible.length === 0 ? (
-            <div className="text-ink-3 px-4 py-4 text-[14px]">За цим фільтром слів немає.</div>
+            <div className="text-ink-3 text-[14px]">
+              {query.trim() !== ''
+                ? `Нічого не знайшлося на «${query.trim()}».`
+                : filter === 'unknown'
+                  ? 'Слів без статусу не лишилось — або текстів ще немає.'
+                  : 'За цим фільтром слів немає.'}
+            </div>
           ) : null}
         </div>
       )}
+
+      {openWord !== null ? (
+        <WordDialog
+          word={openWord}
+          ipa={brief.get(openWord)?.ipa ?? null}
+          status={wordStatus(openWord)}
+          onPick={(status) => setWordStatus(openWord, status)}
+          onClose={() => setOpenWord(null)}
+        />
+      ) : null}
 
       {rows.length > visible.length ? (
         <button
           type="button"
           onClick={() => setShown((current) => current + PAGE_SIZE)}
-          className="rounded-btn border-line text-ink-2 mt-3.5 cursor-pointer border bg-transparent px-[15px] py-2 text-[13px] leading-[normal] font-bold"
+          className="border-line-ctrl text-ink rounded-btn mt-4 cursor-pointer border-[1.5px] px-4 py-2.5 text-[13px] leading-[normal] font-bold"
         >
           Показати ще — лишилося {rows.length - visible.length}
         </button>
@@ -206,8 +250,190 @@ export function WordsScreen() {
 }
 
 /**
- * Повна стаття під розкритим рядком. Окремий компонент, бо запит на неї робить
- * хук: рівно один розкритий рядок — рівно один хук у дереві.
+ * Картка слова: саме слово так, як воно виглядає в тексті, і сходинка знання
+ * поруч.
+ *
+ * Слово позначене тим самим жовтим, що й у читанні: людина впізнає його не за
+ * підписом статусу, а за виглядом, у якому щойно бачила на сторінці. «Знаю»
+ * приглушує всю картку — вона лишається знайденою пошуком, але не претендує
+ * на увагу нарівні з тим, що ще вчиться.
+ */
+function WordCard({
+  word,
+  ipa,
+  definition,
+  status,
+  onPick,
+  onOpen,
+}: {
+  word: string;
+  ipa: string | null;
+  definition: string | null;
+  status: WordStatus;
+  onPick: (status: WordStatus) => void;
+  onOpen: () => void;
+}) {
+  return (
+    <div
+      className={`bg-panel border-line rounded-tile border px-6 py-5 ${
+        status === 'known' ? 'opacity-[0.62]' : ''
+      }`}
+    >
+      <WordHeader word={word} ipa={ipa} status={status} onPick={onPick} />
+
+      {/*
+        Порожньо тут означає рівно одне: означення немає. Це рідкість —
+        заміряно 98–100% придатних означень на всіх трьох частотних смугах.
+        Спінера немає навмисно: пів сотні карток, що блимають, читати
+        неможливо.
+      */}
+      <div className="text-ink-2 mt-2.5 text-[14px] leading-[1.55]">
+        {definition ?? <span className="text-ink-3">—</span>}
+      </div>
+
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-haspopup="dialog"
+        className="text-ink-3 hover:text-ink mt-2 cursor-pointer text-[12.5px] font-bold"
+      >
+        Стаття, вимова й нотатка
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Слово, транскрипція і драбинка знання — один рядок, спільний для картки в
+ * списку й для шапки модалки: у модалці статус мусить бути під рукою, бо саме
+ * після прочитаної статті людина вирішує «знаю» чи «ще вчу».
+ */
+function WordHeader({
+  word,
+  ipa,
+  status,
+  onPick,
+}: {
+  word: string;
+  ipa: string | null;
+  status: WordStatus;
+  onPick: (status: WordStatus) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-baseline justify-between gap-3">
+      <div className="flex min-w-0 items-baseline gap-3">
+        <span
+          className={`font-serif text-[20px] font-extrabold ${
+            status === 'learning'
+              ? 'bg-yellow-bg border-yellow border-b-[3px] px-1'
+              : status === 'known'
+                ? 'text-ink-3'
+                : ''
+          }`}
+        >
+          {word}
+        </span>
+        {ipa ? <span className="text-ink-3 font-mono text-[12px]">/{ipa}/</span> : null}
+      </div>
+
+      <div className={CONTROL}>
+        {LADDER_STATUSES.map((option, index) => (
+          <button
+            key={option}
+            type="button"
+            onClick={() => onPick(option)}
+            aria-pressed={status === option}
+            className={`cursor-pointer px-4 py-2.5 text-[12.5px] leading-[normal] font-bold ${
+              index > 0 ? 'border-line-ctrl border-l-[1.5px]' : ''
+            } ${TONE[option][status === option ? 'on' : 'off']}`}
+          >
+            {STATUS_LABELS[option]}
+            {status === option && option === 'known' ? ' ✓' : null}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Стаття, вимова й нотатка — у модалці, а не під карткою. Розкрита картка
+ * розсувала сітку і зсувала сусідні; модалка лишає список на місці, а
+ * повернення в нього — один Esc або клік поза вікном.
+ */
+function WordDialog({
+  word,
+  ipa,
+  status,
+  onPick,
+  onClose,
+}: {
+  word: string;
+  ipa: string | null;
+  status: WordStatus;
+  onPick: (status: WordStatus) => void;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[150] flex items-center justify-center p-6">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden />
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Стаття: ${word}`}
+        className="bg-panel border-line rounded-panel shadow-panel relative flex max-h-full w-full max-w-[640px] flex-col overflow-hidden border"
+      >
+        <div className="border-line flex items-start gap-3 border-b px-6 py-4">
+          <div className="min-w-0 flex-1">
+            <WordHeader word={word} ipa={ipa} status={status} onPick={onPick} />
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Закрити"
+            className="border-line-ctrl text-ink-3 hover:text-ink rounded-pill flex-none cursor-pointer border-[1.5px] px-[11px] py-[5px] text-[12px] leading-[normal] font-bold"
+          >
+            ✕ Esc
+          </button>
+        </div>
+
+        <div className="min-h-0 overflow-y-auto px-6 py-5">
+          <WordDetails word={word} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Тон сегмента сходинки. Увімкнений бере колір свого стану — жовтий «вчу» той
+ * самий, що й маркер у тексті, зелений «знаю» той самий, що й акцент, — а
+ * «не знаю» лишається нейтральним: це не досягнення, а початок.
+ */
+const TONE: Record<WordStatus, { on: string; off: string }> = {
+  unknown: { on: 'bg-track text-ink', off: 'text-ink-2' },
+  learning: { on: 'bg-yellow-bg text-yellow-tx', off: 'text-ink-2' },
+  known: { on: 'bg-tint text-green-tx', off: 'text-ink-2' },
+  hidden: { on: 'bg-track text-ink-3', off: 'text-ink-2' },
+};
+
+/**
+ * Повна стаття під карткою. Окремий компонент, бо запит на неї робить хук:
+ * рівно одна розкрита картка — рівно один хук у дереві.
+ *
+ * Макет 1i цього розкривача не малює: у ньому картка показує означення й один
+ * приклад, і по всьому. Але за розкривачем живе власна нотатка користувача —
+ * єдине місце в застосунку, де її пишуть, — тому прибрати його означало б
+ * лишити збережені нотатки без жодного входу.
  */
 function WordDetails({ word }: { word: string }) {
   const { note, setNote } = useAppState();
@@ -216,7 +442,7 @@ function WordDetails({ word }: { word: string }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const mp3 = transcodedMp3Url(entry?.audioUrl ?? null);
-  const rest = entry ? entry.definitions.slice(1) : [];
+  const [first, ...rest] = entry ? entry.definitions : [];
 
   return (
     <div className={PANEL}>
@@ -225,14 +451,13 @@ function WordDetails({ word }: { word: string }) {
 
       {entry ? (
         <>
-          <div className={PANEL_LABEL}>Означення</div>
-          <p className="mt-0 mb-0 text-[14.5px]">
-            {entry.definitions[0] ?? 'Стаття є, але означення в ній немає.'}
-          </p>
-
+          {/* Основне означення тут повторюється з картки: модалка закриває її собою */}
+          {first !== undefined ? (
+            <div className="text-ink mb-2 text-[15px] leading-[1.55]">{first}</div>
+          ) : null}
           {rest.length > 0 ? (
-            <details className="mt-2">
-              <summary className="text-ps-dk cursor-pointer text-[12.5px] leading-[normal] font-bold">
+            <details>
+              <summary className="text-acc cursor-pointer text-[12.5px] leading-[normal] font-bold">
                 ще {rest.length}{' '}
                 {rest.length === 1 ? 'сенс' : rest.length < 5 ? 'сенси' : 'сенсів'}
               </summary>
@@ -248,13 +473,18 @@ function WordDetails({ word }: { word: string }) {
             Приклади: парсер спершу бере короткі навчальні (`#:`), а коли їх
             немає — літературні цитати (`#*`). Резерв потрібен, бо `#:` на
             C1–C2 є лише в 87% статей.
+
+            Макет обіцяє тут приклад із ВАШОГО тексту — «…attended to her
+            cheeks with the powder rag» — The Gift of the Magi. Такого джерела
+            немає: застосунок пам'ятає статус слова, але не пам'ятає, де ви
+            його зустріли. Тому приклад поки зі статті.
           */}
           {entry.examples.length > 0 ? (
             <>
-              <div className={`${PANEL_LABEL} mt-3`}>Приклади</div>
-              <ul className="text-ink-2 mt-0 mb-0 flex list-none flex-col gap-1 p-0 text-[14px] italic">
+              <div className={`${PANEL_LABEL} ${rest.length > 0 ? 'mt-3' : ''}`}>Приклади</div>
+              <ul className="font-serif text-ink-3 mt-0 mb-0 flex list-none flex-col gap-1 p-0 text-[13.5px] italic">
                 {entry.examples.map((example) => (
-                  <li key={example}>{example}</li>
+                  <li key={example}>«{example}»</li>
                 ))}
               </ul>
             </>
@@ -265,9 +495,9 @@ function WordDetails({ word }: { word: string }) {
               <button
                 type="button"
                 onClick={() => void audioRef.current?.play().catch(() => undefined)}
-                className="rounded-btn border-line text-ink-2 cursor-pointer border bg-transparent px-[11px] py-1 text-[12.5px] leading-[normal] font-bold"
+                className="border-line-ctrl text-ink-2 rounded-btn cursor-pointer border-[1.5px] px-3 py-1.5 text-[12.5px] leading-[normal] font-bold"
               >
-                ♪ Вимова
+                🔊 Вимова
               </button>
               {/*
                 Два джерела обовʼязкові: mp3 перекодовує Commons і саме його
@@ -310,21 +540,8 @@ function WordDetails({ word }: { word: string }) {
           setNote(word, event.target.value);
         }}
         placeholder="Мнемоніка, свій приклад, контекст — що завгодно своє"
-        className="border-line bg-surface rounded-btn w-full max-w-[520px] border px-3 py-1.5 text-[13.5px]"
+        className="border-line bg-panel rounded-btn w-full border px-3 py-2 text-[13.5px]"
       />
-    </div>
-  );
-}
-
-function Tile({ value, label, accent }: { value: number; label: string; accent: string }) {
-  return (
-    <div
-      className={`bg-surface border-line rounded-panel shadow-card min-w-[170px] border border-l-[3px] px-[18px] py-4 ${accent}`}
-    >
-      <div className="text-[26px] font-extrabold tracking-[-0.6px]">{value}</div>
-      <div className="text-ink-3 text-[12px] leading-[normal] font-bold tracking-[0.9px] uppercase">
-        {label}
-      </div>
     </div>
   );
 }

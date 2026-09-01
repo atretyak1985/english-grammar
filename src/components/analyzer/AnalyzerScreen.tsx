@@ -89,10 +89,14 @@ export function AnalyzerScreen() {
     openLoose(next, name ?? null);
   };
 
+  /*
+    Заголовка окремим блоком тут більше немає: назву тексту несе тулбар
+    полотна, і другий заголовок над ним лише відсував колонку читання вниз.
+    Полотно саме тримає ширину екрана, тому контейнер лишився тільки в
+    плашки над ним.
+  */
   return (
-    <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-6">
-      <h1 className="mt-0 mb-2 text-[32px] font-extrabold tracking-[-0.8px]">Аналіз тексту</h1>
-
+    <>
       {/*
        * Деградація шару уточнення, не помилка (CONCEPT 8.1): локальна
        * підсвітка нижче лишається робочою і плашка її не ховає — вона лише
@@ -100,8 +104,8 @@ export function AnalyzerScreen() {
        */}
       {review.block ? (
         <div
-          className={`bg-surface shadow-card mb-4 rounded-r-[10px] border-l-4 px-4 py-3.5 text-[13.5px] ${
-            review.block.reason === 'auth-required' ? 'border-l-ps' : 'border-l-pc'
+          className={`bg-panel border-line rounded-note mx-auto mt-6 max-w-shell border px-5 py-4 text-[13.5px] max-[1352px]:mx-9 ${
+            review.block.reason === 'auth-required' ? 'border-l-4 border-l-ps' : 'border-l-4 border-l-pc'
           }`}
         >
           {review.block.reason === 'auth-required' ? (
@@ -136,6 +140,8 @@ export function AnalyzerScreen() {
         docKey={docKey}
         matches={matches}
         stats={stats}
+        title="Аналіз тексту"
+        meta={`${wordCount} слів`}
         coverage={{ words: review.words, totalWords: review.totalWords }}
         frequency={frequency}
         onPageEndChange={setPageEnd}
@@ -144,9 +150,9 @@ export function AnalyzerScreen() {
             <button
               type="button"
               onClick={() => setDialogOpen(true)}
-              className={`${PILL} ${PILL_OFF} ml-auto`}
+              className={`${PILL} ${PILL_OFF}`}
             >
-              ⤓ Джерело · {wordCount} слів
+              ⤓ Джерело
             </button>
             <Link href="/library" className={`${PILL} ${PILL_OFF}`}>
               Бібліотека →
@@ -171,6 +177,6 @@ export function AnalyzerScreen() {
           }}
         />
       ) : null}
-    </div>
+    </>
   );
 }

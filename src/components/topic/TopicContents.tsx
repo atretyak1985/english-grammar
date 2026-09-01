@@ -33,7 +33,7 @@ export function TopicContents({ topic }: { topic: TopicMeta }) {
                 </span>
               ) : null}
             </div>
-            <div className="mt-[7px] mb-1 text-[18px] font-extrabold tracking-[-0.3px]">
+            <div className="font-serif mt-[7px] mb-1 text-[18px] leading-[1.25] font-extrabold tracking-[-0.3px]">
               {section.title}
             </div>
             {section.lede ? <div className="text-ink-2 text-[14px]">{section.lede}</div> : null}

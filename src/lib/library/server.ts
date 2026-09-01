@@ -40,7 +40,7 @@ export interface LoadedStory {
 /** Один рядок `story_matches` — рівно ті поля, що потрібні для зведення. */
 interface StoryMatchRow {
   chunkIndex: number;
-  matches: { from: number; to: number; tense: string }[];
+  matches: { from: number; to: number; tense: string; rule?: string }[];
 }
 
 /**
@@ -146,5 +146,54 @@ export async function loadStory(slug: string): Promise<LoadedStory | null> {
   } catch (error) {
     console.warn('loadStory: запит до бази не вдався', error);
     return null;
+  }
+}
+
+/**
+ * Назви й тіла всіх оповідань — для пошуку прикладів ужитку слова. Без бази
+ * чи на помилці — порожньо, як і решта функцій тут: картка слова тоді просто
+ * лишається без прикладу.
+ */
+export async function listStoryBodies(): Promise<{ title: string; body: string }[]> {
+  const db = getDb();
+  if (db === null) return [];
+
+  try {
+    return await db.select({ title: schema.stories.title, body: schema.stories.body }).from(schema.stories);
+  } catch (error) {
+    console.warn('listStoryBodies: запит до бази не вдався', error);
+    return [];
+  }
+}
+
+export interface StoryFrequency {
+  slug: string;
+  title: string;
+  frequency: { word: string; count: number }[];
+}
+
+/**
+ * Частотні списки оповідань без тіл — для фільтра «не знаю» в словнику:
+ * слова, які трапляються в бібліотеці, але ще не мають статусу. Тіла сюди
+ * не тягнемо: словнику потрібні лише слова з кількостями, а це на порядок
+ * менше за книжку. `connection()` — з тієї ж причини, що в `listStories`.
+ */
+export async function listStoryFrequencies(): Promise<StoryFrequency[]> {
+  await connection();
+
+  const db = getDb();
+  if (db === null) return [];
+
+  try {
+    return await db
+      .select({
+        slug: schema.stories.slug,
+        title: schema.stories.title,
+        frequency: schema.stories.frequency,
+      })
+      .from(schema.stories);
+  } catch (error) {
+    console.warn('listStoryFrequencies: запит до бази не вдався', error);
+    return [];
   }
 }

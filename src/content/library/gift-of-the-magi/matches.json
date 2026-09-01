@@ -1,6 +1,7 @@
 {
-  "format": 1,
-  "seededBy": "local-rules",
+  "format": 2,
+  "seededBy": "grammar-engine",
+  "rulesVersion": 1,
   "chunks": [
     {
       "index": 0,
@@ -10,802 +11,1142 @@
         {
           "word": 7,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 14,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 18,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 39,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 50,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 54,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 69,
-          "length": 3,
-          "tense": "pc"
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 86,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 89,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 95,
           "length": 2,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.be-v3"
         },
         {
-          "word": 96,
-          "length": 1,
-          "tense": "ps"
+          "word": 112,
+          "length": 3,
+          "tense": "prc",
+          "rule": "prc.be-ving"
         },
         {
-          "word": 129,
+          "word": 122,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 135,
-          "length": 2,
-          "tense": "ps"
+          "length": 4,
+          "tense": "ps",
+          "rule": "ps.did-v1"
         },
         {
           "word": 143,
-          "length": 2,
-          "tense": "pp"
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.had-lexical"
         },
         {
           "word": 157,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 175,
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.modal-past"
         },
         {
           "word": 182,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 194,
-          "length": 2,
-          "tense": "pp"
+          "length": 3,
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 209,
-          "length": 2,
-          "tense": "pc"
-        },
-        {
-          "word": 211,
-          "length": 1,
-          "tense": "ps"
+          "length": 3,
+          "tense": "pc",
+          "rule": "pc.was-being-v3"
         },
         {
           "word": 218,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-v3"
         },
         {
           "word": 223,
           "length": 2,
-          "tense": "pc"
+          "tense": "pc",
+          "rule": "pc.was-ving"
         },
         {
           "word": 240,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 243,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 248,
-          "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 249,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-v3"
         },
         {
           "word": 253,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 260,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 266,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         },
         {
           "word": 271,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 275,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 284,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 289,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 311,
-          "length": 3,
-          "tense": "pp"
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.had-lexical"
         },
         {
           "word": 321,
+          "length": 3,
+          "tense": "pp",
+          "rule": "pp.had-v3"
+        },
+        {
+          "word": 337,
           "length": 2,
-          "tense": "pp"
+          "tense": "prs",
+          "rule": "prs.do-v1"
         },
         {
           "word": 341,
           "length": 2,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 346,
           "length": 2,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
+        },
+        {
+          "word": 350,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         },
         {
           "word": 365,
           "length": 2,
-          "tense": "pp"
-        },
-        {
-          "word": 392,
-          "length": 1,
-          "tense": "ps"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 396,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 408,
+          "length": 2,
+          "tense": "prp",
+          "rule": "prp.have-v3"
+        },
+        {
+          "word": 435,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 446,
           "length": 2,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 452,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 457,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 463,
           "length": 2,
-          "tense": "pc"
+          "tense": "pc",
+          "rule": "pc.was-ving"
         },
         {
           "word": 469,
           "length": 2,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 478,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 483,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 492,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 504,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 509,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 512,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 514,
           "length": 2,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 523,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 526,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.had-lexical"
         },
         {
           "word": 531,
           "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 541,
-          "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 560,
-          "length": 2,
-          "tense": "pp"
+          "length": 4,
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 570,
           "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 578,
-          "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 585,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 601,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 614,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 619,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 629,
-          "length": 2,
-          "tense": "ps"
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 638,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 643,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 650,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 657,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 663,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 672,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 683,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 696,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 699,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 711,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 713,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 722,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 725,
+          "length": 3,
+          "tense": "fs",
+          "rule": "fs.will-v1"
         },
         {
           "word": 730,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 733,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 735,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 752,
+          "word": 737,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 758,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 765,
+          "word": 767,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 772,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 780,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 787,
+          "word": 785,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 790,
           "length": 2,
-          "tense": "pc"
+          "tense": "pc",
+          "rule": "pc.was-ving"
         },
         {
           "word": 798,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 804,
-          "length": 2,
-          "tense": "pp"
-        },
-        {
-          "word": 806,
-          "length": 1,
-          "tense": "ps"
+          "length": 3,
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 814,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 826,
           "length": 2,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 834,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 862,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 872,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 875,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 882,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 889,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 895,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 902,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 928,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 931,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 946,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 954,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 958,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 967,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 973,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 977,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 983,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 986,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 990,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         },
         {
           "word": 1004,
-          "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 1005,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-v3"
         },
         {
           "word": 1011,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1015,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1020,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1033,
+          "length": 2,
+          "tense": "prs",
+          "rule": "prs.do-v1"
         },
         {
           "word": 1037,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1042,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1048,
+          "length": 2,
+          "tense": "fs",
+          "rule": "fs.will-v1"
+        },
+        {
+          "word": 1051,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1060,
+          "length": 3,
+          "tense": "ps",
+          "rule": "ps.modal-past"
+        },
+        {
+          "word": 1064,
+          "length": 3,
+          "tense": "ps",
+          "rule": "ps.modal-past"
         },
         {
           "word": 1077,
-          "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 1078,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-v3"
         },
         {
           "word": 1082,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 1097,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 1101,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1109,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1122,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1125,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1139,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1146,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.had-lexical"
         },
         {
           "word": 1163,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1166,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1170,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         },
         {
           "word": 1175,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1178,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1181,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1184,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1192,
           "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 1197,
-          "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 1202,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1208,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 1212,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1228,
-          "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 1229,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-v3"
         },
         {
           "word": 1234,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
-          "word": 1243,
-          "length": 1,
-          "tense": "ps"
+          "word": 1241,
+          "length": 3,
+          "tense": "ps",
+          "rule": "ps.modal-past"
         },
         {
           "word": 1246,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1249,
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 1251,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1265,
-          "length": 2,
-          "tense": "pp"
-        },
-        {
-          "word": 1267,
-          "length": 1,
-          "tense": "ps"
+          "length": 3,
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 1271,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1283,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1288,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1294,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1295,
+          "length": 2,
+          "tense": "prs",
+          "rule": "prs.do-v1"
+        },
+        {
+          "word": 1302,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.had-lexical"
         },
         {
           "word": 1305,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1308,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 1313,
-          "length": 1,
-          "tense": "ps"
+          "word": 1321,
+          "length": 2,
+          "tense": "fs",
+          "rule": "fs.will-v1"
+        },
+        {
+          "word": 1325,
+          "length": 2,
+          "tense": "fs",
+          "rule": "fs.will-v1"
         },
         {
           "word": 1331,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.had-lexical"
+        },
+        {
+          "word": 1337,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1340,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1349,
           "length": 2,
-          "tense": "pp"
+          "tense": "prs",
+          "rule": "prs.do-v1"
         },
         {
-          "word": 1359,
-          "length": 1,
-          "tense": "ps"
+          "word": 1358,
+          "length": 2,
+          "tense": "prp",
+          "rule": "prp.have-v3"
         },
         {
-          "word": 1363,
-          "length": 1,
-          "tense": "ps"
+          "word": 1362,
+          "length": 2,
+          "tense": "prp",
+          "rule": "prp.have-v3"
         },
         {
           "word": 1367,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1373,
-          "length": 2,
-          "tense": "pp"
-        },
-        {
-          "word": 1375,
-          "length": 1,
-          "tense": "ps"
+          "length": 3,
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 1387,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1391,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1393,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1395,
+          "length": 3,
+          "tense": "prs",
+          "rule": "prs.do-v1"
+        },
+        {
+          "word": 1403,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
+        },
+        {
+          "word": 1408,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1411,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1417,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1420,
+          "length": 2,
+          "tense": "prs",
+          "rule": "prs.be-v3"
         },
         {
           "word": 1423,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1431,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1432,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1435,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 1438,
+          "word": 1437,
+          "length": 2,
+          "tense": "prp",
+          "rule": "prp.'s-v3"
+        },
+        {
+          "word": 1440,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1441,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1445,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
+        },
+        {
+          "word": 1449,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1455,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1464,
-          "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 1465,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-v3"
         },
         {
           "word": 1467,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 1484,
-          "length": 1,
-          "tense": "ps"
+          "word": 1475,
+          "length": 3,
+          "tense": "ps",
+          "rule": "ps.modal-past"
+        },
+        {
+          "word": 1482,
+          "length": 3,
+          "tense": "fs",
+          "rule": "fs.will-v1"
         },
         {
           "word": 1494,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1499,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         }
       ]
     },
@@ -815,229 +1156,418 @@
       "lastWord": 2049,
       "matches": [
         {
-          "word": 1505,
+          "word": 1527,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         },
         {
           "word": 1543,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1548,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
-          "word": 1557,
+          "word": 1555,
+          "length": 3,
+          "tense": "fs",
+          "rule": "fs.will-be-v3"
+        },
+        {
+          "word": 1561,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1569,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1574,
+          "length": 2,
+          "tense": "prs",
+          "rule": "prs.do-v1"
         },
         {
           "word": 1580,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1584,
+          "length": 2,
+          "tense": "prs",
+          "rule": "prs.do-v1"
+        },
+        {
+          "word": 1586,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
+        },
+        {
+          "word": 1601,
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.modal-past"
+        },
+        {
+          "word": 1611,
+          "length": 2,
+          "tense": "fs",
+          "rule": "fs.will-v1"
         },
         {
           "word": 1620,
-          "length": 2,
-          "tense": "pp"
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.had-lexical"
         },
         {
-          "word": 1676,
+          "word": 1631,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1673,
+          "length": 1,
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1678,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1684,
           "length": 2,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
-          "word": 1697,
+          "word": 1692,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1706,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1709,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 1711,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1713,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1717,
           "length": 3,
-          "tense": "pp"
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 1721,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1727,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1733,
           "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 1741,
-          "length": 1,
-          "tense": "ps"
-        },
-        {
-          "word": 1743,
-          "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 1745,
-          "length": 1,
-          "tense": "ps"
+          "length": 2,
+          "tense": "ps",
+          "rule": "ps.was-v3"
         },
         {
           "word": 1749,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1758,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 1770,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1773,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1780,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1785,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1788,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1792,
-          "length": 2,
-          "tense": "pp"
+          "length": 4,
+          "tense": "pp",
+          "rule": "pp.had-v3"
         },
         {
           "word": 1800,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1814,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1826,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         },
         {
           "word": 1832,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 1847,
+          "word": 1839,
+          "length": 2,
+          "tense": "fs",
+          "rule": "fs.will-v1"
+        },
+        {
+          "word": 1852,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1857,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1862,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1869,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1875,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1885,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1887,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 1890,
+          "word": 1893,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1896,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 1900,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         },
         {
           "word": 1909,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1922,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1924,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1932,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1933,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
           "word": 1938,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 1947,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
+        },
+        {
+          "word": 1953,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 1958,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
         },
         {
-          "word": 1978,
-          "length": 1,
-          "tense": "ps"
+          "word": 1976,
+          "length": 3,
+          "tense": "prp",
+          "rule": "prp.have-v3"
         },
         {
           "word": 1994,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
           "word": 2015,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.v2"
         },
         {
-          "word": 2018,
+          "word": 2023,
           "length": 1,
-          "tense": "ps"
+          "tense": "prs",
+          "rule": "prs.v1"
         },
         {
           "word": 2027,
           "length": 1,
-          "tense": "ps"
+          "tense": "ps",
+          "rule": "ps.was-lexical"
+        },
+        {
+          "word": 2033,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 2035,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.v1"
+        },
+        {
+          "word": 2040,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
+        },
+        {
+          "word": 2044,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
+        },
+        {
+          "word": 2047,
+          "length": 1,
+          "tense": "prs",
+          "rule": "prs.be-lexical"
         }
       ]
     }

@@ -6,14 +6,8 @@ import { TimelinePastPerfect } from '../diagrams';
 
 ### 4.1 Форма — найпростіша з усіх: однакова для всіх осіб
 
-<Formula
-  lines={[
-    { sign: '+', body: <>Підмет <K>+ had + V3</K></>, comment: 'I had finished, she had gone, they had built' },
-    { sign: '−', body: <>Підмет <Neg>+ hadn&apos;t + V3</Neg></>, comment: "I hadn't seen it before" },
-    { sign: '?', body: <><Q>Had</Q> + підмет <Q>+ V3</Q> … ?</>, comment: 'Had you tested it?' },
-  ]}
-  note="Скорочення: I'd / you'd / he'd = I had (або I would — зрозуміло з контексту). Короткі відповіді: Yes, I had. / No, I hadn't."
-/>
+{/* Рядки формули — у lib/grammar/cards.ts, спільно з карткою слова читалки. */}
+<FormulaOf tense="pp" />
 
 <SvgBox caption={<><b>When I arrived, the team had already left.</b> — Коли я приїхав, команда вже пішла. Past Perfect завжди вимірюється відносно точки в Past Simple.</>}>
   <TimelinePastPerfect />

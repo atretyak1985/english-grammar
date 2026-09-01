@@ -3,7 +3,13 @@
 import { useEffect, useState, type RefObject } from 'react';
 
 /** Заповнення, з якого сторінку вважаємо достатньо повною. */
-const GOOD_FILL = 0.92;
+/*
+  Частка висоти області, з якої сторінка вважається повною і пошук
+  зупиняється раніше. Решту добирає бісекція до сусідніх токенів, тому це
+  лише коротка дорога, а не стеля: нижче неї сторінка не лишиться, якщо
+  наступний токен узагалі вміщається.
+*/
+const GOOD_FILL = 0.96;
 /** Бісекція сходиться швидко; межа — щоб не крутитися на патологічному тексті. */
 const MAX_STEPS = 14;
 
@@ -16,6 +22,13 @@ interface Search {
   /** Найменший відомий кінець, за якого текст переливався */
   overflows: number;
   steps: number;
+  /**
+   * Висота тексту, на якій пошук зійшовся з недобором. Повторний недобір на
+   * тій самій висоті — це справді геометрія тексту (наступний токен не
+   * влазить), а менша висота — змінена геометрія (дозавантажився шрифт), і
+   * тоді шукати треба заново, зі свіжим запасом кроків.
+   */
+  settledAt?: number;
 }
 
 /**
@@ -67,12 +80,39 @@ export function useFittedPage({
       const filled = prose.scrollHeight + padding;
       if (available < 80 || prose.scrollHeight < 20) return;
 
+      // Яку межу зараз показує DOM: ставить компонент з поверненого значення
+      const shown = Number(prose.dataset.pageEnd);
+
       setSearch((current) => {
         const state = current.key === key ? current : fresh();
-        if (state.steps >= MAX_STEPS) return state;
+
+        // Замір від ResizeObserver може прийти, коли стан уже пішов на крок
+        // уперед, а DOM ще показує попередню межу. Судити про нову межу за
+        // старою висотою — це і є розгін пошуку вдвічі на кожному такому
+        // збігу; тому замір, що не відповідає стану, просто відкидається —
+        // свіжий прийде з ефекту після коміту.
+        if (!Number.isNaN(shown) && shown !== clamp(state.end, start, total)) return state;
 
         const fill = filled / available;
         const overflowing = fill > 1;
+
+        /*
+          Кроки вичерпано. Зупинятися можна лише на тому, що ВМІЩАЄТЬСЯ:
+          інакше остання межа лишається переповненою, і нижній рядок сторінки
+          обрізаний назавжди — повторний замір сам себе не виправить, бо
+          пошук уже вважає, що зробив своє.
+
+          Тому на вичерпаних кроках ще й відступаємо, по токену за замір,
+          доки не влізе. Це лінійно й повільніше за бісекцію, зате `end`
+          строго спадає, отже колись зупиниться — а зупиниться воно рівно
+          на межі, яку видно цілою.
+        */
+        if (state.steps >= MAX_STEPS) {
+          if (!overflowing) return state;
+          const next = Math.max(start + 1, state.end - 1);
+          if (next === state.end) return state;
+          return { ...state, end: next, overflows: state.end };
+        }
 
         const fits = overflowing ? state.fits : Math.max(state.fits, state.end);
         const overflows = overflowing
@@ -84,6 +124,30 @@ export function useFittedPage({
         // Готово: або сторінка достатньо повна, або межа знайдена з точністю
         // до одного токена — тоді лишаємо найбільший варіант, що вміщався.
         if (!overflowing && fill >= GOOD_FILL) return { ...state, fits, overflows };
+
+        /*
+          Межу вже знайдено, але поточний замір переливається — отже, знайдена
+          вона на іншій геометрії. Так буває щоразу, коли дозавантажується
+          серифний шрифт: підстановний вужчий і нижчий, сторінка на ньому
+          вміщалась, а на справжньому вже ні.
+
+          Без цієї гілки пошук вважав межу знайденою і завмирав на
+          переповненому стані — останній рядок сторінки лишався обрізаним
+          назавжди, бо повторний замір сам себе не виправляв. Відступаємо на
+          токен і шукаємо заново: `end` при цьому строго спадає, тому
+          зациклитись тут ніяк.
+        */
+        //
+        // Умова — саме «межа, яка ВМІЩАЛАСЯ, тепер переливається», а не будь-який
+        // перелив по сусідству з нею: останній крок звичайної бісекції теж
+        // стоїть на токен вище від `fits` і переливається, і якби він потрапляв
+        // сюди, пошук скидав би себе на кожному сходженні й ніколи не зупинявся.
+        if (overflowing && state.end === state.fits) {
+          const next = Math.max(start + 1, state.end - 1);
+          if (next === state.end) return { ...state, fits, overflows };
+          return { ...state, end: next, fits: start + 1, overflows: state.end, steps: 0 };
+        }
+
         if (overflows > 0 && overflows - fits <= 1) {
           if (state.end !== fits) {
             return { ...state, end: fits, fits, overflows, steps: state.steps + 1 };
@@ -93,8 +157,18 @@ export function useFittedPage({
           // ще стоїть попередній, вищий текст. Знімаємо цю межу й шукаємо далі
           // вгору, інакше недобір лишився б назавжди — повторний замір сам себе
           // не виправить, бо пошук уже вважає межу знайденою.
+          //
+          // Запас кроків при цьому обнуляється: раніше він тікав наскрізь
+          // через усі перезапуски, і після підміни шрифту пошук завмирав на
+          // вичерпаних кроках зі сторінкою на три чверті — порожнє місце під
+          // текстом лишалося назавжди. Щоб перезапуск не зациклився на
+          // чесному недоборі, він відбувається лише коли текст став нижчим,
+          // ніж був на попередньому сходженні.
           if (fill < GOOD_FILL) {
-            return { ...state, fits, overflows: 0, steps: state.steps + 1 };
+            if (state.settledAt === undefined || filled < state.settledAt - 8) {
+              return { key, end: state.end, fits, overflows: 0, steps: 0, settledAt: filled };
+            }
+            return { ...state, fits, overflows };
           }
           return { ...state, fits, overflows };
         }
@@ -108,7 +182,7 @@ export function useFittedPage({
             : Math.min(total, start + Math.max(1, state.end - start) * 2);
 
         if (next === state.end) return { ...state, fits, overflows };
-        return { key, end: next, fits, overflows, steps: state.steps + 1 };
+        return { ...state, end: next, fits, overflows, steps: state.steps + 1 };
       });
     };
 
@@ -121,5 +195,10 @@ export function useFittedPage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guess, key, proseRef, readerRef, start, total, search.end, search.steps]);
 
+  return clamp(end, start, total);
+}
+
+/** Межа, яку справді показуємо: не раніше за перший токен і не далі за текст. */
+function clamp(end: number, start: number, total: number): number {
   return Math.min(Math.max(end, start + 1), total);
 }

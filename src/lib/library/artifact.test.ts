@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
 import { chunksOf } from '@/lib/analyzer/chunks';
-import { findMatches, tokenize, type Match } from '@/lib/analyzer/tenses';
+import { tokenize, type Match } from '@/lib/analyzer/tenses';
 import { wordTokens } from '@/lib/analyzer/words';
+import { analyzeGrammar } from '@/lib/grammar';
+import { RULES_VERSION } from '@/lib/grammar/rules';
 import type { TenseKey } from '@/types/content';
 
 import {
@@ -17,21 +19,24 @@ import {
  * Найважливіший ризик фази — зсув нумерації слів: артефакт зі зсунутими на
  * одиницю номерами виглядає структурно коректним (усі поля на місці), але
  * розмічує НЕ ТІ слова. Тому тести тут не виписують номери руками: текст і
- * артефакт до нього генеруються одним і тим самим кодом (`findMatches` +
- * `wordTokens`), а псується вже готовий артефакт — так само, як зіпсувала б
- * його помилка в промпті чи в CLI.
+ * артефакт до нього генеруються одним і тим самим кодом (`analyzeGrammar` +
+ * `wordTokens`) — рівно так, як це робить `import-book`, — а псується вже
+ * готовий артефакт, так само, як зіпсувала б його помилка в CLI.
  */
 
-/** Кілька абзаців з очевидними Past Simple / Continuous / Perfect конструкціями. */
+/**
+ * Кілька абзаців з очевидними конструкціями. Форми з `V2_ONLY` («went»,
+ * «saw», «came») тут не окраса: перевірка 5 рахує поріг саме на них.
+ */
 function buildText(): string {
   const sentences = [
-    'She walked to the old market and bought fresh bread.',
+    'She went to the old market and bought fresh bread.',
     'He had never seen such a bright morning before.',
-    'They were talking quietly when the teacher arrived.',
+    'They were talking quietly when the teacher came in.',
     'We finished the project and celebrated with our friends.',
-    'The old man walked slowly and stopped near the river.',
+    'The old man walked slowly and saw a boat near the river.',
     'She had already finished her homework when he called.',
-    'They walked together and talked about the future.',
+    'They went together and talked about the future.',
     'He waited patiently until the rain finally stopped.',
   ];
   return sentences.join(' ');
@@ -44,15 +49,14 @@ function wordNumbers(text: string): Map<number, number> {
 }
 
 /**
- * Артефакт, розмічений локальними правилами того самого тексту — рівно так,
- * як зроблено для смоук-прикладу в `src/content/library`. Розмітка тут не
- * вигадана: це `findMatches`, перекладений у номери слів через таблицю, яку
- * саме й перевіряє ця фаза.
+ * Артефакт, розмічений двигуном на тому самому тексті — рівно так, як це
+ * робить `import-book`. Розмітка тут не вигадана: це `analyzeGrammar`,
+ * перекладений у номери слів через таблицю, яку саме й перевіряє ця фаза.
  */
 function buildArtifact(text: string): Artifact {
   const tokens = tokenize(text);
   const toWordNumber = wordNumbers(text);
-  const localMatches = findMatches(tokens);
+  const localMatches = analyzeGrammar(text).matches;
 
   const chunks: ArtifactChunk[] = chunksOf(tokens).map((chunk, index) => {
     const firstWord = toWordNumber.get(chunk.start);
@@ -69,40 +73,72 @@ function buildArtifact(text: string): Artifact {
         if (word === undefined || lastMatchWord === undefined) {
           throw new Error('тестова помилка: межі збігу не є словами');
         }
-        return { word, length: lastMatchWord - word + 1, tense: match.tense };
+        return { word, length: lastMatchWord - word + 1, tense: match.tense, rule: match.ruleId };
       });
 
     return { index, firstWord, lastWord, matches: chunkMatches };
   });
 
-  return { format: 1, seededBy: 'local-rules', chunks };
+  return { format: 2, seededBy: 'grammar-engine', rulesVersion: RULES_VERSION, chunks };
 }
 
 describe('parseArtifact — строгість формату', () => {
   it('невідоме поле на будь-якому рівні — падає з назвою поля', () => {
-    const raw = { format: 1, seededBy: 'local-rules', chunks: [], extra: true };
+    const raw = { format: 2, seededBy: 'claude-cli', chunks: [], extra: true };
 
     expect(() => parseArtifact(raw, 'strict.json')).toThrow(/strict\.json.*extra.*невідоме поле/s);
   });
 
-  it('відсутній (або не 1) format — падає', () => {
-    const raw = { seededBy: 'local-rules', chunks: [] };
+  it('відсутній format — падає', () => {
+    const raw = { seededBy: 'claude-cli', chunks: [] };
 
     expect(() => parseArtifact(raw, 'strict.json')).toThrow(/strict\.json.*format/s);
+  });
+
+  it('формат 1 більше не приймається — падає з вимогою перегенерувати', () => {
+    const raw = { format: 1, seededBy: 'local-rules', chunks: [] };
+
+    expect(() => parseArtifact(raw, 'legacy.json')).toThrow(/legacy\.json.*format.*import-book/s);
+  });
+
+  it("розмітка двигуном без rulesVersion — падає (обовʼязкове для 'grammar-engine')", () => {
+    const raw = { format: 2, seededBy: 'grammar-engine', chunks: [] };
+
+    expect(() => parseArtifact(raw, 'engine.json')).toThrow(/engine\.json.*rulesVersion/s);
+  });
+
+  it('застаріла rulesVersion — падає з назвою обох версій і вимогою перегенерувати (SC-8)', () => {
+    const raw = { format: 2, seededBy: 'grammar-engine', rulesVersion: RULES_VERSION + 1, chunks: [] };
+
+    expect(() => parseArtifact(raw, 'stale.json')).toThrow(
+      new RegExp(`stale\\.json.*v${RULES_VERSION + 1}.*v${RULES_VERSION}.*import-book`, 's'),
+    );
+  });
+
+  it("ручна розмітка 'claude-cli' без rulesVersion — приймається", () => {
+    const raw = { format: 2, seededBy: 'claude-cli', seedModel: 'claude-opus-5', chunks: [] };
+
+    expect(parseArtifact(raw, 'manual.json').rulesVersion).toBeUndefined();
   });
 });
 
 describe('пайплайн parseArtifact → toTokenMatches → validate', () => {
-  it('коректний артефакт проходить без винятків, а токени збігаються з findMatches', () => {
+  it('коректний артефакт проходить без винятків, а токени збігаються з analyzeGrammar', () => {
     const text = buildText();
-    const tokens = tokenize(text);
-    const localMatches = findMatches(tokens);
+    // Правило їде крізь артефакт до токенних збігів — на ньому стоїть картка
+    // слова в читалці, тому воно частина очікування, а не зайве поле.
+    const engineMatches = analyzeGrammar(text).matches.map(({ from, to, tense, ruleId }) => ({
+      from,
+      to,
+      tense,
+      rule: ruleId,
+    }));
 
     const artifact = parseArtifact(buildArtifact(text), 'story.json');
     const converted = toTokenMatches(text, artifact);
 
     expect(() => validate(text, artifact, converted, 'matches.json')).not.toThrow();
-    expect(converted).toEqual([...localMatches].sort((a, b) => a.from - b.from));
+    expect(converted).toEqual([...engineMatches].sort((a, b) => a.from - b.from));
   });
 
   it('зсув нумерації слів на одиницю — падає (найважливіший тест фази)', () => {

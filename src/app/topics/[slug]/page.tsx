@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { TopicContents } from '@/components/topic/TopicContents';
-import { TopicHero } from '@/components/topic/TopicHero';
+import { TopicShell } from '@/components/topic/TopicShell';
+import { TopicSidebar } from '@/components/topic/TopicSidebar';
 import { TopicVisit } from '@/components/topic/TopicVisit';
 import { hasContent } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
@@ -32,8 +33,18 @@ export async function generateMetadata({
 }
 
 /**
- * Зміст теми. Розділи живуть окремими сторінками (кожен зі своїм URL і
- * власним запитом у пошуку), а ця сторінка — вхід у тему.
+ * Вхід у тему. Розділи живуть окремими сторінками (кожен зі своїм URL і
+ * власним запитом у пошуку), а тут — обіцянка теми й картки розділів.
+ *
+ * Макета в цієї сторінки концепція не малює: вона виведена зі сторінки
+ * розділу (2b) — той самий каркас, лише посередині замість тексту стоять
+ * картки розділів. Темного герой-блока більше немає: на паперовій основі
+ * він читався як чужа плита, а обіцянку теми несе заголовок.
+ *
+ * Колонки з контекстом тут немає навмисно, хоч на сторінці розділу вона й
+ * стоїть: прогрес, пастка й рядок Alex не змінюються всередині теми, тому
+ * на вході вони лише повторювали б те, що людина побачить за секунду —
+ * коштом ширини самих карток розділів, заради яких на цю сторінку й ідуть.
  */
 export default async function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -41,24 +52,27 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   if (!topic || !topic.ready || !hasContent(slug)) notFound();
 
   return (
-    <>
-      <TopicHero topic={topic} />
+    <TopicShell contents={<TopicSidebar topic={topic} />}>
+      <TopicVisit topicSlug={topic.slug} />
 
-      <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
-        <TopicVisit topicSlug={topic.slug} />
+      <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">
         <div className="min-w-0">
-          <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
-            <h2 className="mt-0 mb-0 text-[27px] font-extrabold tracking-[-0.5px]">Зміст</h2>
-            <Link
-              href={`/topics/${topic.slug}/all`}
-              className="border-line text-ink-2 rounded-btn hover:text-ink hover:border-ink-3 border px-[13px] py-[7px] text-[12.5px] leading-[normal] font-bold"
-            >
-              Усе одним полотном
-            </Link>
-          </div>
-          <TopicContents topic={topic} />
+          <h1 className="font-serif m-0 mb-1.5 text-[32px] leading-[1.1] font-extrabold tracking-[-0.5px]">
+            {topic.heroTitle ?? topic.title}
+          </h1>
+          {topic.heroLede ? (
+            <p className="text-ink-2 m-0 max-w-[62ch] text-[14px] leading-[1.6]">{topic.heroLede}</p>
+          ) : null}
         </div>
+        <Link
+          href={`/topics/${topic.slug}/all`}
+          className="border-line-ctrl text-ink rounded-btn flex-none border-[1.5px] px-4 py-2.5 text-[13px] font-bold"
+        >
+          Усе одним полотном
+        </Link>
       </div>
-    </>
+
+      <TopicContents topic={topic} />
+    </TopicShell>
   );
 }

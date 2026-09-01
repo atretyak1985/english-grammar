@@ -1,0 +1,52 @@
+“Then it wasn’t very civil of you to offer it,” said Alice angrily.
+
+“It wasn’t very civil of you to sit down without being invited,” said the March Hare.
+
+“I didn’t know it was _your_ table,” said Alice; “it’s laid for a great many more than three.”
+
+“Your hair wants cutting,” said the Hatter. He had been looking at Alice for some time with great curiosity, and this was his first speech.
+
+“You should learn not to make personal remarks,” Alice said with some severity; “it’s very rude.”
+
+The Hatter opened his eyes very wide on hearing this; but all he _said_ was, “Why is a raven like a writing-desk?”
+
+“Come, we shall have some fun now!” thought Alice. “I’m glad they’ve begun asking riddles.—I believe I can guess that,” she added aloud.
+
+“Do you mean that you think you can find out the answer to it?” said the March Hare.
+
+“Exactly so,” said Alice.
+
+
+=== збіги ===
+# Глава VII, «Божевільне чаювання»: питання й короткі репліки.
+# «it's laid» — насправді пасив is laid (prs); двигун читає 's перед V3 як has і сам ставить сумнів.
+# «Come, we shall have some fun» — наказ; come збігається з V3, тому prs під сумнівом.
+ps	wasn't
+ps	said
+ps	wasn't
+ps	said
+ps	didn't know
+ps	was
+ps	said
+prp?	it's laid
+prs	wants
+ps	said
+pp	had been looking
+ps	was
+ps	said
+prs	it's
+ps	opened
+ps	said
+ps	was
+prs	is
+prs?	come
+fs	shall have
+ps	thought
+prs	i'm
+prp	they've begun
+prs	believe
+ps	added
+prs	do you mean
+prs	think
+ps	said
+ps	said

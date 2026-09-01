@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAppState } from '@/components/providers/AppStateProvider';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { topicBySlug } from '@/data/topics';
+import { DRILL_TITLES, drillKindOf } from '@/lib/drills/streak';
 import { useReading } from '@/lib/state/reading';
 import { useTexts } from '@/lib/state/texts';
 
@@ -18,6 +19,13 @@ const WIDE_BUTTON =
   'border-line text-ink rounded-btn hover:bg-hover cursor-pointer border bg-transparent px-3 py-2 text-left text-[12.5px] leading-[normal] font-bold';
 
 const dateLabel = (iso: string) => new Date(iso).toLocaleDateString('uk-UA');
+
+/** Тест теми — назвою теми; вправа тренування — назвою вправи. */
+function attemptTitle(topicSlug: string): string {
+  const kind = drillKindOf(topicSlug);
+  if (kind) return `Тренування · ${DRILL_TITLES[kind]}`;
+  return topicBySlug(topicSlug)?.title ?? topicSlug;
+}
 
 /** Кабінет: статистика, бібліотека текстів, історія тестів, експорт (CONCEPT 8.4). */
 export function AccountScreen({ email }: { email: string | null }) {
@@ -55,6 +63,7 @@ export function AccountScreen({ email }: { email: string | null }) {
   };
 
   const attempts = [...state.attempts].reverse().slice(0, 8);
+  const quizzes = state.attempts.filter((attempt) => drillKindOf(attempt.topicSlug) === null).length;
 
   return (
     <div className="mx-auto max-w-content px-[30px] pt-[30px] pb-[70px]">
@@ -98,7 +107,8 @@ export function AccountScreen({ email }: { email: string | null }) {
         <Tile value={learning} label="вчу зараз" accent="border-l-pc" />
         <Tile value={sectionsRead} label="розділів прочитано" accent="border-l-ps" />
         <Tile value={texts.length} label="текстів у бібліотеці" accent="border-l-pp" />
-        <Tile value={state.attempts.length} label="спроб тесту" accent="border-l-ps" />
+        <Tile value={quizzes} label="спроб тесту" accent="border-l-ps" />
+        <Tile value={state.attempts.length - quizzes} label="вправ у тренуванні" accent="border-l-pc" />
       </div>
 
       <div className="grid grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] gap-5">
@@ -169,7 +179,7 @@ export function AccountScreen({ email }: { email: string | null }) {
                     >
                       <div className="min-w-0">
                         <div className="text-[14.5px] font-bold">
-                          {topicBySlug(attempt.topicSlug)?.title ?? attempt.topicSlug}
+                          {attemptTitle(attempt.topicSlug)}
                         </div>
                         <div className="text-ink-3 text-[12.5px]">
                           {dateLabel(attempt.finishedAt)}

@@ -1,0 +1,67 @@
+for showing off her knowledge, as there was no one to listen to her, still it was good practice to say it over) “—yes, that’s about the right distance—but then I wonder what Latitude or Longitude I’ve got to?” (Alice had no idea what Latitude was, or Longitude either, but thought they were nice grand words to say.)
+
+Presently she began again. “I wonder if I shall fall right _through_ the earth! How funny it’ll seem to come out among the people that walk with their heads downward! The Antipathies, I think—” (she was rather glad there _was_ no one listening, this time, as it didn’t sound at all the right word) “—but I shall have to ask them what the name of the country is, you know. Please, Ma’am, is this New Zealand or Australia?” (and she tried to curtsey as she spoke—fancy _curtseying_ as you’re falling through the air! Do you think you could manage it?) “And what an ignorant little girl she’ll think me for asking! No, it’ll never do to ask: perhaps I shall see it written up somewhere.”
+
+Down, down, down. There was nothing else to do, so Alice soon began talking again. “Dinah’ll miss me very much to-night, I should think!” (Dinah was the cat.) “I hope they’ll remember her saucer of milk at tea-time. Dinah my dear! I wish you were down here with me! There are no mice in the air, I’m afraid, but you might catch a bat, and that’s very like a mouse, you know. But do cats eat bats, I wonder?” And here Alice began to get rather sleepy, and went on saying to herself, in a dreamy sort of way, “Do cats eat bats? Do cats eat bats?” and sometimes, “Do bats eat cats?” for, you see, as she couldn’t answer either question, it didn’t much matter which way she put it. She felt that she was dozing off, and had just begun to dream that she was walking hand in hand with Dinah, and saying
+
+=== збіги ===
+# Сторінка 3 «Аліси» (paginate, PAGE_CHARS) — SC-1…SC-4.
+# «spoke—fancy» — один токен tokenize (тире без пробілів); двигун бачить у ньому «spoke».
+# «put» у «which way she put it» — омограф основи й V2, тому під сумнівом.
+ps	was
+ps	was
+prs	that's
+prs	wonder
+prp	i've got
+ps	had
+ps	was
+ps	thought
+ps	were
+ps	began
+prs	wonder
+fs	shall fall
+fs	it'll seem
+prs	walk
+prs	think
+ps	was
+ps	was
+ps	didn't sound
+fs	shall have
+prs	is
+prs	know
+prs	is
+ps	tried
+ps	spoke—fancy
+prc	you're falling
+prs	do you think
+ps	could manage
+fs	she'll think
+fs	it'll never do
+fs	shall see
+ps	was
+ps	began
+fs	dinah'll miss
+ps	was
+prs	hope
+fs	they'll remember
+prs	wish
+ps	were
+prs	are
+prs	i'm
+prs	that's
+prs	know
+prs	do cats eat
+prs	wonder
+ps	began
+ps	went
+prs	do cats eat
+prs	do cats eat
+prs	do bats eat
+prs	see
+ps	couldn't answer
+ps	didn't much matter
+ps?	put
+ps	felt
+pc	was dozing
+pp	had just begun
+pc	was walking

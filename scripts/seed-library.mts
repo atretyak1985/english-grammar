@@ -3,8 +3,8 @@
  *
  * Скрипт лише конвертує, валідує й пише — і НЕ МАЄ ПРАВА звертатися до
  * Anthropic: розмітку часів дають артефакти в репозиторії (`src/content/
- * library/<slug>/matches.json`), розмічені раніше через Claude CLI або
- * локальні правила. `words`, `stats` і `frequency` рахуються тут же, локально,
+ * library/<slug>/matches.json`), розмічені раніше двигуном (`make import-book`)
+ * або вручну через Claude CLI. `words`, `stats` і `frequency` рахуються тут же, локально,
  * тим самим кодом, що й застосунок (`analyzer/tenses.ts`, `analyzer/
  * vocabulary.ts`) — модель для цього підрахунку не потрібна.
  *
@@ -192,6 +192,7 @@ async function seedStory(db: Db, story: LoadedStory): Promise<{ status: 'seeded'
         sortOrder: story.meta.sortOrder,
         artifactHash: story.artifactHash,
         seedModel: story.artifact.seedModel ?? null,
+        rulesVersion: story.artifact.rulesVersion ?? null,
         seededAt: new Date(),
       })
       .onConflictDoUpdate({
@@ -209,6 +210,7 @@ async function seedStory(db: Db, story: LoadedStory): Promise<{ status: 'seeded'
           sortOrder: story.meta.sortOrder,
           artifactHash: story.artifactHash,
           seedModel: story.artifact.seedModel ?? null,
+          rulesVersion: story.artifact.rulesVersion ?? null,
           seededAt: new Date(),
         },
       });
@@ -225,9 +227,9 @@ async function seedStory(db: Db, story: LoadedStory): Promise<{ status: 'seeded'
           chunkIndex: index,
           fromToken: chunk.start,
           toToken: chunk.end,
-          matches: matches
-            .filter((match) => match.from >= chunk.start && match.to <= chunk.end)
-            .map((match) => ({ from: match.from, to: match.to, tense: match.tense })),
+          // Збіг кладеться цілим — разом із `rule`: на ньому стоїть картка
+          // слова в читалці, і звуження полів тут уже раз мовчки його з'їло.
+          matches: matches.filter((match) => match.from >= chunk.start && match.to <= chunk.end),
         })),
       );
     }

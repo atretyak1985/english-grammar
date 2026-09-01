@@ -6,9 +6,9 @@ import type { BatchState } from '@/lib/analyzer/batch';
 /**
  * Ручка без бази, без мережі й без реального `batchState` — тут перевіряється
  * не робота батча (це `analyzer/batch.test.ts`), а те, що саме ЦЯ ручка робить
- * навколо нього: закриває доступ гостю, звіряє квоту по всьому документу до
- * створення батча і списує слова рівно тоді, коли батч справді щойно створено,
- * а не при кожному опитуванні вже наявного.
+ * навколо нього: закриває доступ гостю, дає батчу gate, який звіряє ЦІНУ
+ * УТОЧНЕННЯ з залишком квоти, і списує слова рівно тоді, коли батч справді
+ * щойно створено, — і рівно стільки, скільки їх пішло моделі.
  */
 const mocks = vi.hoisted(() => ({ batchState: vi.fn(), resolveAccess: vi.fn(), consumeWords: vi.fn() }));
 
@@ -72,17 +72,19 @@ describe('POST /api/analyze/batch', () => {
     expect(mocks.batchState).not.toHaveBeenCalled();
   });
 
-  it('документ, що не влазить у залишок — 402, batchState не питають', async () => {
+  it('gate звіряє ціну уточнення з залишком: дорожче за залишок — не пускає', async () => {
     mocks.resolveAccess.mockResolvedValue(account({ remainingWords: 100, monthlyWords: 100 }));
 
     const response = await post('a '.repeat(500));
-    const body = (await response.json()) as Body;
 
-    expect(response.status).toBe(402);
-    expect(body.reason).toBe('quota-exhausted');
-    expect(body.remainingWords).toBe(100);
-    expect(body.monthlyWords).toBe(100);
-    expect(mocks.batchState).not.toHaveBeenCalled();
+    expect(response.status).toBe(200);
+    const options = mocks.batchState.mock.calls[0]?.[1] as {
+      gate: (modelWords: number) => boolean;
+    };
+    // Уточнення на 99 слів у залишок 100 влазить, на 101 — ні: квота міряється
+    // ціною для моделі, а не розміром документа.
+    expect(options.gate(99)).toBe(true);
+    expect(options.gate(101)).toBe(false);
   });
 
   it('повторне опитування вже створеного батча (created не виставлено) слів не списує', async () => {
@@ -97,18 +99,20 @@ describe('POST /api/analyze/batch', () => {
     expect(mocks.consumeWords).not.toHaveBeenCalled();
   });
 
-  it('щойно створений батч (created: true) списує слова рівно один раз', async () => {
+  it('щойно створений батч (created: true) списує рівно названі ним слова', async () => {
     mocks.batchState.mockResolvedValue({
       status: 'pending',
       ready: 0,
       total: 10,
       chunks: [],
       created: true,
+      billedWords: 42,
     } satisfies BatchState);
 
     await post('She had finished it before he arrived');
 
     expect(mocks.consumeWords).toHaveBeenCalledTimes(1);
-    expect(mocks.consumeWords).toHaveBeenCalledWith('user-1', 7);
+    // 42 — слова спірних речень, які пішли моделі, а не 7 слів документа.
+    expect(mocks.consumeWords).toHaveBeenCalledWith('user-1', 42);
   });
 });
