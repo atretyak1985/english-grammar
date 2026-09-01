@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { SectionPager } from '@/components/topic/SectionPager';
+import { TopicBreadcrumbs } from '@/components/topic/TopicBreadcrumbs';
 import { TopicShell } from '@/components/topic/TopicShell';
-import { TopicSidebar } from '@/components/topic/TopicSidebar';
 import { TopicVisit } from '@/components/topic/TopicVisit';
 import { SECTION_CONTENT, sectionLoader } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
@@ -43,9 +44,10 @@ export async function generateMetadata({
 
 /**
  * Один розділ теми — окрема сторінка з власним URL, щоб її можна було знайти
- * в пошуку й переслати посиланням. Перехід між розділами тримає зміст
- * ліворуч: він показує і сусідні розділи, і все інше в темі, тому окрема
- * пара «попередній / наступний» під текстом більше нічого не додавала.
+ * в пошуку й переслати посиланням. Зміст-сайдбар звідси прибрано: «де я?»
+ * кажуть хлібні крихти над текстом, «куди далі?» — кнопки під ним, а повний
+ * список розділів живе на вході в тему. Текст за це отримує всю ширину
+ * колонки читання.
  *
  * Правої колонки, яку малює макет 2b, тут немає: прогрес теми показував
  * відвідане замість вивченого, а пастка й рядок Alex не змінювалися від
@@ -64,11 +66,13 @@ export default async function SectionPage({
   const { default: Content } = await found.load();
 
   return (
-    <TopicShell contents={<TopicSidebar topic={found.topic} current={found.section} />}>
+    <TopicShell>
       <TopicVisit topicSlug={found.topic.slug} sectionId={found.section.id} />
+      <TopicBreadcrumbs topic={found.topic} current={found.section.short ?? found.section.title} />
       <article className="bg-panel border-line rounded-panel border px-[42px] py-9">
         <Content />
       </article>
+      <SectionPager topic={found.topic} current={found.section} />
     </TopicShell>
   );
 }

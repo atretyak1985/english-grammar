@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { TopicBreadcrumbs } from '@/components/topic/TopicBreadcrumbs';
 import { TopicContents } from '@/components/topic/TopicContents';
 import { TopicShell } from '@/components/topic/TopicShell';
-import { TopicSidebar } from '@/components/topic/TopicSidebar';
 import { TopicVisit } from '@/components/topic/TopicVisit';
 import { hasContent } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
@@ -52,8 +52,9 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   if (!topic || !topic.ready || !hasContent(slug)) notFound();
 
   return (
-    <TopicShell contents={<TopicSidebar topic={topic} />}>
+    <TopicShell>
       <TopicVisit topicSlug={topic.slug} />
+      <TopicBreadcrumbs topic={topic} />
 
       <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">
         <div className="min-w-0">

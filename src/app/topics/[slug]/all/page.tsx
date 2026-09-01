@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { hasContent, sectionLoader } from '@/content/topics';
+import { TopicBreadcrumbs } from '@/components/topic/TopicBreadcrumbs';
 import { TopicShell } from '@/components/topic/TopicShell';
-import { TopicSidebar } from '@/components/topic/TopicSidebar';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
 
 export function generateStaticParams() {
@@ -46,7 +46,8 @@ export default async function TopicAllPage({ params }: { params: Promise<{ slug:
   );
 
   return (
-    <TopicShell contents={<TopicSidebar topic={topic} />}>
+    <TopicShell>
+      <TopicBreadcrumbs topic={topic} current="Усе одним полотном" />
       <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">
         <h1 className="font-serif m-0 text-[32px] leading-[1.1] font-extrabold tracking-[-0.5px]">
           {topic.title} — усе одним полотном
