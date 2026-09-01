@@ -146,6 +146,11 @@ export function useReading() {
     docStore.commit({ id: null, title, body });
   }, []);
 
+  /** Повернути демо-текст: власного документа немає, аналізатор покаже вбудований. */
+  const openDemo = useCallback(() => {
+    docStore.commit(NO_DOC);
+  }, []);
+
   const setPosition = useCallback((docKey: string, position: ReadingPosition) => {
     const next = { ...posStore.getSnapshot() };
     // Перевставляння рухає ключ у кінець: порядок ключів = порядок звертання,
@@ -157,5 +162,5 @@ export function useReading() {
     posStore.commit(next);
   }, []);
 
-  return { doc, positions, openSaved, openLoose, setPosition };
+  return { doc, positions, openSaved, openLoose, openDemo, setPosition };
 }

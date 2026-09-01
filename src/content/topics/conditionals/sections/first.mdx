@@ -1,0 +1,55 @@
+<Section id="first" n={3} title="First conditional: реальний план на майбутнє">
+
+<Lede>Перший тип — єдиний про майбутнє, у яке ви справді вірите: дедлайни, погода на завтра, «якщо клієнт погодиться». Умова говорить теперішнім часом, результат — через will. І саме тут живе найчастіша помилка українців у всій темі.</Lede>
+
+<Formula
+  lines={[
+    { sign: '+', body: <>If + <K>Present Simple</K>, … <K>will + V1</K></>, comment: 'If the tests pass, we will deploy on Friday.' },
+    { sign: '−', body: <>If + <K>Present Simple</K>, … <K>won't + V1</K></>, comment: "If he doesn't reply today, we won't wait." },
+    { sign: '?', body: <><K>What will</K> you do <K>if</K> + Present Simple?</>, comment: 'What will you do if the client says no?' },
+  ]}
+  note="Замість will у результаті вільно стають can / might / should / наказ — реальність від цього не змінюється."
+/>
+
+### Чому в if-частині немає will
+
+<P>Українською обидва плеча стоять у майбутньому: «якщо <b>буде</b> дощ — <b>скасуємо</b>». Тому рука сама тягне will в обидві частини. Але англійська if-частина — це не прогноз, а <b>опис ситуації, за якої спрацює результат</b>: ситуацію описують теперішнім часом, як умову задачі. Прогнозує — тільки друге плече.</P>
+
+<GoodBad>
+  <Bad>If it <b>will rain</b> tomorrow, we will cancel the picnic.<br />If the client <b>will agree</b>, we will start on Monday.<br />I'll call you when I <b>will arrive</b>.</Bad>
+  <Good>If it <M t="prs">rains</M> tomorrow, we <M t="fs">will cancel</M> the picnic.<br />If the client <M t="prs">agrees</M>, we <M t="fs">will start</M> on Monday.<br />I'll call you when I <M t="prs">arrive</M>.</Good>
+</GoodBad>
+
+<Note variant="trap" title="Правило ширше за if: усі слова часу">
+  Той самий заборонений will — після <b>when, until, before, after, as soon as</b>: <i>as soon as the invoice <b>arrives</b></i>, а не ✗ <i>will arrive</i>. Запамʼятати легко: після слів умови й часу майбутнє «маскується» під теперішнє. Виняток один і рідкісний — ввічливе прохання <i>if you will…</i> у канцелярських формулах; у живій мові він вам не знадобиться.
+</Note>
+
+### Приклади з життя
+
+<ExList>
+  <Ex ua="Якщо тести пройдуть, викотимо в пʼятницю." why="Стандартна робоча фраза: реальний план, залежний від умови.">If the tests <M t="prs">pass</M>, we <M t="fs">will deploy</M> on Friday.</Ex>
+  <Ex ua="Якщо не зробиш бекап, колись втратиш дані." why="Реальна погроза, а не гіпотеза — тому first, а не second.">If you <M t="prs">don't make</M> backups, you <M t="fs">will lose</M> your data one day.</Ex>
+  <Ex ua="Якщо шеф погодиться, я тобі одразу напишу." why="Умова + обіцянка. Обіцянки й попередження — природне середовище першого типу.">If the boss <M t="prs">agrees</M>, I <M t="fs">will text</M> you right away.</Ex>
+  <Ex ua="Якщо запізнюся, починайте без мене." why="Результат — наказ. Формула не ламається: if-частина та сама.">If I <M t="prs">am</M> late, <b>start</b> without me.</Ex>
+  <Ex ua="Якщо хочеш, можемо перенести дзвінок." why="У результаті can замість will — мʼякша пропозиція, тип той самий.">If you <M t="prs">want</M>, we <b>can move</b> the call.</Ex>
+  <Ex ua="Якщо він не передзвонить до обіду, можливо, доведеться їхати самим." why="might у результаті: майбутнє реальне, але не гарантоване.">If he <M t="prs">doesn't call</M> back by noon, we <b>might have</b> to go ourselves.</Ex>
+</ExList>
+
+### first чи zero?
+
+<P>Обидва говорять про реальне — різниця у прицілі. <b>Zero</b> — про «завжди так», <b>first</b> — про <b>один конкретний випадок</b> у майбутньому.</P>
+
+<Grid2>
+  <Card>
+    <CardTitle>Zero — правило</CardTitle>
+    <En>If a build fails, we roll it back.</En>
+    <Ua>Так у нас заведено. Будь-який білд, будь-коли.</Ua>
+  </Card>
+  <Card>
+    <CardTitle>First — цей випадок</CardTitle>
+    <En>If this build fails, we will roll it back tonight.</En>
+    <Ua>Саме цей білд, саме сьогодні.</Ua>
+  </Card>
+</Grid2>
+
+</Section>

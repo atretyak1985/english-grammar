@@ -59,7 +59,7 @@ export function LiveSample() {
         <span className="text-ink-3 text-[12.5px]">
           Це живий приклад — так виглядає будь-який текст у читанні
         </span>
-        <Link href="/library" className="text-acc text-[13.5px] font-bold">
+        <Link href="/reading" className="text-acc text-[13.5px] font-bold">
           Читати далі →
         </Link>
       </div>

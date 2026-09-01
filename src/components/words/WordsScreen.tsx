@@ -180,7 +180,7 @@ export function WordsScreen({ corpus }: { corpus: StoryFrequency[] }) {
           <b>Словник поки порожній.</b>
           <p className="text-ink-2 mt-2 mb-0 text-[15px] leading-[1.6]">
             Слова сюди приходять не зі збережених текстів, а з ваших позначок. Відкрийте{' '}
-            <Link href="/library" className="text-acc font-bold">
+            <Link href="/reading" className="text-acc font-bold">
               читання
             </Link>{' '}
             і натисніть на незнайомому слові «вчу» або «знаю» — воно з&apos;явиться тут.

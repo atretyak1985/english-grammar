@@ -448,7 +448,7 @@ function DrillCard({
       ) : (
         <div className="text-ink-3 text-[13px] leading-[1.5]">
           {unavailable}{' '}
-          <Link href="/library" className="text-acc font-bold">
+          <Link href="/reading" className="text-acc font-bold">
             До читання →
           </Link>
         </div>

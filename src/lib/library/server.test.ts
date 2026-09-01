@@ -73,9 +73,9 @@ describe('listStories', () => {
 
   it('сортує за sortOrder, потім за title — незалежно від порядку рядків з бази', async () => {
     const rows = [
-      { slug: 'c', title: 'Zebra', author: 'A', words: 10, stats: {}, sortOrder: 1 },
-      { slug: 'a', title: 'Beta', author: 'A', words: 10, stats: {}, sortOrder: 0 },
-      { slug: 'b', title: 'Alpha', author: 'A', words: 10, stats: {}, sortOrder: 0 },
+      { slug: 'c', title: 'Zebra', author: 'A', words: 10, stats: {}, sortOrder: 1, level: null, body: 'one two' },
+      { slug: 'a', title: 'Beta', author: 'A', words: 10, stats: {}, sortOrder: 0, level: 'B1', body: 'one two' },
+      { slug: 'b', title: 'Alpha', author: 'A', words: 10, stats: {}, sortOrder: 0, level: null, body: 'one two' },
     ];
     mocks.getDb.mockReturnValue({
       select: () => ({ from: () => Promise.resolve(rows) }),
@@ -84,6 +84,27 @@ describe('listStories', () => {
     const stories = await listStories();
 
     expect(stories.map((story) => story.slug)).toEqual(['b', 'a', 'c']);
+  });
+
+  /*
+    Відсоток прочитаного на полиці — це `anchor / totalTokens`, а `anchor`
+    приходить із читалки в номерах токенів `tokenize`. Тому знаменник мусить
+    рахуватися ТИМ САМИМ поділом: розбіжність двох лічильників не впала б
+    помилкою, а тихо показала б неправильний відсоток на кожній картці.
+  */
+  it('totalTokens рахує `tokenize` тіла — разом із пробільними токенами', async () => {
+    const body = 'one two three';
+    const rows = [{ slug: 'a', title: 'A', author: 'A', words: 3, stats: {}, sortOrder: 0, level: 'A2', body }];
+    mocks.getDb.mockReturnValue({
+      select: () => ({ from: () => Promise.resolve(rows) }),
+    });
+
+    const stories = await listStories();
+
+    // `tokenize` ділить за `(\s+)`, тому три слова дають п'ять токенів: слово,
+    // пробіл, слово, пробіл, слово.
+    expect(stories[0]?.totalTokens).toBe(5);
+    expect(stories[0]?.level).toBe('A2');
   });
 });
 

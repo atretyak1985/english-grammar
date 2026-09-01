@@ -25,8 +25,13 @@ export function AppShell({
 
       <main className="min-w-0 flex-1">{children}</main>
 
-      <footer className="border-line text-ink-3 border-t text-[13px]">
-        <div className="mx-auto flex max-w-shell flex-wrap justify-between gap-4 px-9 pt-6 pb-8">
+      {/* Підвал стоїть на панелі, а не на тлі: інакше він читається як
+          продовження сторінки, а не як її край. Поля 16px — рівні макета;
+          зайва висота тут з'їдала екран на кожному маршруті. */}
+      {/* leading-[normal] — бо `body` несе 1.6 для довгого читання, а рядок
+          підвала не абзац: успадкований інтерліньяж додавав йому 5px висоти. */}
+      <footer className="bg-panel border-line text-label border-t text-[13px] leading-[normal]">
+        <div className="mx-auto flex max-w-shell flex-wrap justify-between gap-4 px-10 py-4">
           <div>Граматика англійської — особистий навчальний проєкт</div>
           <div>Пояснення українською, тексти англійською</div>
         </div>
