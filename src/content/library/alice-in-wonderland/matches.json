@@ -1,7 +1,7 @@
 {
   "format": 2,
   "seededBy": "grammar-engine",
-  "rulesVersion": 3,
+  "rulesVersion": 4,
   "chunks": [
     {
       "index": 0,
@@ -1685,9 +1685,9 @@
         },
         {
           "word": 2259,
-          "length": 1,
-          "tense": "prs",
-          "rule": "prs.be-lexical"
+          "length": 2,
+          "tense": "prc",
+          "rule": "prc.be-ving"
         },
         {
           "word": 2268,

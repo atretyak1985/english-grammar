@@ -1,4 +1,5 @@
 import { V2_FORMS } from '@/data/irregular-verbs';
+import { isIngForm } from '@/lib/analyzer/tenses';
 
 import { BE_WORDS, MODALS, PARTICIPIAL_ADJECTIVES, hasForm, looksLikeRegularPast, verbForm } from './morphology';
 import type { TaggedWord } from './tagger';
@@ -221,6 +222,12 @@ function recoverAfterAux(previous: TaggedWord, word: TaggedWord): 'certain' | 'u
     case 'have':
       return participle ? 'certain' : null;
     case 'be':
+      // Теґер часто бачить у «I'm opening out» іменник opening — без
+      // відновлення Continuous тут зникав би. Лише з теґом NOUN: -ing із
+      // теґом ADJ («is interesting», «was charming») — справжній прикметник.
+      // Відсів решти той самий, що в локальних правилах: -ing-іменники
+      // (morning, nothing) не дієслова.
+      if (word.pos === 'NOUN' && isIngForm(word.lower)) return 'uncertain';
       // Незмінюване дієслово (wet, hurt: V3 = основа), тегероване прикметником
       // після be, — це стан, а не пасив: «The ground was wet» мусить дати ps
       // на самому was, а не «was wet» як be + V3.
