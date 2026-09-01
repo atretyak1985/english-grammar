@@ -30,7 +30,7 @@ const CHIPS = [
 
 export function LiveSample() {
   return (
-    <div className="bg-panel border-line rounded-panel shadow-card border px-[30px] py-[26px]">
+    <div className="bg-panel border-line rounded-panel shadow-card flex h-full flex-col border px-[30px] py-8">
       <div className="mb-4 flex flex-wrap gap-2">
         {CHIPS.map((item) => (
           <span
@@ -43,13 +43,17 @@ export function LiveSample() {
         ))}
       </div>
 
-      <p className="font-serif text-ink m-0 text-[18.5px] leading-[1.95]">
-        I <Time kind="continuous">was reviewing</Time> a pull request when the{' '}
-        <Learning>pager</Learning> <Time kind="simple">went</Time> off. A{' '}
-        <Unknown>migration</Unknown> <Time kind="perfect">had failed</Time> silently, and alerts{' '}
-        <Time kind="simple">flooded</Time> the channel while we{' '}
-        <Time kind="continuous">were deploying</Time> a fix.
-      </p>
+      {/* Речення росте на всю вільну висоту картки й стоїть по центру:
+          картка тягнеться за герой-колонкою, а не стискається під текст. */}
+      <div className="flex flex-1 items-center py-2">
+        <p className="font-serif text-ink m-0 text-[18.5px] leading-[1.95]">
+          I <Time kind="continuous">was reviewing</Time> a pull request when the{' '}
+          <Learning>pager</Learning> <Time kind="simple">went</Time> off. A{' '}
+          <Unknown>migration</Unknown> <Time kind="perfect">had failed</Time> silently, and alerts{' '}
+          <Time kind="simple">flooded</Time> the channel while we{' '}
+          <Time kind="continuous">were deploying</Time> a fix.
+        </p>
+      </div>
 
       <div className="border-line mt-4 flex items-center justify-between border-t border-dashed pt-3.5">
         <span className="text-ink-3 text-[12.5px]">
