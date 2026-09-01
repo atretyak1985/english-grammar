@@ -17,10 +17,15 @@ export function subscribeTheme(listener: () => void): () => void {
   };
 }
 
-/** Перше читання ліниве: на клієнті снапшот одразу справжній, без ефекту. */
+/**
+ * Перше читання ліниве: на клієнті снапшот одразу справжній, без ефекту.
+ * Без збереженого вибору тема СВІТЛА, а не системна: застосунок «паперовий»
+ * за задумом, і темний перший екран у того, хто теми не обирав, читається як
+ * поломка. Системну перевагу свідомо не питаємо — темна вмикається лише
+ * перемикачем.
+ */
 export function getThemeSnapshot(): Theme {
-  snapshot ??=
-    readLocalTheme() ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  snapshot ??= readLocalTheme() ?? 'light';
   return snapshot;
 }
 
