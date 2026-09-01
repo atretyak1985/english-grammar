@@ -240,9 +240,10 @@ export function ReaderCanvas({
   /*
     Активний шар обирається один раз під текст — за тим, якого часу в ньому
     найбільше. Далі його веде читач: перерахунок на кожній сторінці
-    перемикав би підсвітку сам собою під час гортання.
+    перемикав би підсвітку сам собою під час гортання. `null` — читач зняв
+    галочку з теми і читає без граматичної підсвітки взагалі.
   */
-  const [topic, setTopic] = useState<LayerTopicId>(() =>
+  const [topic, setTopic] = useState<LayerTopicId | null>(() =>
     busiestTopic((tense) => stats[tense].count),
   );
   const [rules, setRules] = useState<Record<TenseKey, boolean>>(() =>
@@ -261,7 +262,7 @@ export function ReaderCanvas({
     known: false,
   });
 
-  const active = layerTopic(topic);
+  const active = topic === null ? null : layerTopic(topic);
 
   const goForward = useCallback(() => {
     if (pageEnd >= tokens.length) return;
@@ -335,7 +336,7 @@ export function ReaderCanvas({
     return counts;
   }, [visible, state.words]);
 
-  const maxPageCount = Math.max(...active.tenses.map((tense) => pageCounts[tense]), 1);
+  const maxPageCount = Math.max(...(active?.tenses ?? []).map((tense) => pageCounts[tense]), 1);
 
   /*
     Активної теми на сторінці може не бути зовсім: Alice — оповідь у минулому
@@ -344,7 +345,7 @@ export function ReaderCanvas({
     зламалась», а не як «тут цього часу немає», — тому кажемо це словами й
     одразу даємо кнопку на ту тему, яка на цій сторінці справді є.
   */
-  const activeOnPage = active.tenses.reduce((sum, tense) => sum + pageCounts[tense], 0);
+  const activeOnPage = (active?.tenses ?? []).reduce((sum, tense) => sum + pageCounts[tense], 0);
   const suggestion = LAYER_TOPICS.filter((item) => item.id !== topic)
     .map((item) => ({
       topic: item,
@@ -461,7 +462,7 @@ export function ReaderCanvas({
                 // ввімкнені: колір означає вид, і поки в кадрі одна тема,
                 // синій однозначно читається як «простий».
                 const tense =
-                  token.tense && rules[token.tense] && active.tenses.includes(token.tense)
+                  token.tense && active !== null && rules[token.tense] && active.tenses.includes(token.tense)
                     ? token.tense
                     : null;
                 const meaningful = isMeaningfulWord(token.word);
@@ -536,6 +537,23 @@ export function ReaderCanvas({
         </div>
 
         <div className="flex min-w-0 flex-col gap-4">
+          {active === null ? (
+            <div className={SIDE_CARD}>
+              <div className={SIDE_LABEL}>Підсвітка</div>
+              <div className="text-ink-2 mt-3 text-[12.5px] leading-[1.55]">
+                Шар часів вимкнено — текст без граматичної підсвітки.{' '}
+                {suggestion ? (
+                  <button
+                    type="button"
+                    onClick={() => setTopic(suggestion.topic.id)}
+                    className="text-acc cursor-pointer font-bold underline"
+                  >
+                    Показати «{suggestion.topic.label}» ({suggestion.count})
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          ) : (
           <div className={SIDE_CARD}>
             <div className={SIDE_LABEL}>{active.label}</div>
             <div className="mt-3 flex flex-col gap-2.5">
@@ -588,6 +606,7 @@ export function ReaderCanvas({
               </div>
             ) : null}
           </div>
+          )}
 
           <div className={SIDE_CARD}>
             <div className={SIDE_LABEL}>Незнайомі слова тут · {unknownHere.length}</div>

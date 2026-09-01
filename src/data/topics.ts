@@ -1,6 +1,8 @@
+import { meta as articles } from '@/content/topics/articles/meta';
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
 import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
+import { meta as sentenceStructure } from '@/content/topics/sentence-structure/meta';
 import type { Level, TopicMeta } from '@/types/content';
 
 /* ============================================================
@@ -19,13 +21,9 @@ export const TOPICS: readonly TopicMeta[] = [
   pastTenses,
   presentTenses,
   futureTenses,
+  sentenceStructure,
+  articles,
 
-  planned({
-    slug: 'articles',
-    title: 'Артиклі: a / an / the / нуль',
-    desc: 'В українській артиклів немає, тому це помилка №1. Проста система з трьох питань.',
-    level: 'a2',
-  }),
   planned({
     slug: 'conditionals',
     title: 'Умовні речення',
@@ -55,6 +53,54 @@ export const TOPICS: readonly TopicMeta[] = [
     title: 'Пасивний стан',
     desc: 'The bug was fixed. Коли пасив доречний, а коли робить текст важким.',
     level: 'b2',
+  }),
+  planned({
+    slug: 'reported-speech',
+    title: 'Непряма мова й узгодження часів',
+    desc: 'He said he was tired. Як часи зсуваються на крок у минуле і що стається з питаннями.',
+    level: 'b2',
+  }),
+  planned({
+    slug: 'quantifiers',
+    title: 'Злічуване й незлічуване',
+    desc: 'much / many, few / little, some / any. Чому information без -s і що робити з money.',
+    level: 'a2',
+  }),
+  planned({
+    slug: 'gerund-infinitive',
+    title: 'Герундій та інфінітив',
+    desc: 'enjoy doing, want to do, stop doing проти stop to do. Яке дієслово тягне -ing, а яке — to.',
+    level: 'b1',
+  }),
+  planned({
+    slug: 'comparison',
+    title: 'Ступені порівняння',
+    desc: 'bigger, more interesting, as…as, the…the. І чому more better не буває.',
+    level: 'a2',
+  }),
+  planned({
+    slug: 'pronouns',
+    title: 'Займенники',
+    desc: "its / it's, my / mine, myself. Дрібні слова, які виказують рівень швидше за часи.",
+    level: 'a2',
+  }),
+  planned({
+    slug: 'word-formation',
+    title: 'Словотвір',
+    desc: 'un-, re-, -less, -ful, -tion. Як з одного кореня зібрати пів словника — і чому bored ≠ boring.',
+    level: 'b1',
+  }),
+  planned({
+    slug: 'relative-clauses',
+    title: 'Відносні речення',
+    desc: 'who / which / that, defining і non-defining. Коли кома — стиль, а коли вона змінює зміст.',
+    level: 'b2',
+  }),
+  planned({
+    slug: 'inversion',
+    title: 'Інверсія та емфаза',
+    desc: 'Not only did we…, It was John who… Як розставляти наголоси в реченні, а не звучати як підручник.',
+    level: 'c1',
   }),
 ];
 

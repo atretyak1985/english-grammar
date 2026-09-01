@@ -1,0 +1,51 @@
+<Section id="dummy" n={8} title="There is та It: речення без підмета не буває">
+
+<Lede>Українська спокійно живе без підмета: «Холодно». «Дощить». «Є проблема». «Пізно вже». Англійське речення так не вміє — слот «хто» мусить бути зайнятий <b>завжди</b>. Коли справжнього діяча нема, англійська ставить у слот заглушку: порожнє <b>it</b> або ввідне <b>there</b>. Вони нічого не означають — вони просто тримають місце.</Lede>
+
+### Порожнє it — про стан і оцінку
+
+<P>Погода, час, відстань, температура, загальна оцінка — все, що українською каже себе одним словом, англійською починається з <i>it</i>.</P>
+
+<ExList>
+  <Ex ua="Надворі холодно." why="✗ Is cold outside. Підмет обов'язковий, навіть якщо він ніщо.">It is cold outside.</Ex>
+  <Ex ua="Дощить." why="Найкоротше англійське речення про погоду все одно має підмет.">It is raining.</Ex>
+  <Ex ua="Уже пізно." why="Час — теж через it: It's late, It's 6 pm, It's Friday.">It is late.</Ex>
+  <Ex ua="До складу десять хвилин пішки." why="Відстань і дорога — знову it.">It takes ten minutes to walk to the warehouse.</Ex>
+  <Ex ua="Важливо підписати контракт сьогодні." why="Оцінка + інфінітив: it тримає слот, справжній зміст — після important.">It is important to sign the contract today.</Ex>
+</ExList>
+
+### Ввідне there — про існування
+
+<P>Українське «є / існує / стоїть / лежить щось десь» англійська відкриває через <b>there is / there are</b>. Формально there стоїть у слоті підмета, але справжній герой — іменник після дієслова, і саме з ним узгоджується is/are.</P>
+
+<Formula
+  lines={[
+    { sign: '+', body: <><K>There is</K> + однина · <K>There are</K> + множина</>, comment: 'There is a bug. · There are two bugs.' },
+    { sign: '−', body: <>There <Neg>isn't</Neg> / <Neg>aren't</Neg> + any · There is <Neg>no</Neg> + іменник</>, comment: "There aren't any boxes. · There is no coffee." },
+    { sign: '?', body: <><Q>Is there</Q> …? · <Q>Are there</Q> …?</>, comment: 'Is there a free room? — Yes, there is.' },
+  ]}
+/>
+
+<ExList>
+  <Ex ua="У цій кімнаті є вільна розетка." why="«Є щось десь» → There is + що + де.">There is a free socket in this room.</Ex>
+  <Ex ua="На рейс лишилося два квитки." why="Множина → are. Узгодження — з іменником після дієслова.">There are two tickets left for the flight.</Ex>
+  <Ex ua="Проблем немає." why="Заперечення існування: no + іменник.">There are no problems.</Ex>
+</ExList>
+
+### It чи There — як вибрати за секунду
+
+<MP title="Тест: підставте українське слово">
+  <MPRow note={<>Українською можна сказати «Є…» → there. Мова про існування чогось.</>}><b>There is</b> a meeting at 3. <Ua>Є мітинг о третій.</Ua></MPRow>
+  <MPRow note={<>Українською «є» не підставиш («Є холодно» — ні) → it. Мова про стан.</>}><b>It is</b> cold in the meeting room. <Ua>У переговорці холодно.</Ua></MPRow>
+</MP>
+
+<GoodBad>
+  <Bad><b>Is</b> a problem with the deploy.<br /><b>It is</b> a problem with the deploy. <Ua>(у сенсі «існує проблема»)</Ua><br /><b>Here is</b> many people.</Bad>
+  <Good><b>There is</b> a problem with the deploy.<br /><b>There are</b> many people here.<br /><b>It is</b> a problem. <Ua>(лише як оцінка: «оце вже проблема»)</Ua></Good>
+</GoodBad>
+
+<Note variant="trap" title="Пастка: підмет губиться в підрядних і в другій частині речення">
+  Загубити підмет найлегше не на початку, а всередині: ✗ <i>The build failed because <b>was</b> a config error</i> — правильно <i>because <b>there was</b> a config error</i>. І в хвостах на кшталт «якщо можливо»: ✗ <i>if possible to reschedule</i> — правильно <i>if <b>it is</b> possible to reschedule</i>. Кожне англійське дієслово, включно з was та is у глибині речення, мусить мати свій підмет.
+</Note>
+
+</Section>
