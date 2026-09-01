@@ -32,17 +32,14 @@ export function SectionPager({ topic, current }: { topic: TopicMeta; current: To
       )}
 
       {next !== undefined ? (
-        <Link
-          href={`/topics/${topic.slug}/${next.slug}`}
-          className={`${button} bg-tint text-green-tx border-green-line`}
-        >
+        <Link href={`/topics/${topic.slug}/${next.slug}`} className={`${button} text-ink`}>
           <span className="truncate">
             {next.n}. {next.short ?? next.title}
           </span>
           <span aria-hidden>→</span>
         </Link>
       ) : (
-        <Link href={`/topics/${topic.slug}`} className={`${button} bg-tint text-green-tx border-green-line`}>
+        <Link href={`/topics/${topic.slug}`} className={`${button} text-ink`}>
           До змісту теми <span aria-hidden>→</span>
         </Link>
       )}
