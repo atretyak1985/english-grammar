@@ -1,0 +1,33 @@
+<Section id="compare" n={9} title="Чотири типи поруч — велика таблиця">
+
+<Lede>Одна ситуація — зламаний реліз — прокручена крізь усі чотири типи і два змішані. Коли речення стоять поруч, видно головне: слова майже ті самі, різницю несуть лише форми дієслів.</Lede>
+
+| Тип | if-частина | результат | про що це |
+|---|---|---|---|
+| **Zero** | Present Simple | Present Simple | закон: так буває щоразу |
+| **First** | Present Simple | will + V1 | реальний план на майбутнє |
+| **Second** | Past Simple | would + V1 | уявне сьогодні / завтра |
+| **Third** | Past Perfect | would have + V3 | минуле, якого не було |
+| **Mixed A** | Past Perfect | would + V1 | минула причина → теперішній наслідок |
+| **Mixed B** | Past Simple | would have + V3 | теперішня риса → минулий наслідок |
+
+### Один реліз — шість речень
+
+<ExList>
+  <Ex ua="Якщо реліз падає, ми відкочуємось. (правило команди)" why="Zero: так у нас заведено завжди.">If a release <M t="prs">fails</M>, we <M t="prs">roll back</M>.</Ex>
+  <Ex ua="Якщо цей реліз упаде, ми відкотимось сьогодні ввечері." why="First: конкретний реліз, реальний ризик.">If this release <M t="prs">fails</M>, we <M t="fs">will roll back</M> tonight.</Ex>
+  <Ex ua="Якби ми релізились щодня, кожен збій був би дрібницею." why="Second: ми так не релізимось — уявний устрій світу.">If we <M t="ps">released</M> daily, every failure <b>would be</b> a small thing.</Ex>
+  <Ex ua="Якби ми були протестували міграцію, реліз би не впав." why="Third: не протестували, впав. Розбір польотів.">If we <M t="pp">had tested</M> the migration, the release <b>wouldn't have failed</b>.</Ex>
+  <Ex ua="Якби ми були протестували міграцію, ми б зараз не сиділи в war room. " why="Mixed A: причина в четвер, наслідок триває зараз.">If we <M t="pp">had tested</M> the migration, we <b>wouldn't be sitting</b> in a war room now.</Ex>
+  <Ex ua="Якби наш CI був швидший, ми б устигли відкотитися ще до півночі." why="Mixed B: повільний CI — риса й сьогодні; втрачений час — минула подія.">If our CI <M t="ps">were</M> faster, we <b>would have rolled back</b> before midnight.</Ex>
+</ExList>
+
+<Note variant="tip" title="Як читати таблицю, щоб вона запамʼяталась">
+  Не завчайте рядки — простежте два ліфти. <b>Ліфт умови:</b> Present → Past → Past Perfect: що нижче реальність, то глибше час. <b>Ліфт результату:</b> will → would → would have: та сама драбина, тільки з will. Чотири типи — це дві драбини, зчеплені попарно, а змішані — коли плечі стоять на різних щаблях.
+</Note>
+
+<Note variant="warn" title="Контрольне питання до самого себе">
+  Перш ніж вибрати тип, спитайте не «який це номер», а «<b>де тут я</b>»: я планую (first), мрію (second), жалкую (third) чи констатую закон (zero)? Тип — наслідок відповіді, а не окреме рішення. Повна процедура з трьох питань — у розділі 13.
+</Note>
+
+</Section>

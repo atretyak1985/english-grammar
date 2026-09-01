@@ -1,4 +1,5 @@
 import { meta as articles } from '@/content/topics/articles/meta';
+import { meta as conditionals } from '@/content/topics/conditionals/meta';
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
 import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
@@ -23,13 +24,8 @@ export const TOPICS: readonly TopicMeta[] = [
   futureTenses,
   sentenceStructure,
   articles,
+  conditionals,
 
-  planned({
-    slug: 'conditionals',
-    title: 'Умовні речення',
-    desc: 'Zero, First, Second, Third conditional і змішані. Коли would, коли had.',
-    level: 'b2',
-  }),
   planned({
     slug: 'modals',
     title: 'Модальні дієслова',
