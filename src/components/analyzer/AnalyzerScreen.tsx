@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 
 import { DEMO_TEXT } from '@/components/analyzer/DEMO_TEXT';
 import { PILL, PILL_OFF, ReaderCanvas } from '@/components/analyzer/ReaderCanvas';
-import { SourceDialog } from '@/components/analyzer/SourceDialog';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { findMatches, mergeMatches, statsOf, tokenize } from '@/lib/analyzer/tenses';
 import { useReview } from '@/lib/analyzer/useReview';
@@ -15,16 +14,14 @@ import { useTexts } from '@/lib/state/texts';
 /**
  * Аналізатор тексту: правило видно не в підручнику, а у справжньому тексті
  * (CONCEPT 4). Полотно (перемикачі, підсвітка, пагінація) винесене в
- * `ReaderCanvas` — тут лишається вибір тексту, уточнення моделлю (`useReview`)
- * і модалка джерела; той самий поділ, що й у `StoryReader`.
+ * `ReaderCanvas` — тут лишається уточнення моделлю (`useReview`) і збереження
+ * в бібліотеку; той самий поділ, що й у `StoryReader`. Сам вибір тексту живе
+ * на окремій сторінці `/analyze/new` — сюди текст приходить уже готовим через
+ * сховище читання.
  */
 export function AnalyzerScreen() {
-  // Джерело живе в модалці: рядок над текстом забирав місце постійно, а
-  // потрібен на кілька секунд.
-  const [dialogOpen, setDialogOpen] = useState(false);
-
   const { texts, addText } = useTexts();
-  const { doc, positions, openSaved, openLoose, setPosition } = useReading();
+  const { doc, positions, openSaved, setPosition } = useReading();
 
   /**
    * Що читаємо — вирішує сховище читання, а не стан компонента: інакше
@@ -83,10 +80,13 @@ export function AnalyzerScreen() {
       .sort((a, b) => b.count - a.count || a.word.localeCompare(b.word));
   }, [tokens]);
 
-  // Текст із модалки — байдуже, вставлений руками чи розпізнаний з файлу.
-  // Позицію скидати не треба: у нового тексту свій ключ, тобто своя перша сторінка.
-  const applyText = (next: string, name?: string) => {
-    openLoose(next, name ?? null);
+  // Збереження переносить місце читання на новий ключ: збереження посеред
+  // книжки не мусить відкидати на першу сторінку.
+  const saveToLibrary = () => {
+    const label = title ?? text.slice(0, 40);
+    const id = addText(label, text);
+    setPosition(id, { anchor, trail });
+    openSaved(id, label);
   };
 
   /*
@@ -114,7 +114,7 @@ export function AnalyzerScreen() {
               є. <Link href="/login" className="underline">
                 Увійти
               </Link>{' '}
-              або <Link href="/library" className="underline">
+              або <Link href="/reading" className="underline">
                 відкрити бібліотеку
               </Link>{' '}
               — там розбір уже готовий.
@@ -147,36 +147,26 @@ export function AnalyzerScreen() {
         onPageEndChange={setPageEnd}
         toolbarExtra={
           <>
-            <button
-              type="button"
-              onClick={() => setDialogOpen(true)}
-              className={`${PILL} ${PILL_OFF}`}
-            >
-              ⤓ Джерело
-            </button>
-            <Link href="/library" className={`${PILL} ${PILL_OFF}`}>
+            {/* Зберегти можна лише принесений текст: демо і так вбудоване,
+                а збережений уже лежить у бібліотеці. */}
+            {saved ? (
+              <span className={`${PILL} border-green-line bg-green-bg-2 text-green-tx cursor-default`}>
+                Збережено ✓
+              </span>
+            ) : doc.body ? (
+              <button type="button" onClick={saveToLibrary} className={`${PILL} ${PILL_OFF}`}>
+                Зберегти в бібліотеку
+              </button>
+            ) : null}
+            <Link href="/analyze/new" className={`${PILL} ${PILL_OFF}`}>
+              ⤓ Інший текст
+            </Link>
+            <Link href="/reading" className={`${PILL} ${PILL_OFF}`}>
               Бібліотека →
             </Link>
           </>
         }
       />
-
-      {dialogOpen ? (
-        <SourceDialog
-          text={text}
-          saved={saved}
-          onApply={applyText}
-          onClose={() => setDialogOpen(false)}
-          onSave={() => {
-            const label = title ?? text.slice(0, 40);
-            const id = addText(label, text);
-            // Місце читання переносимо на новий ключ: збереження посеред книжки
-            // не мусить відкидати на першу сторінку.
-            setPosition(id, { anchor, trail });
-            openSaved(id, label);
-          }}
-        />
-      ) : null}
     </>
   );
 }
