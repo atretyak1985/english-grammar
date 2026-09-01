@@ -221,7 +221,10 @@ function recoverAfterAux(previous: TaggedWord, word: TaggedWord): 'certain' | 'u
     case 'have':
       return participle ? 'certain' : null;
     case 'be':
-      return participle ? 'uncertain' : null;
+      // Незмінюване дієслово (wet, hurt: V3 = основа), тегероване прикметником
+      // після be, — це стан, а не пасив: «The ground was wet» мусить дати ps
+      // на самому was, а не «was wet» як be + V3.
+      return participle && !hasForm(word.lower, word.lemma, 'base') ? 'uncertain' : null;
     case 'lexical':
       return null;
   }
@@ -262,6 +265,11 @@ function isRecoverable(words: readonly TaggedWord[], index: number): boolean {
   if (subject !== undefined && (SUBJECT_PRONOUNS.has(subject.lower) || subject.pos === 'PROPN')) {
     return true;
   }
+
+  // Незмінюване дієслово (wet, cut: V2 = основа) з теґом ADJ/NOUN поза
+  // позицією після підмета — не помилка теґера, а справжній прикметник чи
+  // іменник: «As wet as ever» описує стан, а не дію.
+  if (hasForm(word.lower, word.lemma, 'base')) return false;
 
   if (PARTICIPIAL_ADJECTIVES.has(word.lower)) return false;
   for (let back = 1; back <= 2; back += 1) {
