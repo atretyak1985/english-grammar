@@ -71,6 +71,26 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     cheatsheet: () => import('@/content/topics/future-tenses/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/future-tenses/sections/plan.mdx'),
   },
+  articles: {
+    idea: () => import('@/content/topics/articles/sections/idea.mdx'),
+    'a-an': () => import('@/content/topics/articles/sections/a-an.mdx'),
+    the: () => import('@/content/topics/articles/sections/the.mdx'),
+    zero: () => import('@/content/topics/articles/sections/zero.mdx'),
+    uncountable: () => import('@/content/topics/articles/sections/uncountable.mdx'),
+    eaters: () => import('@/content/topics/articles/sections/eaters.mdx'),
+    names: () => import('@/content/topics/articles/sections/names.mdx'),
+    fixed: () => import('@/content/topics/articles/sections/fixed.mdx'),
+    comparison: () => import('@/content/topics/articles/sections/comparison.mdx'),
+    stories: () => import('@/content/topics/articles/sections/stories.mdx'),
+    translation: () => import('@/content/topics/articles/sections/translation.mdx'),
+    mistakes: () => import('@/content/topics/articles/sections/mistakes.mdx'),
+    decision: () => import('@/content/topics/articles/sections/decision.mdx'),
+    exercises: () => import('@/content/topics/articles/sections/exercises.mdx'),
+    quiz: () => import('@/content/topics/articles/sections/quiz.mdx'),
+    history: () => import('@/content/topics/articles/sections/history.mdx'),
+    cheatsheet: () => import('@/content/topics/articles/sections/cheatsheet.mdx'),
+    plan: () => import('@/content/topics/articles/sections/plan.mdx'),
+  },
 };
 
 export function hasContent(slug: string): boolean {

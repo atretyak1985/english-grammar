@@ -1,3 +1,4 @@
+import { meta as articles } from '@/content/topics/articles/meta';
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
 import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
@@ -19,13 +20,8 @@ export const TOPICS: readonly TopicMeta[] = [
   pastTenses,
   presentTenses,
   futureTenses,
+  articles,
 
-  planned({
-    slug: 'articles',
-    title: 'Артиклі: a / an / the / нуль',
-    desc: 'В українській артиклів немає, тому це помилка №1. Проста система з трьох питань.',
-    level: 'a2',
-  }),
   planned({
     slug: 'conditionals',
     title: 'Умовні речення',

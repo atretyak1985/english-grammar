@@ -1,0 +1,61 @@
+<Section id="stories" n={10} title="Три тексти з повним розбором">
+
+<Lede>Правила дають розуміння, а звʼязний текст — відчуття. В окремих реченнях артиклі здаються дрібницею; у тексті видно їхню справжню роботу — вони ведуть співрозмовника від нового до відомого. Спочатку прочитайте англійською, потім звірте переклад, і лише потім дивіться розбір.</Lede>
+
+### Текст 1 — інцидент у робочому чаті
+
+<Story translation="Народ, у нас проблема. Клієнт повідомив про баг в оплатах: рахунок згенерувався з нульовою сумою. Я подивився логи — баг зʼявився після вчорашнього деплою. Пропоную план: я відкочую реліз, Оля пише клієнту, а баг заводимо в трекер як блокер. І ще: додайте тест на цей випадок — тести на оплати в нас взагалі тонкі.">
+  Guys, we have <b>a</b> problem. <b>A</b> client reported <b>a</b> bug in payments: <b>an</b> invoice was generated with <b>a</b> zero amount. I checked <b>the</b> logs — <b>the</b> bug appeared after yesterday's deploy. Here's <b>a</b> plan: I roll back <b>the</b> release, Olia writes to <b>the</b> client, and we file <b>the</b> bug as <b>a</b> blocker. One more thing: add <b>a</b> test for this case — <b>test coverage</b> for payments is thin.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>a problem, a client, a bug, an invoice</b> — перші згадки</>}>Кожен новий учасник історії заходить через a: команда ще нічого про них не знала. an invoice — голосний звук /ɪ/.</BRow>
+  <BRow form={<><b>the logs</b> — єдині в ситуації</>}>Логи цього сервісу, спільні для команди. Уточнювати, які саме, не треба — контекст робить їх відомими.</BRow>
+  <BRow form={<><b>the bug, the release, the client</b> — другі згадки</>}>Усе, що зайшло через a, з другої появи — the: «той самий баг», «той самий клієнт». Це головний механізм будь-якого тексту.</BRow>
+  <BRow form={<><b>a plan, a blocker, a test</b> — нове знову через a</>}>План щойно народився, блокер — один із типів тікета, тест — якийсь новий. Нове — a, навіть посеред знайомої історії.</BRow>
+  <BRow form={<><b>yesterday's deploy, this case</b> — зʼїдачі</>}>Присвійна форма і вказівне this займають місце артикля — питання знімається.</BRow>
+  <BRow form={<><b>test coverage</b> — розмазня</>}>Покриття тестами — незлічуване: без артикля, дієслово в однині (is thin).</BRow>
+</Breakdown>
+
+### Текст 2 — лист про переїзд офісу
+
+<Story translation="Привіт усім! Новини: ми переїжджаємо. Ми зняли офіс на Подолі — за десять хвилин пішки від метро. Офіс на третьому поверсі старої будівлі: кухня велика, переговорок дві, інтернет уже підключили. Меблі приїдуть у пʼятницю, обладнання перевеземо на вихідних. З понеділка працюємо за новою адресою; хто їздить машиною — парковка у дворі.">
+  Hi all! <b>News</b>: we're moving. We've rented <b>an</b> office in Podil — <b>a</b> ten-minute walk from <b>the</b> metro. <b>The</b> office is on <b>the</b> third floor of <b>an</b> old building: <b>the</b> kitchen is big, there are two meeting rooms, and <b>the</b> internet is already up. <b>The</b> furniture arrives on <b>Friday</b>, and we'll move <b>the</b> equipment over <b>the</b> weekend. From Monday we work at <b>the</b> new address; if you come <b>by car</b>, <b>the</b> parking is in <b>the</b> courtyard.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>News:</b> — розмазня без артикля</>}>Новини як явище — незлічуване. І запамʼятайте: the news IS, а не are.</BRow>
+  <BRow form={<><b>an office → the office</b> — знайомство і друга згадка</>}>Класична пара тексту: заходить через an, далі живе з the.</BRow>
+  <BRow form={<><b>a ten-minute walk</b> — одиниця виміру</>}>«Одна десятихвилинна прогулянка» — a у своїй ролі «один».</BRow>
+  <BRow form={<><b>the third floor</b> — порядковий</>}>Порядкові числівники завжди з the: третій поверх у будівлі один.</BRow>
+  <BRow form={<><b>the kitchen, the parking, the courtyard</b> — частини відомого цілого</>}>Офіс представлено — його кухня, парковка і двір автоматично «відомі». Окреме знайомство не потрібне.</BRow>
+  <BRow form={<><b>the internet</b> — єдиний у світі</>}>Усталене the — як the sun і the weather.</BRow>
+  <BRow form={<><b>The furniture, the equipment</b> — розмазня, але конкретна</>}>Обидва незлічувані (жодних furnitures!), проте тут вони конкретні — наші меблі, наше обладнання → the.</BRow>
+  <BRow form={<><b>on Friday, by car</b> — сталі форми</>}>Дні тижня і by + транспорт — без артикля. А <i>over the weekend</i> — з the: вихідні як відомий відрізок цього тижня.</BRow>
+</Breakdown>
+
+### Текст 3 — вечір після роботи
+
+<Story translation="Я вийшов з роботи о шостій і поїхав додому автобусом. Дорогою зайшов у магазин: купив хліба, молока й пляшку вина — у нас була річниця. Вдома дружина вже накрила стіл. Вечеря була простою, але вино виявилося чудовим. Після вечері ми дивилися телевізор, а потім пішли спати рано: життя складається з маленьких вечорів, і цей був хорошим.">
+  I left <b>work</b> at six and went <b>home</b> <b>by bus</b>. On <b>the</b> way I stopped at <b>a</b> shop: I bought <b>bread</b>, <b>milk</b> and <b>a</b> bottle of wine — it was our anniversary. At <b>home</b>, my wife had already set <b>the</b> table. <b>Dinner</b> was simple, but <b>the</b> wine turned out to be great. After <b>dinner</b> we watched <b>TV</b>, and then went <b>to bed</b> early: <b>life</b> is made of small evenings, and this one was <b>a</b> good one.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>left work, went home, to bed</b> — місця-стани</>}>Робота, дім і ліжко як діяльність — без артиклів. І home без прийменника: ✗ went to home.</BRow>
+  <BRow form={<><b>by bus</b> — спосіб пересування</>}>Транспорт після by — без артикля.</BRow>
+  <BRow form={<><b>a shop</b> — якийсь один</>}>Один із магазинів по дорозі. the shop означало б «наш звичний».</BRow>
+  <BRow form={<><b>bread, milk</b> — розмазня, <b>a bottle of wine</b> — порція</>}>Речовини без артикля, але пляшка — злічуваний контейнер, і артикль чіпляється до неї.</BRow>
+  <BRow form={<><b>set the table</b> — єдиний у домі</>}>Стіл у цій ситуації один — як the door і the kitchen.</BRow>
+  <BRow form={<><b>Dinner was simple</b> — прийом їжі</>}>breakfast/lunch/dinner — без артикля. Але з означенням повернеться: a simple dinner.</BRow>
+  <BRow form={<><b>the wine</b> — друга згадка</>}>Те саме вино з пляшки — the.</BRow>
+  <BRow form={<><b>watched TV</b>, <b>life is…</b> — нульові</>}>TV без артикля (на відміну від the radio), життя взагалі — без артикля.</BRow>
+  <BRow form={<><b>a good one</b> — один із</>}>Цей вечір — один із хороших вечорів. a в ролі ярлика, як a great manager.</BRow>
+</Breakdown>
+
+<Note variant="tip" title="Що з цим робити далі">
+  Візьміть текст 1 і перепишіть його <b>про свій справжній останній інцидент чи задачу</b>: що сталося, хто повідомив, який план. Вісім-десять речень. Потім перевірте кожен іменник трьома питаннями зі схеми в розділі 13.
+
+  Це найдорожча вправа теми: артиклі ставляться автоматично лише тоді, коли ви простежили за ними у власній історії, а не в чужій.
+</Note>
+
+</Section>

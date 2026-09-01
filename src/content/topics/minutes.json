@@ -1,4 +1,24 @@
 {
+  "articles": {
+    "a-an": 3,
+    "cheatsheet": 2,
+    "comparison": 3,
+    "decision": 1,
+    "eaters": 2,
+    "exercises": 10,
+    "fixed": 2,
+    "history": 3,
+    "idea": 3,
+    "mistakes": 4,
+    "names": 3,
+    "plan": 3,
+    "quiz": 7,
+    "stories": 5,
+    "the": 2,
+    "translation": 9,
+    "uncountable": 3,
+    "zero": 3
+  },
   "future-tenses": {
     "cheatsheet": 2,
     "comparison": 3,
