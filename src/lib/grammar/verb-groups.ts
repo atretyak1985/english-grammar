@@ -234,18 +234,36 @@ function isLetUs(words: readonly TaggedWord[], index: number): boolean {
   return word?.lower === 'let' && (after?.lower === "'s" || after?.lower === 'us');
 }
 
+/** Голі підмети: одразу після них -ed слово не буває прикметником без копули. */
+const SUBJECT_PRONOUNS: ReadonlySet<string> = new Set(['i', 'you', 'he', 'she', 'it', 'we', 'they']);
+
+/** Квантори, що вклинюються між підметом і присудком: «they all crowded», «we both agreed». */
+const SUBJECT_QUANTIFIERS: ReadonlySet<string> = new Set(['all', 'both', 'each']);
+
 /**
  * Відновлення теґера. Модель віддає «and then hurried on» як ADJ — прикметник
  * «поспішний» — і без цього правила Past Simple тут просто зникав би. Слово з
  * теґом ADJ/NOUN стає дієсловом, якщо за морфологією воно минуле, не є
  * дієприкметниковим прикметником і перед ним нема ані копули («was tired»),
  * ані означника («the hurried steps»), ані слова міри («very tired»).
+ *
+ * Виняток сильніший за стоп-лист: одразу після голого підмета («they all
+ * crowded round», «she hurried») прикметник без копули стояти не може — це
+ * фінітне дієслово, навіть якщо слово буває прикметником деінде.
  */
 function isRecoverable(words: readonly TaggedWord[], index: number): boolean {
   const word = words[index];
   if (!word || (word.pos !== 'ADJ' && word.pos !== 'NOUN')) return false;
-  if (PARTICIPIAL_ADJECTIVES.has(word.lower)) return false;
   if (!looksLikeRegularPast(word.lower) && !V2_FORMS.has(word.lower)) return false;
+
+  let back = index - 1;
+  if (SUBJECT_QUANTIFIERS.has(words[back]?.lower ?? '')) back -= 1;
+  const subject = words[back];
+  if (subject !== undefined && (SUBJECT_PRONOUNS.has(subject.lower) || subject.pos === 'PROPN')) {
+    return true;
+  }
+
+  if (PARTICIPIAL_ADJECTIVES.has(word.lower)) return false;
   for (let back = 1; back <= 2; back += 1) {
     const before = words[index - back];
     if (!before) break;
