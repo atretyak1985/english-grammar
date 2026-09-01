@@ -32,6 +32,18 @@ type Db = NodePgDatabase<typeof schema>;
 
 const LIBRARY_DIR = path.join(process.cwd(), 'src/content/library');
 
+/**
+ * Рівень CEFR оповідання. Стоїть тут, а не в `story.json`, свідомо: артефакт
+ * книжки — це те, що прийшло з джерела, і його хеш вирішує, чи треба
+ * пересівати. Наша оцінка складності до джерела не належить, і якби вона
+ * лежала в артефакті, зміна оцінки виглядала б як зміна тексту.
+ * Слаґа немає в мапі — рівень лишається NULL, і полиця просто не малює значок.
+ */
+const LEVELS: Record<string, string> = {
+  'alice-in-wonderland': 'B1',
+  'gift-of-the-magi': 'A2',
+};
+
 interface StoryMeta {
   title: string;
   author: string;
@@ -159,12 +171,17 @@ function tenseCounts(stats: Record<TenseKey, { count: number }>): Record<TenseKe
  * `artifactHash` (SC-4) — без запиту жодного запису, окрім самого читання.
  */
 async function seedStory(db: Db, story: LoadedStory): Promise<{ status: 'seeded' | 'skipped'; chunks: number }> {
+  const level = LEVELS[story.slug] ?? null;
+
   const existing = await db
-    .select({ artifactHash: schema.stories.artifactHash })
+    .select({ artifactHash: schema.stories.artifactHash, level: schema.stories.level })
     .from(schema.stories)
     .where(eq(schema.stories.slug, story.slug));
 
-  if (existing[0]?.artifactHash === story.artifactHash) {
+  // Рівень входить у перевірку разом із хешем: він живе поза артефактом, тому
+  // сам хеш його зміни не помічає — і переоцінене оповідання мовчки лишалося б
+  // зі старим значком до наступної зміни самого тексту.
+  if (existing[0]?.artifactHash === story.artifactHash && existing[0]?.level === level) {
     return { status: 'skipped', chunks: 0 };
   }
 
@@ -190,6 +207,7 @@ async function seedStory(db: Db, story: LoadedStory): Promise<{ status: 'seeded'
         stats,
         frequency,
         sortOrder: story.meta.sortOrder,
+        level,
         artifactHash: story.artifactHash,
         seedModel: story.artifact.seedModel ?? null,
         rulesVersion: story.artifact.rulesVersion ?? null,
@@ -208,6 +226,7 @@ async function seedStory(db: Db, story: LoadedStory): Promise<{ status: 'seeded'
           stats,
           frequency,
           sortOrder: story.meta.sortOrder,
+          level,
           artifactHash: story.artifactHash,
           seedModel: story.artifact.seedModel ?? null,
           rulesVersion: story.artifact.rulesVersion ?? null,

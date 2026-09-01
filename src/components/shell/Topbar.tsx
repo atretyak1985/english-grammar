@@ -3,11 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { useAppState } from '@/components/providers/AppStateProvider';
-import { daysLabel, streakDays } from '@/lib/drills/streak';
-
 /**
- * Топбар напряму «Читальня»: логотип, п'ять розділів, серія й аватар.
+ * Топбар напряму «Читальня»: логотип, п'ять розділів і аватар.
  *
  * Сайдбар пішов навмисно, а не через брак місця. Він забирав 292px у
  * кожного екрана й тримав повний список тем — а на екрані читання
@@ -24,12 +21,22 @@ interface NavItem {
 }
 
 /*
-  «Читання» — це головна: вона і є входом у текст, а не окремий екран
-  над ним.
+  Чотири розділи, і «Читання» серед них одне на всі три екрани тексту:
+  полиця `/reading`, читалка `/library/<slug>` і аналізатор `/analyze` —
+  це один шлях, а не три сусідні. Окремої «Бібліотеки» більше немає: вона
+  й була полицею, а два пункти на один розділ змушували гадати, у якому з
+  них шукати свою книжку.
+
+  На «/» пункту немає навмисно: головна — це вітрина, а не розділ, і в
+  неї веде логотип.
 */
 const NAV: NavItem[] = [
-  { label: 'Читання', href: '/', active: (path) => path === '/' },
-  { label: 'Бібліотека', href: '/library', active: (path) => path.startsWith('/library') },
+  {
+    label: 'Читання',
+    href: '/reading',
+    active: (path) =>
+      path.startsWith('/reading') || path.startsWith('/library') || path.startsWith('/analyze'),
+  },
   { label: 'Словник', href: '/words', active: (path) => path.startsWith('/words') },
   { label: 'Тренування', href: '/train', active: (path) => path.startsWith('/train') },
   { label: 'Теми', href: '/topics', active: (path) => path.startsWith('/topics') },
@@ -37,48 +44,32 @@ const NAV: NavItem[] = [
 
 export function Topbar({ signedIn, initial }: { signedIn: boolean; initial: string | null }) {
   const pathname = usePathname();
-  const { state, ready } = useAppState();
-
-  /*
-    Серія днів рахується зі спроб вправ — тих самих, що бачить тренування.
-    До гідратації спроб ще немає, і нуль тут чесніший за число з макета.
-  */
-  const streak = ready ? streakDays(state.attempts) : 0;
 
   return (
     <header className="bg-panel border-line sticky top-0 z-50 border-b">
-      <div className="mx-auto flex h-topbar w-full max-w-shell items-center gap-7 px-9 leading-[normal]">
+      <div className="mx-auto flex h-topbar w-full max-w-shell items-center gap-8 px-10 leading-[normal]">
         <Link href="/" className="flex flex-none items-center gap-2.5">
           <Lens />
-          <span className="font-serif text-[19px] leading-[normal] font-extrabold">GrammaLens</span>
+          <span className="font-serif text-[21px] leading-[normal] font-extrabold">GrammaLens</span>
         </Link>
 
-        {/* Розділи ховаються на вузькому: рядок з п'яти пунктів не влазить
-            поруч із логотипом і серією, а перенос зламав би висоту 64px */}
-        <nav className="text-ink-2 hidden gap-1 text-[14.5px] font-semibold md:flex">
+        {/* Розділи ховаються на вузькому: рядок пунктів не влазить поруч із
+            логотипом і серією, а перенос зламав би висоту топбара */}
+        <nav className="text-ink-2 hidden gap-1 text-[15px] font-semibold md:flex">
           {NAV.map((item) => (
             <NavLink key={item.label} item={item} active={item.active?.(pathname) ?? false} />
           ))}
         </nav>
 
-        <div className="ml-auto flex flex-none items-center gap-3.5">
+        <div className="ml-auto flex flex-none items-center gap-4">
           {signedIn ? (
-            <>
-              <Link
-                href="/train"
-                className="text-pc flex items-center gap-1.5 text-[13.5px] font-bold"
-                title={`Серія тренувань: ${daysLabel(streak)} поспіль`}
-              >
-                <span aria-hidden>🔥</span> {daysLabel(streak)}
-              </Link>
-              <Link
-                href="/account"
-                aria-label="Кабінет"
-                className="bg-tint text-green-tx flex h-9 w-9 items-center justify-center rounded-full text-[14px] font-extrabold"
-              >
-                {initial ?? '·'}
-              </Link>
-            </>
+            <Link
+              href="/account"
+              aria-label="Кабінет"
+              className="bg-tint text-green-tx flex h-[38px] w-[38px] items-center justify-center rounded-full text-[15px] font-extrabold"
+            >
+              {initial ?? '·'}
+            </Link>
           ) : (
             <Link href="/login" className="text-acc text-[14px] font-bold">
               Увійти
@@ -91,12 +82,12 @@ export function Topbar({ signedIn, initial }: { signedIn: boolean; initial: stri
 }
 
 /**
- * Пункт навігації. Видима пігулка — 36px, як у макеті, а зона дотику
+ * Пункт навігації. Видима пігулка — 37px, як у макеті, а зона дотику
  * розтягнута псевдоелементом до 44px: інакше або палець не влучає, або
- * пігулка виростає на 8px і геометрія рядка розходиться з макетом.
+ * пігулка виростає й геометрія рядка розходиться з макетом.
  */
 function NavLink({ item, active }: { item: NavItem; active: boolean }) {
-  const shape = `relative rounded-pill px-4 py-2 leading-[normal] before:absolute before:inset-0 before:-my-[5px] before:content-[''] ${
+  const shape = `relative rounded-pill px-[18px] py-[9px] leading-[normal] before:absolute before:inset-0 before:-my-[3.5px] before:content-[''] ${
     active ? 'bg-tint text-green-tx font-bold' : ''
   }`;
 
@@ -118,7 +109,7 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
  */
 function Lens() {
   return (
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden>
+    <svg width="28" height="28" viewBox="0 0 26 26" fill="none" aria-hidden>
       <circle cx="11" cy="11" r="7" stroke="var(--acc)" strokeWidth="2.5" />
       <line
         x1="16.5"

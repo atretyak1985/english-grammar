@@ -3,7 +3,7 @@ import { connection } from 'next/server';
 import { eq } from 'drizzle-orm';
 
 import { getDb, schema } from '@/db';
-import type { Match } from '@/lib/analyzer/tenses';
+import { type Match, tokenize } from '@/lib/analyzer/tenses';
 import type { TenseKey } from '@/types/content';
 
 /**
@@ -20,6 +20,14 @@ export interface StoryCard {
   words: number;
   stats: Record<TenseKey, number>;
   sortOrder: number;
+  /** Рівень CEFR або `null`, якщо оповідання ще не оцінене. */
+  level: string | null;
+  /**
+   * Скільки токенів у тілі — знаменник відсотка прочитаного. Читалка зберігає
+   * місце номером токена (`eg.reading.pos.v1`), тому без цього числа полиця не
+   * може перевести позицію у відсоток і мусила б його вигадати.
+   */
+  totalTokens: number;
 }
 
 export interface LoadedStory {
@@ -101,6 +109,12 @@ export async function listStories(): Promise<StoryCard[]> {
         words: row.words,
         stats: row.stats,
         sortOrder: row.sortOrder,
+        level: row.level,
+        // Токени рахуємо тут, а не тримаємо колонкою: `tokenize` — той самий
+        // поділ, яким читалка нумерує місце, і будь-яке інше число тихо
+        // зсунуло б відсоток. Бібліотека кураторська (одиниці книжок), тому
+        // ціна проходу по тілу нижча за ризик розбіжності двох лічильників.
+        totalTokens: tokenize(row.body).length,
       }))
       .sort(compareStoryCards);
   } catch (error) {

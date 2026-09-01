@@ -252,6 +252,13 @@ export const stories = pgTable('stories', {
   /** Частотність слів, порахована локально `wordFrequency()` під час засіву. */
   frequency: jsonb('frequency').$type<{ word: string; count: number }[]>().notNull(),
   sortOrder: integer('sort_order').notNull().default(0),
+  /**
+   * Рівень CEFR (A2/B1/B2) — наша оцінка складності для полиці, а не частина
+   * артефакту книжки, тому лежить у базі, а не в `story.json`: інакше оцінка
+   * потрапила б у `artifactHash` і кожне переоцінювання виглядало б як новий
+   * текст. NULL — оповідання ще не оцінене, і значок рівня тоді не показуємо.
+   */
+  level: varchar('level', { length: 2 }),
   /** sha256 пари «текст + розмітка» — основа ідемпотентності повторного засіву. */
   artifactHash: varchar('artifact_hash', { length: 64 }).notNull(),
   /** Довідка, чим саме розмічено, а не критерій пошуку — не частина ключа. */
