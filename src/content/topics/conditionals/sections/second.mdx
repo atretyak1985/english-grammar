@@ -1,0 +1,69 @@
+import { TimeShift } from '../diagrams';
+
+<Section id="second" n={4} title="Second conditional: уявне сьогодні">
+
+<Lede>Другий тип — про сьогодні й завтра, у які ви <b>не вірите</b>: «якби я був тобою», «якби ми мали більший бюджет», виграш у лотерею. Ручка реальності повертається на один щабель — і час відступає на крок у минуле: Past Simple в умові, would у результаті. Минулого в цих реченнях немає ні грама.</Lede>
+
+<Formula
+  lines={[
+    { sign: '+', body: <>If + <K>Past Simple</K>, … <K>would + V1</K></>, comment: 'If we had a bigger budget, we would hire two more people.' },
+    { sign: '−', body: <>If + <K>Past Simple</K>, … <K>wouldn't + V1</K></>, comment: "If I didn't trust him, I wouldn't ask." },
+    { sign: '?', body: <><K>What would</K> you do <K>if</K> + Past Simple?</>, comment: 'What would you do if you won the lottery?' },
+  ]}
+  note="У розмові would скорочується до 'd: I'd take it. Замість would часто стають could («міг би») і might («може, і …б»)."
+/>
+
+<SvgBox caption={<>Уявність зсуває граматику на крок назад. Говоримо про сьогодні — а час минулий.</>}>
+  <TimeShift />
+</SvgBox>
+
+### Як відрізнити від first: віра, а не час
+
+<P>І first, і second можуть говорити про завтра. Різниця — чи ставите ви на цей сценарій. Один і той самий факт двома реченнями:</P>
+
+<Grid2>
+  <Card>
+    <CardTitle>First — я в це вірю</CardTitle>
+    <En>If we win this tender, we will double the team.</En>
+    <Ua>Тендер триває, шанси реальні. Ділова розмова.</Ua>
+  </Card>
+  <Card>
+    <CardTitle>Second — це мрія</CardTitle>
+    <En>If we won this tender, we would double the team.</En>
+    <Ua>Той самий тендер — але тоном «та куди нам». Мрії біля кавоварки.</Ua>
+  </Card>
+</Grid2>
+
+<Note variant="tip" title="Тест частки «б»">
+  Українське речення з <b>б</b> у результаті («я б узяв», «ми б устигли») — майже завжди second або third. Про сьогодні/завтра — second: <i>would + V1</i>. Про вчора — third: <i>would have + V3</i> (розділ 5). Без «б» — zero або first.
+</Note>
+
+### If I were you — легальна дивина
+
+<P>У другому типі be має особливу форму: <b>were для всіх осіб</b>, включно з I та he/she/it. Це уламок старого умовного способу (розділ 16), і саме він живе в найуживанішій пораді англійської мови:</P>
+
+<ExList>
+  <Ex ua="На твоєму місці я б погодився на цю пропозицію." why="Формула поради №1. I were — не помилка, а спеціальна умовна форма be.">If I <M t="ps">were</M> you, I <b>would take</b> the offer.</Ex>
+  <Ex ua="Якби вона була тут, вона б знала, що робити." why="was тут теж кажуть у розмові — і це не криміналь. Але were звучить грамотніше, а в письмі — очікувано.">If she <M t="ps">were</M> here, she <b>would know</b> what to do.</Ex>
+</ExList>
+
+### Приклади з життя
+
+<ExList>
+  <Ex ua="Якби я мав більше часу, я б вивчив ще й польську." why="Класика second: часу немає і не передбачається. had — про зараз.">If I <M t="ps">had</M> more time, I <b>would learn</b> Polish too.</Ex>
+  <Ex ua="Якби ця квартира була ближче до метро, ми б її купили." why="Квартира вже там, де вона є. Чиста гіпотеза.">If this flat <M t="ps">were</M> closer to the metro, we <b>would buy</b> it.</Ex>
+  <Ex ua="Якби ти виграв мільйон, що б ти зробив першим?" why="Питання-мрія — фірмовий жанр другого типу.">If you <M t="ps">won</M> a million, what <b>would</b> you <b>do</b> first?</Ex>
+  <Ex ua="Я б не хвилювався: гарантія ще діє." why="If-частину можна й не казати, коли вона очевидна: would сам сигналить про уявність.">I <b>wouldn't worry</b>: the warranty is still valid.</Ex>
+  <Ex ua="Якби ми не орендували офіс, ми могли б дозволити собі ще одного розробника." why="could у результаті = «могли б». Та сама формула, інший модальний відтінок.">If we <M t="ps">didn't rent</M> the office, we <b>could afford</b> another developer.</Ex>
+</ExList>
+
+<GoodBad>
+  <Bad>If I <b>would have</b> more time, I would help.<br />If she <b>will be</b> you, she would refuse.</Bad>
+  <Good>If I <b>had</b> more time, I would help.<br />If she <b>were</b> you, she would refuse.</Good>
+</GoodBad>
+
+<Note variant="warn" title="Ввічливі формули — той самий second">
+  Пів офісної англійської — застиглий другий тип: <i><b>Would</b> you mind…?</i>, <i>I<b>'d</b> prefer…</i>, <i>It <b>would be</b> great if you <b>could</b> send it today.</i> Уявність тут працює ввічливістю: «якби ви могли» тисне менше, ніж «зробіть». Тому не дивуйтесь could у проханнях — це не минуле, це знижений тон.
+</Note>
+
+</Section>
