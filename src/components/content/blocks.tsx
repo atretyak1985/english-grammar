@@ -1,14 +1,7 @@
 import { Fragment, type ReactNode } from 'react';
 
 import { TENSE_FORMULAS } from '@/lib/grammar/cards';
-import {
-  ASPECT_TEXT,
-  TENSE_ASPECT,
-  TENSE_TIME,
-  type Aspect,
-  type TenseKey,
-  type TenseTime,
-} from '@/types/content';
+import { ASPECT_TEXT, TENSE_ASPECT, type Aspect, type TenseKey } from '@/types/content';
 
 /* ============================================================
    Будівельні блоки контенту тем.
@@ -16,8 +9,13 @@ import {
    Усі стилі на токенах, тому працюють в обох темах.
 
    Колірні мапи ключовані ВИДОМ, а не конструкцією: Present Perfect і Past
-   Perfect однаково фіолетові, бо колір у застосунку означає вид. Час
-   конструкції показує стиль підкреслення — див. `M` нижче.
+   Perfect однаково фіолетові, бо колір у застосунку означає вид.
+
+   Час конструкції раніше показувало підкреслення під заливкою. Його тут
+   більше немає: у напрямі «Читальня» підкреслення закріплене за лексикою
+   («не знаю» — пунктир, «вчу» — жовтий маркер), і другий сенс на тому
+   самому знаку зробив би обидва нечитаними рівно там, де вони збігаються —
+   на позначеному слові всередині підсвіченого часу.
    ============================================================ */
 
 const ASPECT_BADGE: Record<Aspect, string> = {
@@ -38,6 +36,13 @@ const ASPECT_DOT: Record<Aspect, string> = {
   perfect: 'bg-pp',
 };
 
+/** Заливка часу в тексті — канал граматики. Тло несе вид, чорнило тримає контраст. */
+const ASPECT_MARK: Record<Aspect, string> = {
+  simple: 'bg-ps-bg text-ps-tx',
+  continuous: 'bg-pc-bg text-pc-tx',
+  perfect: 'bg-pp-bg text-pp-tx',
+};
+
 const ASPECT_CHIP: Record<Aspect, string> = {
   simple: 'border-ps-line bg-ps-bg text-ps-dk',
   continuous: 'border-pc-line bg-pc-bg text-pc-dk',
@@ -48,7 +53,7 @@ const ASPECT_CHIP: Record<Aspect, string> = {
 
 export function H2({ children }: { children?: ReactNode }) {
   return (
-    <h2 className="mt-0 mb-1.5 text-[27px] font-extrabold tracking-[-0.5px]">
+    <h2 className="font-serif mt-0 mb-3.5 text-[30px] leading-[1.15] font-extrabold tracking-[-0.5px]">
       {children}
     </h2>
   );
@@ -56,7 +61,7 @@ export function H2({ children }: { children?: ReactNode }) {
 
 export function H3({ children, id }: { children?: ReactNode; id?: string }) {
   return (
-    <h3 id={id} className="mt-[30px] mb-2.5 text-[19.5px] font-extrabold">
+    <h3 id={id} className="font-serif mt-8 mb-2.5 text-[24px] leading-[1.25] font-bold">
       {children}
     </h3>
   );
@@ -66,7 +71,7 @@ export function H4({ children, id }: { children?: ReactNode; id?: string }) {
   return (
     <h4
       id={id}
-      className="text-ink-3 mt-[22px] mb-2 text-[12px] font-extrabold tracking-[0.9px] uppercase"
+      className="text-ink-3 mt-[22px] mb-2 font-mono text-[10.5px] font-bold tracking-[1.2px] uppercase"
     >
       {children}
     </h4>
@@ -74,16 +79,18 @@ export function H4({ children, id }: { children?: ReactNode; id?: string }) {
 }
 
 export function P({ children }: { children?: ReactNode }) {
-  return <p className="my-3.5">{children}</p>;
+  return <p className="text-ink-body my-5 max-w-[60ch] text-[15.5px] leading-[1.75]">{children}</p>;
 }
 
 export function Lede({ children }: { children?: ReactNode }) {
-  return <p className="text-ink-2 mt-0 mb-5 max-w-[800px] text-[16.5px]">{children}</p>;
+  return (
+    <p className="text-ink-2 mt-0 mb-5 max-w-[60ch] text-[16.5px] leading-[1.7]">{children}</p>
+  );
 }
 
 /** Дрібний коментар під абзацом — там, де в HTML був <p style="color:var(--ink-2)">. */
 export function Muted({ children }: { children?: ReactNode }) {
-  return <p className="text-ink-2 my-3 text-[15.5px]">{children}</p>;
+  return <p className="text-ink-2 my-3 max-w-[62ch] text-[13px] leading-[1.6]">{children}</p>;
 }
 
 /** Англійське речення в прикладі. */
@@ -99,23 +106,13 @@ export function Ua({ children }: { children?: ReactNode }) {
 /**
  * Підсвітка дієслова: <M t="ps">shipped</M> · <M t="prp">have fixed</M>.
  *
- * Колір бере вид, а підкреслення — час: штрих у теперішніх, подвійна лінія в
- * майбутніх, тими самими знаками, якими їх позначає аналізатор тексту. Минулі
- * часи лишаються без підкреслення: вони були в застосунку першими, читач уже
- * звик до чистого кольору, і саме на цьому тлі лінія читається як «а це вже
- * не минуле».
+ * Заливка, а не колір тексту: у тексті часи мусять читатися з відстані, і
+ * тло дає це там, де самого чорнила замало — усередині рядка, поруч зі
+ * словом, під яким уже стоїть лінія лексики.
  */
-const TIME_LINE: Record<TenseTime, string> = {
-  past: '',
-  present: 'underline decoration-dashed decoration-2 underline-offset-[3px]',
-  future: 'underline decoration-double decoration-1 underline-offset-[3px]',
-};
-
 export function M({ t, children }: { t: TenseKey; children?: ReactNode }) {
   return (
-    <mark
-      className={`bg-transparent p-0 font-bold ${ASPECT_TEXT[TENSE_ASPECT[t]]} ${TIME_LINE[TENSE_TIME[t]]}`}
-    >
+    <mark className={`rounded-mark px-[5px] py-[2px] font-bold ${ASPECT_MARK[TENSE_ASPECT[t]]}`}>
       {children}
     </mark>
   );
@@ -178,9 +175,27 @@ export function Grid3({ children }: { children?: ReactNode }) {
 /** Заголовок розділу про конкретний час: кольорова точка + назва. */
 export function TenseHead({ t, children }: { t: TenseKey; children?: ReactNode }) {
   return (
-    <div className="mb-1 flex items-center gap-[13px]">
-      <span className={`h-3.5 w-3.5 flex-none rounded-full ${ASPECT_DOT[TENSE_ASPECT[t]]}`} />
+    <div className="mb-1 flex items-baseline gap-[13px]">
+      <span
+        className={`mt-2 h-3.5 w-3.5 flex-none self-start rounded-full ${ASPECT_DOT[TENSE_ASPECT[t]]}`}
+      />
       <H2>{children}</H2>
+    </div>
+  );
+}
+
+/**
+ * Надпис над заголовком розділу: «Розділ 6». Моноширинний і капітеллю —
+ * так він читається як мітка місця, а не як частина назви, і не змагається
+ * із заголовком за перший погляд. Колір бере вид часу, якому присвячений
+ * розділ; без часу лишається нейтральним.
+ */
+export function SectionKicker({ tense, children }: { tense?: TenseKey; children?: ReactNode }) {
+  const tone = tense ? ASPECT_TEXT[TENSE_ASPECT[tense]] : 'text-ink-3';
+
+  return (
+    <div className={`font-mono text-[11px] font-bold tracking-[1.5px] uppercase ${tone}`}>
+      {children}
     </div>
   );
 }
@@ -195,19 +210,25 @@ export interface FormulaLine {
   comment?: string;
 }
 
+/* Знаки форм беруть ті самі три родини, що й підсвітка часів: стверджувальна
+   синю, заперечна теплу червону, питальна жовту. Окремої палітри для формули
+   немає — вона б додала четвертий колірний код на той самий екран. */
 const SIGN_COLOR: Record<'+' | '−' | '?', string> = {
-  '+': 'text-[#7dd3fc]',
-  '−': 'text-[#fca5a5]',
-  '?': 'text-[#fcd34d]',
+  '+': 'text-ps',
+  '−': 'text-coral',
+  '?': 'text-yellow-dk',
 };
 
 /**
- * Темний блок з формулою часу. Рядки — типізовані дані, а не preformatted-текст:
- * так вирівнювання не залежить від пробілів у джерелі.
+ * Формула часу. Рядки — типізовані дані, а не preformatted-текст: так
+ * вирівнювання не залежить від пробілів у джерелі.
+ *
+ * Поверхня паперова, а не термінально-чорна: чорне тло лишилось за пасткою,
+ * і другий темний блок на тій самій сторінці забирав би в неї всю вагу.
  */
 export function Formula({ lines, note }: { lines: readonly FormulaLine[]; note?: string }) {
   return (
-    <div className="bg-deep text-deep-ink my-3 overflow-x-auto rounded-xl px-5 py-[18px] font-mono text-[13.5px] leading-[2]">
+    <div className="bg-bg border-line text-ink rounded-note my-5 overflow-x-auto border px-[22px] py-[18px] font-mono text-[13px] leading-[2]">
       <div className="grid gap-y-2">
         {lines.map((line, index) => (
           <div key={index} className="grid grid-cols-[18px_1fr] items-baseline gap-x-2">
@@ -217,7 +238,7 @@ export function Formula({ lines, note }: { lines: readonly FormulaLine[]; note?:
             <span className="min-w-0">
               {line.body}
               {line.comment ? (
-                <span className="block text-[#7c8aa8] italic sm:ml-3 sm:inline">
+                <span className="text-label block italic sm:ml-3 sm:inline">
                   {`// ${line.comment}`}
                 </span>
               ) : null}
@@ -225,7 +246,7 @@ export function Formula({ lines, note }: { lines: readonly FormulaLine[]; note?:
           </div>
         ))}
       </div>
-      {note ? <div className="mt-3 text-[#7c8aa8] italic">{note}</div> : null}
+      {note ? <div className="text-label mt-3 italic">{note}</div> : null}
     </div>
   );
 }
@@ -260,22 +281,22 @@ export function FormulaOf({ tense }: { tense: TenseKey }) {
 
 /** Ключова частина формули. */
 export function K({ children }: { children?: ReactNode }) {
-  return <b className="font-bold text-[#7dd3fc]">{children}</b>;
+  return <b className="text-ps-tx font-bold">{children}</b>;
 }
 
 /** Заперечна форма. */
 export function Neg({ children }: { children?: ReactNode }) {
-  return <span className="text-[#fca5a5]">{children}</span>;
+  return <span className="text-coral-tx">{children}</span>;
 }
 
 /** Питальна форма. */
 export function Q({ children }: { children?: ReactNode }) {
-  return <span className="text-[#fcd34d]">{children}</span>;
+  return <span className="text-yellow-tx">{children}</span>;
 }
 
 /** Комментар у формулі. */
 export function Cm({ children }: { children?: ReactNode }) {
-  return <span className="text-[#7c8aa8] italic">{children}</span>;
+  return <span className="text-label italic">{children}</span>;
 }
 
 /* ---------- список прикладів ---------- */
@@ -317,40 +338,54 @@ export function Ex({
 /* ---------- неправильно / правильно ---------- */
 
 export function GoodBad({ children }: { children?: ReactNode }) {
-  return <div className="my-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">{children}</div>;
+  return <div className="my-5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">{children}</div>;
+}
+
+/**
+ * Пара «так кажуть українці / правильно». Рамки немає навмисно: колір
+ * поверхні вже каже, яка з двох карток яка, а рамка навколо кольору
+ * робила б із порівняння дві коробки замість двох реплік. Речення набране
+ * серифним — це англійська, яку читають, а не підпис інтерфейсу.
+ */
+function Pair({
+  tone,
+  label,
+  children,
+}: {
+  tone: string;
+  label: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className={`rounded-note px-5 py-4 ${tone}`}>
+      <div className="mb-2 font-mono text-[10.5px] font-bold tracking-[1px] uppercase">{label}</div>
+      <div className="font-serif text-ink text-[16px] leading-[1.6]">{children}</div>
+    </div>
+  );
 }
 
 export function Bad({ children }: { children?: ReactNode }) {
   return (
-    <div className="bg-no-bg border-no rounded-xl border px-4 py-3.5 text-[15px]">
-      <span className="text-no mb-1.5 block text-[11px] font-extrabold tracking-[1px]">
-        ✗ НЕПРАВИЛЬНО
-      </span>
+    <Pair tone="bg-no-bg text-coral-tx" label="Так кажуть українці">
       {children}
-    </div>
+    </Pair>
   );
 }
 
 export function Good({ children }: { children?: ReactNode }) {
   return (
-    <div className="bg-ok-bg border-ok rounded-xl border px-4 py-3.5 text-[15px]">
-      <span className="text-ok mb-1.5 block text-[11px] font-extrabold tracking-[1px]">
-        ✓ ПРАВИЛЬНО
-      </span>
+    <Pair tone="bg-ok-bg text-green-tx" label="Правильно">
       {children}
-    </div>
+    </Pair>
   );
 }
 
 /** Проміжний випадок: граматично вірно, але носій так не скаже. */
 export function Meh({ children }: { children?: ReactNode }) {
   return (
-    <div className="bg-pc-bg border-pc rounded-xl border px-4 py-3.5 text-[15px]">
-      <span className="text-pc-dk mb-1.5 block text-[11px] font-extrabold tracking-[1px]">
-        △ ГРАМАТИЧНО ВІРНО, АЛЕ ВАЖКО
-      </span>
+    <Pair tone="bg-pc-bg text-pc-tx" label="Граматично вірно, але важко">
       {children}
-    </div>
+    </Pair>
   );
 }
 
@@ -457,10 +492,13 @@ export function Story({
   children?: ReactNode;
 }) {
   return (
-    <div className="bg-surface border-line rounded-card shadow-card my-[18px] border px-[26px] py-[22px]">
-      <div className="text-[17px] leading-[2]">{children}</div>
-      <div className="border-line text-ink-2 mt-3.5 border-t pt-3.5 text-[15px]">
-        <b>Переклад:</b> {translation}
+    <div className="bg-bg border-line rounded-note my-5 border px-[22px] py-[18px]">
+      <div className="text-ink-3 mb-2.5 font-mono text-[10.5px] font-bold tracking-[1.2px] uppercase">
+        У живому тексті
+      </div>
+      <div className="font-serif text-ink text-[16.5px] leading-[1.9]">{children}</div>
+      <div className="text-ink-2 mt-2 text-[13px] leading-[1.6]">
+        <b className="text-ink">Переклад:</b> {translation}
       </div>
     </div>
   );
@@ -482,21 +520,41 @@ export function BRow({ form, children }: { form: ReactNode; children?: ReactNode
 
 /* ---------- шпаргалка ---------- */
 
+/**
+ * Шпаргалка — те, що фотографують і потім дивляться з телефона.
+ *
+ * Поверхня паперова, а не чорна. Чорне тло тут коштувало найдорожче саме
+ * тому, що це найщільніший текст у темі: три кольори часів, задані для
+ * світлого паперу, лягали на майже чорне з контрастом, на якому назви
+ * часів переставали читатися — а вони в шпаргалці головні.
+ */
 export function Cheat({ title, children }: { title: ReactNode; children?: ReactNode }) {
   return (
-    <div className="bg-deep text-deep-ink rounded-card my-5 px-[26px] py-6">
-      <h3 className="mt-0 mb-2 text-[17px] font-extrabold tracking-[0.6px] text-white">{title}</h3>
+    <div className="bg-bg border-line rounded-note my-5 border px-[26px] py-6">
+      <h3 className="text-ink-3 mt-0 mb-2 font-mono text-[10.5px] font-bold tracking-[1.2px] uppercase">
+        {title}
+      </h3>
       {children}
     </div>
   );
 }
 
+/* Ті самі три родини, що й заливка часів. На папері беруться чорнильні
+   відтінки (-tx), а не самі кольори: назва часу тут — заголовок рядка, і
+   вона мусить читатися як текст, а не світитися. */
 const CHEAT_LABEL: Record<Aspect, string> = {
-  simple: 'text-[#7dd3fc]',
-  continuous: 'text-[#fcd34d]',
-  perfect: 'text-[#c4b5fd]',
+  simple: 'text-ps-tx',
+  continuous: 'text-pc-tx',
+  perfect: 'text-pp-tx',
 };
 
+/**
+ * Рядок шпаргалки: назва часу над його довідкою.
+ *
+ * Назва стоїть саме над, а не збоку: колонка тексту вузька, і фіксовані
+ * 180px під підпис лишали половину рядка порожньою рівно там, де довідка
+ * найщільніша.
+ */
 export function CheatRow({
   label,
   t,
@@ -507,11 +565,15 @@ export function CheatRow({
   children?: ReactNode;
 }) {
   return (
-    <div className="border-deep-line grid grid-cols-1 items-start gap-3.5 border-b py-3 last:border-b-0 sm:grid-cols-[180px_1fr]">
-      <div className={`text-[13px] font-extrabold ${t ? CHEAT_LABEL[TENSE_ASPECT[t]] : 'text-[#94a3b8]'}`}>
+    <div className="border-line border-b py-3 last:border-b-0">
+      <div
+        className={`mb-1.5 text-[13px] font-extrabold ${
+          t ? CHEAT_LABEL[TENSE_ASPECT[t]] : 'text-ink-3'
+        }`}
+      >
         {label}
       </div>
-      <div className="text-deep-ink text-[14.5px]">{children}</div>
+      <div className="text-ink-body text-[14.5px] leading-[1.65]">{children}</div>
     </div>
   );
 }
@@ -519,7 +581,7 @@ export function CheatRow({
 /** Код у шпаргалці — на темному тлі потрібен свій відтінок. */
 export function CheatCode({ children }: { children?: ReactNode }) {
   return (
-    <code className="bg-deep-2 rounded-[5px] px-[7px] py-[2px] font-mono text-[13px]">
+    <code className="bg-panel border-line rounded-[5px] border px-[7px] py-[2px] font-mono text-[13px]">
       {children}
     </code>
   );

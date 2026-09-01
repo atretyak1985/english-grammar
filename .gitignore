@@ -26,3 +26,6 @@ drizzle/meta/_journal.json.bak
 .claude/
 .serena/
 .swarmery/
+
+# Скріншоти для обміну з агентом — не вміст проєкту
+TEMP_DIR/

@@ -29,8 +29,14 @@ export function useFitHeight(ref: RefObject<HTMLElement | null>, fallback = 520)
       // Нижче рядка міряємо самі елементи — підвал і нижній відступ сторінки.
       // Через «висота документа мінус низ рядка» в розрахунок потрапляла б
       // порожнеча під короткою сторінкою, і картка не могла б вирости.
+      // Нижній відступ рахуємо і власний, і батьківський: у читалці поля
+      // стоять на самому рядку, а в старіших екранах — на контейнері навколо.
+      // Пропустити свій відступ означало б дати картці вирости рівно на нього
+      // й виштовхнути сторінку в прокрутку.
       const container = row.parentElement;
-      const padding = container ? parseFloat(getComputedStyle(container).paddingBottom) || 0 : 0;
+      const padding =
+        (parseFloat(getComputedStyle(row).paddingBottom) || 0) +
+        (container ? parseFloat(getComputedStyle(container).paddingBottom) || 0 : 0);
       const footer = document.querySelector('footer');
       const belowRow = padding + (footer?.getBoundingClientRect().height ?? 0);
 

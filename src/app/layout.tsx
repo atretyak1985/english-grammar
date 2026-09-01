@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { IBM_Plex_Mono, Manrope, Nunito } from 'next/font/google';
+import { JetBrains_Mono, Literata, Onest } from 'next/font/google';
 
 import '@/app/globals.css';
 
@@ -30,39 +30,55 @@ export const viewport: Viewport = {
 };
 
 /**
- * Шрифти макета. Nunito несе текст, Manrope лишається дисплейним
- * накресленням — логотип, заголовки, назви карток, — а IBM Plex Mono
- * формули й код. Кириличний набір обовʼязковий: інтерфейс українською.
- * Курсив не підключаємо: макет його оголошує, але ніде не вживає.
+ * Шрифти напряму «Читальня». Три гарнітури, три різні роботи:
+ * Literata несе читання й заголовки — саме серифна форма робить екран
+ * книжкою; Onest тримає інтерфейс; JetBrains Mono — капітельні мітки.
+ *
+ * Усі три змінні (variable fonts), тому `weight` не перелічуємо: Next
+ * підтягує одну вісь замість набору статичних накреслень, а макет
+ * користається діапазоном 400–800 без розривів.
+ *
+ * Кириличний набір обовʼязковий у всіх трьох, моно включно: капітельні
+ * мітки макета — українською («ПОЯСНЕННЯ УКРАЇНСЬКОЮ»), і без cyrillic
+ * вони випали б у підставний шрифт.
  */
-const nunito = Nunito({
+/*
+  `axes: ['opsz']` — не оздоба. У Literata є оптичний розмір, і за
+  замовчуванням `next/font` тягне лише вісь ваги, підставляючи опції
+  opsz сталим значенням. Тоді ширини літер розходяться з макетом, який
+  бере шрифт із повним діапазоном 7..72, — рядок «повзе» на піксель і
+  звірка світиться на кожному текстовому блоці замість справжніх
+  розбіжностей.
+*/
+const literata = Literata({
   subsets: ['latin', 'cyrillic'],
-  weight: ['400', '600', '700', '800'],
-  variable: '--font-nunito',
+  axes: ['opsz'],
+  variable: '--font-literata',
   display: 'swap',
 });
 
-const manrope = Manrope({
+const onest = Onest({
   subsets: ['latin', 'cyrillic'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-manrope',
+  variable: '--font-onest',
   display: 'swap',
 });
 
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '600'],
-  variable: '--font-plex-mono',
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-jetbrains-mono',
   display: 'swap',
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { signedIn, serverState } = await loadShellState();
+  const { signedIn, serverState, email } = await loadShellState();
+  // Літера в аватарі топбара — перша з пошти, бо імені в сесії немає.
+  // Порожній рядок відкидаємо: `''[0]` дало б undefined, а не заглушку.
+  const initial = email?.trim() ? (email.trim()[0]?.toUpperCase() ?? null) : null;
 
   return (
     <html
       lang="uk"
-      className={`${nunito.variable} ${manrope.variable} ${plexMono.variable}`}
+      className={`${literata.variable} ${onest.variable} ${jetBrainsMono.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -72,7 +88,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <ThemeProvider>
           <AppStateProvider signedIn={signedIn} serverState={serverState}>
-            <AppShell>{children}</AppShell>
+            <AppShell signedIn={signedIn} initial={initial}>
+              {children}
+            </AppShell>
           </AppStateProvider>
         </ThemeProvider>
       </body>

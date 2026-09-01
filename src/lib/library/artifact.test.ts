@@ -125,7 +125,14 @@ describe('parseArtifact — строгість формату', () => {
 describe('пайплайн parseArtifact → toTokenMatches → validate', () => {
   it('коректний артефакт проходить без винятків, а токени збігаються з analyzeGrammar', () => {
     const text = buildText();
-    const engineMatches = analyzeGrammar(text).matches.map(({ from, to, tense }) => ({ from, to, tense }));
+    // Правило їде крізь артефакт до токенних збігів — на ньому стоїть картка
+    // слова в читалці, тому воно частина очікування, а не зайве поле.
+    const engineMatches = analyzeGrammar(text).matches.map(({ from, to, tense, ruleId }) => ({
+      from,
+      to,
+      tense,
+      rule: ruleId,
+    }));
 
     const artifact = parseArtifact(buildArtifact(text), 'story.json');
     const converted = toTokenMatches(text, artifact);

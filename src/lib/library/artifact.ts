@@ -225,7 +225,9 @@ export function toTokenMatches(text: string, artifact: Artifact): Match[] {
     for (const match of chunk.matches) {
       const from = words[match.word - 1]?.index ?? 0;
       const to = words[match.word - 1 + match.length - 1]?.index ?? 0;
-      matches.push({ from, to, tense: match.tense });
+      // Правило їде разом зі збігом: без нього картка слова в читалці не має
+      // чим пояснити підсвітку — засів був би єдиним місцем, де воно губиться.
+      matches.push({ from, to, tense: match.tense, ...(match.rule !== undefined ? { rule: match.rule } : {}) });
     }
   }
 

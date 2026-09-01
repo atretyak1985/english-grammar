@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { analyzeText, findMatches, tokenize } from './tenses';
+import { analyzeText, applyMatches, findMatches, tokenize } from './tenses';
 
 /**
  * Локальні правила підсвітки. Перевіряється не «чи гарна розмітка» — за якість
@@ -312,5 +312,21 @@ describe('analyzeText', () => {
     expect(tokens[2]?.startsMatch).toBe(true);
     expect(tokens[4]?.endsMatch).toBe(true);
     expect(tokens[0]?.tense).toBeNull();
+  });
+
+  it('правило й хиткість збігу лягають на кожен токен конструкції', () => {
+    // На цьому контракті стоїть картка слова (SC-11): вона відкривається з
+    // БУДЬ-ЯКОГО слова конструкції і мусить знати правило саме з токена.
+    const tokens = tokenize('She had never seen it.');
+    applyMatches(tokens, [{ from: 2, to: 6, tense: 'pp', rule: 'pp.had-v3', uncertain: true }]);
+
+    for (const index of [2, 4, 6]) {
+      expect(tokens[index]?.rule).toBe('pp.had-v3');
+      expect(tokens[index]?.uncertain).toBe(true);
+    }
+    // Збіг локальних правил без rule токена не бруднить.
+    const local = tokenize('We deployed it.');
+    applyMatches(local, [{ from: 2, to: 2, tense: 'ps' }]);
+    expect(local[2]?.rule).toBeUndefined();
   });
 });

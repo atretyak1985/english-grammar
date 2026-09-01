@@ -8,10 +8,11 @@ export type Level = 'a2' | 'b1' | 'b2' | 'c1';
  * схеми. Це рівно матриця 3 × 3 — три види на три часи, — і саме тому вони
  * розмічені двома осями, а не одним списком.
  *
- * Колір означає ВИД (Simple, Continuous, Perfect). Стиль підкреслення означає
- * ЧАС: минулий — суцільне, теперішній — штрихове, майбутній — подвійне. Тому
- * синій — це «простий» і в `ps`, і в `prs`, і в `fs`, а фіолетовий — «перфект»
- * у всіх трьох часах.
+ * Колір означає ВИД (Simple, Continuous, Perfect): синій — «простий» і в `ps`,
+ * і в `prs`, і в `fs`, а фіолетовий — «перфект» у всіх трьох часах. Час
+ * конструкції лишається в даних і в підписах, але власного знака в тексті не
+ * має: підкреслення там закріплене за лексикою, і другий сенс на тому самому
+ * знаку робив би обидва нечитаними.
  *
  * Практична вигода саме там, де в темі «Теперішні часи» головна пастка:
  * Present Perfect проти Past Simple — це фіолетовий проти синього, і різниця
@@ -45,7 +46,7 @@ export function isTenseKey(value: unknown): value is TenseKey {
 /** Вид конструкції — задає колір. */
 export type Aspect = 'simple' | 'continuous' | 'perfect';
 
-/** Час конструкції — задає стиль підкреслення. */
+/** Час конструкції. Групує рядки легенди; власного знака в тексті не має. */
 export type TenseTime = 'past' | 'present' | 'future';
 
 export const TENSE_ASPECT: Record<TenseKey, Aspect> = {
@@ -86,25 +87,28 @@ export const ASPECT_TEXT: Record<Aspect, string> = {
 };
 
 /**
- * Як конструкція виглядає підсвіченою в тексті. Живе тут, а не в екрані
- * аналізатора, бо тепер цим користуються двоє: сам аналізатор і картка-легенда
- * у темі, яка цей код і пояснює. Дві копії розійшлися б рівно тоді, коли
- * легенда почала б обіцяти не те, що читач бачить.
+ * Як конструкція виглядає підсвіченою в тексті — заливка виду, і тільки вона.
+ *
+ * Живе тут, а не в екрані аналізатора, бо цим користуються двоє: сам
+ * аналізатор і картка-легенда в темі, яка цей код і пояснює. Дві копії
+ * розійшлися б рівно тоді, коли легенда почала б обіцяти не те, що читач
+ * бачить.
+ *
+ * Підкреслення звідси пішло: воно позначало час конструкції, а в тексті той
+ * самий знак несе статус слова («не знаю» — пунктир, «вчу» — жовтий). На
+ * позначеному слові всередині підсвіченого часу два сенси збігалися на одній
+ * лінії, і не читався жоден.
  */
 export const TENSE_HIGHLIGHT: Record<TenseKey, string> = {
-  ps: 'text-ps bg-ps-bg border-b-2 border-ps',
-  pc: 'text-pc bg-pc-bg border-b-2 border-pc',
-  pp: 'text-pp bg-pp-bg border-b-2 border-pp',
-  prs: 'text-ps bg-ps-bg border-b-2 border-dashed border-ps',
-  prc: 'text-pc bg-pc-bg border-b-2 border-dashed border-pc',
-  prp: 'text-pp bg-pp-bg border-b-2 border-dashed border-pp',
-  // Майбутні йдуть підкресленням, а не рамкою: `border-style: double` на
-  // рядковому елементі не роздільна — на трьох пікселях браузер малює її
-  // суцільною, і майбутнє ставало б неможливо відрізнити від минулого.
-  // Заміряно на скріншоті, а не припущено.
-  fs: 'text-ps bg-ps-bg underline decoration-double decoration-1 underline-offset-[3px]',
-  fc: 'text-pc bg-pc-bg underline decoration-double decoration-1 underline-offset-[3px]',
-  fp: 'text-pp bg-pp-bg underline decoration-double decoration-1 underline-offset-[3px]',
+  ps: 'bg-ps-bg text-ps-tx',
+  pc: 'bg-pc-bg text-pc-tx',
+  pp: 'bg-pp-bg text-pp-tx',
+  prs: 'bg-ps-bg text-ps-tx',
+  prc: 'bg-pc-bg text-pc-tx',
+  prp: 'bg-pp-bg text-pp-tx',
+  fs: 'bg-ps-bg text-ps-tx',
+  fc: 'bg-pc-bg text-pc-tx',
+  fp: 'bg-pp-bg text-pp-tx',
 };
 
 /** Розділ усередині теми: власна сторінка, рядок у сайдбарі та якір у повному вигляді. */

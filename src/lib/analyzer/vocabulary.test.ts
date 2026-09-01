@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { analyzeText } from '@/lib/analyzer/tenses';
-import { UNKNOWN_LIMIT, pickUnknown, tokenFrequency } from '@/lib/analyzer/vocabulary';
+import {
+  UNKNOWN_LIMIT,
+  pickRareOnPage,
+  pickUnknown,
+  tokenFrequency,
+} from '@/lib/analyzer/vocabulary';
 import type { WordStatus } from '@/types/state';
 
 const TEXT =
@@ -70,5 +75,45 @@ describe('pickUnknown', () => {
     expect(afterAction.map((entry) => entry.word)).not.toContain('engineer');
     expect(afterUndo.map((entry) => entry.word)).not.toContain('engineer');
     expect(pickUnknown(frequency, {}).map((entry) => entry.word)).toContain('engineer');
+  });
+});
+
+describe('pickRareOnPage', () => {
+  const frequency = [
+    { word: 'dollar', count: 40 },
+    { word: 'cents', count: 12 },
+    { word: 'bulldozing', count: 1 },
+    { word: 'sterling', count: 2 },
+    { word: 'chaste', count: 1 },
+  ];
+
+  it('бере лише рідкісні слова сторінки, від найрідкіснішого', () => {
+    const page = ['dollar', 'cents', 'bulldozing', 'sterling', null, 'dollar'];
+    expect(pickRareOnPage(page, frequency, {})).toEqual([
+      { word: 'bulldozing', count: 1 },
+      { word: 'sterling', count: 2 },
+    ]);
+  });
+
+  it('не показує слів з інших сторінок', () => {
+    // `chaste` рідкісне, але на цій сторінці його немає
+    expect(pickRareOnPage(['bulldozing'], frequency, {}).map((entry) => entry.word)).toEqual([
+      'bulldozing',
+    ]);
+  });
+
+  it('слово зі статусом зникає зі списку', () => {
+    const page = ['bulldozing', 'sterling'];
+    expect(
+      pickRareOnPage(page, frequency, { bulldozing: 'learning' }).map((entry) => entry.word),
+    ).toEqual(['sterling']);
+  });
+
+  it('службові слова не пропонуються, хай які рідкісні', () => {
+    expect(pickRareOnPage(['the', 'of'], [{ word: 'the', count: 1 }], {})).toEqual([]);
+  });
+
+  it('слово без запису в частотності рахується одиничним', () => {
+    expect(pickRareOnPage(['unheard'], [], {}).map((entry) => entry.word)).toEqual(['unheard']);
   });
 });
