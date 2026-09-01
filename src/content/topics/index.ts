@@ -152,6 +152,29 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     cheatsheet: () => import('@/content/topics/articles/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/articles/sections/plan.mdx'),
   },
+  'phrasal-verbs': {
+    idea: () => import('@/content/topics/phrasal-verbs/sections/idea.mdx'),
+    types: () => import('@/content/topics/phrasal-verbs/sections/types.mdx'),
+    placement: () => import('@/content/topics/phrasal-verbs/sections/placement.mdx'),
+    'particles-up-down-out': () =>
+      import('@/content/topics/phrasal-verbs/sections/particles-up-down-out.mdx'),
+    'particles-off-on-in': () =>
+      import('@/content/topics/phrasal-verbs/sections/particles-off-on-in.mdx'),
+    'particles-through-away': () =>
+      import('@/content/topics/phrasal-verbs/sections/particles-through-away.mdx'),
+    polysemy: () => import('@/content/topics/phrasal-verbs/sections/polysemy.mdx'),
+    register: () => import('@/content/topics/phrasal-verbs/sections/register.mdx'),
+    work: () => import('@/content/topics/phrasal-verbs/sections/work.mdx'),
+    life: () => import('@/content/topics/phrasal-verbs/sections/life.mdx'),
+    stories: () => import('@/content/topics/phrasal-verbs/sections/stories.mdx'),
+    translation: () => import('@/content/topics/phrasal-verbs/sections/translation.mdx'),
+    mistakes: () => import('@/content/topics/phrasal-verbs/sections/mistakes.mdx'),
+    exercises: () => import('@/content/topics/phrasal-verbs/sections/exercises.mdx'),
+    quiz: () => import('@/content/topics/phrasal-verbs/sections/quiz.mdx'),
+    history: () => import('@/content/topics/phrasal-verbs/sections/history.mdx'),
+    cheatsheet: () => import('@/content/topics/phrasal-verbs/sections/cheatsheet.mdx'),
+    plan: () => import('@/content/topics/phrasal-verbs/sections/plan.mdx'),
+  },
 };
 
 export function hasContent(slug: string): boolean {
