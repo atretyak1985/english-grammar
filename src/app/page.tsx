@@ -15,7 +15,9 @@ import { TrapCard } from '@/components/home/TrapCard';
 export default function HomePage() {
   return (
     <div className="mx-auto w-full max-w-shell leading-[normal]">
-      <div className="grid items-center gap-10 px-9 pt-11 pb-9 lg:grid-cols-[440px_minmax(0,1fr)]">
+      {/* Колонки рівної висоти: доказ праворуч не має виглядати запискою
+          поруч із обіцянкою — картка розтягується до висоти герой-тексту. */}
+      <div className="grid items-stretch gap-10 px-9 pt-11 pb-9 lg:grid-cols-[440px_minmax(0,1fr)]">
         <HomeHero />
         <LiveSample />
       </div>
