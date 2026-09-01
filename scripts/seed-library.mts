@@ -227,9 +227,9 @@ async function seedStory(db: Db, story: LoadedStory): Promise<{ status: 'seeded'
           chunkIndex: index,
           fromToken: chunk.start,
           toToken: chunk.end,
-          matches: matches
-            .filter((match) => match.from >= chunk.start && match.to <= chunk.end)
-            .map((match) => ({ from: match.from, to: match.to, tense: match.tense })),
+          // Збіг кладеться цілим — разом із `rule`: на ньому стоїть картка
+          // слова в читалці, і звуження полів тут уже раз мовчки його з'їло.
+          matches: matches.filter((match) => match.from >= chunk.start && match.to <= chunk.end),
         })),
       );
     }
