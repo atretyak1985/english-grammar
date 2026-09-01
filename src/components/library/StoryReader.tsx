@@ -2,6 +2,8 @@
 
 import { useMemo } from 'react';
 
+import Link from 'next/link';
+
 import { ReaderCanvas } from '@/components/analyzer/ReaderCanvas';
 import { statsOf, tokenize, type Match } from '@/lib/analyzer/tenses';
 
@@ -53,7 +55,19 @@ export function StoryReader({
       docKey={docKey}
       matches={matches}
       stats={stats}
-      title={title}
+      // Крихта перед назвою — єдиний «де я?» читалки: топбар підсвічує розділ,
+      // але шлях назад на полицю без неї вів лише через нього.
+      title={
+        <>
+          <Link href="/reading" className="font-sans text-acc text-[12.5px] font-bold">
+            Читання
+          </Link>
+          <span className="font-sans text-ink-3 mx-2 text-[12.5px] font-semibold" aria-hidden>
+            /
+          </span>
+          {title}
+        </>
+      }
       meta={author}
       // У бібліотеці розібрано 100% тексту: підпис «пораховано по
       // прочитаному» тут був би брехнею, тому coverage не передається взагалі.
