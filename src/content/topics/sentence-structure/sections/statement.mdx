@@ -1,0 +1,63 @@
+import { SlotTrain } from '../diagrams';
+
+<Section id="svo" n={2} title="Ствердження: хто → робить → що → де → коли">
+
+<Lede>Уся тема стоїть на одній схемі з п'яти слотів. Перші три — жорсткий каркас: підмет, присудок, додаток. Два останні — хвіст: місце, потім час. Схему варто вивчити як номер телефону: далі всі розділи лише пояснюють, що робити, коли в реченні з'являється щось понад ці п'ять слотів.</Lede>
+
+<SvgBox caption={<>П'ять слотів. Слова змінюються, гнізда — ні. Порожнє гніздо пропускають, але не переставляють.</>}>
+  <SlotTrain />
+</SvgBox>
+
+<Formula
+  lines={[
+    { sign: '+', body: <><K>ХТО</K> + <K>РОБИТЬ</K> + що/кого + де + коли</>, comment: 'Anna sends the invoice from the office every Friday.' },
+    { body: <>Перші два слоти обов'язкові завжди</>, comment: 'навіть якщо «хто» — порожнє it чи there (розділ 8)' },
+    { body: <>де → коли, а не навпаки</>, comment: 'at the office on Tuesday · ✗ on Tuesday at the office (нейтрально)' },
+  ]}
+  note="Схема однакова для всіх часів: змінюється форма дієслова у слоті «робить», а не порядок слотів."
+/>
+
+### Каркас: підмет + присудок + додаток
+
+<ExList>
+  <Ex ua="Оля веде цей проєкт." why="Три слоти, жодного зайвого слова. Це вже повне, природне речення.">Olia runs this project.</Ex>
+  <Ex ua="Ми підписали контракт." why="Час минулий, а порядок той самий: змінилась тільки форма дієслова.">We signed the contract.</Ex>
+  <Ex ua="Я надішлю оцінку." why="І в майбутньому часі каркас не рухається: will — частина слота «робить».">I will send the estimate.</Ex>
+  <Ex ua="Клієнт схвалив чернетку." why="Хто → робить → що. Почніть відчувати цей ритм: він і є англійська граматика.">The client approved the draft.</Ex>
+</ExList>
+
+<Note variant="info" title="Пара «робить → що» — найміцніша зчіпка речення">
+  Між дієсловом і його додатком не встає ніхто: ні прислівник, ні «дуже», ні дата. Усе, що хочеться вставити всередину, їде або перед дієсловом, або в хвіст речення.
+
+  <GoodBad>
+    <Bad>I like <b>very much</b> this café.<br />She explained <b>quickly</b> the problem.<br />We discussed <b>yesterday</b> the budget.</Bad>
+    <Good>I like this café <b>very much</b>.<br />She explained the problem <b>quickly</b>.<br />We discussed the budget <b>yesterday</b>.</Good>
+  </GoodBad>
+</Note>
+
+### Хвіст: де, потім коли
+
+<P>Обставини не розкидаються по реченню, як українською, — вони шикуються у хвіст у передбачуваному порядку: спочатку <b>місце</b>, потім <b>час</b>. Якщо є ще й <b>спосіб дії</b> («швидко», «обережно»), він стає першим у хвості: як → де → коли.</P>
+
+<ExList>
+  <Ex ua="Ми зустрічаємось в офісі щопонеділка." why="де (at the office) → коли (every Monday).">We meet at the office every Monday.</Ex>
+  <Ex ua="Вона доїхала додому пізно." why="де (home) → коли (late).">She got home late.</Ex>
+  <Ex ua="Він працював обережно у темряві весь вечір." why="як (carefully) → де (in the dark) → коли (all evening). Три обставини — і жодної свободи вибору.">He worked carefully in the dark all evening.</Ex>
+</ExList>
+
+<Note variant="tip" title="Час можна винести наперед — це єдиний легальний маневр">
+  Обставина часу — єдина, якій дозволено переїхати на самий початок речення: <i>Yesterday we discussed the budget.</i> Це трохи підкреслює час і типово для розповіді. Але середина речення для неї закрита назавжди: ✗ <i>We discussed yesterday the budget</i>.
+</Note>
+
+### Той самий порядок у всіх часах
+
+<MP title="Одне речення крізь часи — рухається форма дієслова, не слова">
+  <MPRow note={<>Present Simple: звичка. Порядок: хто → робить → що → коли.</>}><b>I check the reports every morning.</b></MPRow>
+  <MPRow note={<>Past Simple: та сама схема, інша форма у слоті «робить».</>}><b>I checked the reports this morning.</b></MPRow>
+  <MPRow note={<>Present Perfect: слот «робить» став на два слова (have checked) — але це один слот.</>}><b>I have checked the reports today.</b></MPRow>
+  <MPRow note={<>Future: will + дієслово — знову один слот із двох слів.</>}><b>I will check the reports tomorrow.</b></MPRow>
+</MP>
+
+<Muted>Це варто побачити один раз і запам'ятати назавжди: <b>часи в англійській не змінюють порядку слів</b> у ствердженні. Складене дієслово (have checked, will check, is running) живе цілком у слоті «робить» — і саме ця складеність стане ключем до питань у наступному розділі.</Muted>
+
+</Section>

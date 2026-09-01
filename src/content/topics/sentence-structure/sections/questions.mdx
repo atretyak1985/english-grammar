@@ -1,0 +1,62 @@
+import { InversionScheme } from '../diagrams';
+
+<Section id="quest" n={3} title="Питання: інверсія і do / does / did">
+
+<Lede>Українською питання робиться інтонацією: «Ти йдеш?» — той самий порядок, тільки голос угору. Англійською цей трюк не працює: <i>You are coming?</i> звучить не як питання, а як недовірливе перепитування. Справжнє питання будується <b>перестановкою</b> — допоміжне дієслово перестрибує через підмет.</Lede>
+
+<SvgBox caption={<>Два випадки: двигун уже стоїть у реченні — або його треба викликати.</>}>
+  <InversionScheme />
+</SvgBox>
+
+### Випадок 1: у реченні вже є «двигун»
+
+<P>Двигун — це <b>be</b> (am / is / are / was / were), <b>have</b> у перфекті, <b>will</b> та всі модальні (can, could, should, must…). Якщо він у реченні є, питання коштує одного руху: двигун — наперед.</P>
+
+<ExList>
+  <Ex ua="Вона в офісі?" why="be сам перестрибнув через підмет. Ніякого do тут не буває: ✗ Does she be…">Is she at the office?</Ex>
+  <Ex ua="Ти бачив мій лист?" why="Перфект: have наперед, seen лишається на місці.">Have you seen my email?</Ex>
+  <Ex ua="Ти будеш завтра на дзвінку?" why="will — двигун майбутнього часу.">Will you be on the call tomorrow?</Ex>
+  <Ex ua="Можеш надіслати мені чернетку?" why="Модальне — теж двигун: одразу наперед.">Can you send me the draft?</Ex>
+</ExList>
+
+### Випадок 2: двигуна нема — приїжджає do
+
+<P>У Present Simple і Past Simple присудок — одне-єдине слово (<i>works</i>, <i>went</i>), перестрибувати нічому. Тому англійська викликає службовий двигун <b>do</b>. Важливо: він приїжджає не порожнім — <b>граматика переїздить у нього</b>. Does = do + те саме -s. Did = do в минулому. Основне дієслово після цього вертається до початкової форми.</P>
+
+<Formula
+  lines={[
+    { sign: '?', body: <><Q>Do / Does / Did</Q> + хто + <K>V1</K> + решта?</>, comment: 'Does she work here? · Did you call the vendor?' },
+    { sign: '?', body: <>Питальне слово + <Q>do/does/did</Q> + хто + <K>V1</K>?</>, comment: 'Where does she work? · Why did they cancel it?' },
+    { body: <>-s та минулий час живуть у двигуні</>, comment: '✗ Does she works? · ✗ Did you went?' },
+  ]}
+/>
+
+<GoodBad>
+  <Bad><b>Where she works?</b><br /><b>You saw</b> the message?<br />Does he <b>knows</b> the password?<br />Did you <b>went</b> to the meeting?</Bad>
+  <Good><b>Where does she work?</b><br /><b>Did you see</b> the message?<br />Does he <b>know</b> the password?<br />Did you <b>go</b> to the meeting?</Good>
+</GoodBad>
+
+### Питальні слова стають на самий початок
+
+<P>What, where, when, why, who, how — займають нульовий слот, перед двигуном. Далі все як завжди: двигун → підмет → дієслово.</P>
+
+<ExList>
+  <Ex ua="Скільки коштує доставка?" why="✗ How much costs the delivery — калька з українського порядку. Двигун does обов'язковий.">How much does the delivery cost?</Ex>
+  <Ex ua="Коли ви переїхали до Львова?" why="Питальне слово → did → підмет → V1.">When did you move to Lviv?</Ex>
+  <Ex ua="Як довго триває мітинг?" why="How long — теж питальне слово, хай і з двох слів.">How long does the meeting take?</Ex>
+</ExList>
+
+### Виняток, який усі люблять: питання до підмета
+
+<P>Якщо питаєте про сам слот «хто» — <i>хто зламав? що сталося?</i> — то питальне слово вже стоїть у слоті підмета, і переставляти нічого не треба. Порядок лишається стверджувальним, без do.</P>
+
+<MP title="Порівняйте два питання про той самий принтер">
+  <MPRow note={<>Питання до підмета: who сам у слоті «хто». Жодного did.</>}><b>Who broke the printer?</b></MPRow>
+  <MPRow note={<>Питання до додатка: слот «хто» зайнятий (he), тому звичайна інверсія з did.</>}><b>What did he break?</b></MPRow>
+</MP>
+
+<Note variant="trap" title="Пастка">
+  Побачивши who чи what на початку, рука за звичкою тягне do: ✗ <i>Who did break the printer?</i> Перевірка проста: якщо після питального слова НЕМАЄ іншого підмета — do не потрібен. <i>Who broke…?</i> (немає) проти <i>What did he break?</i> (є he).
+</Note>
+
+</Section>
