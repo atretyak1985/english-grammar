@@ -1,6 +1,7 @@
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
 import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
+import { meta as sentenceStructure } from '@/content/topics/sentence-structure/meta';
 import type { Level, TopicMeta } from '@/types/content';
 
 /* ============================================================
@@ -19,6 +20,7 @@ export const TOPICS: readonly TopicMeta[] = [
   pastTenses,
   presentTenses,
   futureTenses,
+  sentenceStructure,
 
   planned({
     slug: 'articles',

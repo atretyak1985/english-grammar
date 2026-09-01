@@ -55,5 +55,25 @@
     "quiz": 7,
     "stories": 6,
     "translation": 9
+  },
+  "sentence-structure": {
+    "adjectives": 2,
+    "adverbs": 2,
+    "cheatsheet": 2,
+    "decision": 2,
+    "dummy-subjects": 2,
+    "emphasis": 2,
+    "exercises": 8,
+    "history": 2,
+    "idea": 3,
+    "mistakes": 4,
+    "negatives": 2,
+    "objects": 2,
+    "plan": 3,
+    "questions": 3,
+    "quiz": 7,
+    "statement": 3,
+    "stories": 4,
+    "translation": 9
   }
 }
