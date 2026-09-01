@@ -96,8 +96,7 @@ export function writeLocalTheme(theme: Theme): void {
 export const THEME_BOOTSTRAP_SCRIPT = `
 (function(){try{
   var t=localStorage.getItem('${THEME_KEY}');
-  if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
   if(t==='dark'){document.documentElement.classList.add('dark');}
-  document.documentElement.style.colorScheme=t;
+  document.documentElement.style.colorScheme=t==='dark'?'dark':'light';
 }catch(e){}})();
 `.trim();
