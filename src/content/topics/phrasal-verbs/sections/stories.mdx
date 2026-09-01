@@ -1,0 +1,48 @@
+<Section id="stories" n={11} title="Два тексти з повним розбором">
+
+<Lede>Таблиця розділу 8 показує, який регістр має окреме дієслово. Чого вона не показує — <b>скільки їх має бути в тексті</b>. Ось два тексти про той самий інцидент: тред у Slack і письмовий розбір після нього. Дієслова частково ті самі, а щільність і порядок слів різні. Спочатку прочитайте англійською, потім звірте переклад, і лише тоді дивіться розбір.</Lede>
+
+### Текст 1 — тред у Slack під час інциденту
+
+<Story translation="Оля, 15:04 — Увага: оплата знову лягла хвилин десять тому. Розбираюся. Тарас, 15:06 — Відкотити реліз? У вівторок ми наштовхнулися на те саме. Оля, 15:09 — Дай пʼять хвилин. Я звузила до сервісу токенів, шлюз можна виключити. Марта, 15:11 — Якщо це затримує демо, перенесімо на понеділок. Я відпишу клієнту. Оля, 15:20 — Залагоджено. Погана конфігурація. Оформлю письмово ввечері і повернуся до цього на ретро.">
+  Olha, 15:04 — Heads-up: checkout <b>broke down</b> again about ten minutes ago. I'm <b>looking into</b> it now.<br />
+  Taras, 15:06 — Want me to <b>roll</b> the release <b>back</b>? We <b>ran into</b> the same thing on Tuesday.<br />
+  Olha, 15:09 — Give me five. I've <b>narrowed</b> it <b>down</b> to the token service, and I can <b>rule out</b> the gateway.<br />
+  Marta, 15:11 — If it <b>holds up</b> the demo, let's <b>put</b> it <b>off</b> till Monday. I'll <b>get back to</b> the client.<br />
+  Olha, 15:20 — <b>Sorted out</b>. Bad config. I'll <b>write</b> it <b>up</b> tonight and <b>follow up</b> at the retro.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>broke down</b> — неперехідне</>}>Додатка немає взагалі, розділяти нічого. І це ідіома, а не «розламався на шматки»: <i>the door broke down</i> означало б інше.</BRow>
+  <BRow form={<><b>looking into it</b> проти <b>rule out the gateway</b></>}>Обидва перехідні, але <i>look into</i> нерозділюване — тільки <i>looking into it</i>, ніколи <i>look it into</i>. А <i>rule out</i> розділюване: <i>rule the gateway out</i> теж правильно.</BRow>
+  <BRow form={<><b>roll</b> the release <b>back</b>, <b>narrowed</b> it <b>down</b>, <b>write</b> it <b>up</b> — додаток усередині</>}>Три розділювані підряд. Із займенником вибору немає: <i>narrowed it down</i> — і крапка, <i>narrowed down it</i> ✗. Це найтестованіший факт теми.</BRow>
+  <BRow form={<><b>ran into</b> — нерозділюване</>}>Ідіоматичне: не «вбігли в», а «наштовхнулися на». Займенник теж іде після частки — <i>we ran into it</i>.</BRow>
+  <BRow form={<><b>put</b> it <b>off</b> — маршрут частки</>}>Заміна частки дає інше слово: <i>put it on</i> — «одягни», <i>put it off</i> — «відклади». Це ідіома, її не вирахувати.</BRow>
+  <BRow form={<><b>get back to</b> the client — тричастинне</>}>Обидві частки нерозлучні. <i>Get back the client</i> ✗ означало б «повернути клієнта». Тут найчастіше зникає друге слово.</BRow>
+  <BRow form={<><b>holds up</b>, <b>sorted out</b>, <b>follow up</b> — регістр каналу</>}>Усе це нейтральний ярус. Написати тут <i>delay</i>, <i>resolve</i> і <i>revisit</i> граматично можна — але тред одразу зазвучить як витяг із протоколу.</BRow>
+  <BRow form={<>Щільність — <b>12 фразових на 95 слів</b></>}>Це не перебір, а норма живого робочого чату. Саме такий текст пишуть носії, і саме його намагається уникнути український автор.</BRow>
+</Breakdown>
+
+### Текст 2 — письмовий розбір після інциденту
+
+<Story translation="Ми провели розбір пʼятничного збою оплат. Зміна конфігурації спричинила невідповідність токенів, що призвело до відмови 4 % платежів протягом двадцяти шести хвилин. Команда виключила шлюз за девʼять хвилин і звузила причину до однієї змінної середовища. Реліз відкотили о 15:20. Документ викладає три дії: розкласти алерти за сервісами, поступово прибрати ручний крок конфігурації і повернутися до питання паритету зі staging до 30 червня.">
+  We <b>carried out</b> a review of Friday's checkout outage. A config change <b>brought about</b> a token mismatch, which <b>resulted in</b> 4 % of payments failing for twenty-six minutes. The team <b>ruled out</b> the gateway within nine minutes and <b>narrowed</b> the cause <b>down</b> to a single environment variable. The release was <b>rolled back</b> at 15:20. This document <b>sets out</b> three actions: <b>break</b> the alerting <b>down</b> by service, <b>phase out</b> the manual config step, and <b>follow up on</b> staging parity before 30 June.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>carried out</b>, <b>brought about</b>, <b>resulted in</b>, <b>sets out</b> — перший ярус</>}>Ось головний доказ розділу 8: це офіційний документ, і фразові дієслова в ньому не просто дозволені, а є нормою. <i>Carry out a review</i> в академічному корпусі частотніше за <i>conduct a review</i>.</BRow>
+  <BRow form={<><b>narrowed</b> the cause <b>down</b> — той самий тип, інший порядок</>}>У тексті 1 було <i>narrowed it down</i>, тут — <i>narrowed the cause down</i>. Розділюване дієслово дає вибір, поки додаток короткий. Був би він довгий (<i>narrowed down the root cause of the token mismatch</i>) — частка пішла б уперед.</BRow>
+  <BRow form={<><b>was rolled back</b> — пасив</>}>Фразові дієслова мають пасив, і в розборі інциденту він доречний: важливо, що реліз відкотили, а не хто саме. Частка лишається при дієслові: <i>was rolled back</i>, не <i>was rolled the release back</i>.</BRow>
+  <BRow form={<><b>break</b> the alerting <b>down</b> — і <b>broke down</b> з тексту 1</>}>Одне написання, два різні дієслова. Там неперехідне «зламався», тут розділюване перехідне «розкласти на частини». Тип змінився разом зі значенням — теза розділу 7 у двох сусідніх текстах.</BRow>
+  <BRow form={<><b>phase out</b>, <b>follow up on</b> — план дій</>}>Обидва зі списку, який можна писати куди завгодно. <i>Follow up on</i> тричастинне: <i>follow up on it</i>, ніколи <i>follow it up on</i>.</BRow>
+  <BRow form={<>Щільність — <b>10 фразових на 81 слово</b></>}>Менше, ніж у треді, але далеко не нуль. Ось і вся правда про регістр: змінюється пропорція, а не дозвіл.</BRow>
+  <BRow form={<>Чого тут <b>немає</b></>}>Ні <i>revert to</i>, ні <i>kindly be informed</i>, ні <i>endeavour</i>. Формальний текст англійською стає формальним за рахунок структури й точності, а не довжини слів.</BRow>
+</Breakdown>
+
+<Note variant="tip" title="Що з цим робити далі">
+  Візьміть текст 1 і перепишіть його <b>про свій справжній останній інцидент або зірваний дедлайн</b>: хто помітив, що робили далі, чим скінчилося. Пʼять-шість реплік, як у треді. Порахуйте фразові дієслова — якщо їх менше пʼяти, ви написали протокол, а не чат.
+
+  Потім зробіть з того самого випадку текст 2: той самий зміст, але письмово й для керівництва. Не викидайте фразові дієслова — замініть частину на перший ярус із розділу 8. Ця пара «той самий випадок двома регістрами» коштує більше, ніж будь-яка вправа теми.
+</Note>
+
+</Section>

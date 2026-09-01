@@ -1,0 +1,76 @@
+import { SeparabilityTests } from '../diagrams';
+
+<Section id="cheat" n={17} title="Шпаргалка">
+
+<Lede>Зробіть скріншот. Уся тема на одній картці — жодного нового факту, тільки стиснуте вже сказане.</Lede>
+
+<Cheat title="ФРАЗОВІ ДІЄСЛОВА — ШВИДКА ДОВІДКА">
+  <CheatRow label="ГОЛОВНА ІДЕЯ">
+    Дієслово — це напрямок руху, частка — маршрут. <CheatCode>put off</CheatCode> ≠ <CheatCode>put on</CheatCode> не тому, що це різні слова у словнику, а тому, що <b>частка несе половину значення</b>.
+  </CheatRow>
+  <CheatRow label="ЧОТИРИ ТИПИ">
+    <b>1 · неперехідне</b> — додатка немає: <CheatCode>The build server broke down.</CheatCode><br />
+    <b>2 · перехідне розділюване</b> — додаток з обох боків: <CheatCode>turn off the light · turn the light off · turn it off</CheatCode><br />
+    <b>3 · перехідне нерозділюване</b> — додаток тільки після обох слів: <CheatCode>look after the kids · look after them</CheatCode> · ✗ look them after<br />
+    <b>4 · тричастинне</b> — три слова, не розділяється ніколи: <CheatCode>put up with it · come up with a plan</CheatCode>
+  </CheatRow>
+  <CheatRow label="ПРАВИЛО ЗАЙМЕННИКА — ОДИН РЯДОК">
+    Займенник — <b>усередину</b>, або дієслово взагалі не має середини: <CheatCode>turn it off</CheatCode> ✓ · <CheatCode>turn off it</CheatCode> ✗ · <CheatCode>look after them</CheatCode> ✓ · <CheatCode>look them after</CheatCode> ✗
+  </CheatRow>
+  <CheatRow label="ПʼЯТЬ ТЕСТІВ НА РОЗДІЛЮВАНІСТЬ">
+    <b>①</b> Три слова? → нерозділюване. Сто відсотків, без винятків.<br />
+    <b>②</b> Дієслово живе без додатка в цьому ж значенні? → друге слово частка → розділюване: <i>The plane took off</i> → <i>take your coat off</i> ✓<br />
+    <b>③</b> Наголос: на <b>частці</b> → розділюване (<i>turn it OFF</i>) · на <b>дієслові</b> → ні (<i>LOOK after them</i>)<br />
+    <b>④</b> Змінюється сам додаток — рухається, гасне, зникає → зазвичай розділюване. Підмет лише орієнтується на незмінений обʼєкт → прийменник<br />
+    <b>⑤</b> Словникова нотація: <CheatCode>turn sth off</CheatCode> тип 2 · <CheatCode>look after sb/sth</CheatCode> тип 3 · <CheatCode>put up with sb/sth</CheatCode> тип 4 · <CheatCode>break down</CheatCode> без sth — тип 1
+  </CheatRow>
+  <CheatRow label="ДЕ СТАВИТИ ДОДАТОК-ІМЕННИК">
+    Що довший і новіший додаток, то певніше він іде <b>після частки</b>: <i>Turn off the light in the corridor we installed yesterday.</i><br />
+    Короткий і вже відомий охоче йде всередину: <i>Turn the light off.</i> Обидва порядки існують саме заради цього вибору.
+  </CheatRow>
+  <CheatRow label="ОДИНАДЦЯТЬ ЧАСТОК — МЕТАФОРА В ОДИН РЯДОК">
+    <CheatCode>up</CheatCode> вгору до межі → завершення, збільшення, поява · <i>use up · speed up · set up</i><br />
+    <CheatCode>down</CheatCode> вниз → зменшення, запис, зупинка · <i>cut down · write down · break down</i><br />
+    <CheatCode>out</CheatCode> з контейнера назовні → вичерпання, роздача, виявлення · <i>run out · hand out · find out</i><br />
+    <CheatCode>off</CheatCode> відрив → зняти, скасувати, вимкнути, вирушити · <i>take off · call off · turn off</i><br />
+    <CheatCode>on</CheatCode> контакт і безперервність → тривання, вмикання, взяти на себе · <i>carry on · put on · take on</i><br />
+    <CheatCode>in / into</CheatCode> контейнер → вхід, участь, здача · <i>hand in · join in · look into</i><br />
+    <CheatCode>over</CheatCode> поверх, з краю в край → перегляд, передача, надлишок · <i>go over · hand over · run over</i><br />
+    <CheatCode>through</CheatCode> тунель наскрізь → пройти все до кінця · <i>go through · get through · read through</i><br />
+    <CheatCode>away</CheatCode> геть від мене → віддалення, зникнення · <i>throw away · walk away · fade away</i><br />
+    <CheatCode>back</CheatCode> назад → повернення, стримування · <i>call back · give back · hold back</i><br />
+    <CheatCode>around</CheatCode> по колу → безцільність або обхід перешкоди · <i>hang around · work around</i>
+  </CheatRow>
+  <CheatRow label="ДЕ СИСТЕМА ЛАМАЄТЬСЯ">
+    Частка — перша здогадка, а не гарантія: вгадує приблизно у двох випадках із трьох.<br />
+    <i>give up</i> — не завершення, а провал · <i>fall through</i> — не «пройшов наскрізь», а зірвалося · <i>hang out</i> — жодного руху назовні · у <i>back up</i> слово <b>back</b> — це саме дієслово, а не частка
+  </CheatRow>
+  <CheatRow label="ОДНЕ ДІЄСЛОВО — КІЛЬКА ЗНАЧЕНЬ">
+    У ста пʼятдесяти найчастотніших — у середньому <b>5,6 значення</b> на дієслово. Вчиться не дієслово, а пара <b>дієслово + значення</b>.<br />
+    Разом зі значенням змінюється й тип: <i>made up an excuse</i> (розділюване) · <i>they made up</i> (неперехідне) · <i>women make up 40% of the team</i> (не розділюється) · <i>make up for it</i> (тричастинне)
+  </CheatRow>
+  <CheatRow label="РЕГІСТР">
+    Регістр належить <b>ситуації, а не слову</b>. Жанр змінює щільність фразових у тексті, а не список дозволених.<br />
+    Норма й у письмі: <i>carry out · point out · set up · rule out · look into · sum up · account for</i><br />
+    У документі краще замінити: <i>find out → determine · put off → postpone · go over → review · bring up → raise · turn down → decline</i><br />
+    Тільки усно <b>[розмовне]</b>: <i>mess up · chicken out · rip off · hang out · chill out</i>
+  </CheatRow>
+  <CheatRow label="ПАСТКА З to">
+    Кінцеве <i>to</i> в <i>look forward to</i>, <i>get round to</i>, <i>be used to</i>, <i>object to</i> — це <b>прийменник</b>, а не частка інфінітива, тому далі йде <i>-ing</i>.<br />
+    <CheatCode>looking forward to hearing from you</CheatCode> ✓ · <CheatCode>to hear</CheatCode> ✗
+  </CheatRow>
+  <CheatRow label="ТРИ ПОМИЛКИ, ЯКІ КОШТУЮТЬ НАЙБІЛЬШЕ">
+    ① жодного фразового в тексті — самі латинізми · ② <i>turn off it</i> замість <i>turn it off</i> · ⑪ наголос на дієслові замість частки<br />
+    Повні одинадцять — розділ 13.
+  </CheatRow>
+</Cheat>
+
+<SvgBox caption={<>Ті самі пʼять тестів як процедура: згори вниз, до першої відповіді «так».</>}>
+  <SeparabilityTests />
+</SvgBox>
+
+<Note variant="tip" title="Одне речення замість усієї картки">
+  Якщо запамʼятати з теми лише одне: <b>частка несе половину значення — і тому має власний наголос і власне місце в реченні</b>. Не почули частку — не почули дієслова.
+</Note>
+
+</Section>
