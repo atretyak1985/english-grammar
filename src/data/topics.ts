@@ -8,6 +8,7 @@ import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
 import { meta as sentenceStructure } from '@/content/topics/sentence-structure/meta';
 import { meta as prepositions } from '@/content/topics/prepositions/meta';
+import { meta as reportedSpeech } from '@/content/topics/reported-speech/meta';
 import type { Level, TopicMeta } from '@/types/content';
 
 /* ============================================================
@@ -33,13 +34,8 @@ export const TOPICS: readonly TopicMeta[] = [
   prepositions,
   phrasalVerbs,
   passive,
+  reportedSpeech,
 
-  planned({
-    slug: 'reported-speech',
-    title: 'Непряма мова й узгодження часів',
-    desc: 'He said he was tired. Як часи зсуваються на крок у минуле і що стається з питаннями.',
-    level: 'b2',
-  }),
   planned({
     slug: 'quantifiers',
     title: 'Злічуване й незлічуване',
