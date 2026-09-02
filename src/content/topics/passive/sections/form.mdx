@@ -1,0 +1,114 @@
+import { PassiveFormula } from '../diagrams';
+
+<Section id="form" n={2} title="Формула be + V3 — і які дієслова в пасив не пускають">
+
+<Lede>Форма пасиву коротка настільки, що її вчать за десять хвилин: <b>be + V3</b>. Уся складність не в ній, а у двох сусідніх питаннях — у якій формі стоїть <i>be</i> (це <SecRef n={3}>розділ 3</SecRef>) і чи має це дієслово пасив узагалі. Друге питання вбиває більше речень, ніж перше.</Lede>
+
+### 2.1 Дві частини, і кожна робить своє
+
+<SvgBox caption={<>Уся граматика — у <i>be</i>: час, число, особа. Значення — у V3, і воно не змінюється ніколи. Третя частина необовʼязкова, і найчастіше її просто немає.</>}>
+  <PassiveFormula />
+</SvgBox>
+
+<Formula
+  lines={[
+    { sign: '+', body: <>The bug <K>was fixed</K> yesterday.</>, comment: 'be у потрібному часі + V3' },
+    { sign: '−', body: <>The bug <Neg>wasn’t fixed</Neg> yesterday.</>, comment: 'not чіпляється до be, не до V3' },
+    { sign: '?', body: <><Q>Was</Q> the bug <Q>fixed</Q> yesterday?</>, comment: 'be виходить наперед — як завжди' },
+  ]}
+  note="Допоміжного do в пасиві не буває ніколи: be сам собі допоміжне дієслово."
+/>
+
+<Note variant="trap" title="Пастка: третя форма, а не друга">
+  У пасиві стоїть <b>тільки V3</b>. Помилка з другою формою трапляється саме там, де V2 і V3 різні й V2 частіше на очах.
+
+  ✗ <i>The letter was <b>wrote</b></i> · ✓ <i>was <b>written</b></i><br />
+  ✗ <i>The photo was <b>took</b></i> · ✓ <i>was <b>taken</b></i><br />
+  ✗ <i>Nothing was <b>spoke</b></i> · ✓ <i>was <b>spoken</b></i>
+
+  Правильні дієслова цю пастку ховають: у <i>fixed</i>, <i>closed</i>, <i>reviewed</i> друга і третя форми збігаються, і помилитися ніде. Тому список неправильних дієслів вчать саме заради третьої колонки.
+</Note>
+
+### 2.2 Без be це вже не пасив
+
+Це помилка №1 теми, і причина в неї суто українська: у «баг виправили» звʼязки немає взагалі, тому вона й не проситься в переклад. Але англійське речення без <i>be</i> не стає безособовим — воно стає <b>активним</b>, з новим і несподіваним діячем.
+
+<GoodBad>
+  <Bad>The bug <b>fixed</b> yesterday.<br />My car <b>repaired</b> last week.<br />The report <b>reviewed</b> this morning.</Bad>
+  <Good>The bug <b>was fixed</b> yesterday.<br />My car <b>was repaired</b> last week.<br />The report <b>was reviewed</b> this morning.</Good>
+</GoodBad>
+
+<Muted>Ліворуч написано, що баг щось виправив, машина щось полагодила, а звіт когось перевірив. Носій прочитає саме так — і на секунду зупиниться, бо речення не складається.</Muted>
+
+### 2.3 Дієслова, які пасиву не мають
+
+Пасив бере обʼєкт дії та ставить його підметом. Якщо обʼєкта немає, брати нічого — і пасив не збирається. Таких дієслів дві родини.
+
+<Grid2>
+  <Card>
+    <CardTitle>Неперехідні — дія нікуди не спрямована</CardTitle>
+    <P>Після них не буває прямого додатка: не можна «сталити щось», «прибути щось», «померти щось».</P>
+    <Chips>
+      <Chip>happen</Chip>
+      <Chip>occur</Chip>
+      <Chip>arrive</Chip>
+      <Chip>appear</Chip>
+      <Chip>disappear</Chip>
+      <Chip>come</Chip>
+      <Chip>go</Chip>
+      <Chip>die</Chip>
+      <Chip>fall</Chip>
+      <Chip>rise</Chip>
+      <Chip>exist</Chip>
+      <Chip>remain</Chip>
+    </Chips>
+  </Card>
+  <Card>
+    <CardTitle>Дієслова стану — нічого не відбувається</CardTitle>
+    <P>Формально додаток є, але дії немає: ніхто нічого не робить, тому й «зробленого» бути не може.</P>
+    <Chips>
+      <Chip>have (володіти)</Chip>
+      <Chip>belong</Chip>
+      <Chip>lack</Chip>
+      <Chip>resemble</Chip>
+      <Chip>suit</Chip>
+      <Chip>fit</Chip>
+      <Chip>cost</Chip>
+      <Chip>weigh</Chip>
+      <Chip>become</Chip>
+      <Chip>seem</Chip>
+    </Chips>
+  </Card>
+</Grid2>
+
+<GoodBad>
+  <Bad>The accident <b>was happened</b> at seven.<br />He <b>was died</b> two years ago.<br />We <b>were arrived</b> late.<br />This house <b>is belonged</b> to my aunt.<br />The dress <b>was suited</b> her perfectly.</Bad>
+  <Good>The accident <b>happened</b> at seven.<br />He <b>died</b> two years ago.<br />We <b>arrived</b> late.<br />This house <b>belongs</b> to my aunt.<br />The dress <b>suited</b> her perfectly.</Good>
+</GoodBad>
+
+<Note variant="warn" title="Звідки береться саме ця помилка">
+  З українського «-ся». Порівняйте два речення: <i>Будинок <b>будується</b></i> і <i>Аварія <b>сталася</b></i>. Суфікс той самий, а граматика протилежна: у першому «-ся» справді робить речення пасивним, у другому воно просто частина дієслова.
+
+  Українською їх не треба розрізняти — форма однакова, і мова працює. Англійською різниця стає видимою: <i>The house is being built</i> ✓, але ✗ <i>The accident was happened</i>. Тому питання «а це взагалі перехідне дієслово?» доводиться ставити свідомо, поки воно не стане звичкою.
+</Note>
+
+### 2.4 Двозначність, яка живе в самій формулі
+
+<i>Be</i> + V3 означає дві різні речі, і англійська їх формою не розрізняє: це або <b>дія</b>, або <b>стан, що з неї лишився</b>.
+
+<ExList>
+  <Ex ua="Магазин зачинений — сьогодні неділя." why="Стан: V3 працює тут як прикметник, і речення описує, як воно є зараз. Замініть на sad, empty, dark — конструкція не зміниться.">The shop <b>is closed</b> — it’s Sunday.</Ex>
+  <Ex ua="Магазин зачиняють о девʼятій щовечора." why="Дія: щовечора хтось приходить і зачиняє. Про це кажуть маркер регулярності at nine й уся ситуація.">The shop <b>is closed</b> at nine every evening.</Ex>
+  <Ex ua="Двері були зачинені, і ми не могли вийти." why="Знову стан, тепер у минулому: двері вже стояли зачинені.">The door <b>was closed</b> and we couldn’t get out.</Ex>
+  <Ex ua="Двері зачинили о шостій." why="Дія в минулому: о шостій хтось їх зачинив. Розрізняє лише обставина часу.">The door <b>was closed</b> at six.</Ex>
+</ExList>
+
+<Note variant="tip" title="Як розрізнити за секунду">
+  Підставте замість V3 звичайний прикметник. <i>The shop is <b>empty</b></i> звучить природно на місці <i>is closed</i> — отже, перед вами стан. У <i>The door was closed at six</i> прикметник не стає (<i>was empty at six</i> означало б інше) — отже, це дія.
+
+  Другий спосіб: якщо можна дописати <i>by somebody</i> без відчуття дивноти, це дія. <i>The door was closed by the guard</i> ✓ · <i>The shop is closed by Sunday</i> ✗.
+
+  Історично тут узагалі не було двох конструкцій: англійський пасив виріс саме з опису стану, і сучасна двозначність — його родима пляма. Про це <SecRef n={17}>розділ 17</SecRef>.
+</Note>
+
+</Section>

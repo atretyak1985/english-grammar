@@ -1,0 +1,56 @@
+<Section id="stories" n={11} title="Два тексти з повним розбором">
+
+<Lede>Розділ 10 показав, як пасив працює в окремому реченні. Чого не видно на окремих реченнях — <b>як він тримає або руйнує цілий текст</b>. Ось той самий інцидент двічі: письмовий розбір для керівництва і живий тред у Slack. Факти однакові, пасиву в них різна кількість, і в обох випадках вона правильна. Спершу прочитайте англійською, потім звірте переклад — і лише тоді дивіться розбір.</Lede>
+
+### Текст 1 — письмовий розбір після інциденту
+
+<Story translation="У пʼятницю ввечері оплата була недоступна двадцять шість хвилин. Збій спричинила зміна конфігурації, яку задеплоїли о 14:52 без перевірки на staging. Проблему помітили за десять хвилин, коли спрацював алерт про частку помилок. Шлюз виключили одразу; причину звузили до однієї змінної середовища. Реліз відкотили о 15:20, і сервіс повністю відновився до 15:24. Постраждалих платежів — близько чотирьох відсотків; усі вони відтоді повторно проведені. Запроваджено дві дії: перевірку на staging зроблено обовʼязковою, а алерти розкладуть за сервісами до 30 червня.">
+  Checkout <b>was unavailable</b> for twenty-six minutes on Friday evening. The outage <b>was caused</b> by a config change that <b>had been deployed</b> at 14:52 without a staging check. The problem <b>was noticed</b> ten minutes later, when an error-rate alert <b>was triggered</b>. The gateway <b>was ruled out</b> immediately, and the cause <b>was narrowed down</b> to a single environment variable. The release <b>was rolled back</b> at 15:20, and the service <b>was fully restored</b> by 15:24. Roughly four per cent of payments <b>were affected</b>; all of them <b>have since been retried</b>. Two actions <b>have been agreed</b>: the staging check <b>has been made</b> mandatory, and alerting <b>will be broken down</b> by service before 30 June.
+</Story>
+
+<Breakdown>
+  <BRow form={<><b>was unavailable</b> — а це взагалі не пасив</>}>Перше речення тексту — пастка для ока: <i>unavailable</i> тут звичайний прикметник, а <i>was</i> — звичайна звʼязка. Пасив починається з наступного речення. Розрізняти корисно: у справжньому пасиві на місці V3 стоїть дієслово, до якого можна дописати <i>by somebody</i>.</BRow>
+  <BRow form={<><b>was caused</b> by a config change</>}>Один із двох <i>by</i> на весь текст — і він заслужений: причина збою і є те, заради чого писали документ. Решта діячів у тексті або невідомі, або нецікаві.</BRow>
+  <BRow form={<><b>had been deployed</b> — Past Perfect Passive</>}>Деплой стався <b>раніше</b> за збій, тому три слова замість двох. Це не бюрократизм: <i>was deployed</i> поставило б обидві події на одну лінію часу й зіпсувало б причинно-наслідковий звʼязок.</BRow>
+  <BRow form={<><b>was noticed</b>, <b>was triggered</b> — діяча немає навмисно</>}>Хто саме помітив, у розборі інциденту не пишуть — і це не боягузтво, а жанр: документ про систему, а не про людей. Актив тут одразу перетворив би звіт на пошук винного.</BRow>
+  <BRow form={<><b>have since been retried</b> — Present Perfect Passive</>}>Перфект, бо важливий стан справ <b>зараз</b>: гроші вже проведені, читачеві не треба нічого робити. <i>Were retried</i> лишило б питання «а зараз як?».</BRow>
+  <BRow form={<><b>has been made</b> mandatory, <b>will be broken down</b></>}>Два різні часи в сусідніх частинах речення: одне вже зроблено, друге ще ні. Пасив дозволяє поставити поруч дію завершену й заплановану, не називаючи виконавців ані там, ані там.</BRow>
+  <BRow form={<>Щільність — <b>13 пасивних форм на 108 слів</b></>}>Приблизно кожне друге дієслово. Для розбору інциденту це норма, а не важкий стиль: у тексті рівно один герой — сервіс, — і пасив тримає його підметом від першого речення до останнього.</BRow>
+</Breakdown>
+
+### Текст 2 — тред у Slack під час того самого інциденту
+
+<Story translation="Оля, 15:04 — Увага: оплата лягла хвилин десять тому. Розбираюся. Тарас, 15:06 — Це той конфіг, який ми задеплоїли о третій? Він не проходив staging. Оля, 15:09 — Схоже на те. Шлюз я виключила, справа в одній змінній. Марта, 15:11 — Клієнтів уже питають у підтримці. Скажу їм, що ми над цим працюємо. Оля, 15:20 — Відкотила. Оплата піднялася. Тарас, 15:21 — Слава богу. Я зроблю staging обовʼязковим, поки ми знову на це не наступили.">
+  Olha, 15:04 — Heads-up: checkout <b>went down</b> about ten minutes ago. I’m looking into it.<br />
+  Taras, 15:06 — Is that the config <b>we deployed</b> at three? It never <b>went through</b> staging.<br />
+  Olha, 15:09 — Looks like it. <b>I’ve ruled out</b> the gateway — it’s a single variable.<br />
+  Marta, 15:11 — Support <b>is getting asked</b> about it already. I’ll tell them <b>we’re on it</b>.<br />
+  Olha, 15:20 — <b>Rolled it back</b>. Checkout’s up.<br />
+  Taras, 15:21 — Thank goodness. <b>I’ll make</b> staging mandatory so <b>we don’t get burned</b> by this again.
+</Story>
+
+<Breakdown>
+  <BRow form={<>Той самий інцидент — <b>дві пасивні форми замість тринадцяти</b></>}>Ось головний доказ розділу: пасив належить не темі, а <b>ситуації</b>. Факти ті самі, жанр інший — і пропорція перевернулась.</BRow>
+  <BRow form={<><b>we deployed</b>, <b>I’ve ruled out</b>, <b>I’ll make</b> — актив із живими людьми</>}>У треді всі діячі відомі й присутні в каналі. Ховати їх за пасивом означало б удавати, що конфіг задеплоївся сам, — у чаті це прочитається як спроба відхреститися.</BRow>
+  <BRow form={<><b>is getting asked</b> — get-пасив</>}>Розмовний варіант замість <i>is being asked</i>: діяч (клієнти) неважливий, а подія неприємна — рівно та ситуація, для якої <i>get</i> і існує. У тексті 1 така форма була б недоречною.</BRow>
+  <BRow form={<><b>we don’t get burned</b> — get-пасив як ідіома</>}>Ще один <i>get</i>, тепер у стійкому звороті. Формальний відповідник (<i>so that we are not affected again</i>) у чаті звучав би як лист від юриста.</BRow>
+  <BRow form={<><b>went down</b>, <b>went through</b> — не пасив узагалі</>}>Обидва — активні неперехідні дієслова, хоч українською перекладаються безособово («лягла», «не проходив»). ✗ <i>checkout was gone down</i> — саме та помилка, про яку <SecRef n={2}>розділ 2</SecRef>.</BRow>
+  <BRow form={<>Чого тут <b>немає</b></>}>Ні <i>it was decided</i>, ні <i>it has been observed</i>, ні <i>please be advised</i>. Офіційний зворот у Slack читається не як повага, а як дистанція — і колеги це чують.</BRow>
+</Breakdown>
+
+### Один лист, дві версії
+
+<GoodBad>
+  <Bad>It <b>was decided</b> by the team that the release <b>would be postponed</b>. It <b>should be noted</b> that the affected component <b>has been identified</b>, and it <b>is expected</b> that a fix <b>will be provided</b> by Friday.</Bad>
+  <Good>The team <b>decided to postpone</b> the release. We <b>have identified</b> the affected component and <b>expect</b> a fix by Friday.</Good>
+</GoodBad>
+
+<Muted>Ліворуч 38 слів і жодної граматичної помилки — і жодного живого учасника: команда згадана один раз і одразу відсунута в хвіст. Праворуч 20 слів, ті самі факти й видно, хто за що відповідає. Пасив тут не був потрібен жодного разу: діяч у всіх трьох реченнях відомий, названий і важливий — а це рівно та ситуація, у якій схема з <SecRef n={14}>розділу 14</SecRef> каже «актив».</Muted>
+
+<Note variant="tip" title="Що з цим робити далі">
+  Візьміть текст 1 і напишіть <b>свій</b> розбір справжнього інциденту чи зірваного дедлайну: 6–8 речень, підмет у всіх — те, що зламалось, а не люди. Порахуйте пасивні форми: менше пʼяти — ви написали щоденник, а не звіт.
+
+  Потім перекажіть той самий випадок як тред у чаті, з іменами й активом. Ця пара «одна подія двома регістрами» вчить вибору краще, ніж будь-яка вправа: ви побачите на власному тексті, що пасив — це не рівень англійської, а рішення про те, хто в реченні головний.
+</Note>
+
+</Section>

@@ -196,6 +196,27 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     cheatsheet: () => import('@/content/topics/phrasal-verbs/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/phrasal-verbs/sections/plan.mdx'),
   },
+  passive: {
+    idea: () => import('@/content/topics/passive/sections/idea.mdx'),
+    form: () => import('@/content/topics/passive/sections/form.mdx'),
+    tenses: () => import('@/content/topics/passive/sections/tenses.mdx'),
+    'by-agent': () => import('@/content/topics/passive/sections/by-agent.mdx'),
+    why: () => import('@/content/topics/passive/sections/why.mdx'),
+    'two-objects': () => import('@/content/topics/passive/sections/two-objects.mdx'),
+    modals: () => import('@/content/topics/passive/sections/modals.mdx'),
+    'get-passive': () => import('@/content/topics/passive/sections/get-passive.mdx'),
+    impersonal: () => import('@/content/topics/passive/sections/impersonal.mdx'),
+    comparison: () => import('@/content/topics/passive/sections/comparison.mdx'),
+    stories: () => import('@/content/topics/passive/sections/stories.mdx'),
+    translation: () => import('@/content/topics/passive/sections/translation.mdx'),
+    mistakes: () => import('@/content/topics/passive/sections/mistakes.mdx'),
+    decision: () => import('@/content/topics/passive/sections/decision.mdx'),
+    exercises: () => import('@/content/topics/passive/sections/exercises.mdx'),
+    quiz: () => import('@/content/topics/passive/sections/quiz.mdx'),
+    history: () => import('@/content/topics/passive/sections/history.mdx'),
+    cheatsheet: () => import('@/content/topics/passive/sections/cheatsheet.mdx'),
+    plan: () => import('@/content/topics/passive/sections/plan.mdx'),
+  },
 };
 
 export function hasContent(slug: string): boolean {

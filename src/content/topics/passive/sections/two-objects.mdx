@@ -1,0 +1,92 @@
+import { TwoObjects } from '../diagrams';
+
+<Section id="two" n={6} title="Два додатки — два пасиви">
+
+<Lede>Дієслова на кшталт <i>give</i>, <i>send</i>, <i>tell</i>, <i>offer</i> мають два додатки — людину й річ, — тому пасивів у них теж два. Вибір між ними здається справою смаку, але насправді англійська обирає майже завжди однаково, і саме тут українська дає найпомітнішу помилку теми.</Lede>
+
+### 6.1 Один актив, два пасиви
+
+<SvgBox caption={<>Обидва варіанти правильні. Але лівий трапляється разів у девʼять частіше — і саме він найгірше дається українцям.</>}>
+  <TwoObjects />
+</SvgBox>
+
+<Formula
+  lines={[
+    { body: <>They gave <K>Olha</K> <Cm>a laptop</Cm>.</>, comment: 'актив: два додатки поспіль' },
+    { sign: '+', body: <><K>Olha</K> was given a laptop.</>, comment: 'підмет — людина: звичайний варіант' },
+    { sign: '+', body: <><Cm>A laptop</Cm> was given to <K>Olha</K>.</>, comment: 'підмет — річ: потрібне to' },
+    { sign: '−', body: <>To <K>Olha</K> was given a laptop.</>, comment: 'дослівний давальний з української' },
+  ]}
+  note="Щойно річ стає підметом, людині обовʼязково потрібен прийменник — to або for."
+/>
+
+### 6.2 Чому англійська воліє людину
+
+Тому що перше місце в реченні належить темі, а темою в розмові майже завжди буває людина, а не предмет. <i>A laptop was given to Olha</i> — правильне речення, але воно про ноутбук, і доречне лише там, де розмова справді про техніку: наприклад, у списку виданого обладнання.
+
+<ExList>
+  <Ex ua="Мені дали два тижні на роздуми." why="Речення про мене — отже, я підмет. ✗ Two weeks were given to me звучить як витяг із протоколу.">I <b>was given</b> two weeks to decide.</Ex>
+  <Ex ua="Їй запропонували посаду в Берліні." why="Offer поводиться так само: людина йде наперед.">She <b>was offered</b> a role in Berlin.</Ex>
+  <Ex ua="Нам не сказали про зміну графіка." why="Tell — те саме. І тут особливо чути, як погано звучав би варіант із річчю.">We <b>weren’t told</b> about the schedule change.</Ex>
+  <Ex ua="Кожному новому працівникові видають ноутбук і телефон." why="Множина нічого не змінює: підмет — люди.">New joiners <b>are given</b> a laptop and a phone.</Ex>
+  <Ex ua="Ноутбуки видали в понеділок, телефони — у середу." why="А ось контекст, де правильний саме варіант із річчю: розмова про обладнання, і людей у реченні взагалі немає.">The laptops <b>were handed out</b> on Monday, the phones on Wednesday.</Ex>
+</ExList>
+
+<Card>
+  <CardTitle>Дієслова з двома додатками — коротко</CardTitle>
+  <Chips>
+    <Chip>give</Chip>
+    <Chip>send</Chip>
+    <Chip>tell</Chip>
+    <Chip>show</Chip>
+    <Chip>offer</Chip>
+    <Chip>pay</Chip>
+    <Chip>teach</Chip>
+    <Chip>lend</Chip>
+    <Chip>promise</Chip>
+    <Chip>award</Chip>
+    <Chip>hand</Chip>
+    <Chip>owe</Chip>
+  </Chips>
+  <Muted>Усі вони пускають людину в підмет: <i>I was told · she was shown · they were paid · he was taught</i>.</Muted>
+</Card>
+
+### 6.3 Дієслова, які людину в підмет не пускають
+
+І ось справжня пастка. Схожі за змістом дієслова поводяться протилежно: після них людина лишається після прийменника <b>назавжди</b>.
+
+<Chips>
+  <Chip>explain</Chip>
+  <Chip>describe</Chip>
+  <Chip>suggest</Chip>
+  <Chip>announce</Chip>
+  <Chip>mention</Chip>
+  <Chip>say</Chip>
+  <Chip>report</Chip>
+  <Chip>introduce</Chip>
+  <Chip>recommend (щось комусь)</Chip>
+</Chips>
+
+<GoodBad>
+  <Bad>I <b>was explained</b> the new process.<br />We <b>were suggested</b> a different approach.<br />She <b>was described</b> the situation.<br />I <b>was said</b> to come at nine.</Bad>
+  <Good>The new process <b>was explained to me</b>.<br />A different approach <b>was suggested to us</b>.<br />The situation <b>was described to her</b>.<br />I <b>was told</b> to come at nine.</Good>
+</GoodBad>
+
+<Note variant="trap" title="Чому саме тут помиляються всі">
+  Українською «мені <b>дали</b>» і «мені <b>пояснили</b>» будуються абсолютно однаково: давальний відмінок плюс дієслово в третій особі множини. Різниці немає ні найменшої, тому й запамʼятати її ніде.
+
+  Англійська цю різницю робить, і провести її з логіки неможливо — <i>tell</i> пускає людину в підмет, а <i>explain</i> ні, хоч значення в них сусідні. Це список, а не правило. Найкорисніша пара для запамʼятовування — саме <i>I was told</i> ✓ проти <i>I was explained</i> ✗: вона трапляється в мовленні щотижня.
+</Note>
+
+### 6.4 Дієслова з прийменником: прийменник нікуди не дівається
+
+Якщо в активі дієслово тягне за собою прийменник, у пасиві прийменник лишається на місці — навіть коли після нього вже нічого немає.
+
+<ExList>
+  <Ex ua="По лікарку одразу послали." why="send for somebody. Прийменник висить у кінці й виглядає загубленим — але без нього дієслово означає інше.">The doctor <b>was sent for</b> immediately.</Ex>
+  <Ex ua="Проблемою вже займаються." why="deal with. ✗ The problem is being dealt — незакінчене речення.">The problem <b>is being dealt with</b>.</Ex>
+  <Ex ua="На дітей ніхто не дивився." why="look after. Той самий закон.">The children <b>weren’t looked after</b>.</Ex>
+  <Ex ua="Мені не подобається, коли зі мною так розмовляють." why="speak to somebody, та ще й у герундійній формі: being spoken to. Найважча конструкція розділу — і носій скаже саме так.">I don’t like <b>being spoken to</b> like that.</Ex>
+</ExList>
+
+</Section>
