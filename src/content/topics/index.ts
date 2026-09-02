@@ -217,6 +217,28 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     cheatsheet: () => import('@/content/topics/passive/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/passive/sections/plan.mdx'),
   },
+  'reported-speech': {
+    idea: () => import('@/content/topics/reported-speech/sections/idea.mdx'),
+    backshift: () => import('@/content/topics/reported-speech/sections/backshift.mdx'),
+    'no-backshift': () => import('@/content/topics/reported-speech/sections/no-backshift.mdx'),
+    'pronouns-time': () => import('@/content/topics/reported-speech/sections/pronouns-time.mdx'),
+    'say-tell': () => import('@/content/topics/reported-speech/sections/say-tell.mdx'),
+    questions: () => import('@/content/topics/reported-speech/sections/questions.mdx'),
+    commands: () => import('@/content/topics/reported-speech/sections/commands.mdx'),
+    modals: () => import('@/content/topics/reported-speech/sections/modals.mdx'),
+    'reporting-verbs': () =>
+      import('@/content/topics/reported-speech/sections/reporting-verbs.mdx'),
+    comparison: () => import('@/content/topics/reported-speech/sections/comparison.mdx'),
+    stories: () => import('@/content/topics/reported-speech/sections/stories.mdx'),
+    translation: () => import('@/content/topics/reported-speech/sections/translation.mdx'),
+    mistakes: () => import('@/content/topics/reported-speech/sections/mistakes.mdx'),
+    decision: () => import('@/content/topics/reported-speech/sections/decision.mdx'),
+    exercises: () => import('@/content/topics/reported-speech/sections/exercises.mdx'),
+    quiz: () => import('@/content/topics/reported-speech/sections/quiz.mdx'),
+    history: () => import('@/content/topics/reported-speech/sections/history.mdx'),
+    cheatsheet: () => import('@/content/topics/reported-speech/sections/cheatsheet.mdx'),
+    plan: () => import('@/content/topics/reported-speech/sections/plan.mdx'),
+  },
 };
 
 export function hasContent(slug: string): boolean {
