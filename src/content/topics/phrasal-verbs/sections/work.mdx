@@ -1,0 +1,110 @@
+<Section id="work" n={9} title="Робота: зустрічі, пошта, баги, дедлайни">
+
+<Lede>Далі — робочий інвентар: близько шістдесяти дієслів, без яких не проходить ані стендап, ані тред у пошті, ані розбір бага перед релізом. Не вчіть його колонкою згори вниз. Читайте групами, ловіть маршрут частки — <i>up</i> завершує, <i>out</i> виявляє, <i>off</i> відокремлює — і забирайте пʼять штук на тиждень у власні повідомлення.</Lede>
+
+<Note variant="info" title="Як читати колонку «Тип»">
+  <b>I</b> — неперехідне, додатка немає: <i>The build server went down.</i>
+
+  <b>TS</b> — перехідне розділюване, додаток може стати всередину, а займенник — мусить: <i>Put the demo off.</i> · <i>Put it off.</i>
+
+  <b>TI</b> — перехідне нерозділюване, додаток тільки після частки: <i>We looked into it.</i>
+
+  <b>3P</b> — тричастинне, обидві частки нерозлучні й ідуть разом: <i>I'll get back to you.</i>
+</Note>
+
+### 9.1 Зустрічі, планування, ролі
+
+Половина стендапу складається з цих пʼятнадцяти. Зверніть увагу, скільки з них про <b>початок і кінець</b>: <i>kick off</i>, <i>wrap up</i>, <i>call off</i>, <i>step down</i> — частка робить усю роботу дати й межі.
+
+| Дієслово | Тип | Українською | Приклад |
+|---|---|---|---|
+| **set up** | TS | налаштувати, організувати | <i>Can you set up a call with the client for Thursday?</i> |
+| **kick off** | TS / I | розпочати | <i>We kick off the new sprint on Monday.</i> |
+| **wrap up** | TS / I | завершити | <i>Let's wrap up — we're five minutes over.</i> |
+| **go over** | TI | пройтися по, переглянути | <i>Let's go over the agenda before they join.</i> |
+| **bring up** | TS | підняти (тему) | <i>Good point — I'll bring it up at the retro.</i> |
+| **put off** | TS | відкласти | <i>They put the demo off until next week.</i> |
+| **call off** | TS | скасувати | <i>The offsite was called off two days before.</i> |
+| **sit in on** | 3P | бути присутнім без участі | <i>Do you mind if I sit in on the design review?</i> |
+| **take on** | TS | взяти на себе; найняти | <i>She's taken on the migration work.</i> |
+| **hand over** | TS | передати справи | <i>I'm handing over my tickets before I go on leave.</i> |
+| **step down** | I | піти з посади | <i>The CTO stepped down in May.</i> |
+| **fill in for** | 3P | підмінити | <i>I'm filling in for Dan while he's out.</i> |
+| **run by** | TS | узгодити, показати комусь | <i>Let me run this by legal first.</i> |
+| **sign off on** | 3P | затвердити | <i>Finance still needs to sign off on the budget.</i> |
+| **catch up (on)** | I / 3P | надолужити; поспілкуватися | <i>I need to catch up on email.</i> · <i>Let's catch up Friday.</i> |
+
+### 9.2 Пошта і спілкування
+
+Тут живе ярус 1 із розділу 8: <i>point out</i>, <i>sum up</i>, <i>follow up</i> формальності не псують. А <i>get back to</i> і <i>reach out to</i> — тричастинні, і саме з них найчастіше зникає друга частка.
+
+| Дієслово | Тип | Українською | Приклад |
+|---|---|---|---|
+| **get back to** | 3P | відповісти пізніше | <i>I'll get back to you by end of day.</i> |
+| **follow up (on)** | I / 3P | нагадати, дізнатися далі | <i>Just following up on my last email.</i> |
+| **reach out (to)** | I / 3P | звернутися | <i>Reach out to me if anything's blocking you.</i> |
+| **point out** | TS | зауважити, вказати | <i>She pointed out that the dates don't match.</i> |
+| **bring forward** | TS | перенести на раніше **[BrE; US: move up]** | <i>Can we bring the meeting forward to ten?</i> |
+| **get across** | TS | донести (думку) | <i>I don't think I got my point across.</i> |
+| **speak up** | I | сказати голосніше; висловитися | <i>Speak up if you disagree with the estimate.</i> |
+| **write up** | TS | оформити письмово | <i>I'll write up the findings tonight.</i> |
+| **sum up** | TS | підсумувати | <i>To sum up: we ship Thursday.</i> |
+| **put through** | TS | зʼєднати (телефон) | <i>Could you put me through to support?</i> |
+| **hang up** | I | покласти слухавку | <i>Don't hang up — I'm putting you on hold.</i> |
+| **copy in** | TS | поставити в копію **[BrE; US: cc me on]** | <i>Copy me in on the reply.</i> |
+| **chase up** | TS | наполегливо нагадати **[BrE]** | <i>I'll chase up the vendor about the invoice.</i> |
+
+### 9.3 Проблеми і налагодження
+
+Найщільніша група теми — і найкорисніша, бо саме тут англійська без фразових дієслів звучить найгірше. <i>We are conducting an investigation of the latency</i> проти <i>we're looking into the latency</i>: друге напишуть і в Slack, і в статусі інциденту.
+
+| Дієслово | Тип | Українською | Приклад |
+|---|---|---|---|
+| **break down** | I | зламатися, вийти з ладу | <i>The air conditioning broke down again.</i> |
+| **break down** | TS | розкласти на частини | <i>Let's break the error rate down by service.</i> |
+| **figure out** | TS | зрозуміти, розібратися | <i>I can't figure out why the token expires early.</i> |
+| **work out** | TS / I | знайти рішення; вийти вдало | <i>We worked out a fix.</i> · <i>It didn't work out.</i> |
+| **sort out** | TS | залагодити, полагодити | <i>I'll sort out the permissions this morning.</i> |
+| **look into** | TI | розібратися, дослідити | <i>We're looking into the latency spike.</i> |
+| **narrow down** | TS | звузити коло | <i>We narrowed it down to two services.</i> |
+| **rule out** | TS | виключити (версію) | <i>We can rule out DNS.</i> |
+| **come across** | TI | натрапити на | <i>I came across this stack trace in the logs.</i> |
+| **run into** | TI | наштовхнутися на | <i>We ran into a rate limit on the third retry.</i> |
+| **turn out** | I | виявитися | <i>It turned out to be a config typo.</i> |
+| **roll back** | TS | відкотити | <i>Roll the release back to 2.4.</i> |
+| **back up** | TS | зробити резервну копію; підтримати | <i>Back up the database before you migrate.</i> |
+| **shut down** | TS / I | вимкнути; закрити | <i>Shut the instance down when you're done.</i> |
+| **hold up** | TS / I | затримувати | <i>What's holding up the deploy?</i> |
+| **give up** | I / 3P | здатися, кинути | <i>Don't give up on it yet.</i> |
+| **put up with** | 3P | терпіти | <i>I can't put up with these flaky tests.</i> |
+
+<Muted><i>break down</i> стоїть у таблиці двічі навмисно — це найкоротша ілюстрація тези розділу 7: прилад <i>broke down</i> сам (неперехідне), а витрати <i>we break down</i> (розділюване перехідне). Одне написання, два типи, два різні речення. І окремо про софт: <i>break down</i> — це про техніку, машини й переговори, а сервіс чи сайт <b>goes down</b>: <i>the build server went down again</i>, ✗ <i>the checkout broke down</i>.</Muted>
+
+### 9.4 Проєкти і дедлайни
+
+Група, у якій найбільше дієслів першого ярусу: <i>carry out</i>, <i>set out</i>, <i>phase out</i>, <i>roll out</i> ідуть просто в реліз-ноти й у звіт, без жодного латинізму.
+
+| Дієслово | Тип | Українською | Приклад |
+|---|---|---|---|
+| **carry out** | TS | виконати, провести | <i>We carried out a full security audit.</i> |
+| **come up with** | 3P | придумати, запропонувати | <i>She came up with a neat workaround.</i> |
+| **draw up** | TS | скласти (план, документ) | <i>Draw up a rollout plan by Friday.</i> |
+| **set out** | TS | викласти (в документі) | <i>The doc sets out three options.</i> |
+| **scale up / down** | TS / I | масштабувати вгору чи вниз | <i>We scaled up to twelve pods.</i> |
+| **roll out** | TS | розгортати, запускати | <i>We're rolling the feature out to 5 % of users.</i> |
+| **phase out** | TS | поступово згортати | <i>The v1 API is being phased out this year.</i> |
+| **push back** | TS / I | перенести на пізніше; заперечити | <i>Can we push the deadline back a week?</i> |
+| **fall behind** | I / TI | відставати | <i>We've fallen behind on the roadmap.</i> |
+| **keep up with** | 3P | встигати за | <i>It's hard to keep up with the release cadence.</i> |
+| **cut back on** | 3P | скоротити | <i>We're cutting back on contractor spend.</i> |
+| **follow through (on)** | I / 3P | довести до кінця | <i>They never followed through on the promise.</i> |
+| **fall through** | I | зірватися | <i>The partnership fell through.</i> |
+| **take off** | I | різко піти вгору | <i>The product took off after the launch.</i> |
+
+<Note variant="tip" title="Як користуватися цими чотирма таблицями">
+  Не читайте їх поспіль — за годину нічого не залишиться. Візьміть <b>пʼять дієслів на тиждень</b>, обовʼязково з різних груп, і поставте собі одну умову: кожне має зʼявитися у справжньому повідомленні колезі, а не в зошиті.
+
+  Другий прохід зробіть по колонці «Тип». Знайдіть усі <b>3P</b> — у цих чотирьох таблицях їх тринадцять — і промовте кожне з займенником: <i>get back to you</i>, <i>sign off on it</i>, <i>keep up with them</i>. Саме в тричастинних найчастіше губиться друга частка, і саме вони найшвидше видають, що людина склала речення з української.
+</Note>
+
+</Section>
