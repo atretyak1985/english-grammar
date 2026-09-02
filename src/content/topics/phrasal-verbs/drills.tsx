@@ -142,8 +142,9 @@ export const TRANSLATE_B: DrillBlock = {
       hint: (
         <>
           Три слова — усі три обовʼязкові. ✗ <i>come up a solution</i>: друга частка здається
-          надлишковою і «економиться» найчастіше саме тут. Без <i>with</i> речення значить
-          «підійшла».
+          надлишковою і «економиться» найчастіше саме тут. Без <i>with</i> речення просто
+          розсипається: саме <i>come up</i> існує, але означає «виникнути, трапитися» (
+          <i>something came up</i>), і додатка воно не бере.
         </>
       ),
     },
@@ -227,7 +228,7 @@ export const TRANSLATE_C: DrillBlock = {
     {
       q: 'Я натрапив на цей стек-трейс у логах.',
       a: 'I came across this stack trace in the logs.',
-      accepted: ['I ran into this stack trace in the logs.'],
+      accepted: ['I stumbled across this stack trace in the logs.'],
       hint: (
         <>
           ✗ <i>I came this stack trace across</i>. І окремо про значення: <i>come across</i> —
@@ -254,9 +255,9 @@ export const TRANSLATE_C: DrillBlock = {
       accepted: ['I am waiting for the client’s reply — we cannot start without it.'],
       hint: (
         <>
-          ✗ <i>waiting on your answer</i>: у британському <i>wait on</i> означає
-          «обслуговувати за столом». В американській розмові <i>wait on</i> = <i>wait for</i>{' '}
-          трапляється, але для листа беріть <i>for</i>.
+          <i>Waiting on your answer</i> помилкою не є: в американському діловому письмі це
+          норма. Але в британському <i>wait on</i> означає ще й «обслуговувати за столом»,
+          тому нейтральний вибір, який зрозуміють скрізь, — <i>wait for</i>.
         </>
       ),
     },
@@ -332,7 +333,7 @@ export const TRANSLATE_D: DrillBlock = {
     {
       q: 'Ми зробили пересадку в Досі й приземлилися аж уночі.',
       a: 'We stopped over in Doha and touched down late at night.',
-      accepted: ['We stopped over in Doha and only touched down at night.'],
+      accepted: ['We stopped over in Doha and didn’t touch down until late at night.'],
       hint: (
         <>
           Обидва неперехідні: додатка немає, отже питання «куди його ставити» не виникає
@@ -500,13 +501,14 @@ export const EXERCISE_B: DrillBlock = {
       ),
     },
     {
-      q: 'The build server broke ___ twice this week.',
+      q: 'The air conditioning broke ___ twice this week.',
       a: 'down',
       hint: (
         <>
           Та сама частка, що в пункті 1, але тут це не «менше», а «зупинилося». <i>down</i>{' '}
           покриває і зменшення, і запис (<i>write down</i>), і поломку — три сусідні метафори
-          одного напрямку.
+          одного напрямку. Про техніку саме <i>break down</i>; сервіс чи сайт при цьому{' '}
+          <i>goes down</i>.
         </>
       ),
     },
