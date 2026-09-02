@@ -60,6 +60,26 @@
     "will-vs-going-to": 4,
     "will": 6
   },
+  "modals": {
+    "ability": 3,
+    "advice": 3,
+    "cheatsheet": 2,
+    "comparison": 3,
+    "decision": 1,
+    "exercises": 10,
+    "history": 4,
+    "idea": 4,
+    "mistakes": 4,
+    "obligation": 3,
+    "past-modals": 2,
+    "permission": 2,
+    "plan": 4,
+    "probability": 3,
+    "quiz": 7,
+    "stories": 5,
+    "translation": 9,
+    "will-would": 2
+  },
   "past-tenses": {
     "cheatsheet": 1,
     "comparison": 3,
