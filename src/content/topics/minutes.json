@@ -178,6 +178,27 @@
     "stories": 6,
     "translation": 9
   },
+  "reported-speech": {
+    "backshift": 4,
+    "cheatsheet": 3,
+    "commands": 4,
+    "comparison": 4,
+    "decision": 3,
+    "exercises": 11,
+    "history": 4,
+    "idea": 4,
+    "mistakes": 8,
+    "modals": 3,
+    "no-backshift": 4,
+    "plan": 5,
+    "pronouns-time": 5,
+    "questions": 4,
+    "quiz": 7,
+    "reporting-verbs": 4,
+    "say-tell": 4,
+    "stories": 7,
+    "translation": 9
+  },
   "sentence-structure": {
     "adjectives": 2,
     "adverbs": 2,

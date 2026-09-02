@@ -1,0 +1,93 @@
+import { QuestionOrder } from '../diagrams';
+
+<Section id="questions" n={6} title="Непрямі питання: прямий порядок слів і whether">
+
+<Lede>Питання, яке переказали, <b>перестає бути питанням</b>. Воно перетворюється на частину розповідного речення — і втрачає всі три ознаки питальності: інверсію, допоміжне <i>do</i> і знак питання. Українською жодна з трьох не існує взагалі, тому рука копіює пряме питання цілком. Це помилка №2 теми й найпомітніша з усіх.</Lede>
+
+### 6.1 Що саме зникає
+
+<SvgBox caption={<>Три речі, і всі три — ознаки питання. У переказі лишається тільки питальне слово, бо воно несе зміст, а не питальність.</>}>
+  <QuestionOrder />
+</SvgBox>
+
+<Formula
+  lines={[
+    { sign: '?', body: <><Q>Where do you live?</Q></>, comment: 'пряме питання: інверсія, do, знак питання' },
+    { sign: '+', body: <>He asked <K>where I lived</K>.</>, comment: 'переказ: порядок слів як у розповіді' },
+    { sign: '?', body: <><Q>Did he ask</Q> where you <Q>lived</Q>?</>, comment: 'питальним може бути тільки ГОЛОВНЕ речення' },
+  ]}
+  note="Знак питання ставиться за головним реченням, а не за тим, що всередині."
+/>
+
+### 6.2 Питання з питальним словом
+
+Питальне слово лишається на місці й працює як сполучник. Далі — звичайне розповідне речення зі зсувом часу.
+
+<ExList>
+  <Ex ua="Він спитав, де я живу." why="Where лишилось, do зникло, порядок слів прямий, live зсунулось у lived.">He asked <b>where I lived</b>.</Ex>
+  <Ex ua="Вона спитала, коли я зможу почати." why="Can → could. Питальне слово when не змінює нічого, крім того, що вводить підрядне.">She asked <b>when I could start</b>.</Ex>
+  <Ex ua="Мене спитали, чому ми не відповіли." why="Заперечення теж зсувається: didn’t reply → hadn’t replied.">I was asked <b>why we hadn’t replied</b>.</Ex>
+  <Ex ua="Він хотів знати, скільки це коштуватиме." why="Дієслово переказу не обовʼязково ask: want to know, wonder, have no idea вводять непряме питання так само.">He wanted to know <b>how much it would cost</b>.</Ex>
+</ExList>
+
+<Note variant="trap" title="Пастка: who як підмет">
+  Коли питальне слово саме є підметом, порядок слів у прямому питанні <b>вже</b> прямий — і в переказі не змінюється нічого, крім часу.
+
+  «Who called you?» → She asked <b>who had called</b> me. ✓<br />
+  «What happened?» → He asked <b>what had happened</b>. ✓
+
+  Тут немає ані інверсії, ані <i>do</i>, які треба було б прибирати. Тому речення виглядає підозріло простим — і рука інколи «виправляє» його на ✗ <i>who did call me</i>.
+</Note>
+
+### 6.3 Питання без питального слова — if і whether
+
+Якщо пряме питання починалося з допоміжного дієслова (<i>Do you…?</i>, <i>Are you…?</i>, <i>Have you…?</i>), у переказі потрібен сполучник. Українською це «чи».
+
+<ExList>
+  <Ex ua="Вона спитала, чи мені потрібна допомога." why="If — звичайний розмовний варіант.">She asked <b>if</b> I needed any help.</Ex>
+  <Ex ua="Він спитав, чи бачив я його повідомлення." why="Whether — те саме значення, трохи офіційніше. У листі й у документі беруть його.">He asked <b>whether</b> I had seen his message.</Ex>
+  <Ex ua="Я спитав, чи буде доставка в пʼятницю." why="Порядок слів прямий і тут: the delivery would be, а не would the delivery be.">I asked <b>whether</b> the delivery would be on Friday.</Ex>
+</ExList>
+
+<Card>
+  <CardTitle>Коли можна тільки whether</CardTitle>
+  <Ul>
+    <Li>перед <i>or not</i> одразу: <i>He asked <b>whether or not</b> we agreed</i> (але <i>if we agreed <b>or not</b></i> — теж правильно);</Li>
+    <Li>перед інфінітивом: <i>She didn’t know <b>whether to wait</b> or leave</i>. ✗ <i>if to wait</i> не буває;</Li>
+    <Li>після прийменника: <i>It depends on <b>whether</b> they reply</i>. ✗ <i>on if</i>;</Li>
+    <Li>коли підрядне стоїть перед головним: <i><b>Whether</b> he agrees is another question</i>.</Li>
+  </Ul>
+</Card>
+
+<Muted>У решті випадків обидва слова взаємозамінні, і <i>if</i> частіше в розмові. Плутанина з <i>if</i>-умовним тут теоретично можлива (<i>Let me know if you’re coming</i> — «чи прийдеш» або «якщо прийдеш»), і саме заради однозначності в документах беруть <i>whether</i>.</Muted>
+
+### 6.4 Ввічливі питання: та сама конструкція без жодного переказу
+
+Це найпрактичніша частина розділу. Прямі питання в англійській звучать різкувато, і носій пакує їх у ввічливу оболонку — а всередині виявляється рівно та сама конструкція з прямим порядком слів.
+
+<GoodBad>
+  <Bad>Could you tell me <b>where is the station</b>?<br />Do you know <b>what time does it start</b>?<br />I wonder <b>could you help</b> me.</Bad>
+  <Good>Could you tell me <b>where the station is</b>?<br />Do you know <b>what time it starts</b>?<br />I wonder <b>if you could help</b> me.</Good>
+</GoodBad>
+
+<Muted>Зверніть увагу на знак питання: він тут доречний, бо питальним є головне речення (<i>Could you tell me…?</i>). А всередині — розповідний порядок слів, бо вбудоване питання питанням уже не є.</Muted>
+
+<Chips>
+  <Chip>Could you tell me…</Chip>
+  <Chip>Do you know…</Chip>
+  <Chip>Would you mind telling me…</Chip>
+  <Chip>I was wondering…</Chip>
+  <Chip>Do you have any idea…</Chip>
+  <Chip>I’d like to know…</Chip>
+</Chips>
+
+<Note variant="tip" title="Один прийом, який знімає помилку назавжди">
+  Складіть питання <b>двічі</b>: спершу пряме, потім переказ.
+
+  <i>Where is the station?</i> → рука вже написала інверсію.<br />
+  Тепер прочитайте: «а тепер це частина розповіді» — і поверніть підмет на перше місце: <b>where the station is</b>.
+
+  Через тиждень такої практики порядок слів у ввічливих зворотах перестане зісковзувати. Це важливіше за саму непряму мову: <i>Could you tell me where the station is</i> ви скажете сьогодні, а переказувати чужі репліки будете значно рідше.
+</Note>
+
+</Section>

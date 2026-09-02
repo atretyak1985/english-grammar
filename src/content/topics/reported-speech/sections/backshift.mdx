@@ -1,0 +1,72 @@
+import { Backshift } from '../diagrams';
+
+<Section id="backshift" n={2} title="Крок назад: узгодження часів">
+
+<Lede>Механіка зсуву коротка: <b>кожна конструкція відходить на одну сходинку в минуле</b>. Вчити тут майже нічого — ви вже знаєте всі потрібні форми, треба лише навчитися брати сусідню зліва. І одна деталь, яка знімає половину страху: зсув міняє <b>час</b>, а не вид. Continuous лишається Continuous, Perfect лишається Perfect.</Lede>
+
+### 2.1 Уся таблиця на одній схемі
+
+<SvgBox caption={<>Кольори тут — наскрізний код застосунку: синій Simple, помаранчевий Continuous, фіолетовий Perfect. Майже кожен рядок одноколірний — саме тому, що зсув не чіпає виду. Двоколірний рядок один, і він найважчий.</>}>
+  <Backshift />
+</SvgBox>
+
+### 2.2 Те саме таблицею, з прикладами
+
+| Пряма мова | Переказ | Приклад |
+|---|---|---|
+| Present Simple — *works* | **Past Simple — worked** | «I work here» → He said he **worked** there. |
+| Present Continuous — *is working* | **Past Continuous — was working** | «I’m working» → He said he **was working**. |
+| Present Perfect — *has worked* | **Past Perfect — had worked** | «I’ve finished» → He said he **had finished**. |
+| Past Simple — *worked* | **Past Perfect — had worked** | «I saw her» → He said he **had seen** her. |
+| Past Continuous — *was working* | **Past Perfect Continuous** | «I was waiting» → He said he **had been waiting**. |
+| Past Perfect — *had worked* | *не змінюється* | «I had left» → He said he **had left**. |
+| will | **would** | «I’ll call» → He said he **would call**. |
+| can | **could** | «I can help» → He said he **could help**. |
+| must | **had to** | «I must go» → He said he **had to go**. |
+
+<Note variant="tip" title="Правило, яке скорочує всю таблицю до одного рядка">
+  Знайдіть у репліці <b>перше</b> дієслово форми — допоміжне або смислове, якщо допоміжного немає, — і поставте його на сходинку назад. Решта слів у формі не змінюється взагалі.
+
+  <i>She <b>has</b> been working here for years</i> → рухається лише <i>has</i>: <b>had</b> been working. <i>They <b>are</b> going to sign it</i> → рухається лише <i>are</i>: <b>were</b> going to sign it.
+
+  Це те саме правило, що й у питаннях і запереченнях по всій англійській: працює тільки перше слово форми, інші стоять нерухомо.
+</Note>
+
+### 2.3 Дно сходів — Past Perfect
+
+Далі в минуле англійська не вміє. Тому дві різні репліки в переказі зустрічаються в одній формі:
+
+<MP title="Один переказ — два можливі оригінали">
+  <MPRow note={<>Оригінал у Past Simple: подія сталася до розмови.</>}>«I <b>lost</b> the key.» → He said he <b>had lost</b> the key.</MPRow>
+  <MPRow note={<>Оригінал у Past Perfect: подія сталася ще раніше за іншу минулу подію. Форма переказу та сама.</>}>«I <b>had lost</b> the key by then.» → He said he <b>had lost</b> the key by then.</MPRow>
+</MP>
+
+<Muted>Це не двозначність, з якою треба щось робити: у 99 випадках зі 100 контекст усе показує, а точний відтінок оригіналу слухачеві не потрібен. Практична користь тут інша — <b>Past Perfect у переказі не треба боятися</b>. Він не «складніший час», а звичайне дно, у яке впирається все, що було минулим.</Muted>
+
+### 2.4 Зсув працює й у заперечних, і в питальних частинах
+
+<Formula
+  lines={[
+    { sign: '+', body: <>He said he <K>had already signed</K> it.</>, comment: 'зсув бере перше слово форми' },
+    { sign: '−', body: <>He said he <Neg>hadn’t signed</Neg> it yet.</>, comment: 'not лишається при першому допоміжному' },
+    { sign: '?', body: <>She asked whether he <Q>had signed</Q> it.</>, comment: 'у непрямому питанні порядок слів прямий' },
+  ]}
+  note="Знак питання ставиться лише тоді, коли питальним є ГОЛОВНЕ речення: Did she ask whether he had signed it?"
+/>
+
+### 2.5 Коли зсув справді важливий, а коли — деталь
+
+<ExList>
+  <Ex ua="Він сказав, що не отримав рахунок." why="Тут зсув несе зміст: had received відсилає до моменту тієї розмови. Present Perfect у репліці (I haven’t received) стає Past Perfect.">He said he <b>hadn’t received</b> the invoice.</Ex>
+  <Ex ua="Вона сказала, що зателефонує до кінця дня." why="Would замість will — і саме воно повідомляє, що обіцянку давали в минулому, а строк міг уже минути.">She said she <b>would call</b> by the end of the day.</Ex>
+  <Ex ua="Він сказав, що мусив виїхати раніше." why="Must → had to. Це єдиний модальний, у якого зсув замінює саме слово, а не форму.">He said he <b>had to</b> leave early.</Ex>
+  <Ex ua="Вони сказали, що чекали на нас годину." why="Past Continuous → Past Perfect Continuous. Форма довга, але рухалося в ній одне слово: were → had been.">They said they <b>had been waiting</b> for an hour.</Ex>
+</ExList>
+
+<Note variant="warn" title="Найчастіша помилка розділу — і вона не в таблиці">
+  Не в тому, щоб узяти неправильну сходинку, а в тому, щоб <b>не зробити кроку взагалі</b>: ✗ <i>He said he will come</i>, ✗ <i>She said she is busy</i>, ✗ <i>They said they have finished</i>.
+
+  Причина суто українська: у нас підрядне речення зберігає час оригіналу, і зсувати там нема чого. Тому вправа дня — не вивчити таблицю (вона очевидна), а <b>помітити момент</b>, коли після <i>said</i> рука тягнеться до теперішнього часу.
+</Note>
+
+</Section>
