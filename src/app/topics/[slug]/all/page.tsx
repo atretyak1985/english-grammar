@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { hasContent, sectionLoader } from '@/content/topics';
+import { SectionRefProvider } from '@/components/topic/SectionRef';
 import { TopicBreadcrumbs } from '@/components/topic/TopicBreadcrumbs';
 import { TopicShell } from '@/components/topic/TopicShell';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
@@ -60,9 +61,12 @@ export default async function TopicAllPage({ params }: { params: Promise<{ slug:
         </Link>
       </div>
       <article className="bg-panel border-line rounded-panel border px-[42px] py-9">
-        {sections.filter((entry) => entry !== null).map(({ slug: id, Content }) => (
-          <Content key={id} />
-        ))}
+        {/* Усі розділи вже на цій сторінці, тому «розділ N» тут — якір, а не перехід */}
+        <SectionRefProvider topicSlug={topic.slug} sections={topic.sections} anchors>
+          {sections.filter((entry) => entry !== null).map(({ slug: id, Content }) => (
+            <Content key={id} />
+          ))}
+        </SectionRefProvider>
       </article>
     </TopicShell>
   );

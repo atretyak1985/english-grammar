@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { SectionPager } from '@/components/topic/SectionPager';
+import { SectionRefProvider } from '@/components/topic/SectionRef';
 import { TopicBreadcrumbs } from '@/components/topic/TopicBreadcrumbs';
 import { TopicShell } from '@/components/topic/TopicShell';
 import { TopicVisit } from '@/components/topic/TopicVisit';
@@ -70,7 +71,9 @@ export default async function SectionPage({
       <TopicVisit topicSlug={found.topic.slug} sectionId={found.section.id} />
       <TopicBreadcrumbs topic={found.topic} current={found.section.short ?? found.section.title} />
       <article className="bg-panel border-line rounded-panel border px-[42px] py-9">
-        <Content />
+        <SectionRefProvider topicSlug={found.topic.slug} sections={found.topic.sections}>
+          <Content />
+        </SectionRefProvider>
       </article>
       <SectionPager topic={found.topic} current={found.section} />
     </TopicShell>

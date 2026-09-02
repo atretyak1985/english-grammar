@@ -56,6 +56,7 @@ import { HighlightLegend } from '@/components/content/HighlightLegend';
 import { IrregularVerbs, StateVerbs } from '@/components/content/IrregularVerbs';
 import { Section } from '@/components/content/Section';
 import { Quiz } from '@/components/quiz/Quiz';
+import { SecRef } from '@/components/topic/SectionRef';
 
 /**
  * Одна мапа для всього MDX: і розмітка markdown, і компоненти теми.
@@ -92,6 +93,7 @@ export function useMDXComponents(components: MDXComponents = {}): MDXComponents 
 
     // блоки теми
     Section,
+    SecRef,
     Lede,
     Muted,
     Card,
