@@ -1,6 +1,7 @@
 import { meta as articles } from '@/content/topics/articles/meta';
 import { meta as conditionals } from '@/content/topics/conditionals/meta';
 import { meta as modals } from '@/content/topics/modals/meta';
+import { meta as passive } from '@/content/topics/passive/meta';
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
 import { meta as phrasalVerbs } from '@/content/topics/phrasal-verbs/meta';
 import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
@@ -31,13 +32,8 @@ export const TOPICS: readonly TopicMeta[] = [
   modals,
   prepositions,
   phrasalVerbs,
+  passive,
 
-  planned({
-    slug: 'passive',
-    title: 'Пасивний стан',
-    desc: 'The bug was fixed. Коли пасив доречний, а коли робить текст важким.',
-    level: 'b2',
-  }),
   planned({
     slug: 'reported-speech',
     title: 'Непряма мова й узгодження часів',

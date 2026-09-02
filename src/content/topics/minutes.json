@@ -80,6 +80,27 @@
     "translation": 9,
     "will-would": 2
   },
+  "passive": {
+    "by-agent": 3,
+    "cheatsheet": 4,
+    "comparison": 4,
+    "decision": 3,
+    "exercises": 11,
+    "form": 4,
+    "get-passive": 3,
+    "history": 4,
+    "idea": 3,
+    "impersonal": 3,
+    "mistakes": 7,
+    "modals": 2,
+    "plan": 5,
+    "quiz": 7,
+    "stories": 6,
+    "tenses": 3,
+    "translation": 9,
+    "two-objects": 3,
+    "why": 3
+  },
   "past-tenses": {
     "cheatsheet": 1,
     "comparison": 3,
