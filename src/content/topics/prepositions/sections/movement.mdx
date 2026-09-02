@@ -1,0 +1,89 @@
+import { MovementMap } from '../diagrams';
+
+<Section id="movement" n={5} title="Рух і напрямок: to, into, from, through, across, up, down, around">
+
+<Lede>Досі жоден приклад теми не рухався: at, on, in і сусіди з розділу 4 фотографують нерухому сцену. Тут зʼявляється друга вісь — <b>статика проти руху</b>. Ті самі точка, поверхня й обʼєм не зникають: вони просто отримують стрілку напрямку.</Lede>
+
+### Статика отримує стрілку
+
+Найпростіший спосіб запамʼятати рухові прийменники — побачити, з якого статичного слова кожен із них виріс.
+
+<ExList>
+  <Ex ua="Вона в кімнаті." why="Статика: обʼєм без руху.">She is in the room.</Ex>
+  <Ex ua="Вона заходить у кімнату." why="Into = in + стрілка входу всередину обʼєму.">She walks into the room.</Ex>
+  <Ex ua="Чашка на столі." why="Статика: поверхня без руху.">The cup is on the table.</Ex>
+  <Ex ua="Постав чашку на стіл." why="Onto = on + стрілка руху на поверхню.">Put the cup onto the table.</Ex>
+  <Ex ua="Вона виходить із кімнати." why="Out of = обернений into: рух геть із обʼєму.">She walks out of the room.</Ex>
+</ExList>
+
+<Muted>У розмовній мові onto й into іноді спрощують до простого in/on, коли напрямок і так очевидний із дієслова (<i>get in the car</i> замість <i>get into the car</i>). Це нормально в живій мові, але на письмі й у тесті тримайтеся повної форми з рухом.</Muted>
+
+### Точка з напрямком: to, from
+
+<b>To</b> — рух до точки-мети, <b>from</b> — рух від точки-початку. Це ті самі точки, що й at, тільки зі стрілкою в один або інший бік.
+
+<ExList>
+  <Ex ua="Я їду до офісу.">I am driving to the office.</Ex>
+  <Ex ua="Потяг щойно приїхав із Львова.">The train has just arrived from Lviv.</Ex>
+</ExList>
+
+### Крізь, повз і вздовж: through, across, along, past
+
+<b>Through</b> — рух крізь обʼєм наскрізь, з одного кінця в інший. <b>Across</b> — рух по поверхні чи площі з одного боку на інший. <b>Along</b> — рух уздовж лінії: вулиці, річки, узбережжя. <b>Past</b> — рух повз орієнтир, без зупинки біля нього.
+
+<ExList>
+  <Ex ua="Ми йшли крізь тунель." why="Through — наскрізь через обʼєм.">We walked through the tunnel.</Ex>
+  <Ex ua="Вона перейшла через дорогу." why="Across — з одного боку площини на інший.">She walked across the road.</Ex>
+  <Ex ua="Ми гуляли вздовж набережної." why="Along — рух уздовж лінії берега.">We walked along the promenade.</Ex>
+  <Ex ua="Автобус проїхав повз нашу зупинку." why="Past — минув орієнтир, не зупинившись.">The bus drove past our stop.</Ex>
+</ExList>
+
+### До мети, але не обовʼязково туди: towards
+
+<i>Towards</i> показує напрямок руху, не обіцяючи прибуття — на відміну від to, яке має на увазі досягнення мети.
+
+<ExList>
+  <Ex ua="Він ішов у бік вокзалу." why="Towards — напрямок, без гарантії, що він дійшов саме до вокзалу.">He was walking towards the station.</Ex>
+</ExList>
+
+### Вертикаль і оберт: up, down, around
+
+Цих трьох немає в закритому списку to/into/from — вони додають рухові вертикальну й кругову вісь.
+
+<ExList>
+  <Ex ua="Ми піднялися сходами нагору.">We walked up the stairs.</Ex>
+  <Ex ua="Він спустився вулицею вниз до річки.">He walked down the street to the river.</Ex>
+  <Ex ua="Машина обʼїхала будівлю навколо." why="Around — рух по колу навколо орієнтира.">The car drove around the building.</Ex>
+</ExList>
+
+<SvgBox caption={<>Статичні точка, поверхня й обʼєм із розділів 3–4 отримують стрілку напрямку: into, onto, out of, а окремо — вертикаль (up/down) і оберт (around).</>}>
+  <MovementMap />
+</SvgBox>
+
+### Пастка розділу: go to home
+
+<Note variant="trap" title="Go home, не go to home">
+  Українське «додому» — одне слово, і воно вже саме несе напрямок, тому рука хоче додати ще й explicit <i>to</i> за аналогією з go to school, go to work. Але в англійській <i>home</i> у цій ролі поводиться як <b>прислівник напрямку</b>, а не як звичайний іменник місця, — і прийменник перед ним просто зайвий.
+</Note>
+
+<GoodBad>
+  <Bad>I am tired, let us go <b>to</b> home.</Bad>
+  <Good>I am tired, let us go home.</Good>
+</GoodBad>
+
+<Muted>Те саме працює для come home, get home, be home: <i>home</i> у ролі «додому/удома» ніколи не бере прийменник. Але home-as-noun («той дім, той будинок») прийменник має — <i>the address of her home</i>.</Muted>
+
+### Швидка перевірка інтуїції
+
+<Chips>
+  <Chip>walk into the shop</Chip>
+  <Chip>jump onto the bed</Chip>
+  <Chip>climb out of the pool</Chip>
+  <Chip>run past the school</Chip>
+  <Chip>drive along the coast</Chip>
+  <Chip>go home</Chip>
+</Chips>
+
+<Muted>Кожна фраза тут — рух, а не нерухома сцена. Порівняйте подумки з розділами 3–4: та сама точка, поверхня чи обʼєм, тільки зі стрілкою.</Muted>
+
+</Section>
