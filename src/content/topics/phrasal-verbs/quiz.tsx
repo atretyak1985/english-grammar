@@ -21,8 +21,8 @@ export const QUIZ: readonly QuizQuestion[] = [
     ),
   },
   {
-    q: 'The kids are fine — my sister ___ on Fridays.',
-    hint: 'З дітьми все гаразд — по пʼятницях за ними доглядає моя сестра.',
+    q: 'Our two cats are fine — the neighbour ___ while we’re away.',
+    hint: 'З нашими двома котами все гаразд — поки нас немає, за ними доглядає сусідка.',
     options: ['looks them after', 'looks after to them', 'looks after them'],
     answer: 2,
     why: (
@@ -87,9 +87,9 @@ export const QUIZ: readonly QuizQuestion[] = [
     ),
   },
   {
-    q: 'Please ___ that we agreed on in yesterday’s retro.',
-    hint: 'Будь ласка, запишіть кожен пункт, який ми узгодили на вчорашньому ретро.',
-    options: ['write every action item down', 'write down them', 'write down every action item'],
+    q: 'Please ___ that the client asked for on the call.',
+    hint: 'Будь ласка, запишіть кожну зміну, яку клієнт попросив на дзвінку.',
+    options: ['write every change down', 'write down them', 'write down every change'],
     answer: 2,
     why: (
       <>
@@ -128,14 +128,16 @@ export const QUIZ: readonly QuizQuestion[] = [
     ),
   },
   {
-    q: 'She ___ a neat workaround in about ten minutes.',
-    hint: 'Вона придумала гарне обхідне рішення хвилин за десять.',
+    q: 'Nobody ___ a better name for the service.',
+    hint: 'Ніхто не придумав кращої назви для сервісу.',
     options: ['came up', 'came up with', 'came with'],
     answer: 1,
     why: (
       <>
-        <b>come up with</b> — тричастинне, і без <i>with</i> речення означає «підійшла».
-        Найчастіша форма цієї помилки — ✗ <i>we need to come up a solution</i>.
+        <b>come up with</b> — тричастинне, і без <i>with</i> речення не просто змінює значення,
+        а розсипається: ✗ <i>nobody came up a better name</i> — так не кажуть узагалі. Саме{' '}
+        <i>come up</i> існує, але воно неперехідне й означає «виникнути, трапитися» (
+        <i>something came up</i>); «підійти до когось» — це <i>come up to</i>.
       </>
     ),
   },
@@ -156,13 +158,14 @@ export const QUIZ: readonly QuizQuestion[] = [
   {
     q: 'We ___ DNS after the third test came back clean.',
     hint: 'Після третього чистого тесту ми виключили DNS.',
-    options: ['ruled out', 'ruled off', 'ruled away'],
-    answer: 0,
+    options: ['ruled off', 'ruled out', 'ruled away'],
+    answer: 1,
     why: (
       <>
-        <i>out</i> = вивести назовні, зробити видимим — звідси <b>rule out</b> «вивести версію
-        з розгляду». Так само <i>find out</i>, <i>figure out</i>, <i>point out</i>. І це перший
-        ярус регістру: доречно навіть у письмовому звіті.
+        <b>rule out</b> = виключити з розгляду. Тут <i>out</i> — не «зробити видимим», а
+        «прибрати геть за межі»: версія викреслена зі списку, а не показана. Порівняйте з{' '}
+        <i>find out</i> чи <i>point out</i>, де <i>out</i> справді про виявлення — одна частка,
+        два різні образи. <i>Rule off</i> і <i>rule away</i> не існують.
       </>
     ),
   },
@@ -182,8 +185,8 @@ export const QUIZ: readonly QuizQuestion[] = [
   {
     q: 'My train gets in at seven — can you ___ from the station?',
     hint: 'Мій потяг прибуває о сьомій — заберете мене з вокзалу?',
-    options: ['pick me up', 'pick up me', 'pick me'],
-    answer: 0,
+    options: ['pick up me', 'pick me', 'pick me up'],
+    answer: 2,
     why: (
       <>
         <i>pick up</i> розділюване, тому <b>me</b> стоїть посередині: ✗ <i>pick up me</i>. А без{' '}
@@ -207,8 +210,8 @@ export const QUIZ: readonly QuizQuestion[] = [
   {
     q: 'The partnership ___ two weeks before signing.',
     hint: 'Партнерство зірвалося за два тижні до підписання.',
-    options: ['went through', 'fell through', 'got through'],
-    answer: 1,
+    options: ['fell through', 'went through', 'got through'],
+    answer: 0,
     why: (
       <>
         Найкращий контрприклад теми: <i>through</i> зазвичай «пройшов наскрізь до самого
@@ -234,8 +237,8 @@ export const QUIZ: readonly QuizQuestion[] = [
   {
     q: 'She ___ everyone on the design team.',
     hint: 'Вона ладнає з усіма в команді дизайну.',
-    options: ['gets on', 'gets on with', 'gets with on'],
-    answer: 1,
+    options: ['gets on', 'gets with on', 'gets on with'],
+    answer: 2,
     why: (
       <>
         <b>get on with someone</b> = ладнати (британське; американський відповідник —{' '}
@@ -247,8 +250,8 @@ export const QUIZ: readonly QuizQuestion[] = [
   {
     q: 'We ___ a rate limit on the third retry.',
     hint: 'На третій спробі ми наштовхнулися на обмеження частоти запитів.',
-    options: ['ran over', 'ran out', 'ran into'],
-    answer: 2,
+    options: ['ran into', 'ran over', 'ran out'],
+    answer: 0,
     why: (
       <>
         <b>run into</b> = наштовхнутися — і на проблему, і на людину: <i>I ran into Olha at the
@@ -260,8 +263,8 @@ export const QUIZ: readonly QuizQuestion[] = [
   {
     q: 'Dan is on leave, so I’m ___ him until Monday.',
     hint: 'Ден у відпустці, тож до понеділка я його підміняю.',
-    options: ['filling in', 'filling up', 'filling in for'],
-    answer: 2,
+    options: ['filling in', 'filling in for', 'filling up'],
+    answer: 1,
     why: (
       <>
         <b>fill in for someone</b> = підміняти. Без <i>for</i> це <i>fill someone in</i> —
