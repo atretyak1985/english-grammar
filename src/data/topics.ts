@@ -1,9 +1,12 @@
 import { meta as articles } from '@/content/topics/articles/meta';
 import { meta as conditionals } from '@/content/topics/conditionals/meta';
+import { meta as modals } from '@/content/topics/modals/meta';
 import { meta as pastTenses } from '@/content/topics/past-tenses/meta';
+import { meta as phrasalVerbs } from '@/content/topics/phrasal-verbs/meta';
 import { meta as futureTenses } from '@/content/topics/future-tenses/meta';
 import { meta as presentTenses } from '@/content/topics/present-tenses/meta';
 import { meta as sentenceStructure } from '@/content/topics/sentence-structure/meta';
+import { meta as prepositions } from '@/content/topics/prepositions/meta';
 import type { Level, TopicMeta } from '@/types/content';
 
 /* ============================================================
@@ -25,25 +28,10 @@ export const TOPICS: readonly TopicMeta[] = [
   sentenceStructure,
   articles,
   conditionals,
+  modals,
+  prepositions,
+  phrasalVerbs,
 
-  planned({
-    slug: 'modals',
-    title: 'Модальні дієслова',
-    desc: 'can / could / may / must / should / have to. Ввічливість, ймовірність, обовʼязок.',
-    level: 'b1',
-  }),
-  planned({
-    slug: 'phrasal-verbs',
-    title: 'Фразові дієслова',
-    desc: 'look into, put off, sort out, run over. Те, що відрізняє живу мову від перекладеного документа.',
-    level: 'b2',
-  }),
-  planned({
-    slug: 'prepositions',
-    title: 'Прийменники',
-    desc: 'in / on / at, by / until, for / since / during. Найдрібніші слова з найбільшою кількістю помилок.',
-    level: 'b1',
-  }),
   planned({
     slug: 'passive',
     title: 'Пасивний стан',
