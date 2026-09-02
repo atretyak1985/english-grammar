@@ -1,0 +1,67 @@
+import { PassiveTenses } from '../diagrams';
+
+<Section id="tenses" n={3} title="Пасив у девʼяти часах">
+
+<Lede>Часів у пасиві рівно стільки ж, скільки в активі, — бо час несе <i>be</i>, а воно змінюється як звичайне дієслово. Вчити тут майже нічого: якщо ви вмієте сказати <i>was</i>, <i>has been</i>, <i>will be</i>, ви вже вмієте весь пасив. Слово <i>fixed</i> у всій таблиці не змінюється жодного разу.</Lede>
+
+### 3.1 Уся таблиця на одній схемі
+
+<SvgBox caption={<>Кольори тут — наскрізний код застосунку: синій Simple, помаранчевий Continuous, фіолетовий Perfect. Дві клітинки з девʼяти закреслені — і це полегшення, а не втрата.</>}>
+  <PassiveTenses />
+</SvgBox>
+
+### 3.2 Те саме таблицею, з прикладами
+
+| Час | Актив | Пасив | Приклад |
+|---|---|---|---|
+| Present Simple | fixes | **is / are fixed** | Access **is granted** only after training. |
+| Past Simple | fixed | **was / were fixed** | The bug **was fixed** yesterday. |
+| Future Simple | will fix | **will be fixed** | The invoice **will be sent** on Monday. |
+| Present Continuous | is fixing | **is / are being fixed** | The road **is being repaired** right now. |
+| Past Continuous | was fixing | **was / were being fixed** | The site **was being migrated** all night. |
+| Present Perfect | has fixed | **has / have been fixed** | All the tickets **have been sold**. |
+| Past Perfect | had fixed | **had been fixed** | The server **had been restarted** before we arrived. |
+| Future Perfect | will have fixed | **will have been fixed** | It **will have been deployed** by Friday. |
+| Perfect Continuous | has been fixing | *пасиву немає* | ✗ has been being fixed |
+
+<Note variant="tip" title="Правило, яке скорочує всю таблицю до одного рядка">
+  Візьміть активне речення, знайдіть у ньому <b>смислове дієслово</b> й поставте його в V3. А на місце, де воно щойно стояло, вставте <i>be</i> в тому самому часі, в якому було активне дієслово.
+
+  <i>They <b>have deployed</b> the fix</i> → <i>have</i> лишається, дієслово стає <i>deployed</i>, між ними вклинюється <i>been</i>: <b>The fix has been deployed</b>.
+
+  Тобто пасив нічого не переставляє в часовій частині — він додає рівно одне слово (<i>be</i> в потрібній формі) і міняє смислове дієслово на V3. Ось чому таблиця з девʼяти рядків не потребує заучування.
+</Note>
+
+### 3.3 Дві форми, яких немає
+
+<Card>
+  <CardTitle>Future Continuous Passive — <i>will be being fixed</i></CardTitle>
+  <P>Форма збирається за правилами й ніде не використовується. Три <i>be</i> поспіль (<i>will</i> + <i>be</i> + <i>being</i>) англійське вухо не пропускає. Замість неї кажуть просто <i>will be fixed</i> або перебудовують речення в актив.</P>
+</Card>
+
+<Card>
+  <CardTitle>Perfect Continuous Passive — <i>has been being fixed</i></CardTitle>
+  <P>Те саме, тільки гірше. У корпусах така форма трапляється одиничними випадками й майже завжди в мовленні з обмовкою. Якщо потрібна саме тривалість до цього моменту — беріть актив: <i>They have been fixing it since Monday</i>.</P>
+</Card>
+
+<Muted>Разом: девʼять конструкцій активу дають сім робочих пасивів. Це рідкісний випадок, коли граматика забирає роботи, а не додає.</Muted>
+
+### 3.4 Заперечення й питання
+
+<Formula
+  lines={[
+    { sign: '+', body: <>The report <K>has been reviewed</K>.</> },
+    { sign: '−', body: <>The report <Neg>hasn’t been reviewed</Neg>.</>, comment: 'not — після ПЕРШОГО допоміжного' },
+    { sign: '?', body: <><Q>Has</Q> the report <Q>been reviewed</Q>?</>, comment: 'наперед виходить теж перше допоміжне' },
+    { sign: '?', body: <>Why <Q>hasn’t</Q> the report <Q>been reviewed</Q>?</>, comment: 'у спеціальному питанні порядок той самий' },
+  ]}
+  note="Хоч скільки слів у формі, працює завжди тільки перше з них. Решта стоїть нерухомо."
+/>
+
+<ExList>
+  <Ex ua="Про цю проблему досі не повідомили." why="Заперечення чіпляється до has, а been reported лишається цілим.">The issue <b>hasn’t been reported</b> yet.</Ex>
+  <Ex ua="Коли збудували цей міст?" why="Питальне слово, далі was, далі підмет, далі V3. Do в пасиві не буває ніколи.">When <b>was</b> this bridge <b>built</b>?</Ex>
+  <Ex ua="Чи перевіряють документ саме зараз?" why="Перше допоміжне is виходить наперед, being reviewed стоїть на місці.">Is the document <b>being reviewed</b> right now?</Ex>
+</ExList>
+
+</Section>
