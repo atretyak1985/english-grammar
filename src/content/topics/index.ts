@@ -152,6 +152,27 @@ export const SECTION_CONTENT: Record<string, Record<string, ContentLoader>> = {
     cheatsheet: () => import('@/content/topics/articles/sections/cheatsheet.mdx'),
     plan: () => import('@/content/topics/articles/sections/plan.mdx'),
   },
+  prepositions: {
+    idea: () => import('@/content/topics/prepositions/sections/idea.mdx'),
+    'time-at-in-on': () => import('@/content/topics/prepositions/sections/time-at-in-on.mdx'),
+    'place-at-in-on': () => import('@/content/topics/prepositions/sections/place-at-in-on.mdx'),
+    'place-relations': () => import('@/content/topics/prepositions/sections/place-relations.mdx'),
+    movement: () => import('@/content/topics/prepositions/sections/movement.mdx'),
+    'time-duration': () => import('@/content/topics/prepositions/sections/time-duration.mdx'),
+    'verb-prep': () => import('@/content/topics/prepositions/sections/verb-prep.mdx'),
+    'adj-prep': () => import('@/content/topics/prepositions/sections/adj-prep.mdx'),
+    'noun-prep': () => import('@/content/topics/prepositions/sections/noun-prep.mdx'),
+    comparison: () => import('@/content/topics/prepositions/sections/comparison.mdx'),
+    stories: () => import('@/content/topics/prepositions/sections/stories.mdx'),
+    translation: () => import('@/content/topics/prepositions/sections/translation.mdx'),
+    mistakes: () => import('@/content/topics/prepositions/sections/mistakes.mdx'),
+    decision: () => import('@/content/topics/prepositions/sections/decision.mdx'),
+    exercises: () => import('@/content/topics/prepositions/sections/exercises.mdx'),
+    quiz: () => import('@/content/topics/prepositions/sections/quiz.mdx'),
+    history: () => import('@/content/topics/prepositions/sections/history.mdx'),
+    cheatsheet: () => import('@/content/topics/prepositions/sections/cheatsheet.mdx'),
+    plan: () => import('@/content/topics/prepositions/sections/plan.mdx'),
+  },
 };
 
 export function hasContent(slug: string): boolean {

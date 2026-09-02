@@ -1,0 +1,87 @@
+import { PlaceRelations } from '../diagrams';
+
+<Section id="place-relations" n={4} title="Місце: under, between, in front of, behind, next to, opposite…">
+
+<Lede>Трійка at/on/in — це зум на одне місце. Але речі рідко існують самі по собі: частіше важливо, <b>де один предмет стоїть відносно іншого</b>. Цей розділ добудовує статичний простір навколо вже знайомої трійки — і досі без жодного руху, одна змінна за раз.</Lede>
+
+### Вертикаль: under, over, above, below
+
+<b>Under</b> — прямо під чимось, часто в контакті або під прикриттям. <b>Over</b> теж означає «над», але додає відтінок покриття чи охоплення всієї площі. <b>Above</b> — просто вище, нейтральніше й формальніше за over, без натяку на контакт. <b>Below</b> — нижче, необовʼязково прямо під.
+
+<ExList>
+  <Ex ua="Кіт спить під столом." why="Прямий контакт зверху-знизу: стіл над котом.">The cat is sleeping under the table.</Ex>
+  <Ex ua="Ми напнули тент над входом." why="Over — тент охоплює всю площу входу, як прикриття.">We put a canopy over the entrance.</Ex>
+  <Ex ua="Літак летить над горами." why="Above — просто вище, без контакту й без охоплення.">The plane is flying above the mountains.</Ex>
+  <Ex ua="Температура нижче нуля." why="Below — нижче за орієнтир, необовʼязково прямо під ним.">The temperature is below zero.</Ex>
+</ExList>
+
+<Note variant="info" title="On top of — сусід above/over">
+  Коли предмет лежить <b>безпосередньо на поверхні</b> чогось іншого, природніше сказати <i>on top of</i>, а не above: <i>the remote is on top of the fridge</i> — пульт лежить на холодильнику, торкаючись його поверхні. Above тут звучало б так, ніби пульт висить у повітрі над холодильником.
+</Note>
+
+### Перед і за: in front of, behind
+
+<ExList>
+  <Ex ua="Машина припаркована перед будинком.">The car is parked in front of the building.</Ex>
+  <Ex ua="Сумка лежить за диваном.">The bag is behind the sofa.</Ex>
+  <Ex ua="Він стояв просто переді мною в черзі.">He was standing right in front of me in the queue.</Ex>
+</ExList>
+
+### Between проти among
+
+<Note variant="warn" title="Двоє чи більше">
+  <b>Between</b> ставлять, коли предметів або людей рівно <b>двоє</b> — або коли їх більше, але кожен розглядається окремо, по одному з іншим: <i>the negotiations between the three departments</i>. <b>Among</b> працює лише для групи з <b>трьох і більше</b>, коли предмет розглядається як частина невиокремленої маси: <i>hidden among the trees</i> — заховане десь у лісі, без окремого дерева-орієнтира.
+</Note>
+
+<ExList>
+  <Ex ua="Стіл стоїть між диваном і вікном." why="Рівно два орієнтири — between.">The table is between the sofa and the window.</Ex>
+  <Ex ua="Ключі загубилися десь серед паперів." why="Невизначена маса з багатьох аркушів — among.">The keys are lost among the papers.</Ex>
+</ExList>
+
+### Поряд: next to, beside, near
+
+<b>Next to</b> і <b>beside</b> означають майже одне й те саме — впритул, безпосередньо поруч, часто дотикаючись. <b>Near</b> — слабше: десь неподалік, відстань може бути помітною.
+
+<ExList>
+  <Ex ua="Сядь поруч зі мною." why="Next to і beside тут взаємозамінні.">Sit next to me. — Sit beside me.</Ex>
+  <Ex ua="Готель неподалік від вокзалу." why="Near допускає кілька кварталів відстані, next to — ні.">The hotel is near the station.</Ex>
+</ExList>
+
+### Навпроти: opposite
+
+<i>Opposite</i> ставить два предмети по різні боки однієї лінії чи вулиці — обличчям один до одного.
+
+<ExList>
+  <Ex ua="Банк навпроти пошти.">The bank is opposite the post office.</Ex>
+  <Ex ua="Він сів навпроти мене за столом." why="Обличчям одне до одного через стіл.">He sat opposite me at the table.</Ex>
+</ExList>
+
+### Усередині і зовні: inside, outside
+
+Це статична пара, симетрична до руху into/out of із розділу 5 — тут нічого не рухається, предмет просто <b>перебуває</b> в межах чи поза межами обʼєму.
+
+<ExList>
+  <Ex ua="Ключі всередині сумки.">The keys are inside the bag.</Ex>
+  <Ex ua="Велосипед стоїть надворі, під навісом.">The bike is outside, under the shelter.</Ex>
+</ExList>
+
+<Muted><i>Inside</i> часто взаємозамінний з простим <i>in</i>, коли важливо підкреслити саме межу-контейнер: <i>inside the box</i> звучить трохи точніше за <i>in the box</i>, але помилкою жоден із варіантів не буде.</Muted>
+
+<SvgBox caption={<>Шість статичних відносин навколо вже знайомої трійки at/on/in: вертикаль, перед/за, між/серед, поряд, навпроти, усередині/зовні.</>}>
+  <PlaceRelations />
+</SvgBox>
+
+### Швидка перевірка інтуїції
+
+<Chips>
+  <Chip>under the bridge</Chip>
+  <Chip>between two chairs</Chip>
+  <Chip>among the crowd</Chip>
+  <Chip>opposite the school</Chip>
+  <Chip>inside the drawer</Chip>
+  <Chip>next to the window</Chip>
+</Chips>
+
+<Muted>Жодне з цих шести слів не описує рух — усі вони фотографують нерухому сцену. Саме тому розділ 5 відкриває другу вісь: що станеться з тими самими точками, поверхнями й обʼємами, коли до речення додається дія.</Muted>
+
+</Section>

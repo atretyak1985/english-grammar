@@ -97,6 +97,27 @@
     "stories": 3,
     "translation": 9
   },
+  "prepositions": {
+    "adj-prep": 3,
+    "cheatsheet": 2,
+    "comparison": 4,
+    "decision": 3,
+    "exercises": 9,
+    "history": 3,
+    "idea": 3,
+    "mistakes": 5,
+    "movement": 3,
+    "noun-prep": 3,
+    "place-at-in-on": 3,
+    "place-relations": 3,
+    "plan": 3,
+    "quiz": 7,
+    "stories": 5,
+    "time-at-in-on": 3,
+    "time-duration": 4,
+    "translation": 10,
+    "verb-prep": 3
+  },
   "present-tenses": {
     "cheatsheet": 2,
     "comparison": 5,
