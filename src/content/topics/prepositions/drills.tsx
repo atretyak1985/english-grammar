@@ -354,13 +354,14 @@ export const EXERCISE_B: DrillBlock = {
       ),
     },
     {
-      q: 'My phone is different than yours.',
-      a: 'My phone is different from yours.',
-      accepted: ['My phone is different to yours.'],
+      q: 'We arrived to the airport two hours early.',
+      a: 'We arrived at the airport two hours early.',
+      accepted: ['We arrived at the airport 2 hours early.'],
       hint: (
         <>
-          <i>different from</i> — нейтральний стандарт; <i>different to</i> — розмовна британська.{' '}
-          <i>different than</i> звучить природно лише в неформальній американській.
+          Українське «приїхати <b>до</b>» тягне за собою <i>to</i>, але <i>arrive</i> ніколи не
+          бере <i>to</i>: <b>arrive at</b> для точки (аеропорт, станція, готель) і{' '}
+          <b>arrive in</b> для великого простору (місто, країна).
         </>
       ),
     },
