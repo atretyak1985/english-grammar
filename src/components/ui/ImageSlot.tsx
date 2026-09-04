@@ -19,17 +19,25 @@ import Image from 'next/image';
 export function ImageSlot({
   caption,
   image,
+  alt,
   sizes = '100vw',
 }: {
   caption: string;
   image?: string;
+  /**
+   * Опис для екранного диктора. Окремий від `caption`, бо той — технічне
+   * завдання ілюстратору («чорнило на папері, фіолетовий акцент»), і
+   * читати його вголос замість картинки означає переказувати бриф.
+   * Без нього падаємо на caption: краще бриф, ніж порожній alt.
+   */
+  alt?: string;
   /** Підказка next/image, скільки місця слот займе — своя на кожен екран */
   sizes?: string;
 }) {
   return (
     <div className="rounded-tile-lg relative h-full overflow-hidden bg-[rgba(127,127,127,0.08)]">
       {image ? (
-        <Image src={image} alt={caption} fill sizes={sizes} className="object-cover" />
+        <Image src={image} alt={alt ?? caption} fill sizes={sizes} className="object-cover" />
       ) : (
         <>
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 p-3 text-center text-[13px] leading-[1.3] [font-family:system-ui,-apple-system,sans-serif]">
