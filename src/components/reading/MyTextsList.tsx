@@ -33,23 +33,28 @@ export function MyTextsList({ texts }: { texts: SavedText[] }) {
   }
 
   return (
-    <div className="bg-card border-line mb-2 rounded-2xl border px-7 py-2">
+    <div className="bg-card border-line rounded-tile-lg border px-6 py-1">
       {texts.map((text) => (
         <div
           key={text.id}
-          className="border-track flex flex-wrap items-center gap-[18px] border-b py-4 last:border-b-0"
+          className="border-track grid grid-cols-[1fr_auto] items-center gap-[18px] border-b py-3.5 last:border-b-0"
         >
-          <span className="text-ink-3 w-[92px] flex-none font-mono text-[10.5px] font-bold tracking-[1.2px] uppercase">
-            Мій текст
-          </span>
-          <span className="font-serif min-w-0 text-[16.5px] font-bold">{text.title}</span>
-          <span className="text-ink-3 text-[13px] whitespace-nowrap">
-            {formatWords(wordTokens(tokenize(text.body)).length)} слів · {addedLabel(text.createdAt)}
-          </span>
+          <div className="min-w-0">
+            <div className="font-serif truncate text-[16.5px] font-bold">{text.title}</div>
+            <div className="text-ink-3 mt-0.5 text-[13px]">
+              {formatWords(wordTokens(tokenize(text.body)).length)} слів ·{' '}
+              {addedLabel(text.createdAt)}
+            </div>
+          </div>
+          {/* Колонки «правила в тексті» тут немає навмисно, хоч макет її
+              й малює: власний текст розбирається в аналізаторі, і поки
+              людина його не відкрила, жодних правил ми про нього не
+              знаємо. Перелік «Пасивний стан · Минулі часи» на цьому місці
+              був би вигаданим. */}
           <button
             type="button"
             onClick={() => open(text)}
-            className="text-acc hover:text-acc2 ml-auto text-[14px] font-bold whitespace-nowrap"
+            className="text-acc hover:text-acc2 text-[14px] font-bold whitespace-nowrap"
           >
             Читати →
           </button>

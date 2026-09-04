@@ -42,6 +42,31 @@ function countFor(stats: Record<TenseKey, number> | null, time: TenseTime) {
   return { counts, total: counts.reduce((sum, item) => sum + item.count, 0) };
 }
 
+/**
+ * «Правила в тексті» на картці оповідання — зворотний бік тієї самої
+ * мапи: не «де побачити цю тему», а «які теми живуть у цьому тексті».
+ *
+ * Поріг той самий, що й у `pickSpotlight`. Без нього кожне оповідання
+ * перелічувало б усі три часи, бо одна-дві випадкові конструкції є
+ * будь-де, і рядок перестав би щось означати.
+ */
+export function storyTopics(stats: Record<TenseKey, number> | null): string[] {
+  const MIN_MATCHES = 20;
+
+  return (Object.entries(TOPIC_TIME) as [string, TenseTime][])
+    .map(([slug, time]) => ({ slug, ...countFor(stats, time) }))
+    .filter((item) => item.total >= MIN_MATCHES)
+    .sort((a, b) => b.total - a.total)
+    .map((item) => TOPIC_TITLE[item.slug] ?? item.slug);
+}
+
+/** Назви трьох тем, які вимірюються часом. Решта тем сюди не потрапляє. */
+const TOPIC_TITLE: Record<string, string> = {
+  'past-tenses': 'Минулі часи',
+  'present-tenses': 'Теперішні часи',
+  'future-tenses': 'Майбутні часи',
+};
+
 export function pickSpotlight(topicSlug: string, stories: StoryCard[]): Spotlight | null {
   const time = TOPIC_TIME[topicSlug];
   if (!time) return null;
