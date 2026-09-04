@@ -20,6 +20,9 @@ export const meta: TopicMeta = {
   level: 'b2',
   tags: ['19 розділів', 'узгодження часів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/reported-speech.jpg',
+  imageAlt:
+    'Дві руки простягають бульбашки крізь рамку: «I am going today» стає «he was going that day»',
 
   pageTitle: 'Непряма мова в англійській: узгодження часів, питання, накази й дієслова переказу',
   description:

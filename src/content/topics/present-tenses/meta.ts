@@ -17,6 +17,9 @@ export const meta: TopicMeta = {
   level: 'b1',
   tags: ['17 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/present-tenses.jpg',
+  imageAlt:
+    'Під заголовком «Теперішні часи»: бурштинове коло-цикл Present Simple, синя вертикаль-перетин Present Continuous і фіолетова стрілка з минулого Present Perfect',
 
   pageTitle: 'Теперішні часи: Present Simple, Present Continuous, Present Perfect',
   description:

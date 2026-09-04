@@ -16,6 +16,9 @@ export const meta: TopicMeta = {
   level: 'b1',
   tags: ['18 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/modals.jpg',
+  imageAlt:
+    'Терези: фіолетовий важок must проти синього should, пір’їна might і ключ can збоку; унизу шкала ймовірності 0–100%',
 
   pageTitle: 'Модальні дієслова в англійській: can, must, should, might — повний розбір',
   description:

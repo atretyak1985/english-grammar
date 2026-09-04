@@ -136,6 +136,14 @@ export interface TopicMeta {
   tags: string[];
   ready: boolean;
   sections: TopicSection[];
+  /** Ілюстрація теми: 1200×675 у /public/topics/<slug>.jpg */
+  image?: string;
+  /**
+   * Опис ілюстрації для екранного диктора. Окремо від `image`, бо підпис
+   * у слоті — це технічне завдання ілюстратору, і читати його вголос
+   * замість картинки означає переказувати бриф.
+   */
+  imageAlt?: string;
   /** SEO-заголовок сторінки */
   pageTitle?: string;
   /** SEO-опис сторінки */

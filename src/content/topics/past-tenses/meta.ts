@@ -12,6 +12,9 @@ export const meta: TopicMeta = {
   level: 'b1',
   tags: ['15 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/past-tenses.jpg',
+  imageAlt:
+    'Лінія часу під заголовком «Минулі часи»: бурштинова крапка Past Simple, бурштиновий відрізок Past Continuous і фіолетова стрілка назад Past Perfect',
 
   pageTitle: 'Минулі часи: Past Simple, Past Continuous, Past Perfect',
   description:

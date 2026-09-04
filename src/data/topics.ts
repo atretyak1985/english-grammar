@@ -41,42 +41,62 @@ export const TOPICS: readonly TopicMeta[] = [
     title: 'Злічуване й незлічуване',
     desc: 'much / many, few / little, some / any. Чому information без -s і що робити з money.',
     level: 'a2',
+    image: '/topics/quantifiers.jpg',
+    imageAlt:
+      'Терези: рука кладе монети (many, few) проти глека, з якого сиплеться пісок money та information (much, little)',
   }),
   planned({
     slug: 'gerund-infinitive',
     title: 'Герундій та інфінітив',
     desc: 'enjoy doing, want to do, stop doing проти stop to do. Яке дієслово тягне -ing, а яке — to.',
     level: 'b1',
+    image: '/topics/gerund-infinitive.jpg',
+    imageAlt: 'Розвилка за словом stop: бурштинова петля -ing (процес) і синя стрілка to (намір)',
   }),
   planned({
     slug: 'comparison',
     title: 'Ступені порівняння',
     desc: 'bigger, more interesting, as…as, the…the. І чому more better не буває.',
     level: 'a2',
+    image: '/topics/comparison.jpg',
+    imageAlt:
+      'Сходинки big → bigger → the biggest, кран піднімає блок more, збоку перекреслене more better',
   }),
   planned({
     slug: 'pronouns',
     title: 'Займенники',
     desc: "its / it's, my / mine, myself. Дрібні слова, які виказують рівень швидше за часи.",
     level: 'a2',
+    image: '/topics/pronouns.jpg',
+    imageAlt:
+      'Кільце з ключами it’s, my, mine, myself і лупа, що збільшує апостроф; позаду двері з замковою щілиною',
   }),
   planned({
     slug: 'word-formation',
     title: 'Словотвір',
     desc: 'un-, re-, -less, -ful, -tion. Як з одного кореня зібрати пів словника — і чому bored ≠ boring.',
     level: 'b1',
+    image: '/topics/word-formation.jpg',
+    imageAlt:
+      'Цеглинка-корінь build, до якої клацають un-, re-, -less, -ful, -tion; унизу маски bored і boring',
   }),
   planned({
     slug: 'relative-clauses',
     title: 'Відносні речення',
     desc: 'who / which / that, defining і non-defining. Коли кома — стиль, а коли вона змінює зміст.',
     level: 'b2',
+    image: '/topics/relative-clauses.jpg',
+    imageAlt:
+      'Потяг: локомотив «The train», вагон «which is fast,» (non-defining) і вантажний «that carries coal» (defining)',
   }),
   planned({
     slug: 'inversion',
     title: 'Інверсія та емфаза',
     desc: 'Not only did we…, It was John who… Як розставляти наголоси в реченні, а не звучати як підручник.',
     level: 'c1',
+    image: '/topics/inversion.jpg',
+    imageAlt:
+      'Потяг «Sings» із вагоном «the band» і фігура, що вистрибує вперед у промінь світла — емфатична інверсія',
   }),
 ];
 

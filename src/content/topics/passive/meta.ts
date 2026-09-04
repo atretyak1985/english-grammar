@@ -19,6 +19,9 @@ export const meta: TopicMeta = {
   level: 'b2',
   tags: ['19 розділів', 'девʼять часів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/passive.jpg',
+  imageAlt:
+    'Сцена в промені прожектора: мішок із зеленою галочкою, а нитку «by…» перерізають ножицями',
 
   pageTitle: 'Пасивний стан в англійській: be + V3, коли він потрібен і коли шкодить',
   description:

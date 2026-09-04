@@ -16,6 +16,8 @@ export const meta: TopicMeta = {
   level: 'b2',
   tags: ['18 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/conditionals.jpg',
+  imageAlt: 'Ручка гучності з поділками 0, 1, 2, 3 і перекресленим will біля if-частини',
 
   pageTitle: 'Умовні речення в англійській: Zero, First, Second, Third і змішані',
   description:

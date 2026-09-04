@@ -17,6 +17,9 @@ export const meta: TopicMeta = {
   level: 'b1',
   tags: ['19 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/future-tenses.jpg',
+  imageAlt:
+    'Під заголовком «Майбутні часи»: бурштинове коло теперішньої форми, синя стрілка will, рейка зі слідами going to і фіолетовий прапорець Future Perfect',
 
   pageTitle: 'Майбутні часи: will, going to, Future Continuous, Future Perfect',
   description:

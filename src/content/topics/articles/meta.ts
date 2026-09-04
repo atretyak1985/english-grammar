@@ -16,6 +16,9 @@ export const meta: TopicMeta = {
   level: 'a2',
   tags: ['18 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/articles.jpg',
+  imageAlt:
+    'Три банки на полиці: яблуко (a), те саме яблуко в промені світла (the) і пісок (нульовий артикль)',
 
   pageTitle: 'Артиклі в англійській: a, an, the і нульовий — повний розбір',
   description:
