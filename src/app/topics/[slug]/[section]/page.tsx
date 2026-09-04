@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { SectionAside } from '@/components/topic/SectionAside';
+import { SectionNext } from '@/components/topic/SectionNext';
 import { SectionPager } from '@/components/topic/SectionPager';
 import { SectionRefProvider } from '@/components/topic/SectionRef';
-import { TopicBreadcrumbs } from '@/components/topic/TopicBreadcrumbs';
-import { TopicShell } from '@/components/topic/TopicShell';
 import { TopicVisit } from '@/components/topic/TopicVisit';
 import { SECTION_CONTENT, sectionLoader } from '@/content/topics';
 import { READY_TOPICS, topicBySlug } from '@/data/topics';
+import { listStories } from '@/lib/library/server';
+import { pickSpotlight } from '@/lib/topics/spotlight';
 
 export function generateStaticParams() {
   return READY_TOPICS.flatMap((topic) =>
@@ -45,15 +48,19 @@ export async function generateMetadata({
 
 /**
  * Один розділ теми — окрема сторінка з власним URL, щоб її можна було знайти
- * в пошуку й переслати посиланням. Зміст-сайдбар звідси прибрано: «де я?»
- * кажуть хлібні крихти над текстом, «куди далі?» — кнопки під ним, а повний
- * список розділів живе на вході в тему. Текст за це отримує всю ширину
- * колонки читання.
+ * в пошуку й переслати посиланням.
  *
- * Правої колонки, яку малює макет 2b, тут немає: прогрес теми показував
- * відвідане замість вивченого, а пастка й рядок Alex не змінювалися від
- * розділу до розділу — три однакові картки на кожній сторінці теми лише
- * звужували колонку самого тексту.
+ * Дві колонки, як на сторінці теми: текст і вузька колонка контексту. Зміст
+ * теми сюди повернувся, але вже як список розділів із галочками, а не як
+ * картка прогресу, — і саме тому він тут доречний: читач бачить, де він у
+ * темі, не вертаючись на вхід. Решта карток правої колонки на сторінку
+ * розділу не переїхала: усе, що не змінюється від розділу до розділу,
+ * лишилось на вході в тему.
+ *
+ * Текст більше не лежить на білій панелі. Панель відділяла його від тла тоді,
+ * коли колонка була одна на всю ширину; поруч із карткою змісту вона
+ * перетворювала сторінку на дві коробки, і читати між ними важче, ніж по
+ * самому паперу.
  */
 export default async function SectionPage({
   params,
@@ -65,17 +72,42 @@ export default async function SectionPage({
   if (!found) notFound();
 
   const { default: Content } = await found.load();
+  // Без бази список оповідань порожній, `pickSpotlight` віддає null — і в
+  // блоці «що далі» лишається сама вправа.
+  const spotlight = pickSpotlight(found.topic.slug, await listStories());
 
   return (
-    <TopicShell>
-      <TopicVisit topicSlug={found.topic.slug} sectionId={found.section.id} />
-      <TopicBreadcrumbs topic={found.topic} current={found.section.short ?? found.section.title} />
-      <article className="bg-panel border-line rounded-panel border px-[42px] py-9">
-        <SectionRefProvider topicSlug={found.topic.slug} sections={found.topic.sections}>
-          <Content />
-        </SectionRefProvider>
-      </article>
-      <SectionPager topic={found.topic} current={found.section} />
-    </TopicShell>
+    <div className="mx-auto w-full max-w-[1200px] px-10 pt-9 pb-16 leading-[1.5]">
+      <TopicVisit topicSlug={found.topic.slug} />
+
+      <nav aria-label="Хлібні крихти" className="text-ink-3 flex gap-2 text-[13px] font-semibold">
+        <Link href="/topics" className="text-acc hover:text-acc2">
+          Правила
+        </Link>
+        <span>/</span>
+        <Link href={`/topics/${found.topic.slug}`} className="text-acc hover:text-acc2">
+          {found.topic.title}
+        </Link>
+        <span>/</span>
+        <span>
+          {found.section.n} · {found.section.short ?? found.section.title}
+        </span>
+      </nav>
+
+      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_320px] items-start gap-10 max-[1000px]:grid-cols-1">
+        <div>
+          <article>
+            <SectionRefProvider topicSlug={found.topic.slug} sections={found.topic.sections}>
+              <Content />
+            </SectionRefProvider>
+          </article>
+
+          <SectionNext spotlight={spotlight} />
+          <SectionPager topic={found.topic} current={found.section} />
+        </div>
+
+        <SectionAside topic={found.topic} current={found.section} />
+      </div>
+    </div>
   );
 }

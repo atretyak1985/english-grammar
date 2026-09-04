@@ -18,17 +18,7 @@ export type Level = 'a2' | 'b1' | 'b2' | 'c1';
  * Present Perfect проти Past Simple — це фіолетовий проти синього, і різниця
  * видна ще до того, як читач навів курсор на підпис.
  */
-export const TENSE_KEYS = [
-  'ps',
-  'pc',
-  'pp',
-  'prs',
-  'prc',
-  'prp',
-  'fs',
-  'fc',
-  'fp',
-] as const;
+export const TENSE_KEYS = ['ps', 'pc', 'pp', 'prs', 'prc', 'prp', 'fs', 'fc', 'fp'] as const;
 
 export type TenseKey = (typeof TENSE_KEYS)[number];
 
@@ -124,6 +114,12 @@ export interface TopicSection {
   short?: string;
   /** 1–2 речення на картці розділу в змісті теми */
   lede?: string;
+  /**
+   * Рядок Alex у бічній колонці розділу — одна думка саме про це правило.
+   * Без нього картки з аватаром немає взагалі: порожня бульбашка обіцяє
+   * пораду, якої не буде.
+   */
+  hint?: string;
 }
 
 export interface TopicMeta {

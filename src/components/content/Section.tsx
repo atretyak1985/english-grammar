@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { H2, SectionKicker } from '@/components/content/blocks';
+import { SectionTotal } from '@/components/topic/SectionRef';
 import type { TenseKey } from '@/types/content';
 
 /**
@@ -28,7 +29,10 @@ export function Section({
 }) {
   return (
     <section id={id} className="scroll-mt-[96px] pt-[26px] pb-3.5">
-      <SectionKicker tense={tense}>Розділ {n}</SectionKicker>
+      <SectionKicker tense={tense}>
+        Розділ {n}
+        <SectionTotal />
+      </SectionKicker>
       <H2>{title}</H2>
       {children}
     </section>
