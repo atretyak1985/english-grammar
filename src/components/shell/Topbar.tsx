@@ -133,7 +133,12 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
     <Link
       href={item.href}
       aria-current={active ? 'page' : undefined}
-      className={`${shape} hover:bg-hover hover:text-acc2 ${active ? 'bg-hover text-acc2 font-bold' : ''}`}
+      /* Активний пункт стоїть на --tint, а не на --hover. Обидва зелені й
+         поруч майже нерозрізнимі, але ролі різні: --hover (#f4faf7) — це
+         відповідь на курсор, --tint (#e3f1ec) — постійна поверхня «ви
+         тут». На блідішому ховері активний розділ переставав читатись
+         як активний рівно в ту мить, коли миша йшла з нього. */
+      className={`${shape} hover:bg-hover hover:text-acc2 ${active ? 'bg-tint text-green-tx font-bold' : ''}`}
     >
       {item.label}
     </Link>
