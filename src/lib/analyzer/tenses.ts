@@ -266,6 +266,26 @@ export const TENSE_LABELS: Record<TenseKey, string> = {
   fp: 'Future Perfect',
 };
 
+/**
+ * Формула часу — те, що читач мусить упізнавати в тексті.
+ *
+ * Стоїть поруч із назвою скрізь, де називається час: у підказці над
+ * заливкою, у картці «правило на цій сторінці», у картці правила на
+ * головній. Назва каже, ЯК це зветься, формула — ЩО шукати очима, і
+ * без другого перше лишається терміном.
+ */
+export const TENSE_FORMULAS: Record<TenseKey, string> = {
+  ps: 'V2 / did + V',
+  pc: 'was / were + V-ing',
+  pp: 'had + V3',
+  prs: 'V / V-s',
+  prc: 'am / is / are + V-ing',
+  prp: 'have / has + V3',
+  fs: 'will + V',
+  fc: 'will be + V-ing',
+  fp: 'will have + V3',
+};
+
 /** Прибирає пунктуацію з країв слова, лишає внутрішній апостроф: didn't, wasn't. */
 export function normalizeWord(raw: string): string | null {
   const word = raw
