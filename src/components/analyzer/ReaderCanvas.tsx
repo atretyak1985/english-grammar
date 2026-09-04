@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
+import Image from 'next/image';
+import Link from 'next/link';
+
 import { HighlightLayers } from '@/components/analyzer/HighlightLayers';
 import { WordPopover, type WordGrammar } from '@/components/analyzer/WordPopover';
 import { useAppState } from '@/components/providers/AppStateProvider';
@@ -9,8 +12,9 @@ import { STATUS_LABELS } from '@/components/words/statuses';
 import { isMeaningfulWord } from '@/data/stopwords';
 import { LAYER_TOPICS, busiestTopic, layerTopic, type LayerTopicId } from '@/lib/analyzer/layers';
 import { estimatePageCount, paginate } from '@/lib/analyzer/pages';
-import { UNKNOWN_LIMIT, pickRareOnPage } from '@/lib/analyzer/vocabulary';
+import { pickRareOnPage } from '@/lib/analyzer/vocabulary';
 import {
+  TENSE_FORMULAS,
   TENSE_LABELS,
   applyMatches,
   tokenize,
@@ -35,30 +39,6 @@ import type { WordStatus } from '@/types/state';
  * тулбара в макеті йде від краю до краю під топбаром, і колонка читання
  * рахується від неї.
  */
-
-const TENSE_TEXT: Record<TenseKey, string> = {
-  ps: 'text-ps-tx',
-  pc: 'text-pc-tx',
-  pp: 'text-pp-tx',
-  prs: 'text-ps-tx',
-  prc: 'text-pc-tx',
-  prp: 'text-pp-tx',
-  fs: 'text-ps-tx',
-  fc: 'text-pc-tx',
-  fp: 'text-pp-tx',
-};
-
-const TENSE_BAR: Record<TenseKey, string> = {
-  ps: 'bg-ps',
-  pc: 'bg-pc',
-  pp: 'bg-pp',
-  prs: 'bg-ps',
-  prc: 'bg-pc',
-  prp: 'bg-pp',
-  fs: 'bg-ps',
-  fc: 'bg-pc',
-  fp: 'bg-pp',
-};
 
 /** Стилі пігулок — потрібні й викликачу (напр. «Джерело» в аналізаторі). */
 export const PILL =
@@ -112,8 +92,33 @@ function lexisClass(
   }
 }
 
-const SIDE_CARD = 'bg-panel border-line rounded-tile border px-5 py-[18px]';
-const SIDE_LABEL = 'text-ink-3 font-mono text-[10.5px] font-bold tracking-[1.2px] uppercase';
+const SIDE_CARD = 'bg-panel border-line rounded-tile-lg border px-[18px] py-4';
+const SIDE_LABEL = 'text-ink-3 font-mono text-[11px] font-bold tracking-[1.4px] uppercase';
+/** Дві рівні кнопки під карткою правила — «Теорія» і «Тренувати». */
+const SIDE_BTN =
+  'border-line-ctrl text-ink hover:border-acc hover:text-acc2 rounded-btn flex-1 border-[1.5px] p-2.5 text-center text-[13px] font-bold';
+
+/**
+ * Скільки рідкісних слів показати списком.
+ *
+ * `UNKNOWN_LIMIT` (20) розрахований на чипи, що переносяться рядками, —
+ * там довжина списку нічого не коштувала. Вертикальним списком двадцять
+ * слів виштовхують картку правила за екран, і читач її не бачить
+ * узагалі. Вісім — рівно стільки, скільки вміщується поруч із першою
+ * сторінкою тексту; решта нікуди не дівається, про неї каже лічильник.
+ */
+const SIDE_WORDS = 8;
+
+/**
+ * Шар підсвітки → тема правил. Читалка знає час конструкції, а «Теорія»
+ * мусить вести в тему, а не в час: трьох маршрутів рівно стільки, скільки
+ * шарів, тому мапа явна й повна.
+ */
+const LAYER_TOPIC_SLUG: Record<LayerTopicId, string> = {
+  past: 'past-tenses',
+  present: 'present-tenses',
+  future: 'future-tenses',
+};
 
 export interface ReaderCanvasProps {
   text: string;
@@ -313,7 +318,7 @@ export function ReaderCanvas({
     () => pickRareOnPage(visible.map((token) => token.word), frequency, state.words),
     [visible, frequency, state.words],
   );
-  const shown = unknownHere.slice(0, UNKNOWN_LIMIT);
+  const shown = unknownHere.slice(0, SIDE_WORDS);
 
   /*
     Пунктир у тексті ставиться рівно тим словам, що в списку збоку. Інакше
@@ -336,7 +341,6 @@ export function ReaderCanvas({
     return counts;
   }, [visible, state.words]);
 
-  const maxPageCount = Math.max(...(active?.tenses ?? []).map((tense) => pageCounts[tense]), 1);
 
   /*
     Активної теми на сторінці може не бути зовсім: Alice — оповідь у минулому
@@ -345,7 +349,6 @@ export function ReaderCanvas({
     зламалась», а не як «тут цього часу немає», — тому кажемо це словами й
     одразу даємо кнопку на ту тему, яка на цій сторінці справді є.
   */
-  const activeOnPage = (active?.tenses ?? []).reduce((sum, tense) => sum + pageCounts[tense], 0);
   const suggestion = LAYER_TOPICS.filter((item) => item.id !== topic)
     .map((item) => ({
       topic: item,
@@ -353,6 +356,43 @@ export function ReaderCanvas({
     }))
     .sort((a, b) => b.count - a.count)
     .find((item) => item.count > 0);
+
+  /**
+   * Головна конструкція цієї сторінки — та з активної теми, якої тут
+   * найбільше, з живими прикладами просто з тексту під очима.
+   *
+   * Приклади беруться з видимих токенів, а не з `stats.examples`: ті
+   * рахуються по всьому оповіданню, і картка з назвою «на цій сторінці»
+   * показувала б форми, яких на сторінці може не бути взагалі.
+   */
+  const pageRule = (() => {
+    const tense = (active?.tenses ?? [])
+      .filter((key) => pageCounts[key] > 0)
+      .sort((a, b) => pageCounts[b] - pageCounts[a])[0];
+    if (!tense) return null;
+
+    const examples: string[] = [];
+    let phrase: string[] = [];
+    for (const token of visible) {
+      if (token.tense !== tense) continue;
+      if (token.startsMatch) phrase = [];
+      phrase.push(token.raw.trim());
+      if (token.endsMatch) {
+        // Пунктуацію з країв зрізаємо: токен несе її як є, і в переліку
+        // прикладів «implied.» читалося б як частина форми.
+        const text = phrase.join(' ').replace(/^[^\p{L}']+|[^\p{L}']+$/gu, '');
+        if (text && !examples.includes(text) && examples.length < 4) examples.push(text);
+        phrase = [];
+      }
+    }
+
+    return { tense, count: pageCounts[tense], examples };
+  })();
+
+  /* «Теорія» веде в тему активного шару, а не в конкретний розділ: який
+     саме розділ пояснює цю конструкцію, читалка не знає, а вхід у тему
+     веде туди за один клік і не бреше. */
+  const theoryHref = topic === null ? '/topics' : `/topics/${LAYER_TOPIC_SLUG[topic]}`;
 
   /**
    * Виділення слова відкриває ту саму картку, що й клік.
@@ -385,7 +425,7 @@ export function ReaderCanvas({
   return (
     <>
       <div className="border-line bg-panel sticky top-topbar z-20 border-b">
-        <div className="mx-auto flex max-w-shell flex-wrap items-center gap-3.5 px-9 py-3.5">
+        <div className="mx-auto flex max-w-shell flex-wrap items-center gap-3.5 px-10 py-2.5">
           {title ? (
             <div className="font-serif text-[16px] font-bold">
               {title}
@@ -430,17 +470,31 @@ export function ReaderCanvas({
                 {toolbarExtra}
               </>
             ) : null}
+
+            {/* Номер сторінки живе в панелі, а не лише під текстом. Під
+                текстом він відповідає на «скільки ще», але побачити його
+                там можна тільки долиставши; у панелі він каже «де я» на
+                будь-якій висоті прокрутки. */}
+            {pageEstimate > 1 ? (
+              <span className="text-ink-3 ml-1.5 text-[13px] whitespace-nowrap">
+                стор. {pageNumber} з {pageEstimate}
+              </span>
+            ) : null}
           </div>
         </div>
       </div>
 
+      {/* 1200, а не спільні 1400: колонка тексту тут не «контент сторінки»,
+          а сама сторінка книжки, і її ширину задає довжина рядка. Стеля
+          720px на самій колонці — те саме число, що в макеті, і рівно
+          стільки, скільки серифний рядок у 19px читається без втоми. */}
       <div
         data-reader-row
-        className="mx-auto grid max-w-shell gap-8 px-9 py-9 lg:grid-cols-[minmax(0,1fr)_320px]"
+        className="mx-auto grid max-w-[1200px] justify-between gap-12 px-10 pt-8 pb-14 lg:grid-cols-[minmax(0,720px)_300px]"
       >
         <div
           ref={cardRef}
-          className="bg-panel border-line rounded-panel flex min-w-0 flex-col border px-12 py-10"
+          className="bg-panel border-line rounded-panel-xl flex min-w-0 flex-col border px-[52px] py-11"
           style={{ height: cardHeight }}
         >
           <div
@@ -536,81 +590,26 @@ export function ReaderCanvas({
           ) : null}
         </div>
 
-        <div className="flex min-w-0 flex-col gap-4">
-          {active === null ? (
-            <div className={SIDE_CARD}>
-              <div className={SIDE_LABEL}>Підсвітка</div>
-              <div className="text-ink-2 mt-3 text-[12.5px] leading-[1.55]">
-                Шар часів вимкнено — текст без граматичної підсвітки.{' '}
-                {suggestion ? (
-                  <button
-                    type="button"
-                    onClick={() => setTopic(suggestion.topic.id)}
-                    className="text-acc cursor-pointer font-bold underline"
-                  >
-                    Показати «{suggestion.topic.label}» ({suggestion.count})
-                  </button>
-                ) : null}
-              </div>
-            </div>
-          ) : (
+        <aside className="sticky top-[132px] flex min-w-0 flex-col gap-3.5 self-start">
+          {/* Слова цієї сторінки: те, що читач збирає, поки читає.
+              ------------------------------------------------------------
+              Перекладу поруч зі словом немає, хоч макет його й малює.
+              Джерело словника не дає українських значень — Вікісловник
+              пояснює слово мовою оригіналу, — і підставити сюди переклад
+              означало б його вигадати. Статус ми знаємо точно, тому
+              показуємо саме його; переклад зʼявиться тут без переробки,
+              щойно зʼявиться в даних. */}
           <div className={SIDE_CARD}>
-            <div className={SIDE_LABEL}>{active.label}</div>
-            <div className="mt-3 flex flex-col gap-2.5">
-              {active.tenses.map((tense) => (
-                <div key={tense}>
-                  <div className="flex justify-between text-[13px] font-bold">
-                    <span className={rules[tense] ? TENSE_TEXT[tense] : 'text-label line-through'}>
-                      {TENSE_LABELS[tense]}
-                    </span>
-                    <span>{pageCounts[tense]}</span>
-                  </div>
-                  <div className="bg-track rounded-pill mt-[5px] h-[7px] overflow-hidden">
-                    <div
-                      className={`h-full rounded-pill ${rules[tense] ? TENSE_BAR[tense] : 'bg-lex-line'}`}
-                      style={{ width: `${Math.round((pageCounts[tense] / maxPageCount) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+            <div className="flex items-baseline justify-between">
+              <span className={SIDE_LABEL}>Слова на цій сторінці</span>
+              <span className="text-label text-[11.5px]">
+                рідкісні ·{' '}
+                {unknownHere.length > shown.length
+                  ? `${shown.length} з ${unknownHere.length}`
+                  : unknownHere.length}
+              </span>
             </div>
-
-            {activeOnPage === 0 ? (
-              <div className="border-line text-ink-2 mt-3.5 border-t border-dashed pt-3 text-[12.5px] leading-[1.55]">
-                На цій сторінці таких часів немає.{' '}
-                {suggestion ? (
-                  <button
-                    type="button"
-                    onClick={() => setTopic(suggestion.topic.id)}
-                    className="text-acc cursor-pointer font-bold underline"
-                  >
-                    Показати «{suggestion.topic.label}» ({suggestion.count})
-                  </button>
-                ) : (
-                  'Тут узагалі немає розібраних конструкцій.'
-                )}
-              </div>
-            ) : null}
-
-            {/* Числа стосуються розібраної частини, і мовчати про це не можна:
-                на книжці розібрано кілька відсотків, і «Past Simple 12» без
-                підпису читалося б як підсумок по всьому тексту. У бібліотеці
-                `coverage` не передається — там розібрано все, і підпис зайвий. */}
-            {coverage && coverage.words < coverage.totalWords ? (
-              <div className="border-line text-ink-2 mt-3.5 border-t border-dashed pt-3 text-[12.5px] leading-[1.55]">
-                <b className="text-green-tx">
-                  Розібрано моделлю:{' '}
-                  {Math.round((coverage.words / Math.max(1, coverage.totalWords)) * 100)}%
-                </b>{' '}
-                — далі діють локальні правила. Числа рахуємо лише по перевіреному.
-              </div>
-            ) : null}
-          </div>
-          )}
-
-          <div className={SIDE_CARD}>
-            <div className={SIDE_LABEL}>Незнайомі слова тут · {unknownHere.length}</div>
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="mt-2.5 flex flex-col gap-1.5">
               {shown.map((entry) => {
                 const status = wordStatus(entry.word);
                 return (
@@ -618,29 +617,118 @@ export function ReaderCanvas({
                     key={entry.word}
                     type="button"
                     onClick={() => cycleWordStatus(entry.word)}
-                    className={`rounded-pill cursor-pointer border px-3.5 py-2 text-[13px] ${
-                      status === 'learning'
-                        ? 'bg-yellow-bg border-yellow text-yellow-tx font-bold'
-                        : 'border-line-ctrl border-b-2 border-b-lex-line font-semibold [border-bottom-style:dotted]'
-                    }`}
+                    className="border-track flex cursor-pointer items-center gap-2.5 border-b py-1.5 text-left last:border-b-0"
                   >
-                    {entry.word}
+                    <span
+                      className={`font-serif flex-1 self-start text-[15px] font-bold ${
+                        status === 'learning'
+                          ? 'border-yellow border-b-[3px]'
+                          : status === 'known'
+                            ? ''
+                            : 'border-lex-line border-b-2 [border-bottom-style:dotted]'
+                      }`}
+                    >
+                      {entry.word}
+                    </span>
+                    <span
+                      className={`rounded-badge px-[7px] py-0.5 font-mono text-[10.5px] font-bold ${
+                        status === 'learning'
+                          ? 'bg-yellow-bg text-yellow-tx'
+                          : status === 'known'
+                            ? 'bg-green-bg-2 text-green-tx'
+                            : 'bg-track text-ink-2'
+                      }`}
+                    >
+                      {STATUS_LABELS[status].toUpperCase()}
+                    </span>
                   </button>
                 );
               })}
               {shown.length === 0 ? (
-                <span className="text-ink-3 text-[13px]">
-                  Усе розібрано: незнайомих слів немає.
-                </span>
+                <span className="text-ink-3 text-[13px]">Усе розібрано: рідкісних слів немає.</span>
               ) : null}
             </div>
-            <div className="text-ink-3 mt-3 text-[12.5px]">
-              Клік — статус по колу: не знаю → вчу → знаю
+            <div className="text-ink-3 mt-2.5 text-[12.5px]">
+              Клік по слову в тексті — картка з вимовою і статусом.
+            </div>
+          </div>
+
+          {/* Правило цієї сторінки. Коли активної теми на сторінці немає
+              зовсім, картка не мовчить, а каже це словами й одразу веде в
+              ту тему, яка тут справді є: порожня колонка цифр читається як
+              «підсвітка зламалась», а не як «тут цього немає». */}
+          {pageRule ? (
+            <div className={SIDE_CARD}>
+              <div className="text-pp-tx font-mono text-[11px] font-bold tracking-[1.4px] uppercase">
+                Правило на цій сторінці
+              </div>
+              <div className="font-serif mt-2 text-[17px] font-extrabold">
+                {TENSE_LABELS[pageRule.tense]} · {TENSE_FORMULAS[pageRule.tense]}
+              </div>
+              <div className="text-ink-2 mt-1 text-[13.5px] leading-[1.5]">
+                {pageRule.count} конструкцій на сторінці
+                {pageRule.examples.length > 0 ? `: ${pageRule.examples.join(', ')}…` : '.'}
+              </div>
+              <div className="mt-3 flex gap-2">
+                <Link href={theoryHref} className={SIDE_BTN}>
+                  Теорія
+                </Link>
+                <Link href="/train" className={SIDE_BTN}>
+                  Тренувати
+                </Link>
+              </div>
+              {/* Скільки тексту справді пройшло через модель. Аналізатор
+                  розбирає по сторінці, тому число тут не косметика: воно
+                  каже, наскільки числу вище можна вірити. Бібліотека
+                  розібрана повністю й coverage не передає взагалі. */}
+              {coverage ? (
+                <div className="border-line text-ink-2 mt-3 border-t border-dashed pt-2.5 text-[12.5px] leading-[1.55]">
+                  <b className="text-green-tx">
+                    Розібрано моделлю:{' '}
+                    {Math.round((coverage.words / Math.max(1, coverage.totalWords)) * 100)}%
+                  </b>{' '}
+                  — далі діють локальні правила.
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <div className={SIDE_CARD}>
+              <div className={SIDE_LABEL}>Підсвітка</div>
+              <div className="text-ink-2 mt-2.5 text-[12.5px] leading-[1.55]">
+                {active === null
+                  ? 'Шар часів вимкнено — текст без граматичної підсвітки.'
+                  : `На цій сторінці конструкцій теми «${active.label}» немає.`}{' '}
+                {suggestion ? (
+                  <button
+                    type="button"
+                    onClick={() => setTopic(suggestion.topic.id)}
+                    className="text-acc hover:text-acc2 cursor-pointer font-bold"
+                  >
+                    Показати «{suggestion.topic.label}» · {suggestion.count} →
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          )}
+
+          {/* Репліка Alex — підказка про жест, а не прикраса: наведення на
+              заливку показує назву часу, і без цього рядка про це не
+              дізнається ніхто, крім тих, хто навів випадково. */}
+          <div className="flex items-start gap-2.5">
+            <Image
+              src="/alex-avatar.png"
+              alt="Alex"
+              width={200}
+              height={200}
+              className="h-10 w-10 flex-none rounded-full object-cover"
+            />
+            <div className="bg-panel border-line text-ink-2 rounded-[3px_14px_14px_14px] border px-3.5 py-2.5 text-[13.5px] leading-[1.5]">
+              Наведіть на будь-яку заливку — побачите назву часу і формулу. Клік веде в теорію.
             </div>
           </div>
 
           {footer}
-        </div>
+        </aside>
       </div>
 
       {openWord ? (
