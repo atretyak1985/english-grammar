@@ -61,3 +61,14 @@ export function SecRef({ n, children }: { n: number; children?: ReactNode }) {
     </Link>
   );
 }
+
+/**
+ * Хвіст кікера: « з 15». Скільки всього розділів у темі, знає та сама
+ * сторінка, що рендерить текст, — MDX цього не знає й знати не повинен.
+ * Поза провайдером не пише нічого: «Розділ 4 з» гірше за «Розділ 4».
+ */
+export function SectionTotal() {
+  const ctx = useContext(SectionRefContext);
+  if (!ctx || ctx.sections.length === 0) return null;
+  return <> з {ctx.sections.length}</>;
+}
