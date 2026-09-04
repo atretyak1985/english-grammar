@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { Topbar } from '@/components/shell/Topbar';
@@ -26,14 +27,33 @@ export function AppShell({
       <main className="min-w-0 flex-1">{children}</main>
 
       {/* Підвал стоїть на панелі, а не на тлі: інакше він читається як
-          продовження сторінки, а не як її край. Поля 16px — рівні макета;
-          зайва висота тут з'їдала екран на кожному маршруті. */}
-      {/* leading-[normal] — бо `body` несе 1.6 для довгого читання, а рядок
-          підвала не абзац: успадкований інтерліньяж додавав йому 5px висоти. */}
-      <footer className="bg-panel border-line text-label border-t text-[13px] leading-[normal]">
-        <div className="mx-auto flex max-w-shell flex-wrap justify-between gap-4 px-10 py-4">
-          <div>Граматика англійської — особистий навчальний проєкт</div>
-          <div>Пояснення українською, тексти англійською</div>
+          продовження сторінки, а не як її край.
+          ------------------------------------------------------------
+          Рядок посилань праворуч — не дубль топбара. Топбар веде туди, де
+          працюють; підвал — туди, куди приходять з питанням («скільки це
+          коштує», «звідки тексти», «як написати»), і саме тому «Тарифи» і
+          «Джерела текстів» живуть тут, а не в навігації.
+          ------------------------------------------------------------
+          leading-[1.5] — метрика макета. `body` несе 1.6 заради довгого
+          читання, і на 16px логотипа підвала різниця дає зайвий піксель. */}
+      <footer className="bg-panel border-line border-t">
+        <div className="text-ink-3 mx-auto flex max-w-shell flex-wrap items-center gap-6 px-10 py-7 text-[13.5px] leading-[1.5]">
+          <span className="font-serif text-ink text-[16px] font-extrabold">GrammaLens</span>
+          <span>Граматика англійської українською</span>
+          <nav aria-label="Підвал" className="ml-auto flex flex-wrap gap-[22px]">
+            <Link href="/topics" className="text-ink-2">
+              Правила
+            </Link>
+            <Link href="/pricing" className="text-ink-2">
+              Тарифи
+            </Link>
+            <Link href="/reading" className="text-ink-2">
+              Джерела текстів
+            </Link>
+            <a href="mailto:atretiak.work@gmail.com" className="text-ink-2">
+              Написати нам
+            </a>
+          </nav>
         </div>
       </footer>
     </div>
