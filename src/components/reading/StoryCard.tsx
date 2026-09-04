@@ -1,85 +1,76 @@
-'use client';
-
 import Link from 'next/link';
 
-import { aspectChips, coverGradient, formatWords, readingMinutes } from '@/components/reading/format';
+import { formatWords, readingMinutes } from '@/components/reading/format';
+import { ImageSlot } from '@/components/ui/ImageSlot';
 import type { StoryCard as Story } from '@/lib/library/server';
+import { storyTopics } from '@/lib/topics/spotlight';
 
 /**
- * Картка оповідання на полиці: обкладинка, склад тексту видами і одна дія.
+ * Картка оповідання на полиці.
  *
- * Смужка прогресу з'являється тільки в початої книжки — у нечитаної нема
- * чого показувати, а порожній жолоб читався б як «прочитано 0%», тобто як
- * докір замість запрошення.
+ * Обкладинка тут — головне, і саме тому вона перша й на всю ширину
+ * картки: книжку впізнають за обкладинкою раніше, ніж читають назву.
+ * Поки ілюстрацій немає, стоїть той самий порожній слот, що й на решті
+ * екранів, — з описом майбутньої обкладинки замість неї.
+ *
+ * Значок рівня й тривалості лежить НА обкладинці, а не під назвою:
+ * «чи потягну я це» вирішується одночасно з «а що це», і рознесені по
+ * картці ці дві відповіді змушували б читати двічі.
  */
 export function StoryCard({ story, percent }: { story: Story; percent: number | null }) {
-  const started = percent !== null && percent > 0;
   const minutes = readingMinutes(story.words);
+  const topics = storyTopics(story.stats);
+  const started = percent !== null && percent > 0;
 
   return (
-    <Link
-      href={`/library/${story.slug}`}
-      className="bg-card border-line flex flex-col gap-3.5 rounded-2xl border p-5 text-inherit transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgb(38_36_32_/_0.1)]"
-    >
-      <div
-        className="flex h-[130px] items-end justify-between rounded-[10px] p-3.5"
-        style={{ backgroundImage: coverGradient(story.sortOrder) }}
-      >
-        <span className="font-serif text-[16px] leading-[1.3] font-bold text-white">
-          {story.title}
-        </span>
-        {/* Значок рівня — тільки коли рівень справді проставлено: «— · 9 хв»
-            було б підписом про те, чого ми не знаємо. */}
-        <span
-          className="rounded-pill flex-none px-[11px] py-1 font-mono text-[10.5px] font-bold"
-          style={{ background: 'rgba(255,255,255,0.92)', color: '#262420' }}
-        >
-          {story.level ? `${story.level} · ${minutes} хв` : `${minutes} хв`}
+    <div className="bg-card border-line rounded-tile-lg hover:shadow-lift flex flex-col gap-3 border p-[18px] transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5">
+      <div className="relative h-[150px]">
+        <ImageSlot
+          caption={`Обкладинка: ${story.title}`}
+          sizes="(max-width: 1000px) 100vw, 300px"
+        />
+        {/* Напівпрозоре біле, а не токен поверхні: значок лежить на
+            майбутній ілюстрації, кольору якої ми не знаємо, тому він
+            мусить читатись на будь-якій. */}
+        <span className="pointer-events-none absolute top-2.5 right-2.5 rounded-pill bg-white/95 px-2.5 py-1 font-mono text-[11px] font-bold">
+          {story.level ? `${story.level} · ` : ''}
+          {minutes} ХВ
         </span>
       </div>
 
       <div className="min-w-0">
-        {/* Назва — рівно один рядок. Справжні назви бувають утричі довші за
-            макетні, а другий рядок тут тягне за собою висоту ВСЬОГО ряду
-            карток: сусідні картки розтягуються, кнопки й пунктирна картка
-            їдуть униз. Повна назва нікуди не зникає — вона на обкладинці
-            вище, в `title` для наведення й доступності, і в самій читалці. */}
-        <div className="font-serif truncate text-[18px] font-extrabold" title={story.title}>
+        <div className="font-serif truncate text-[19px] font-extrabold" title={story.title}>
           {story.title}
         </div>
-        <div className="text-ink-3 mt-[3px] text-[13px]">
-          {story.author} · {formatWords(story.words)} слів
+        <div className="text-ink-3 mt-[3px] text-[13.5px]">
+          {story.author} · {formatWords(story.words)} слів · {minutes} хв
         </div>
-        <div className="mt-[11px] flex flex-wrap gap-1.5">
-          {aspectChips(story.stats).map((chip) => (
-            <span
-              key={chip.aspect}
-              className={`rounded-pill px-[11px] py-1 text-[11.5px] font-bold ${chip.className}`}
-            >
-              {chip.label} · {chip.count}
-            </span>
-          ))}
-        </div>
+        {topics.length > 0 ? (
+          <div className="text-ink-2 mt-2.5 text-[13px]">
+            <span className="text-label">Правила в тексті:</span> {topics.join(' · ')}
+          </div>
+        ) : null}
       </div>
 
       {started ? (
         <div className="flex items-center gap-2.5">
-          <div className="bg-track rounded-pill h-1.5 flex-1 overflow-hidden">
-            <div className="bg-acc rounded-pill h-full" style={{ width: `${percent}%` }} />
+          <div className="bg-track h-1.5 flex-1 overflow-hidden rounded-pill">
+            <div className="bg-acc h-full" style={{ width: `${percent}%` }} />
           </div>
-          <span className="text-ink-3 text-[12px]">{percent}%</span>
+          <span className="text-ink-3 text-[12.5px]">{percent}%</span>
         </div>
       ) : null}
 
-      <span
-        className={`rounded-[10px] mt-auto border-[1.5px] py-[11px] text-center text-[14px] font-bold transition-colors duration-150 ease-out ${
-          started
-            ? 'border-acc text-green-tx hover:bg-tint'
-            : 'border-line-ctrl text-ink hover:border-acc hover:text-green-tx'
+      {/* mt-auto притискає дію до низу: описи й переліки правил різної
+          довжини, і без цього кнопки в сусідніх картках не збігалися б. */}
+      <Link
+        href={`/library/${story.slug}`}
+        className={`rounded-btn bg-card hover:border-acc hover:text-acc2 mt-auto block border-[1.5px] p-[11px] text-center text-[14px] font-bold ${
+          started ? 'border-acc text-green-tx' : 'border-line-ctrl text-ink'
         }`}
       >
         {started ? 'Продовжити' : 'Почати'}
-      </span>
-    </Link>
+      </Link>
+    </div>
   );
 }

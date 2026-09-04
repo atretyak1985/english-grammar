@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-
 import Link from 'next/link';
 
 import { ContinueBanner } from '@/components/reading/ContinueBanner';
@@ -15,62 +13,46 @@ import { useTexts } from '@/lib/state/texts';
 /**
  * Полиця читання: що почато, що є готового і що людина принесла сама.
  *
- * Компонент клієнтський не через фільтри — через пам'ять. Місце читання і
- * власні тексти лежать у localStorage, тому сервер про них нічого не знає:
- * перший кадр однаковий для всіх, а банер «продовжити» і «мої тексти»
- * з'являються після гідратації. Це навмисно — інакше довелося б або тягнути
- * особистий стан у HTML, або показувати всім чиюсь чужу книжку.
+ * Фільтра за рівнем, сортування й перемикача розділів тут більше немає.
+ * Вони мали сенс, коли полиця замислювалась як каталог, — але оповідань
+ * два, і три контроли над двома картками коштували 22px висоти й одного
+ * зайвого рішення на людину, яка прийшла просто почитати. Обидва
+ * розділи тепер стоять стосом і видні одночасно.
+ *
+ * Компонент лишається клієнтським, і не через фільтри, а через памʼять:
+ * місце читання і власні тексти лежать у localStorage, тому сервер про
+ * них нічого не знає. Перший кадр однаковий для всіх, а «продовжити» і
+ * «мої тексти» зʼявляються після гідратації — інакше довелося б або
+ * тягнути особистий стан у HTML, або показувати всім чиюсь чужу книжку.
  */
 
 /** Ключ позиції книжки з бібліотеки — той самий префікс, що ставить читалка. */
 const LIBRARY_PREFIX = 'library:';
 
-type Level = 'all' | 'A2' | 'B1' | 'B2';
-type Section = 'stories' | 'texts';
-type Sort = 'asc' | 'desc';
-
-const LEVELS: Level[] = ['all', 'A2', 'B1', 'B2'];
-const LEVEL_LABEL: Record<Level, string> = { all: 'Усі', A2: 'A2', B1: 'B1', B2: 'B2' };
-
 export function ReadingShelf({ stories }: { stories: Story[] }) {
-  const [section, setSection] = useState<Section>('stories');
-  const [level, setLevel] = useState<Level>('all');
-  const [sort, setSort] = useState<Sort>('asc');
-
   const { positions } = useReading();
   const { texts, ready } = useTexts();
 
-  /*
-    Найсвіжіша почата книжка. `setPosition` перевставляє ключ у кінець мапи,
-    тому порядок ключів — це порядок звертання, і остання зі своїм префіксом
-    і є та, до якої поверталися востаннє.
-  */
   const continueStory = pickContinue(positions, stories);
 
-  const visible = useMemo(() => {
-    const filtered = level === 'all' ? stories : stories.filter((story) => story.level === level);
-    return [...filtered].sort((a, b) => (sort === 'asc' ? a.words - b.words : b.words - a.words));
-  }, [stories, level, sort]);
-
-  const textCount = ready ? texts.length : 0;
-
   return (
-    <div className="mx-auto box-border w-full max-w-shell px-10 pt-9 pb-6 leading-[normal]">
-      <div className="mb-[26px] flex flex-wrap items-end justify-between gap-5">
+    <div className="mx-auto box-border w-full max-w-shell px-10 pt-11 pb-16 leading-[1.5]">
+      <div className="mb-7 flex flex-wrap items-end justify-between gap-6">
         <div>
-          <h1 className="font-serif m-0 mb-2 text-[38px] font-extrabold tracking-[-0.8px]">
+          <h1 className="font-serif m-0 mb-2 text-[40px] leading-[1.05] font-extrabold tracking-[-0.8px]">
             Що читаємо?
           </h1>
-          <p className="text-ink-2 m-0 max-w-[52rem] text-[15.5px]">
-            Оповідання з готовою підсвіткою часів — розбір уже зроблено, читайте без входу і без
-            очікування моделі.
+          <p className="text-ink-2 m-0 max-w-[60ch] text-[16px]">
+            Оповідання з готовою підсвіткою правил — без входу і без очікування. Або свій текст:
+            стаття, PDF, фото сторінки.
           </p>
         </div>
         <Link
           href="/analyze/new"
-          className="bg-acc hover:bg-acc2 shadow-acc rounded-[11px] px-[26px] py-3.5 text-[15.5px] font-bold text-white transition-colors duration-150 ease-out"
+          className="bg-acc hover:bg-acc2 shadow-acc rounded-btn flex items-center gap-2 px-6 py-[13px] text-[15px] font-bold text-white hover:text-white"
         >
-          + Свій текст або файл
+          <Plus />
+          Свій текст або файл
         </Link>
       </div>
 
@@ -78,79 +60,93 @@ export function ReadingShelf({ stories }: { stories: Story[] }) {
         <ContinueBanner story={continueStory.story} anchor={continueStory.anchor} />
       ) : null}
 
-      <div className="mb-[22px] flex flex-wrap items-center gap-2">
-        <SectionChip
-          active={section === 'stories'}
-          onClick={() => setSection('stories')}
-          label={`Оповідання · ${stories.length}`}
-        />
-        <SectionChip
-          active={section === 'texts'}
-          onClick={() => setSection('texts')}
-          label={`Мої тексти · ${textCount}`}
-        />
+      <SectionHead title="Оповідання" note={`${stories.length} · нові — щотижня`} />
 
-        <span className="bg-line mx-2 h-[26px] w-px" aria-hidden />
-
-        <span className="text-ink-3 text-[13px]">Рівень:</span>
-        {LEVELS.map((item) => (
-          <button
-            key={item}
-            type="button"
-            onClick={() => setLevel(item)}
-            aria-pressed={level === item}
-            className={`rounded-pill border-[1.5px] px-[18px] py-2.5 text-[13px] font-bold transition-colors duration-150 ease-out ${
-              level === item
-                ? 'bg-tint border-acc text-green-tx'
-                : 'bg-card border-line-ctrl text-ink-2 hover:border-acc hover:text-green-tx'
-            }`}
-          >
-            {LEVEL_LABEL[item]}
-          </button>
-        ))}
-
-        <span className="text-ink-3 ml-auto text-[13px]">
-          Сортувати:{' '}
-          <button
-            type="button"
-            onClick={() => setSort(sort === 'asc' ? 'desc' : 'asc')}
-            className="text-ink font-bold"
-          >
-            {sort === 'asc' ? 'коротші спершу' : 'довші спершу'}
-            {/* Трикутник — SVG, не символ ▾: гліф U+25BE у кожній системній
-                гарнітурі свого розміру, і рядок сортування «дихав» би між
-                платформами. */}
-            <svg
-              width="8"
-              height="6"
-              viewBox="0 0 8 6"
-              aria-hidden
-              className={`ml-[4px] inline-block align-[1px] ${sort === 'asc' ? '' : 'rotate-180'}`}
-            >
-              <path d="M0 0h8L4 6Z" fill="currentColor" />
-            </svg>
-          </button>
-        </span>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">
+        {stories.map((story) => {
+          const anchor = positions[`${LIBRARY_PREFIX}${story.slug}`]?.anchor ?? 0;
+          return (
+            <StoryCard
+              key={story.slug}
+              story={story}
+              percent={anchor > 0 ? readPercent(anchor, story.totalTokens) : null}
+            />
+          );
+        })}
+        <OwnTextCard />
       </div>
 
-      {section === 'stories' ? (
-        <div className="mb-7 grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-[18px]">
-          {visible.map((story) => {
-            const anchor = positions[`${LIBRARY_PREFIX}${story.slug}`]?.anchor ?? 0;
-            return (
-              <StoryCard
-                key={story.slug}
-                story={story}
-                percent={anchor > 0 ? readPercent(anchor, story.totalTokens) : null}
-              />
-            );
-          })}
-          <OwnTextCard />
-        </div>
+      {/* «Мої тексти» показуються лише коли вони є. Порожній заголовок із
+          нулем повідомляв би про відсутність того, про існування чого
+          людина ще не знає. */}
+      {ready && texts.length > 0 ? (
+        <>
+          <SectionHead
+            title="Мої тексти"
+            note={`${texts.length} · тільки у цьому браузері, поки ви не увійшли`}
+            spaced
+          />
+          <MyTextsList texts={texts} />
+        </>
       ) : null}
-
-      {ready ? <MyTextsList texts={texts} /> : null}
     </div>
+  );
+}
+
+function SectionHead({
+  title,
+  note,
+  spaced = false,
+}: {
+  title: string;
+  note: string;
+  spaced?: boolean;
+}) {
+  return (
+    <div className={`flex items-baseline gap-3 ${spaced ? 'mt-9 mb-3.5' : 'mb-3.5'}`}>
+      <h2 className="font-serif m-0 text-[22px] font-extrabold tracking-[-0.3px]">{title}</h2>
+      <span className="text-ink-3 text-[13.5px]">{note}</span>
+    </div>
+  );
+}
+
+/**
+ * Картка «свій текст» стоїть у сітці разом з оповіданнями, а не окремою
+ * кнопкою над нею. Пунктирна рамка каже, що місце порожнє й чекає, — і
+ * саме тому вона в сітці: «сюди можна покласти своє» читається лише
+ * поруч із тим, що вже лежить.
+ */
+function OwnTextCard() {
+  return (
+    <Link
+      href="/analyze/new"
+      className="bg-card text-ink hover:border-acc hover:text-ink rounded-tile-lg flex min-h-[280px] flex-col items-center justify-center gap-2.5 border-[1.5px] border-dashed border-[#b8c9c2] p-5 text-center dark:border-line-strong"
+    >
+      <span className="bg-tint rounded-tile-lg flex h-[52px] w-[52px] items-center justify-center">
+        <Plus size={24} stroke="var(--acc)" />
+      </span>
+      <span className="text-[16px] font-bold">Свій текст</span>
+      <span className="text-ink-3 max-w-[230px] text-[13px] leading-[1.5]">
+        Стаття, лист, PDF, DOCX чи фото сторінки — підсвітка за секунди
+      </span>
+    </Link>
+  );
+}
+
+function Plus({ size = 16, stroke = 'currentColor' }: { size?: number; stroke?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={stroke}
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      aria-hidden
+    >
+      <path d="M12 5v14M5 12h14" />
+    </svg>
   );
 }
 
@@ -176,67 +172,4 @@ function pickContinue(
     if (story) return { story, anchor: entry[1].anchor };
   }
   return null;
-}
-
-function SectionChip({
-  active,
-  onClick,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`rounded-pill px-5 py-[11px] text-[13.5px] font-bold transition-colors duration-150 ease-out ${
-        active
-          ? 'bg-deep text-white'
-          : 'bg-card border-line-ctrl text-ink-2 hover:border-acc hover:text-green-tx border-[1.5px]'
-      }`}
-    >
-      {label}
-    </button>
-  );
-}
-
-/**
- * Пунктирна картка в кінці полиці. Стоїть саме серед оповідань, а не окремою
- * кнопкою збоку: власний текст — така сама книжка на цій полиці, просто ще
- * не принесена.
- */
-function OwnTextCard() {
-  return (
-    <Link
-      href="/analyze/new"
-      className="bg-card hover:border-acc flex min-h-[280px] flex-col items-center justify-center gap-3 rounded-2xl border-[1.5px] border-dashed p-5 text-center text-inherit transition-colors duration-150 ease-out"
-      style={{ borderColor: '#b8c9c2' }}
-    >
-      <div className="bg-tint flex h-14 w-14 items-center justify-center rounded-[14px]">
-        <svg
-          width="26"
-          height="26"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--acc)"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          aria-hidden
-        >
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
-      </div>
-      <div className="text-[16px] font-bold">Свій текст</div>
-      <div className="text-ink-3 max-w-[230px] text-[13px] leading-[1.55]">
-        Стаття, лист, PDF, DOCX чи фото сторінки — підсвітка за секунди, без очікування
-      </div>
-      <div className="text-label font-mono text-[10.5px] font-bold tracking-[1px] uppercase">
-        Нові оповідання — щотижня
-      </div>
-    </Link>
-  );
 }
