@@ -19,6 +19,9 @@ export const meta: TopicMeta = {
   level: 'b2',
   tags: ['18 розділів', '100+ дієслів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/phrasal-verbs.jpg',
+  imageAlt:
+    'Локомотив-дієслово і три стрілки-напрямки up, off, into — кожна веде до свого будиночка-значення',
 
   pageTitle: 'Фразові дієслова англійської: put off, look into, sort out',
   description:

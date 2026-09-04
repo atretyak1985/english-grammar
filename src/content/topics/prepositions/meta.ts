@@ -16,6 +16,9 @@ export const meta: TopicMeta = {
   level: 'b1',
   tags: ['19 розділів', '200+ прикладів', 'тест', 'вправи'],
   ready: true,
+  image: '/topics/prepositions.jpg',
+  imageAlt:
+    'Три масштаби: крапка на циферблаті at 5 o’clock, дерев’яна поверхня on Monday, фіолетовий куб із місяцем in July',
 
   pageTitle: 'Прийменники в англійській: at/in/on, by/until, дієслово + прийменник — B1',
   description:

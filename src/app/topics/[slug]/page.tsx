@@ -91,12 +91,16 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
             </p>
           ) : null}
 
-          {/* Ілюстрація теми — той самий порожній слот, що й на головній:
-              картинки прийдуть окремо, а висота 220px уже зарезервована,
-              щоб їхня поява нічого не зсунула. */}
-          <div className="mb-[22px] h-[220px]">
+          {/* Ілюстрація теми. Макет резервував 220px, але ілюстрації —
+              16:9 і несуть підписи по всьому кадру (Past Simple / Past
+              Continuous / Past Perfect стоять під самою лінією часу).
+              Кроп до 220px лишив би від картинки середню смугу без
+              жодного підпису, тому слот тримає пропорції кадру. */}
+          <div className="mb-[22px] aspect-video">
             <ImageSlot
               caption={`Ілюстрація теми: ${topic.title.toLowerCase()}`}
+              image={topic.image}
+              alt={topic.imageAlt}
               sizes="(max-width: 1000px) 100vw, 800px"
             />
           </div>
