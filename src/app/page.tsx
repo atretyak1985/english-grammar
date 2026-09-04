@@ -1,4 +1,3 @@
-import { AlexColumn } from '@/components/home/AlexColumn';
 import { HomeHero } from '@/components/home/HomeHero';
 import { HomeTopics } from '@/components/home/HomeTopics';
 import { HowItWorks } from '@/components/home/HowItWorks';
@@ -28,14 +27,17 @@ import { WordsPanel } from '@/components/home/WordsPanel';
 export default function HomePage() {
   return (
     <div className="leading-[1.5]">
-      {/* Три колонки, а не дві: Alex стоїть МІЖ обіцянкою і карткою
-          правила й тримає їх як пару. min-height на висоту вікна мінус
-          топбар — герой мусить зайняти перший екран цілком, інакше
-          смуга кроків визирає знизу й забирає в обіцянки її головне:
-          що на неї нема чого відволікатись. */}
-      <section className="mx-auto grid w-full max-w-shell min-h-[calc(100vh_-_var(--spacing-topbar))] grid-cols-[minmax(340px,460px)_minmax(200px,260px)_minmax(420px,1fr)] items-end gap-8 px-10 pt-6 max-[1100px]:grid-cols-1">
+      {/* Дві колонки: обіцянка ліворуч, доказ праворуч. Alex живе
+          всередині лівої — маленьким аватаром під кнопками, — а не
+          окремою колонкою між ними: репліка коментує обіцянку, отже
+          належить їй, а не простору між обіцянкою й карткою.
+          ------------------------------------------------------------
+          `items-start`, а не `end`, і без min-height на екран: герой
+          більше не мусить займати перший екран цілком. Смуга кроків
+          навмисно визирає знизу — вона й є відповідь на «а далі що»,
+          і показати її край дешевше, ніж змусити шукати. */}
+      <section className="mx-auto grid w-full max-w-shell grid-cols-[minmax(340px,520px)_minmax(420px,1fr)] items-start gap-16 px-10 pt-14 max-[1100px]:grid-cols-1">
         <HomeHero />
-        <AlexColumn />
         <LiveSample />
       </section>
 

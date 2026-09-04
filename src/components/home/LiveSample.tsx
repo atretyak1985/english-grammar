@@ -94,7 +94,11 @@ export function LiveSample() {
   const rule = RULES[step]!;
 
   return (
-    <div className="min-w-0 self-center pb-10">
+    /* pt-2 — не оздоба й не випадковість. Колонки вирівняні по верху
+       (`items-start`), і без цих 8px картка ставала б рівно врівень із
+       капітельним кікером ліворуч. Макет опускає її на волосину нижче,
+       щоб верхня межа картки не читалась як продовження того рядка. */
+    <div className="min-w-0 pt-2 pb-12">
       <div className="bg-card border-line rounded-panel-xl shadow-raise overflow-hidden border">
         <div className="border-line text-ink-3 flex items-center gap-2 border-b px-[18px] py-3 text-[13px]">
           <span className="font-mono text-[11px] font-bold tracking-[1.4px] uppercase">Правило</span>
