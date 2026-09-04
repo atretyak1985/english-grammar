@@ -1,5 +1,4 @@
-import Image from 'next/image';
-
+import { ImageSlot } from '@/components/ui/ImageSlot';
 /**
  * Три кроки застосунку: правило → текст → закріплення.
  *
@@ -52,7 +51,9 @@ export function HowItWorks() {
       <div className="mx-auto grid max-w-shell grid-cols-3 gap-8 px-10 py-14 max-[1100px]:grid-cols-1">
         {STEPS.map((step) => (
           <div key={step.kicker}>
-            <StepSlot caption={step.slot} image={step.image} />
+            <div className="mb-[18px] h-[170px]">
+              <ImageSlot caption={step.slot} image={step.image} sizes="(max-width: 1100px) 100vw, 33vw" />
+            </div>
             <div className="text-acc2 font-mono text-[12px] font-bold tracking-[1.6px] uppercase">
               {step.kicker}
             </div>
@@ -64,54 +65,5 @@ export function HowItWorks() {
         ))}
       </div>
     </section>
-  );
-}
-
-/**
- * Слот ілюстрації. Порожній стан — не заглушка «поки нічого немає», а
- * навмисна форма: пунктирна рамка й підпис усередині кажуть, ЩО тут
- * буде, тому смуга кроків читається цілою ще до того, як з'явиться
- * перший малюнок. Рамка й піктограма беруть currentColor і живуть
- * прозорістю, а не власним кольором, — тому слот однаково читається і
- * на паперовому тлі, і на чорнильному.
- *
- * Готова ілюстрація підставляється одним пропом `image`: усе, що
- * лишиться зробити на кожен слот, — дописати шлях у STEPS.
- */
-function StepSlot({ caption, image }: { caption: string; image?: string }) {
-  return (
-    <div className="relative mb-[18px] h-[170px]">
-      <div className="rounded-tile-lg absolute inset-0 overflow-hidden bg-[rgba(127,127,127,0.08)]">
-        {image ? (
-          <Image src={image} alt={caption} fill sizes="(max-width: 1100px) 100vw, 33vw" className="object-cover" />
-        ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 p-3 text-center text-[13px] leading-[1.3] [font-family:system-ui,-apple-system,sans-serif]">
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="opacity-45"
-              aria-hidden
-            >
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <path d="m21 15-5-5L5 21" />
-            </svg>
-            <div className="max-w-[90%] font-medium tracking-[0.01em] opacity-75">{caption}</div>
-          </div>
-        )}
-        {!image && (
-          <div
-            className="rounded-tile-lg pointer-events-none absolute inset-0 border-[1.5px] border-dashed border-current opacity-35"
-            aria-hidden
-          />
-        )}
-      </div>
-    </div>
   );
 }

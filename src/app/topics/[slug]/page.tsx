@@ -2,12 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { TopicBreadcrumbs } from '@/components/topic/TopicBreadcrumbs';
-import { TopicContents } from '@/components/topic/TopicContents';
-import { TopicShell } from '@/components/topic/TopicShell';
+import { TopicAside } from '@/components/topic/TopicAside';
+import { TopicSectionList } from '@/components/topic/TopicSectionList';
 import { TopicVisit } from '@/components/topic/TopicVisit';
+import { ImageSlot } from '@/components/ui/ImageSlot';
 import { hasContent } from '@/content/topics';
-import { READY_TOPICS, topicBySlug } from '@/data/topics';
+import { LEVEL_LABEL, READY_TOPICS, topicBySlug } from '@/data/topics';
+import { listStories } from '@/lib/library/server';
+import { pickSpotlight } from '@/lib/topics/spotlight';
 
 export function generateStaticParams() {
   return READY_TOPICS.map((topic) => ({ slug: topic.slug }));
@@ -33,47 +35,88 @@ export async function generateMetadata({
 }
 
 /**
- * Вхід у тему. Розділи живуть окремими сторінками (кожен зі своїм URL і
- * власним запитом у пошуку), а тут — обіцянка теми й картки розділів.
+ * Вхід у тему: обіцянка курсу ліворуч, орієнтири праворуч.
  *
- * Макета в цієї сторінки концепція не малює: вона виведена зі сторінки
- * розділу (2b) — той самий каркас, лише посередині замість тексту стоять
- * картки розділів. Темного герой-блока більше немає: на паперовій основі
- * він читався як чужа плита, а обіцянку теми несе заголовок.
+ * Колонка контексту, якої тут раніше не було, зʼявилась не заради
+ * симетрії з розділом. Вона відповідає на три питання, що виникають
+ * саме на вході: «скільки я вже пройшов», «де це видно в живому
+ * тексті» і «на чому тут спотикаються». Жодне з них не має відповіді
+ * в списку розділів, а перше ще й вирішує, куди клікати далі.
  *
- * Колонки з контекстом тут немає навмисно, хоч на сторінці розділу вона й
- * стоїть: прогрес, пастка й рядок Alex не змінюються всередині теми, тому
- * на вході вони лише повторювали б те, що людина побачить за секунду —
- * коштом ширини самих карток розділів, заради яких на цю сторінку й ідуть.
+ * Ширина 1200, а не спільні 1400: сторінку читають як зміст книжки, і
+ * рядок заголовка розділу на всю ширину екрана довелося б вести оком
+ * надто далеко до стану праворуч.
  */
 export default async function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const topic = topicBySlug(slug);
   if (!topic || !topic.ready || !hasContent(slug)) notFound();
 
-  return (
-    <TopicShell>
-      <TopicVisit topicSlug={topic.slug} />
-      <TopicBreadcrumbs topic={topic} />
+  // Оповідання потрібні лише для картки «побачити в тексті». Без бази
+  // список порожній, `pickSpotlight` віддає null, і картки просто немає.
+  const spotlight = pickSpotlight(topic.slug, await listStories());
 
-      <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">
-        <div className="min-w-0">
-          <h1 className="font-serif m-0 mb-1.5 text-[32px] leading-[1.1] font-extrabold tracking-[-0.5px]">
+  return (
+    <div className="mx-auto w-full max-w-[1200px] px-10 pt-9 pb-16 leading-[1.5]">
+      <TopicVisit topicSlug={topic.slug} />
+
+      <nav aria-label="Хлібні крихти" className="text-ink-3 flex gap-2 text-[13px] font-semibold">
+        <Link href="/topics" className="text-acc hover:text-acc2">
+          Правила
+        </Link>
+        <span>/</span>
+        <span>{topic.title}</span>
+      </nav>
+
+      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_320px] items-start gap-10 max-[1000px]:grid-cols-1">
+        <div>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="border-line-ctrl rounded-badge text-ink-2 border-[1.5px] px-[7px] py-0.5 font-mono text-[11px] font-bold">
+              {LEVEL_LABEL[topic.level]}
+            </span>
+            {topic.kicker ? (
+              <span className="text-acc2 font-mono text-[12px] font-bold tracking-[1.4px] uppercase">
+                {topic.kicker}
+              </span>
+            ) : null}
+          </div>
+
+          <h1 className="font-serif mt-3.5 mb-2.5 text-[40px] leading-[1.08] font-extrabold tracking-[-0.8px] [text-wrap:balance]">
             {topic.heroTitle ?? topic.title}
           </h1>
-          {topic.heroLede ? (
-            <p className="text-ink-2 m-0 max-w-[62ch] text-[14px] leading-[1.6]">{topic.heroLede}</p>
-          ) : null}
-        </div>
-        <Link
-          href={`/topics/${topic.slug}/all`}
-          className="border-line-ctrl text-ink rounded-btn flex-none border-[1.5px] px-4 py-2.5 text-[13px] font-bold"
-        >
-          Усе одним полотном
-        </Link>
-      </div>
 
-      <TopicContents topic={topic} />
-    </TopicShell>
+          {topic.heroLede ? (
+            <p className="text-ink-2 m-0 mb-[22px] max-w-[64ch] text-[16px] leading-[1.6]">
+              {topic.heroLede}
+            </p>
+          ) : null}
+
+          {/* Ілюстрація теми — той самий порожній слот, що й на головній:
+              картинки прийдуть окремо, а висота 220px уже зарезервована,
+              щоб їхня поява нічого не зсунула. */}
+          <div className="mb-[22px] h-[220px]">
+            <ImageSlot
+              caption={`Ілюстрація теми: ${topic.title.toLowerCase()}`}
+              sizes="(max-width: 1000px) 100vw, 800px"
+            />
+          </div>
+
+          <TopicSectionList topic={topic} />
+
+          {/* «Усе одним полотном» лишається єдиним входом у /all. Макет
+              його не малює, але маршрут існує і без цього посилання став
+              би недосяжним — тож він стоїть під списком, де його шукають
+              після того, як зміст уже переглянули. */}
+          <Link
+            href={`/topics/${topic.slug}/all`}
+            className="text-ink-3 hover:text-acc2 mt-3.5 inline-block text-[13.5px] font-semibold"
+          >
+            Усе одним полотном →
+          </Link>
+        </div>
+
+        <TopicAside topic={topic} spotlight={spotlight} />
+      </div>
+    </div>
   );
 }
